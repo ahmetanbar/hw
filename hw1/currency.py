@@ -4,7 +4,7 @@ url="https://poloniex.com/public?command=returnTicker"
 veri = requests.get(url)
 json_verim = veri.json()
 
-choose=input("1-Bitcoin bazlý fiyatlar \n2-Dolar bazlý fiyatlar ")
+choose=input("1-Bitcoin bazlÃ½ fiyatlar \n2-Dolar bazlÃ½ fiyatlar ")
 
 if choose=="1":
     cryptos=[("BTC_BCN","Byte Coin"),("BTC_BELA","Bela"),("BTC_BLK","Black Coin")]
