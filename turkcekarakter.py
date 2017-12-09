@@ -1,5 +1,11 @@
 # -*- coding: cp1254 -*-
 
+#kutuphaneler
+from Tkinter import *
+import tkMessageBox
+import random
+import tkFont
+
 import requests
 
 url="https://poloniex.com/public?command=returnTicker"
