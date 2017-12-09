@@ -1,17 +1,10 @@
+#--coding:cp1254
 
-# -*- coding: utf-8 -*-
-
-from reportlab.pdfgen import canvas 
-from reportlab.pdfbase import pdfmetrics 
-from reportlab.pdfbase.ttfonts import TTFont 
-
-pdfmetrics.registerFont(TTFont('Hebrew', 'Arial.ttf'))
-
-c = canvas.Canvas("hello.pdf") 
-c.setFont("Hebrew", 14)
-c.drawString(10,10, u"þelale".encode('utf-8'))
-c.save()
-
+#kutuphaneler
+from Tkinter import *
+import tkMessageBox
+import random
+import tkFont
 import requests
 
 url="https://poloniex.com/public?command=returnTicker"
