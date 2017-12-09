@@ -6,6 +6,8 @@ import tkMessageBox
 import random
 import tkFont
 
+choose=input("1-Bitcoin bazlý fiyatlar \n2-Dolar bazlý fiyatlar ")
+
 #global degiskenler
 Aoyuncusu=""
 Boyuncusu=""
