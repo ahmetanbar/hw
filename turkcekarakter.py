@@ -1,4 +1,4 @@
-#--coding:cp1254
+# -*- coding: cp1254 -*-
 
 import requests
 
