@@ -26,7 +26,7 @@ def times_history(type1,type2): # İstenilen para biriminin geçmiş zamanların
     a = 0
     for i in range(0, 100):
         if "BUY" == str(json["result"][i]["OrderType"]):
-            times[a] = str(json["result"][i]["TimeStamp"])
+            times[a] = str(str(json["result"][i]["TimeStamp"]).split("T")[1])[:10]
             a = a + 1
     return times[:]
 def values_current(type1,type2): # Şuan ki istenilen para birimlerinin oranlarını verir.
@@ -39,5 +39,5 @@ def times_current(type1,type2): # Şuan ki istenilen para birimlerinin oranları
     api = "https://bittrex.com/api/v1.1/public/getmarketsummary?market="+type1+"-"+type2
     response = requests.get(api)
     json = response.json()
-    json = json["result"][0]["TimeStamp"]
+    json = str(json["result"][0]["TimeStamp"].split("T")[1])[:10]
     return json
