@@ -9,7 +9,7 @@ user = Label(window,text = "Username: ")
 pswd = Label(window,text = "Password: ")
 button = Button(window,text = "Login",command = push)
 
-user.grid(row = 0,column = 0,sticky = E) #row = satır ---- W - E - N - S
+user.grid(row = 0,column = 0,sticky = E) #row = satır ---- W - E - N - S.
 pswd.grid(row = 1,column = 0,sticky = E) #column = sütun  ----- sticky yapıstırır.
 button.grid(row = 2,column = 1)
 
