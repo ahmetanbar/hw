@@ -1,8 +1,13 @@
+import matplotlib.pyplot as plt
 import requests
-api1="https://bittrex.com/api/v1.1/public/getmarketsummaries"
-type_coin=input("Oranlarını Görmek İstediğiniz Coin Türünü Giriniz:")
-response=requests.get(api1)
-json_verisi=response.json()
-for i in range(0,250):
-    if type_coin==json_verisi["result"][i]["MarketName"][:3]:
-            print("1",json_verisi["result"][i]["MarketName"][4:]," == ",format(json_verisi["result"][i]["Last"], '.8f'),type_coin)
+import numpy as np
+api="https://bittrex.com/api/v1.1/public/getmarkethistory?market=BTC-DOGE"
+response=requests.get(api)
+json=response.json()
+a=0
+times=[0 for i in range(100)]
+for i in range(0,100):
+    if "BUY"==str(json["result"][i]["OrderType"]):
+        times[a]=str(json["result"][i]["TimeStamp"])
+        a=a+1
+print(times[:])
