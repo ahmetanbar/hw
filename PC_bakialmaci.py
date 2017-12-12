@@ -12,7 +12,7 @@ oranlar = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=BTC"+"-" 
 print(oranlar)
 
 for i in range(1,14):
-    coins = currency_json_verisi["result"][i]["Currency"] #dövizin ismini çektim
+    coins = currency_json_verisi["result"][i]["Currency"] #dövizin isminfi çektim
     oranlar = oranlar+coins #url adresinin sonuna ekledim.
     print(i,"BTC""-"+coins," ---> ",end='')
     oranlar_market = requests.get(oranlar)
