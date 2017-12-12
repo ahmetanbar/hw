@@ -1,2 +1,3 @@
 from values import values,times
-print(times())
+print(times("BTC","ETC"))
+print(values("BTC","ETC"))

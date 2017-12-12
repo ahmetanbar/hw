@@ -1,8 +1,8 @@
 import requests
-api="https://bittrex.com/api/v1.1/public/getmarkethistory?market=BTC-ETH"
-response=requests.get(api)
-json=response.json()
-def values():
+def values(type1,type2):
+    api = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="+str(type1)+"-"+str(type2)
+    response = requests.get(api)
+    json = response.json()
     a = 0
     for i in range(0, 100):
         if "BUY" == str(json["result"][i]["OrderType"]):
@@ -14,7 +14,10 @@ def values():
             values[a]=format(json["result"][i]["Price"],'.8f')
             a=a+1
     return values[:]
-def times():
+def times(type1,type2):
+    api = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="+str(type1)+"-"+str(type2)
+    response = requests.get(api)
+    json = response.json()
     a = 0
     for i in range(0, 100):
         if "BUY" == str(json["result"][i]["OrderType"]):
