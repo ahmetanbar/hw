@@ -1,4 +1,6 @@
 import requests
+# Kütüphane Tamamlandı. Sorunsuz Çalışıyor
+
 def values_history(type1,type2): # İstenilen para biriminin geçmiş değerlerini verir.
     api = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="+str(type1)+"-"+str(type2)
     response = requests.get(api)
@@ -26,7 +28,12 @@ def times_history(type1,type2): # İstenilen para biriminin geçmiş zamanların
     a = 0
     for i in range(0, 100):
         if "BUY" == str(json["result"][i]["OrderType"]):
-            times[a] = str(str(json["result"][i]["TimeStamp"]).split("T")[1])[:10]
+            z = str(str(json["result"][i]["TimeStamp"]).split("T")[1])[:10].split(":")
+            z[0]=str(int(z[0])+3)
+            z[1]=str(z[1])
+            z[2]=str(z[2])
+            t=str(":".join(z))
+            times[a]=str(t)
             a = a + 1
     return times[:]
 def values_current(type1,type2): # Şuan ki istenilen para birimlerinin oranlarını verir.
@@ -39,7 +46,9 @@ def times_current(type1,type2): # Şuan ki istenilen para birimlerinin oranları
     api = "https://bittrex.com/api/v1.1/public/getmarketsummary?market="+type1+"-"+type2
     response = requests.get(api)
     json = response.json()
-    json = str(json["result"][0]["TimeStamp"].split("T")[1])[:10]
+    z = str(json["result"][0]["TimeStamp"].split("T")[1])[:10].split(":")
+    z[0]=str(int(z[0])+3)
+    json=":".join(z)
     return json
 def times_btc_usd_alltime():
     api="https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=alltime&?format=json"
@@ -61,3 +70,9 @@ def values_btc_usd_alltime():
         values[a]=json[i]["average"]
         a=a+1
     return values
+def names():
+    api = "https://bittrex.com/api/v1.1/public/getcurrencies"
+    response = requests.get(api)
+    json = response.json()
+    names[i]
+    a = 0
