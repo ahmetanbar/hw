@@ -1,4 +1,4 @@
-from data import values_history,times_history,values_current,times_current,times_btc_usd_alltime,values_btc_usd_alltime
+from data import *
 import matplotlib.pyplot as plt
 from matplotlib import style
 from matplotlib import colors as mcolors
@@ -20,6 +20,8 @@ def graph_history():
     plt.title("BTC - USD History Chart")
     plt.xticks(rotation=90)
     #plt.xlim(1,100)
+    frame1.axes().get_xaxis().set_visible(False)
+    frame1.axes().get_yaxis().set_visible(False)
     plt.plot(times_btc_usd_alltime(),values_btc_usd_alltime())
     plt.show()
     plt.xlabel("Time")
