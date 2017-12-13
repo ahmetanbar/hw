@@ -1,23 +1,22 @@
 import requests
 # Kütüphane Tamamlandı. Sorunsuz Çalışıyor
-
 def values_history(type1,type2): # İstenilen para biriminin geçmiş değerlerini verir.
     api = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="+str(type1)+"-"+str(type2)
     response = requests.get(api)
     json = response.json()
     a = 0
-    for i in range(0, 100):
+    for i in range(0, 100): # Alış fiyatlarını Arrayimize yazdıracağımız için BUY döndüren json sayısıı bulduk
         if "BUY" == str(json["result"][i]["OrderType"]):
             a = a + 1
-    values = [0 for i in range(a)]
-    a = 0
-    for i in range(0,100):
-        if "BUY"==str(json["result"][i]["OrderType"]):
+    values = [0 for i in range(a)] # Buy döndüren json sayısını Arrayimize yazdırdık(a değeri kadar 0 elemanı yerleştirdik)
+    a = 0 #a içeride kullanılacağı için değişkeni 0'ladık
+    for i in range(0,100): # elimizde toplam 100 veri var o kadar for döndürdük
+        if "BUY"==str(json["result"][i]["OrderType"]): #Alış fiyatı olan Değerleri Gördüğü zaman Arrayimize yazdırması için üstteki metodu kullandık
             values[a]=format(json["result"][i]["Price"],'.8f')
-            a=a+1
-    return values[:]
+            a=a+1 # i den farklı olarak a sayısını arttırarak Arrayimizin boyutunun doğru eşleşmesini ve aralarda 0 lı değer kalmamasını sağladık.
+    return values[:] #fonksiyon çağırıldığında değerlerimizi döndürdük.
 def times_history(type1,type2): # İstenilen para biriminin geçmiş zamanlarını verir.
-    api = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="+str(type1)+"-"+str(type2)
+    api = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="+str(type1)+"-"+str(type2)#Api'ya kullanıcıdan alınan değerlerin girilmesi için ++ lar arasına alınan değişkenler yazıldı
     response = requests.get(api)
     json = response.json()
     a = 0
@@ -28,12 +27,12 @@ def times_history(type1,type2): # İstenilen para biriminin geçmiş zamanların
     a = 0
     for i in range(0, 100):
         if "BUY" == str(json["result"][i]["OrderType"]):
-            z = str(str(json["result"][i]["TimeStamp"]).split("T")[1])[:10].split(":")
-            z[0]=str(int(z[0])+3)
-            z[1]=str(z[1])
+            z = str(str(json["result"][i]["TimeStamp"]).split("T")[1])[:10].split(":")#Alınan zaman değerleri .split() fonksiyonu ile parçalandı, aralarında T olduğu için "T" yazıldı(2017-10-10T23:12:23.4).Ayrılan 2 parça Array olarak ayrıldığı için lazım olan arrayı [1] ile çektik gerekli kısmınıda [:10] son 10 haneyi alarak çektik.
+            z[0]=str(int(z[0])+3)#Zaman farkı olan 3 saati eklemen için tekrar split ile saat dakika saniye olarak ayırdık integer değere çevirip 3 saat arttırdık.
+            z[1]=str(z[1])#dakikada ve saniyede değişiklik yapılmadığı için onları direk kendi Array değerine eşitledik
             z[2]=str(z[2])
-            t=str(":".join(z))
-            times[a]=str(t)
+            t=str(":".join(z)) #.join fonksiyonu ile, ':' ile tekrar aynı formatta birleştirdik.
+            times[a]=str(t) # birleştirdiğimiz değeri return edeceğimiz değere yazdırdık.
             a = a + 1
     return times[:]
 def values_current(type1,type2): # Şuan ki istenilen para birimlerinin oranlarını verir.
@@ -66,7 +65,7 @@ def values_btc_usd_alltime():
     json = response.json()
     a=0
     values=[0 for i in range(2699)]
-    for i in range(0,2699):
+    for i in range(0,2699): #2699 tane değerimiz olduğu için o kadar for ile değerlerini values çektik.
         values[a]=json[i]["average"]
         a=a+1
     return values
@@ -75,8 +74,8 @@ def names_eth(): # ETH Bazlı Coin İsimlerini Gönderir.
     response = requests.get(api)
     json = response.json()
     a = 0
-    names=[0 for i in range(58)]
-    for i in range(0,270):
+    names=[0 for i in range(58)] # ETH bazlı 58 kod olduğunu bulduk ve o kadar değer olduğunu bilerek array e yazdırdık.
+    for i in range(0,270): # toplamda 270 tane olan değerimizden ETH değeri döndürenleri return edeceğimiz değişkenimize yazdırdık.
         if "ETH"==json["result"][i]["BaseCurrency"]:
             names[a] = json["result"][i]["MarketCurrency"]
             a=a+1
