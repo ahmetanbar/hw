@@ -5,7 +5,7 @@ window = Tk()
 window.title("GUI Interface BETA")
 
 window.withdraw()
-window.update_idletasks()  # Update "requested size" from geometry manager
+window.update_idletasks()
 
 x = (window.winfo_screenwidth() - window.winfo_reqwidth()) / 2     #burada pencere ayarlamaları yaptık
 y = (window.winfo_screenheight() - window.winfo_reqheight()) / 2
