@@ -70,12 +70,25 @@ def values_btc_usd_alltime():
         values[a]=json[i]["average"]
         a=a+1
     return values
-def names(): # Coin İsimlerini Gönderir.
-    api = "https://bittrex.com/api/v1.1/public/getcurrencies"
+def names_eth(): # ETH Bazlı Coin İsimlerini Gönderir.
+    api = "https://bittrex.com/api/v1.1/public/getmarkets"
     response = requests.get(api)
     json = response.json()
     a = 0
-    names=[0 for i in range(438)]
-    for i in range(0,288):
-        names[i]=json["result"][i]["Currency"]
+    names=[0 for i in range(58)]
+    for i in range(0,270):
+        if "ETH"==json["result"][i]["BaseCurrency"]:
+            names[a] = json["result"][i]["MarketCurrency"]
+            a=a+1
+    return names[:]
+def names_btc(): # BTC Bazlı Coin İsimlerini Gönderir.
+    api = "https://bittrex.com/api/v1.1/public/getmarkets"
+    response = requests.get(api)
+    json = response.json()
+    a = 0
+    names=[0 for i in range(200)]
+    for i in range(0,270):
+        if "BTC"==json["result"][i]["BaseCurrency"]:
+            names[a] = json["result"][i]["MarketCurrency"]
+            a=a+1
     return names[:]
