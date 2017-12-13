@@ -28,6 +28,8 @@ def select2():
         print(Lb2.get(j))
     graph_current("ETH",Lb2.get(j))
 
+
+
 Lb = Listbox(window)
 Lb2 = Listbox(window)
 btcname = Label(window,text = "for BTC")
@@ -41,16 +43,36 @@ for j in range(1,15):
     name2=names_eth()
     Lb2.insert(j,name2[j])
 
+
+def searching():
+    for j in range(1, 15):
+        name = names_btc()
+        name2 = names_eth()
+        name2[j]
+        name[j]
+        if(search.get() == name[j]):
+            graph_current("BTC", search.get())
+        elif(search.get() == name2[j]):
+            graph_current("ETH", search.get())
+
+search = Entry(window)
+searchbutton = Button(window, text="Search", command=searching)
+
 button  = Button(window,text = "Show Graph BTC",command = select,fg="red")
 button2 = Button(window,text ="Show Graph ETH",command = select2,fg="blue")
 
 
+
+
+searchbutton.pack(side=BOTTOM)
+search.pack(side=BOTTOM)
 btcname.pack(side=LEFT)
 ethname.pack(side=RIGHT)
 Lb.pack(side=LEFT)
 Lb2.pack(side=RIGHT)
 button.pack(side=LEFT)
 button2.pack(side=RIGHT)
+
 window.deiconify()
 window.mainloop() #window açık.
 
