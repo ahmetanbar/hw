@@ -70,9 +70,12 @@ def values_btc_usd_alltime():
         values[a]=json[i]["average"]
         a=a+1
     return values
-def names():
+def names(): # Coin İsimlerini Gönderir.
     api = "https://bittrex.com/api/v1.1/public/getcurrencies"
     response = requests.get(api)
     json = response.json()
-    names[i]
     a = 0
+    names=[0 for i in range(438)]
+    for i in range(0,288):
+        names[i]=json["result"][i]["Currency"]
+    return names[:]
