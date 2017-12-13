@@ -92,3 +92,9 @@ def names_btc(): # BTC Bazlı Coin İsimlerini Gönderir.
             names[a] = json["result"][i]["MarketCurrency"]
             a=a+1
     return names[:]
+def btc_usd_current():
+    api="https://blockchain.info/tr/ticker"
+    response=requests.get(api)
+    json=response.json()
+    json=json["USD"]["buy"]
+    return json
