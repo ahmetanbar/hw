@@ -25,4 +25,3 @@ def graph_history():
     plt.plot(times_btc_usd_alltime(),values_btc_usd_alltime())
     plt.show()
     plt.xlabel("Time")
-graph_history()
