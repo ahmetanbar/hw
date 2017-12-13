@@ -12,26 +12,45 @@ x = (window.winfo_screenwidth() - window.winfo_reqwidth()) / 2
 y = (window.winfo_screenheight() - window.winfo_reqheight()) / 2
 window.geometry("+%d+%d" % (x, y))
 
-#***************************************************************************************
+#**************************************************************************************
+
 
 def select():
     a = Lb.curselection()
-    for i in a:
-        print(Lb.get(i))
-    graph_current("BTC",Lb.get(i))
 
-Lb = Listbox(window,selectmode=EXTENDED)
+    for j in a:
+        print(Lb.get(j))
+    graph_current("BTC",Lb.get(j))
 
-Lb.insert(1,"BTC")
-Lb.insert(2,"ETH")
-Lb.insert(3,"LTC")
+def select2():
+    b = Lb2.curselection()
+    for j in b:
+        print(Lb2.get(j))
+    graph_current("ETH",Lb2.get(j))
 
-button = Button(window,text = "Show Graph",command = select)
+Lb = Listbox(window)
+Lb2 = Listbox(window)
+btcname = Label(window,text = "for BTC")
+ethname = Label(window,text = "for ETH")
+
+for j in range(1,15):
+    name=names_btc()
+    Lb.insert(j,name[j])
+
+for j in range(1,15):
+    name2=names_eth()
+    Lb2.insert(j,name2[j])
+
+button  = Button(window,text = "Show Graph BTC",command = select,fg="red")
+button2 = Button(window,text ="Show Graph ETH",command = select2,fg="blue")
 
 
-
-Lb.pack()
-button.pack()
+btcname.pack(side=LEFT)
+ethname.pack(side=RIGHT)
+Lb.pack(side=LEFT)
+Lb2.pack(side=RIGHT)
+button.pack(side=LEFT)
+button2.pack(side=RIGHT)
 window.deiconify()
 window.mainloop() #window açık.
 
