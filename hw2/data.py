@@ -41,3 +41,23 @@ def times_current(type1,type2): # Şuan ki istenilen para birimlerinin oranları
     json = response.json()
     json = str(json["result"][0]["TimeStamp"].split("T")[1])[:10]
     return json
+def times_btc_usd_alltime():
+    api="https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=alltime&?format=json"
+    response=requests.get(api)
+    json=response.json()
+    a=0
+    times=[0 for i in range(2699)]
+    for i in range(0,2699):
+        times[a]=str(json[i]["time"])[:10]
+        a=a+1
+    return times
+def values_btc_usd_alltime():
+    api = "https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?period=alltime&?format=json"
+    response = requests.get(api)
+    json = response.json()
+    a=0
+    values=[0 for i in range(2699)]
+    for i in range(0,2699):
+        values[a]=json[i]["average"]
+        a=a+1
+    return values

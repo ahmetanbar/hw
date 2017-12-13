@@ -21,5 +21,6 @@ def timeparse():
                 print(i,end='')
         print("  ||  ",end='')
 timeparse()
-
+ 
+    #String verileri integere çevrilmesi yapılacak.
 
