@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import Tk
 from graph import *
 window = Tk()
-window.title("GUI Interface")
+window.title("BitCoin Analysis - BAK Software Industries")
 window.configure(bg="#fafafa")
 
 window.withdraw()
