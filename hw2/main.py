@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter import Tk
 from graph import *
 window = Tk()
-window.title("GUI Interface BETA")
+window.title("GUI Interface")
 window.configure(bg="#fafafa")
 
 window.withdraw()
@@ -60,7 +60,9 @@ button  = Button(window,text = "Show Graph BTC",command = select,fg="black",bg="
 button2 = Button(window,text ="Show Graph ETH",command = select2,fg="black",bg="#78909c")
 
 btc_usd_button = Button(window,text = "BTC to USD GRAPH",command = btc_usd,fg = "black",bg="#78909c")
+jsonkomik =Label(window,text = "JSON JSON BIZI BITIRECEJSON",fg="red",bg="#fafafa")
 
+jsonkomik.pack(side=TOP)
 btc_usd_button.pack(side=BOTTOM) #componentlerın yerleri belirlendi ve onaylandı.
 searchbutton.pack(side=BOTTOM)
 search.pack(side=BOTTOM)
