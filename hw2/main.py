@@ -18,7 +18,7 @@ def select():
     a = Lb.curselection()
     for i in a:
         print(Lb.get(i))
-    graph("BTC",Lb.get(i))
+    graph_current("BTC",Lb.get(i))
 
 Lb = Listbox(window,selectmode=EXTENDED)
 
