@@ -12,7 +12,7 @@ x = (window.winfo_screenwidth() - window.winfo_reqwidth()) / 2
 y = (window.winfo_screenheight() - window.winfo_reqheight()) / 2
 window.geometry("+%d+%d" % (x, y))
 
-#**************************************************************************************
+#*************************************************************************************
 
 
 def select():
