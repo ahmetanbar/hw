@@ -1,4 +1,6 @@
 from data import * # yazdığımız data kütüphanesindeki tüm fonksiyonları çektik
+import matplotlib
+matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from matplotlib import style # matplotlib in style fonksiyonu çekildi
 import datetime # datetime kütüphanesi eklendi

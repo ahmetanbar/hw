@@ -84,12 +84,10 @@ def names_btc(): # BTC Bazlı Coin İsimlerini Gönderir.
     api = "https://bittrex.com/api/v1.1/public/getmarkets"
     response = requests.get(api)
     json = response.json()
-    a = 0
-    names=[0 for i in range(200)]
-    for i in range(0,270):
-        if "BTC"==json["result"][i]["BaseCurrency"]:
-            names[a] = json["result"][i]["MarketCurrency"]
-            a=a+1
+    names=[]
+    for value in json["result"]:
+        if "BTC"==value["BaseCurrency"]:
+            names.append(value["MarketCurrency"])
     return names[:]
 def btc_usd_current():
     api="https://blockchain.info/tr/ticker"
