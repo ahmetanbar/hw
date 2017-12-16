@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter import Tk
 from graph import *
 window = Tk()
 window.title("BitCoin Analysis - BAK Software Industries")
