@@ -1,4 +1,4 @@
-from data import * # yazdığımız data kütüphanesindeki tüm fonksiyonları çektik
+from data import * # yazdığımız data kütüphanesindeki tüm fonksiyonları çektik asd
 import matplotlib
 matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
