@@ -27,8 +27,9 @@ class App(QMainWindow):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
-        self.figure = plt.figure()
-        self.canvas = FigureCanvas(self.figure)
+
+        m = PlotCanvas(self, width=5, height=4)
+        m.move(350,70)
 
         button1 = QPushButton('BTC', self)
         button2 = QPushButton('ETH', self)
@@ -37,11 +38,11 @@ class App(QMainWindow):
         liste = QListWidget(self)
         arama = QLineEdit(self)
 
-        button1.move(100, 0)
+        button1.move(170, 150)
         button1.resize(100, 50)
-        button2.move(100, 50)
+        button2.move(170, 250)
         button2.resize(100, 50)
-        button3.move(100, 100)
+        button3.move(170, 350)
         button3.resize(100, 50)
         button4.move(0, 490)
         button4.resize(100, 20)
@@ -53,30 +54,28 @@ class App(QMainWindow):
 
         self.show()
 
-        def graph_usd_x_alltime(type1):
-            fig = plt.figure(figsize=(15, 10), dpi=50, num=20)
-            style.use('ggplot')
-            ax1 = fig.add_subplot(1, 1, 1)
 
-            def animate(i):
-                time, value = current("USDT", type1)
-                title = "USD - " + type1 + " All Time History Chart\nCurrent Price = " + str(value)
-                ax1.set_title(title)
-                plt.xticks(rotation=90, size=15)
-                plt.gcf().autofmt_xdate()
-                myFmt = mdates.DateFormatter('%H:%M:%S')
-                plt.gca().xaxis.set_major_formatter(myFmt)
-                x, y = usd_x_alltime(type1)
-                ax1.plot(x, y, color='red')
+class PlotCanvas(FigureCanvas):
 
-            ani = animation.FuncAnimation(fig, animate, interval=1000)
-            plt.show()
+    def __init__(self, parent=None, width=5, height=4, dpi=100):
+        fig = Figure(figsize=(width, height), dpi=dpi)
+        self.axes = fig.add_subplot(111)
 
-        graph_usd_x_alltime("BTC")
+        FigureCanvas.__init__(self, fig)
+        self.setParent(parent)
+
+        FigureCanvas.setSizePolicy(self,QSizePolicy.Expanding,QSizePolicy.Expanding)
+        FigureCanvas.updateGeometry(self)
+        self.plot()
+
+    def plot(self):
+        data = [random.random() for i in range(25)]
+        self.draw()
 
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = App()
-    sys.exit(app.exec_())
+
+
+app = QApplication(sys.argv)
+ex = App()
+sys.exit(app.exec_())
