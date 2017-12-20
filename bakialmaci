@@ -1,0 +1,82 @@
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QMenu, QVBoxLayout, QSizePolicy, QMessageBox, QWidget,QPushButton,QListWidget,QLineEdit
+from PyQt5.QtGui import QIcon
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+import random
+import requests
+from graph import *
+from data import *
+
+
+class App(QMainWindow):
+
+    def __init__(self):
+        super().__init__()
+        self.left = 480
+        self.top = 270
+        self.title = 'GUI 2018'
+        self.width = 960
+        self.height = 540
+        self.initUI()
+
+    def initUI(self):
+        self.setWindowTitle(self.title)
+        self.setGeometry(self.left, self.top, self.width, self.height)
+
+        self.figure = plt.figure()
+        self.canvas = FigureCanvas(self.figure)
+
+        button1 = QPushButton('BTC', self)
+        button2 = QPushButton('ETH', self)
+        button3 = QPushButton('USD', self)
+        button4 = QPushButton('Search and Plot', self)
+        liste = QListWidget(self)
+        arama = QLineEdit(self)
+
+        button1.move(100, 0)
+        button1.resize(100, 50)
+        button2.move(100, 50)
+        button2.resize(100, 50)
+        button3.move(100, 100)
+        button3.resize(100, 50)
+        button4.move(0, 490)
+        button4.resize(100, 20)
+        liste.move(0,0)
+        liste.resize(100,450)
+        arama.move(0,465)
+        arama.resize(100,20)
+
+
+        self.show()
+
+        def graph_usd_x_alltime(type1):
+            fig = plt.figure(figsize=(15, 10), dpi=50, num=20)
+            style.use('ggplot')
+            ax1 = fig.add_subplot(1, 1, 1)
+
+            def animate(i):
+                time, value = current("USDT", type1)
+                title = "USD - " + type1 + " All Time History Chart\nCurrent Price = " + str(value)
+                ax1.set_title(title)
+                plt.xticks(rotation=90, size=15)
+                plt.gcf().autofmt_xdate()
+                myFmt = mdates.DateFormatter('%H:%M:%S')
+                plt.gca().xaxis.set_major_formatter(myFmt)
+                x, y = usd_x_alltime(type1)
+                ax1.plot(x, y, color='red')
+
+            ani = animation.FuncAnimation(fig, animate, interval=1000)
+            plt.show()
+
+        graph_usd_x_alltime("BTC")
+
+
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = App()
+    sys.exit(app.exec_())
