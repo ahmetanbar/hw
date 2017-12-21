@@ -3,7 +3,7 @@ from graph import *
 from data import *
 from PyQt5.QtWidgets import QDialog, QApplication, QPushButton,QHBoxLayout,QListWidget,QMessageBox, QLineEdit
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-#############################################################################################################################################
+############################################################################################################################################
 
 class Window(QDialog):
     def __init__(self, parent=None):
