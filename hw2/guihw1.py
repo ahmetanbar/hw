@@ -4,6 +4,10 @@ from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBo
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
+from PyQt5 import QtCore
+from PyQt5.QtWidgets import QMainWindow, QWidget, QLabel, QLineEdit
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtCore import QSize
 
 global button_id
 
@@ -12,7 +16,7 @@ class Window(QDialog):
         super(Window, self).__init__(parent)
         self.setWindowTitle('Market Currency')
         self.listWidget = QListWidget()
-        self.listWidget.currentItemChanged.connect(self.touchme)
+        self.listWidget.itemClicked.connect(self.touchme)
         self.button = QPushButton('Plot')
         self.button.clicked.connect(self.plot)
         self.button2 = QPushButton('BTC')
@@ -26,14 +30,14 @@ class Window(QDialog):
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
         self.toolbar = NavigationToolbar(self.canvas, self)
+        self.canvas.move(20, 20)
+        self.canvas.resize(40, 40)
 
-        self.textbox = QLineEdit('Ara beni')
+        self.textbox = QLineEdit()
         self.textbox.move(20, 20)
         self.textbox.resize(280, 40)
-        self.x=self.textbox.text()
-        print(self.x)
         self.aramam=QLabel()
-        self.aramam.setText("""or Write here""")
+        self.aramam.setText("""                               or Write here and Plot it""")
 
         h_box = QHBoxLayout()
         h_box.addWidget(self.button2)
@@ -45,20 +49,37 @@ class Window(QDialog):
         yazih_box.addWidget(self.aramam)
         yazih_box.addStretch()
 
+        aramah_box=QHBoxLayout()
+        aramah_box.addStretch()
+        aramah_box.addWidget(self.textbox)
+        aramah_box.addStretch()
+
+        objects = QVBoxLayout()
+        objects.addWidget(self.aramam)
+        objects.addWidget(self.textbox)
+        objects.addWidget(self.toolbar)
+
+        myobject = QHBoxLayout()
+        myobject.addStretch()
+        myobject.addLayout(objects)
+        myobject.addStretch()
+
         layout = QVBoxLayout()
         layout.addLayout(h_box)
         layout.addWidget(self.listWidget)
         layout.addWidget(self.button)
-        layout.addLayout(yazih_box)
-        layout.addWidget(self.textbox)
-        layout.addWidget(self.toolbar)
+        layout.addLayout(myobject)
         layout.addWidget(self.canvas)
         self.setLayout(layout)
 
+
+
     def touchme(self):
         global ss
+        global benim
         ss= self.listWidget.currentItem().text()
         print(ss)
+
 
     def buttonsee(self,button_id):
         global choose
@@ -72,17 +93,26 @@ class Window(QDialog):
             choose="USDT"
             self.nameUSD()
 
-
     def plot(self):
         xList= []
         yList= []
-        summaryurl = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="
 
+        summaryurl = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="
+        global ss
         if ("BTC"==choose):
+            if (self.textbox.text()!=""):
+                ss=self.textbox.text()
+                self.textbox.clear()
             summaryurl=summaryurl+"BTC-"+ ss
         elif ("ETH"==choose):
+            if (self.textbox.text()!=""):
+                ss=self.textbox.text()
+                self.textbox.clear()
             summaryurl=summaryurl+"ETH-"+ ss
         elif ("USDT"==choose):
+            if (self.textbox.text()!=""):
+                ss=self.textbox.text()
+                self.textbox.clear()
             summaryurl=summaryurl+"USDT-"+ ss
         summary = requests.get(summaryurl)
         json_summary = summary.json()
@@ -96,15 +126,14 @@ class Window(QDialog):
                 xList.append(float(m))
                 yList.append(str(n))
 
-
         self.figure.clear()
         ax = self.figure.add_subplot(111)
-        ax.plot(yList,xList, '-')
+        ax.plot(yList,xList, 'o-')
         ax.set_title("Last Price= {:f}".format(json_summary["result"][0]["Price"]))
         self.canvas.draw()
 
     def nameBTC(self):
-        print("girdim")
+        self.listWidget.clear()
         btcList=[]
         marketurl="https://bittrex.com/api/v1.1/public/getmarkets"
         market = requests.get(marketurl)
@@ -115,7 +144,6 @@ class Window(QDialog):
                 v=json_market["result"][i]["MarketCurrency"]
                 btcList.append(str(v))
             i=i+1
-        self.listWidget.clear()
         self.listWidget.addItems(btcList)
 
     def nameETH(self):
@@ -155,7 +183,4 @@ if __name__ == '__main__':
     main.show()
     sys.exit(app.exec_())
 
-
-#Arama textEditi eklenecek
 #Zoom ile gezinme eklenecek
-#Bug var temizlenecek
