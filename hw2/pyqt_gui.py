@@ -3,6 +3,8 @@ from graph import *
 from data import *
 from PyQt5.QtWidgets import QDialog, QApplication, QPushButton,QHBoxLayout,QListWidget,QMessageBox, QLineEdit
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+from PyQt5.QtGui import QPainter, QColor, QPen
+from PyQt5.QtCore import Qt
 ############################################################################################################################################
 
 class Window(QDialog):
@@ -16,6 +18,11 @@ class Window(QDialog):
         self.setMaximumWidth(width)
         self.setMaximumHeight(height)
 
+        self.setAutoFillBackground(True)
+        p = self.palette()
+        p.setColor(self.backgroundRole(), Qt.darkBlue)
+        self.setPalette(p)
+
         self.setWindowTitle('GUI 2018')
         self.listWidget = QListWidget(self)
 
@@ -27,23 +34,20 @@ class Window(QDialog):
         self.button3.clicked.connect(self.addlisteth)
         self.button4 = QPushButton('USDT',self)
         self.button4.clicked.connect(self.addlistusdt)
-        self.button.move(4,435)
+        self.button.move(10,435)
         self.button.resize(150,20)
-        self.button2.move(4,455)
+        self.button2.move(10,455)
         self.button2.resize(50,38)
-        self.button3.move(54,455)
+        self.button3.move(60,455)
         self.button3.resize(50,38)
-        self.button4.move(104,455)
+        self.button4.move(110,455)
         self.button4.resize(50,38)
-        self.listWidget.move(4,10)
+        self.listWidget.move(10,10)
         self.listWidget.resize(150,390)
         self.listWidget.itemClicked.connect(self.Clicked)
         self.textbox = QLineEdit(self)
-        self.textbox.move(4,405)
+        self.textbox.move(10,405)
         self.textbox.resize(150,30)
-
-
-
 
         self.figure = plt.figure(figsize=(15, 10), dpi=50, num=20)
         self.canvas = FigureCanvas(self.figure)
@@ -53,6 +57,12 @@ class Window(QDialog):
         graphbox.addWidget(self.canvas)
         self.setLayout(graphbox)
 
+    def keyPressEvent(self, e):
+        if e.key() == Qt.Key_F4:
+            self.close()
+        elif e.key() == Qt.Key_F3:
+            self.search()
+
     def search(self):
         global a
         global items
@@ -60,6 +70,13 @@ class Window(QDialog):
         global select1
         a = str(self.textbox.text())
         print(a.upper())
+
+        if a.upper() == "BTC-O":
+            self.addlistbtc()
+        elif a.upper() =="ETH-O":
+            self.addlisteth()
+        elif a.upper() == "USDT-O":
+            self.addlisteth()
 
         items=[]
         s = 0
