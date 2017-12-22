@@ -3,7 +3,7 @@ import numpy
 import matplotlib.pyplot as plt
 from data import *
 import matplotlib.animation as animation
-import matplotlib.dates as mdates  # matplotlib e dateler yazdırmak için kütüphane eklendi
+import matplotlib.dates as mdates  # matplotlib e dateler yazdÃ½rmak iÃ§in kÃ¼tÃ¼phane eklendi
 from matplotlib import style
 import requests
 import dateutil.parser
@@ -103,7 +103,7 @@ fig = plt.figure(figsize=(15,10), dpi=50 , num=20)
 ax=fig.add_subplot(1,1,1)
 plt.xticks(rotation=90,size=15)
 plt.gcf().autofmt_xdate()
-myFmt = mdates.DateFormatter('%H:%M:%S')  # Datatime daki değerlerin hangi formatta yazdırılacağını seçtik.
+myFmt = mdates.DateFormatter('%H:%M:%S')  # Datatime daki deÃ°erlerin hangi formatta yazdÃ½rÃ½lacaÃ°Ã½nÃ½ seÃ§tik.
 plt.gca().xaxis.set_major_formatter(myFmt)
 # ax = fig.add_subplot(111, xlim=(0, 1), ylim=(0, 1), autoscale_on=False)
 # ax = fig.add_subplot(111)
