@@ -1,24 +1,15 @@
 import sys
-import requests
-from matplotlib import style
 from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBoxLayout, QListView, QListWidget, QLineEdit, QLabel,QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMainWindow, QWidget, QLabel, QLineEdit
 from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtCore import QSize
-from matplotlib.pyplot import figure, show
-import numpy
 import matplotlib.pyplot as plt
 from data import *
-import matplotlib.animation as animation
-import matplotlib.dates as mdates  # matplotlib e dateler yazdýrmak için kütüphane eklendi
+import matplotlib.dates as mdates
 from matplotlib import style
 import requests
 import dateutil.parser
-from data import history
-
 global button_id
 
 class Window(QDialog):
@@ -44,7 +35,6 @@ class Window(QDialog):
         self.button3.clicked.connect(lambda: self.buttonsee(2))
         self.button4 = QPushButton('USD')
         self.button4.clicked.connect(lambda: self.buttonsee(3))
-
 
         self.fig = plt.figure(figsize=(15,10),dpi=50, num=30)
         self.canvas = FigureCanvas(self.fig)
@@ -96,19 +86,15 @@ class Window(QDialog):
         def zoom(event):
             cur_xlim = ax.get_xlim()
             cur_ylim = ax.get_ylim()
-            cur_ylim = ax.get_ylim()
 
             xdata = event.xdata  # get event x location
             ydata = event.ydata  # get event y location
 
             if event.button == 'down':
-                # deal with zoom in
                 scale_factor = 1 / base_scale
             elif event.button == 'up':
-                # deal with zoom out
                 scale_factor = base_scale
             else:
-                # deal with something that should never happen
                 scale_factor = 1
                 print(event.button)
 
@@ -124,7 +110,6 @@ class Window(QDialog):
 
         fig = ax.get_figure()  # get the figure of interest
         fig.canvas.mpl_connect('scroll_event', zoom)
-
         return zoom
 
     def pan_factory(self, ax):
@@ -159,22 +144,15 @@ class Window(QDialog):
             event.canvas.draw()
 
         fig = ax.get_figure()  # get the figure of interest
-
-        # attach the call back
         fig.canvas.mpl_connect('button_press_event', onPress)
         fig.canvas.mpl_connect('button_release_event', onRelease)
         fig.canvas.mpl_connect('motion_notify_event', onMotion)
         fig.canvas.mpl_connect('figure_enter_eventasdfasdf', enter_figure)
-
-        # return the function
         return onMotion
-
-
 
     def touchme(self):
         global ss
         ss= self.listWidget.currentItem().text()
-        print(ss)
 
     def buttonsee(self,button_id):
         global choose
@@ -190,8 +168,6 @@ class Window(QDialog):
 
     def plot(self):
         global ss
-        xList= []
-        yList= []
         values = []
         times = []
 
@@ -271,12 +247,10 @@ class Window(QDialog):
         marketurl="https://bittrex.com/api/v1.1/public/getmarkets"
         market = requests.get(marketurl)
         json_market = market.json()
-        i=0
         for j in json_market["result"]:
-            if json_market["result"][i]["BaseCurrency"]=="BTC":
-                v=json_market["result"][i]["MarketCurrency"]
+            if j["BaseCurrency"]=="BTC":
+                v=j["MarketCurrency"]
                 btcList.append(str(v))
-            i=i+1
         self.listWidget.addItems(btcList)
 
     def nameETH(self):
@@ -285,12 +259,10 @@ class Window(QDialog):
         marketurl="https://bittrex.com/api/v1.1/public/getmarkets"
         market = requests.get(marketurl)
         json_market = market.json()
-        i=0
         for j in json_market["result"]:
-            if json_market["result"][i]["BaseCurrency"]=="ETH":
-                v=json_market["result"][i]["MarketCurrency"]
+            if j["BaseCurrency"]=="ETH":
+                v=j["MarketCurrency"]
                 ethList.append(str(v))
-            i=i+1
         self.listWidget.clear()
         self.listWidget.addItems(ethList)
 
@@ -300,12 +272,10 @@ class Window(QDialog):
         marketurl="https://bittrex.com/api/v1.1/public/getmarkets"
         market = requests.get(marketurl)
         json_market = market.json()
-        i=0
         for j in json_market["result"]:
-            if json_market["result"][i]["BaseCurrency"]=="USDT":
-                v=json_market["result"][i]["MarketCurrency"]
+            if j["BaseCurrency"]=="USDT":
+                v=j["MarketCurrency"]
                 usdList.append(str(v))
-            i=i+1
         self.listWidget.clear()
         self.listWidget.addItems(usdList)
 
