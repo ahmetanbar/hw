@@ -106,7 +106,7 @@ yList = []
 summaryurl = "https://bittrex.com/api/v1.1/public/getmarkethistory?market=BTC-ETH"
 summary = requests.get(summaryurl)
 json_summary = summary.json()
-# buradan aşağıda veriyi işleyip xList yList i oluşturuyorum. ama bazı ayarlamalar gerek.
+# buradan aÃ¾aÃ°Ã½da veriyi iÃ¾leyip xList yList i oluÃ¾turuyorum. ama bazÃ½ ayarlamalar gerek.
 k = -1
 for j in json_summary["result"]:
     k = k + 1
