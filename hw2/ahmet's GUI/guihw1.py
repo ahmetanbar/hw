@@ -1,19 +1,38 @@
 import sys
 import requests
+from matplotlib import style
 from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBoxLayout, QListView, QListWidget, QLineEdit, QLabel,QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-import matplotlib.pyplot as plt
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QMainWindow, QWidget, QLabel, QLineEdit
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtCore import QSize
+from matplotlib.pyplot import figure, show
+import numpy
+import matplotlib.pyplot as plt
+from data import *
+import matplotlib.animation as animation
+import matplotlib.dates as mdates  # matplotlib e dateler yazdýrmak için kütüphane eklendi
+from matplotlib import style
+import requests
+import dateutil.parser
+from data import history
 
 global button_id
 
 class Window(QDialog):
     def __init__(self, parent=None):
         super(Window, self).__init__(parent)
+        self.press = None
+        self.cur_xlim = None
+        self.cur_ylim = None
+        self.x0 = None
+        self.y0 = None
+        self.x1 = None
+        self.y1 = None
+        self.xpress = None
+        self.ypress = None
         self.setWindowTitle('Market Currency')
         self.listWidget = QListWidget()
         self.listWidget.itemClicked.connect(self.touchme)
@@ -27,11 +46,12 @@ class Window(QDialog):
         self.button4.clicked.connect(lambda: self.buttonsee(3))
 
 
-        self.figure = plt.figure()
-        self.canvas = FigureCanvas(self.figure)
+        self.fig = plt.figure(figsize=(15,10),dpi=50, num=30)
+        self.canvas = FigureCanvas(self.fig)
         self.toolbar = NavigationToolbar(self.canvas, self)
         self.canvas.move(20, 20)
         self.canvas.resize(40, 40)
+        style.use('ggplot')
 
         self.textbox = QLineEdit()
         self.textbox.move(20, 20)
@@ -57,7 +77,6 @@ class Window(QDialog):
         objects = QVBoxLayout()
         objects.addWidget(self.aramam)
         objects.addWidget(self.textbox)
-        objects.addWidget(self.toolbar)
 
         myobject = QHBoxLayout()
         myobject.addStretch()
@@ -70,7 +89,87 @@ class Window(QDialog):
         layout.addWidget(self.button)
         layout.addLayout(myobject)
         layout.addWidget(self.canvas)
+        layout.addWidget(self.toolbar)
         self.setLayout(layout)
+
+    def zoom_factory(self, ax, base_scale=2.):
+        def zoom(event):
+            cur_xlim = ax.get_xlim()
+            cur_ylim = ax.get_ylim()
+            cur_ylim = ax.get_ylim()
+
+            xdata = event.xdata  # get event x location
+            ydata = event.ydata  # get event y location
+
+            if event.button == 'down':
+                # deal with zoom in
+                scale_factor = 1 / base_scale
+            elif event.button == 'up':
+                # deal with zoom out
+                scale_factor = base_scale
+            else:
+                # deal with something that should never happen
+                scale_factor = 1
+                print(event.button)
+
+            new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
+            new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
+
+            relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
+            rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
+
+            ax.set_xlim([xdata - new_width * (1 - relx), xdata + new_width * (relx)])
+            ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
+            ax.figure.canvas.draw()
+
+        fig = ax.get_figure()  # get the figure of interest
+        fig.canvas.mpl_connect('scroll_event', zoom)
+
+        return zoom
+
+    def pan_factory(self, ax):
+        def onPress(event):
+            if event.inaxes != ax: return
+            self.cur_xlim = ax.get_xlim()
+            self.cur_ylim = ax.get_ylim()
+            self.press = self.x0, self.y0, event.xdata, event.ydata
+            self.x0, self.y0, self.xpress, self.ypress = self.press
+            print("clicked")
+
+        def onRelease(event):
+            self.press = None
+            ax.figure.canvas.draw()
+            print("released")
+
+        def onMotion(event):
+            if self.press is None: return
+            if event.inaxes != ax: return
+            dx = event.xdata - self.xpress
+            dy = event.ydata - self.ypress
+            self.cur_xlim -= dx
+            self.cur_ylim -= dy
+            ax.set_xlim(self.cur_xlim)
+            ax.set_ylim(self.cur_ylim)
+
+            ax.figure.canvas.draw()
+
+        def enter_figure(event):
+            print('enter_figure')
+            event.canvas.figure.patch.set_facecolor('red')
+            event.canvas.draw()
+
+        fig = ax.get_figure()  # get the figure of interest
+
+        # attach the call back
+        fig.canvas.mpl_connect('button_press_event', onPress)
+        fig.canvas.mpl_connect('button_release_event', onRelease)
+        fig.canvas.mpl_connect('motion_notify_event', onMotion)
+        fig.canvas.mpl_connect('figure_enter_eventasdfasdf', enter_figure)
+
+        # return the function
+        return onMotion
+
+
 
     def touchme(self):
         global ss
@@ -93,65 +192,75 @@ class Window(QDialog):
         global ss
         xList= []
         yList= []
+        values = []
+        times = []
 
         summaryurl = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="
-        # if not :
-        #     print("ss girilmedi")
-        print("xx")
+
         if ("BTC"==choose):
             if (self.textbox.text() in btcList):
                 ss=self.textbox.text()
                 self.textbox.clear()
-                print("icerdeyim")
+            elif (self.textbox.text().upper() in btcList):
+                ss = self.textbox.text().upper()
+                self.textbox.clear()
             elif (self.textbox.text()!="") :
                 textboxValue = self.textbox.text()
                 self.textbox.clear()
-                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki ETH'ye bakmak istersin.", QMessageBox.Ok,
-                                     QMessageBox.Ok)
-
+                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki ETH'ye bakmak istersin.", QMessageBox.Ok,QMessageBox.Ok)
                 ss = "ETH"
             summaryurl=summaryurl+"BTC-"+ ss
+
         elif ("ETH"==choose):
             if (self.textbox.text() in ethList):
                 ss=self.textbox.text()
                 self.textbox.clear()
-                print("icerdeyim")
+            elif (self.textbox.text().upper() in ethList):
+                ss = self.textbox.text().upper()
+                self.textbox.clear()
             elif (self.textbox.text()!="") :
                 textboxValue = self.textbox.text()
                 self.textbox.clear()
-                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki ETC'ye bakmak istersin.", QMessageBox.Ok,
-                                     QMessageBox.Ok)
-
+                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki ETC'ye bakmak istersin.", QMessageBox.Ok,QMessageBox.Ok)
                 ss = "ETC"
             summaryurl=summaryurl+"ETH-"+ ss
+
         elif ("USDT"==choose):
             if (self.textbox.text() in usdList):
                 ss=self.textbox.text()
                 self.textbox.clear()
                 print("icerdeyim")
+            elif (self.textbox.text().upper() in usdList):
+                ss = self.textbox.text().upper()
+                self.textbox.clear()
             elif (self.textbox.text()!="") :
                 textboxValue = self.textbox.text()
                 self.textbox.clear()
-                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki BTC'ye bakmak istersin.", QMessageBox.Ok,
-                                     QMessageBox.Ok)
+                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki BTC'ye bakmak istersin.", QMessageBox.Ok,QMessageBox.Ok)
                 ss = "BTC"
             summaryurl=summaryurl+"USDT-"+ ss
         summary = requests.get(summaryurl)
         json_summary = summary.json()
-        #buradan aþaðýda veriyi iþleyip xList yList i oluþturuyorum. ama bazý ayarlamalar gerek.
-        k=-1
-        for j in json_summary["result"]:
-            k=k+1
-            if k<20:
-                m = json_summary["result"][k]["Price"]
-                n = json_summary["result"][k]["TimeStamp"][14:19]
-                xList.append(str(m))
-                yList.append(str(n))
-        self.figure.clear()
-        ax = self.figure.add_subplot(111)
-        ax.plot(yList,xList, 'o-')
+
+        for value in json_summary["result"]:
+            if "BUY" == value["OrderType"]:
+                values.append(float(format(value["Price"], '.8f')))
+                times.append(dateutil.parser.parse(value["TimeStamp"]))
+        self.fig.clear()
+        x, y = times, values
+        ax= self.fig.add_subplot(111)
+
+        plt.xticks(rotation=90, size=15)
+        plt.yticks(size=15)
+        plt.gcf().autofmt_xdate()
+        myFmt = mdates.DateFormatter('%H:%M:%S')
+        plt.gca().xaxis.set_major_formatter(myFmt)
         ax.set_title("{} Last Price= {:f}".format(ss,json_summary["result"][0]["Price"]))
+        ax.plot(x,y,color='red')
         ss = ""
+        scale=1.1
+        self.zoom_factory(ax,base_scale=scale)
+        self.pan_factory(ax)
         self.canvas.draw()
 
     def nameBTC(self):
@@ -200,13 +309,10 @@ class Window(QDialog):
         self.listWidget.clear()
         self.listWidget.addItems(usdList)
 
-
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    scale=1.1
     main = Window()
     main.setGeometry(450,38,1000,800)
     main.show()
     sys.exit(app.exec_())
-
-#Zoom ile gezinme eklenecek
