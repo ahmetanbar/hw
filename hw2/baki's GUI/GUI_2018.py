@@ -23,7 +23,7 @@ class Window(QDialog):
 
         self.setAutoFillBackground(True)
         p = self.palette()
-        p.setColor(self.backgroundRole(), Qt.darkBlue)
+        p.setColor(self.backgroundRole(), Qt.darkGray)
         self.setPalette(p)
 
         self.setWindowTitle('GUI 2018')
@@ -105,46 +105,6 @@ class Window(QDialog):
         fig.canvas.mpl_connect('scroll_event', zoom)
 
         return zoom
-
-    def pan_factory(self, ax):
-        def onPress(event):
-            if event.inaxes != ax: return
-            self.cur_xlim = ax.get_xlim()
-            self.cur_ylim = ax.get_ylim()
-            self.press = self.x0, self.y0, event.xdata, event.ydata
-            self.x0, self.y0, self.xpress, self.ypress = self.press
-            # print("clicked")
-
-        def onRelease(event):
-            self.press = None
-            ax.figure.canvas.draw()
-            # print("released")
-
-        def onMotion(event):
-
-            if self.press is None: return
-            if event.inaxes != ax: return
-            dx = event.xdata - self.xpress
-            dy = event.ydata - self.ypress
-            self.cur_xlim -= dx
-            self.cur_ylim -= dy
-            ax.set_xlim(self.cur_xlim)
-            ax.set_ylim(self.cur_ylim)
-
-            ax.figure.canvas.draw()
-
-        def enter_figure(event):
-            print('enter_figure')
-            event.canvas.figure.patch.set_facecolor('red')
-            event.canvas.draw()
-
-        fig = ax.get_figure()  # get the figure of interest
-
-        fig.canvas.mpl_connect('button_press_event', onPress)
-        fig.canvas.mpl_connect('button_release_event', onRelease)
-        fig.canvas.mpl_connect('motion_notify_event', onMotion)
-        fig.canvas.mpl_connect('figure_enter_eventasdfasdf', enter_figure)
-        return onMotion
 ###########################################################################
     def keyPressEvent(self, e):
         if e.key() == Qt.Key_F4:
@@ -265,7 +225,7 @@ class Window(QDialog):
             ax.plot(x, y, color='red')
             scale = 1.1
             self.zoom_factory(ax, base_scale=scale)
-            self.pan_factory(ax)
+
 
         ani = animation.FuncAnimation(self.figure, animate, interval=2000)
         self.canvas.draw()
@@ -290,7 +250,7 @@ class Window(QDialog):
             ax.plot(x, y, color='red')
             scale = 1.1
             self.zoom_factory(ax, base_scale=scale)
-            self.pan_factory(ax)
+
 
         ani = animation.FuncAnimation(self.figure, animate, interval=2000)
         self.canvas.draw()
@@ -316,7 +276,7 @@ class Window(QDialog):
                 ax.plot(x, y, color='red')
                 scale = 1.1
                 self.zoom_factory(ax, base_scale=scale)
-                self.pan_factory(ax)
+
 
             ani = animation.FuncAnimation(self.figure, animate, interval=1000)
             self.canvas.draw()
@@ -343,7 +303,7 @@ class Window(QDialog):
                 ax.plot(x, y, color='red')
                 scale = 1.1
                 self.zoom_factory(ax, base_scale=scale)
-                self.pan_factory(ax)
+
 
             ani = animation.FuncAnimation(self.figure, animate, interval=1000)
             self.canvas.draw()
