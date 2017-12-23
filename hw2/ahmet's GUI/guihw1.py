@@ -1,3 +1,5 @@
+#--coding:cp1254
+
 import sys
 from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBoxLayout,QListWidget, QLineEdit, QLabel,QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
