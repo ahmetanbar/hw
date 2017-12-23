@@ -1,3 +1,4 @@
+#!/usr/bin/python
 #--coding:cp1254
 
 import sys
@@ -13,7 +14,7 @@ import requests
 import dateutil.parser
 global button_id
 global choose
-choose=""
+choose="BTC"
 global ss
 ss=""
 import urllib.request
@@ -42,7 +43,7 @@ class Window(QDialog):
         self.button3.clicked.connect(lambda: self.buttonsee(2))
         self.button4 = QPushButton('USD')
         self.button4.clicked.connect(lambda: self.buttonsee(3))
-
+        self.nameBTC()
         self.setWindowIcon(QIcon('logo.jpg'))
 
         self.fig = plt.figure(figsize=(15,10),dpi=50, num=30)
@@ -109,12 +110,12 @@ class Window(QDialog):
 
             new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
             new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
-
+            print(new_height)
             relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
             rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
-
+            print(rely)
             ax.set_xlim([xdata - new_width * (1 - relx), xdata + new_width * (relx)])
-            ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
+            # ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
             ax.figure.canvas.draw()
 
         fig = ax.get_figure()  # get the figure of interest
@@ -253,7 +254,7 @@ class Window(QDialog):
         plt.gcf().autofmt_xdate()
         myFmt = mdates.DateFormatter('%H:%M:%S')
         plt.gca().xaxis.set_major_formatter(myFmt)
-        ax.set_title("{} Last Price= {:f}".format(ss,json_summary["result"][0]["Price"]))
+        ax.set_title("{}/{} Last Price= {:f}".format(choose,ss,json_summary["result"][0]["Price"]))
         ax.plot(x,y,color='red')
         scale=1.1
         self.zoom_factory(ax,base_scale=scale)
