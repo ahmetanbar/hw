@@ -1,16 +1,21 @@
 import sys
-from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBoxLayout, QListView, QListWidget, QLineEdit, QLabel,QMessageBox
+from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBoxLayout,QListWidget, QLineEdit, QLabel,QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-from PyQt5.QtWidgets import QMainWindow, QWidget, QLabel, QLineEdit
-from PyQt5.QtWidgets import QPushButton
 import matplotlib.pyplot as plt
+from PyQt5.QtGui import QIcon
 from data import *
 import matplotlib.dates as mdates
 from matplotlib import style
 import requests
 import dateutil.parser
 global button_id
+global choose
+choose=""
+global ss
+ss=""
+import urllib.request
+urllib.request.urlretrieve("https://i.hizliresim.com/rJlXQP.jpg", "logo.jpg")
 
 class Window(QDialog):
     def __init__(self, parent=None):
@@ -36,6 +41,8 @@ class Window(QDialog):
         self.button4 = QPushButton('USD')
         self.button4.clicked.connect(lambda: self.buttonsee(3))
 
+        self.setWindowIcon(QIcon('logo.jpg'))
+
         self.fig = plt.figure(figsize=(15,10),dpi=50, num=30)
         self.canvas = FigureCanvas(self.fig)
         self.toolbar = NavigationToolbar(self.canvas, self)
@@ -47,7 +54,7 @@ class Window(QDialog):
         self.textbox.move(20, 20)
         self.textbox.resize(280, 40)
         self.aramam=QLabel()
-        self.aramam.setText("""                               or Write here and Plot it""")
+        self.aramam.setText("""or Write here and Plot it""")
 
         h_box = QHBoxLayout()
         h_box.addWidget(self.button2)
@@ -170,9 +177,13 @@ class Window(QDialog):
         global ss
         values = []
         times = []
-
         summaryurl = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="
-
+        print("burasý")
+        if (not choose):
+            QMessageBox.question(self, 'what the!!!',
+                                 "You haven't choose any markets.What are you doing?",
+                                 QMessageBox.Ok, QMessageBox.Ok)
+            return None
         if ("BTC"==choose):
             if (self.textbox.text() in btcList):
                 ss=self.textbox.text()
@@ -183,8 +194,11 @@ class Window(QDialog):
             elif (self.textbox.text()!="") :
                 textboxValue = self.textbox.text()
                 self.textbox.clear()
-                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki ETH'ye bakmak istersin.", QMessageBox.Ok,QMessageBox.Ok)
-                ss = "ETH"
+                QMessageBox.question(self, 'what the!!!', "Why\" " + textboxValue + "\" ?\n", QMessageBox.Ok,QMessageBox.Ok)
+                return None
+            elif not ss:
+                QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list and wrote any item", QMessageBox.Ok, QMessageBox.Ok)
+                return None
             summaryurl=summaryurl+"BTC-"+ ss
 
         elif ("ETH"==choose):
@@ -197,8 +211,11 @@ class Window(QDialog):
             elif (self.textbox.text()!="") :
                 textboxValue = self.textbox.text()
                 self.textbox.clear()
-                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki ETC'ye bakmak istersin.", QMessageBox.Ok,QMessageBox.Ok)
-                ss = "ETC"
+                QMessageBox.question(self, 'what the!!!', "Why\" " + textboxValue + "\" ?\n", QMessageBox.Ok,QMessageBox.Ok)
+                return None
+            elif not ss:
+                QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list and wrote any item", QMessageBox.Ok, QMessageBox.Ok)
+                return None
             summaryurl=summaryurl+"ETH-"+ ss
 
         elif ("USDT"==choose):
@@ -212,8 +229,11 @@ class Window(QDialog):
             elif (self.textbox.text()!="") :
                 textboxValue = self.textbox.text()
                 self.textbox.clear()
-                QMessageBox.question(self, 'what the!!!', "Onca seçenek varken neden \" " + textboxValue + "\" anlatir misin? \n      Belki BTC'ye bakmak istersin.", QMessageBox.Ok,QMessageBox.Ok)
-                ss = "BTC"
+                QMessageBox.question(self, 'what the!!!', "Why\" " + textboxValue + "\" ?\n", QMessageBox.Ok,QMessageBox.Ok)
+                return None
+            elif not ss:
+                QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list and wrote any item", QMessageBox.Ok, QMessageBox.Ok)
+                return None
             summaryurl=summaryurl+"USDT-"+ ss
         summary = requests.get(summaryurl)
         json_summary = summary.json()
@@ -233,7 +253,6 @@ class Window(QDialog):
         plt.gca().xaxis.set_major_formatter(myFmt)
         ax.set_title("{} Last Price= {:f}".format(ss,json_summary["result"][0]["Price"]))
         ax.plot(x,y,color='red')
-        ss = ""
         scale=1.1
         self.zoom_factory(ax,base_scale=scale)
         self.pan_factory(ax)
@@ -241,9 +260,9 @@ class Window(QDialog):
 
     def nameBTC(self):
         self.listWidget.clear()
-        global btcList
+        global btcList, ss
         btcList=[]
-
+        ss=""
         marketurl="https://bittrex.com/api/v1.1/public/getmarkets"
         market = requests.get(marketurl)
         json_market = market.json()
@@ -254,7 +273,8 @@ class Window(QDialog):
         self.listWidget.addItems(btcList)
 
     def nameETH(self):
-        global ethList
+        global ethList,ss
+        ss=""
         ethList=[]
         marketurl="https://bittrex.com/api/v1.1/public/getmarkets"
         market = requests.get(marketurl)
@@ -267,7 +287,8 @@ class Window(QDialog):
         self.listWidget.addItems(ethList)
 
     def nameUSD(self):
-        global usdList
+        global usdList,ss
+        ss=""
         usdList=[]
         marketurl="https://bittrex.com/api/v1.1/public/getmarkets"
         market = requests.get(marketurl)
@@ -283,6 +304,6 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     scale=1.1
     main = Window()
-    main.setGeometry(450,38,1000,800)
+    main.setGeometry(450,38,600,800)
     main.show()
     sys.exit(app.exec_())
