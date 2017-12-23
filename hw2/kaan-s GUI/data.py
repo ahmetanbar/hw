@@ -9,7 +9,12 @@ def history(type1,type2): # To Graph
     for value in json["result"]:
         if "BUY"==value["OrderType"]:
             values.append(float(format(value["Price"],'.8f')))
-            times.append(dateutil.parser.parse(value["TimeStamp"]))
+            time = str(value["TimeStamp"].split("T")[1])[:11].split(":")
+            time[0] = str(int(time[0]) + 3)
+            time = ":".join(time)
+            time1=[str(value["TimeStamp"].split("T")[0]),time]
+            time1="T".join(time1)
+            times.append(dateutil.parser.parse(str(time1)))
     return times[:],values[:]
 def current(type1,type2): #To Graph and GUI
     api = "https://bittrex.com/api/v1.1/public/getmarketsummary?market="+type1+"-"+type2
@@ -46,3 +51,27 @@ def names_eth_btc_usdt(): # To GUI
         else:
             names_usdt.append(value["MarketCurrency"])
     return names_eth[:],names_btc[:],names_usdt[:]
+def calculator():
+    api = "https://bittrex.com/api/v1.1/public/getmarketsummary?market=" + type1 + "-" + type2
+    response = requests.get(api)
+    json = response.json()
+    value = json["result"][0]["Last"]
+    return value
+def matching(type1,base):
+    api = "https://bittrex.com/api/v1.1/public/getmarkets"
+    response = requests.get(api)
+    json = response.json()
+    x1=0
+    x2=0
+    for value in json["result"]:
+        if base == value["BaseCurrency"]:
+            if type1==value["MarketCurrency"]:
+                x1=1
+            else:
+                x2=0
+    if x1==1:
+        sum=1
+    else:
+        sum=0
+    return sum
+
