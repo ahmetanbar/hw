@@ -27,6 +27,9 @@ class Window(QDialog):
         p.setColor(self.backgroundRole(), Qt.darkGray)
         self.setPalette(p)
 
+
+
+
         self.setWindowTitle('GUI 2018')
         self.listWidget = QListWidget(self)
 
@@ -193,8 +196,11 @@ class Window(QDialog):
             self.addlisteth()
         elif a.upper() == ".USDT":
             self.addlistusdt()
-        elif a.upper() == "EXPAND":
-            self.dialog.show()
+        elif a.upper() == "ABOUT":
+            QMessageBox.about(self, 'GUIde to GUI',
+                                      "         WELCOME TO GUI 2018     \n\n 1-You can use scroll of mouse to zoom & out\n 2-You can use textbox as small console\n 3-If you write '.ETH' you open ETH LIST\n 4-If you write '.BTC' you open BTC list \n 5-If you write '.USDT' you open USDT list \n 6-You can search curreny which you want \n\n\n  More information: bakialmaci@gmail.com ")
+            self.textbox.clear()
+
 
         items = []
 
@@ -208,7 +214,7 @@ class Window(QDialog):
             elif a.upper() == self.listWidget.item(i).text() and type1 == "USDT":
                 select1 = a.upper()
                 self.graph_usd_x_alltime2()
-            print(self.listWidget.item(i).text())
+            # print(self.listWidget.item(i).text())
         self.textbox.clear()
 
 
@@ -262,6 +268,8 @@ class Window(QDialog):
 
     def graph_latest(self):
 
+
+
         self.textbox.clear()
         global select1
         select1 = self.listWidget.currentItem().text()
@@ -286,6 +294,7 @@ class Window(QDialog):
         plt.text(value, 0, r'$\cos(2 \pi t) \exp(-t)$',size = 50)
         self.zoom_factory(ax, base_scale=scale)
         self.pan_factory(ax)
+
 
         def animate(i):
             time, value = current(type1, select1)
