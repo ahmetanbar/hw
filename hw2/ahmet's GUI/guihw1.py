@@ -6,7 +6,8 @@ from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBo
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon,QPixmap
+from PyQt5.QtCore import QEvent
 import matplotlib.dates as mdates
 from matplotlib import style
 import requests
@@ -16,8 +17,11 @@ global choose
 choose="BTC"
 global ss
 ss=""
+global err
+err=0
+editmessage="Write any from above and Enter"
 import urllib.request
-urllib.request.urlretrieve("https://i.hizliresim.com/rJlXQP.jpg", "logo.jpg")
+urllib.request.urlretrieve("https://asilentspectatorblog.files.wordpress.com/2017/05/wp-1495363795875.png?w=660","bitcoin.png")
 
 class Window(QDialog):
     def __init__(self, parent=None):
@@ -43,7 +47,7 @@ class Window(QDialog):
         self.button4 = QPushButton('USD')
         self.button4.clicked.connect(lambda: self.buttonsee(3))
         self.nameBTC()
-        self.setWindowIcon(QIcon('logo.jpg'))
+        self.setWindowIcon(QIcon('bitcoin.png'))
 
         self.fig = plt.figure(figsize=(15,10),dpi=50, num=30)
         self.canvas = FigureCanvas(self.fig)
@@ -53,20 +57,16 @@ class Window(QDialog):
         style.use('ggplot')
 
         self.textbox = QLineEdit()
+        self.textbox.setText(editmessage)
+        self.textbox.cursorPositionChanged.connect(self.editted)
+        self.textbox.returnPressed.connect(self.plot)
         self.textbox.move(20, 20)
         self.textbox.resize(280, 40)
-        self.aramam=QLabel()
-        self.aramam.setText("""or Write here and Plot it""")
 
         h_box = QHBoxLayout()
         h_box.addWidget(self.button2)
         h_box.addWidget(self.button3)
         h_box.addWidget(self.button4)
-
-        yazih_box=QHBoxLayout()
-        yazih_box.addStretch()
-        yazih_box.addWidget(self.aramam)
-        yazih_box.addStretch()
 
         aramah_box=QHBoxLayout()
         aramah_box.addStretch()
@@ -74,7 +74,6 @@ class Window(QDialog):
         aramah_box.addStretch()
 
         objects = QVBoxLayout()
-        objects.addWidget(self.aramam)
         objects.addWidget(self.textbox)
 
         myobject = QHBoxLayout()
@@ -85,11 +84,18 @@ class Window(QDialog):
         layout = QVBoxLayout()
         layout.addLayout(h_box)
         layout.addWidget(self.listWidget)
-        layout.addWidget(self.button)
         layout.addLayout(myobject)
         layout.addWidget(self.canvas)
         layout.addWidget(self.toolbar)
         self.setLayout(layout)
+
+
+    def printted(self):
+        print("girdim")
+
+    def editted(self):
+        if self.textbox.text()==editmessage:
+            self.textbox.clear()
 
     def zoom_factory(self, ax, base_scale=2.):
         def zoom(event):
@@ -98,6 +104,8 @@ class Window(QDialog):
 
             xdata = event.xdata  # get event x location
             ydata = event.ydata  # get event y location
+            if xdata==None or ydata==None:
+                return None
 
             if event.button == 'down':
                 scale_factor = 1 / base_scale
@@ -109,12 +117,11 @@ class Window(QDialog):
 
             new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
             new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
-            print(new_height)
+
             relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
             rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
-            print(rely)
             ax.set_xlim([xdata - new_width * (1 - relx), xdata + new_width * (relx)])
-            # ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
+            ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
             ax.figure.canvas.draw()
 
         fig = ax.get_figure()  # get the figure of interest
@@ -128,12 +135,10 @@ class Window(QDialog):
             self.cur_ylim = ax.get_ylim()
             self.press = self.x0, self.y0, event.xdata, event.ydata
             self.x0, self.y0, self.xpress, self.ypress = self.press
-            print("clicked")
 
         def onRelease(event):
             self.press = None
             ax.figure.canvas.draw()
-            print("released")
 
         def onMotion(event):
             if self.press is None: return
@@ -162,6 +167,7 @@ class Window(QDialog):
     def touchme(self):
         global ss
         ss= self.listWidget.currentItem().text()
+        self.plot()
 
     def buttonsee(self,button_id):
         global choose
@@ -175,12 +181,28 @@ class Window(QDialog):
             choose="USDT"
             self.nameUSD()
 
+    def firsterror(self):
+        global err
+        messages=""
+        if 0==err:
+            err=err+1
+            messages="\n\nAs you know, this is your first error. \nSo we want to remember that you can read info about application by making click question mark which is upper right corner."
+        return messages
+
+
+    def info(self):
+        QMessageBox.about(self, "How do it work?",
+                          "Hello User\n\nWelcome to Application\nThe application shows currency prices.\n\nAs you see, there are"
+                          " three button based on \"BTC-ETH-USDT\"\n\nFirstly,you select based on.\n\nAfter that:You click currency in the list\n\n"
+                          "or \n\nYou write in the box what you want to see currency and enter it.\n\nWhen graphic is opened,you will see based"
+                          " on and currency graph.\n\nYou zoom the graph and slide it how you want.\n\nAlso if you need help,you can e-mail to ahmetanbar@icloud.com"
+                          "\n\nThanks for choosing us.")
+
     def plot(self):
         global ss
         values = []
         times = []
         summaryurl = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="
-        print("burasý")
         if (not choose):
             QMessageBox.question(self, 'what the!!!',
                                  "You haven't choose any markets.What are you doing?",
@@ -193,13 +215,13 @@ class Window(QDialog):
             elif (self.textbox.text().upper() in btcList):
                 ss = self.textbox.text().upper()
                 self.textbox.clear()
-            elif (self.textbox.text()!="") :
-                textboxValue = self.textbox.text()
+            elif (self.textbox.text()!=editmessage and self.textbox.text()!=""):
+                textboxValue = self.textbox.text() + self.firsterror()
                 self.textbox.clear()
-                QMessageBox.question(self, 'what the!!!', "Why\" " + textboxValue + "\" ?\n", QMessageBox.Ok,QMessageBox.Ok)
+                QMessageBox.question(self, 'what the!!!', "Why " + textboxValue + "\" \n", QMessageBox.Ok,QMessageBox.Ok)
                 return None
             elif not ss:
-                QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list and wrote any item", QMessageBox.Ok, QMessageBox.Ok)
+                QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list or wrote any item", QMessageBox.Ok, QMessageBox.Ok)
                 return None
             summaryurl=summaryurl+"BTC-"+ ss
 
@@ -210,8 +232,8 @@ class Window(QDialog):
             elif (self.textbox.text().upper() in ethList):
                 ss = self.textbox.text().upper()
                 self.textbox.clear()
-            elif (self.textbox.text()!="") :
-                textboxValue = self.textbox.text()
+            elif (self.textbox.text()!=editmessage and self.textbox.text()!=""):
+                textboxValue = self.textbox.text()  + self.firsterror()
                 self.textbox.clear()
                 QMessageBox.question(self, 'what the!!!', "Why\" " + textboxValue + "\" ?\n", QMessageBox.Ok,QMessageBox.Ok)
                 return None
@@ -228,8 +250,8 @@ class Window(QDialog):
             elif (self.textbox.text().upper() in usdList):
                 ss = self.textbox.text().upper()
                 self.textbox.clear()
-            elif (self.textbox.text()!="") :
-                textboxValue = self.textbox.text()
+            elif (self.textbox.text()!=editmessage and self.textbox.text()!=""):
+                textboxValue = self.textbox.text()  + self.firsterror()
                 self.textbox.clear()
                 QMessageBox.question(self, 'what the!!!', "Why\" " + textboxValue + "\" ?\n", QMessageBox.Ok,QMessageBox.Ok)
                 return None
@@ -237,6 +259,7 @@ class Window(QDialog):
                 QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list and wrote any item", QMessageBox.Ok, QMessageBox.Ok)
                 return None
             summaryurl=summaryurl+"USDT-"+ ss
+        self.textbox.setText(editmessage)
         summary = requests.get(summaryurl)
         json_summary = summary.json()
 
@@ -259,6 +282,13 @@ class Window(QDialog):
         self.zoom_factory(ax,base_scale=scale)
         self.pan_factory(ax)
         self.canvas.draw()
+
+    def event(self, event):
+        if event.type() == QEvent.EnterWhatsThisMode:
+            self.info()
+
+            return True
+        return QDialog.event(self, event)
 
     def nameBTC(self):
         self.listWidget.clear()
@@ -301,6 +331,8 @@ class Window(QDialog):
                 usdList.append(str(v))
         self.listWidget.clear()
         self.listWidget.addItems(usdList)
+
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
