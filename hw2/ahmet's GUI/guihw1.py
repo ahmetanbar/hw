@@ -14,9 +14,9 @@ import requests
 import dateutil.parser
 global button_id
 global choose
-choose="BTC"
 global ss
 ss=""
+choose=""
 global err
 err=0
 editmessage="Write any from above and Enter"
@@ -40,13 +40,15 @@ class Window(QDialog):
         self.listWidget.itemClicked.connect(self.touchme)
         self.button = QPushButton('Plot')
         self.button.clicked.connect(self.plot)
-        self.button2 = QPushButton('BTC')
+        self.button2 = QPushButton('BTC', self)
+        self.button2.setFocusPolicy(False)
         self.button2.clicked.connect(lambda: self.buttonsee(1))
-        self.button3 = QPushButton('ETH')
+        self.button3 = QPushButton('ETH', self)
+        self.button3.setFocusPolicy(False)
         self.button3.clicked.connect(lambda: self.buttonsee(2))
-        self.button4 = QPushButton('USD')
+        self.button4 = QPushButton('USD', self)
+        self.button4.setFocusPolicy(False)
         self.button4.clicked.connect(lambda: self.buttonsee(3))
-        self.nameBTC()
         self.setWindowIcon(QIcon('bitcoin.png'))
 
         self.fig = plt.figure(figsize=(15,10),dpi=50, num=30)
@@ -67,6 +69,7 @@ class Window(QDialog):
         h_box.addWidget(self.button2)
         h_box.addWidget(self.button3)
         h_box.addWidget(self.button4)
+
 
         aramah_box=QHBoxLayout()
         aramah_box.addStretch()
@@ -200,6 +203,7 @@ class Window(QDialog):
 
     def plot(self):
         global ss
+        global choose
         values = []
         times = []
         summaryurl = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="
