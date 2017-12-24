@@ -1,13 +1,15 @@
 import sys
 from data import *
-from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QHBoxLayout, QListWidget, QMessageBox, QLineEdit
+from PyQt5.QtWidgets import QDialog,QApplication, QPushButton, QHBoxLayout, QListWidget, QLineEdit,QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt,QEvent
+from PyQt5.QtGui import QIcon
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.dates as mdates
 from matplotlib import style
-
+import urllib.request
+urllib.request.urlretrieve("https://pbs.twimg.com/profile_images/934497182593572865/XHi9ND_P_400x400.jpg","icon.jpg")
 ############################################################################################################################################
 
 class Window(QDialog):
@@ -15,7 +17,6 @@ class Window(QDialog):
         super(Window, self).__init__(parent)
         width = 950
         height = 500
-
         self.setMinimumWidth(width)
         self.setMinimumHeight(height)
         self.setMaximumWidth(width)
@@ -37,21 +38,23 @@ class Window(QDialog):
         self.button3.clicked.connect(self.addlisteth)
         self.button4 = QPushButton('USDT', self)
         self.button4.clicked.connect(self.addlistusdt)
-        self.button.move(10, 435)
-        self.button.resize(150, 20)
+        self.button.move(10, 427)
+        self.button.resize(175, 25)
         self.button2.move(10, 455)
-        self.button2.resize(50, 38)
-        self.button3.move(60, 455)
-        self.button3.resize(50, 38)
-        self.button4.move(110, 455)
-        self.button4.resize(50, 38)
+        self.button2.resize(55, 35)
+        self.button3.move(70, 455)
+        self.button3.resize(55, 35)
+        self.button4.move(130, 455)
+        self.button4.resize(55, 35)
         self.listWidget.move(10, 10)
-        self.listWidget.resize(150, 390)
+        self.listWidget.resize(width-775, 390)
         self.listWidget.itemClicked.connect(self.Clicked)
         self.textbox = QLineEdit(self)
+        # self.lineEditNumber = QtGui.QLineEdit(self)
+        self.textbox.returnPressed.connect(self.search)
         self.textbox.move(10, 405)
-        self.textbox.resize(150, 30)
-
+        self.textbox.resize(175, 20)
+        self.setWindowIcon(QIcon('icon.jpg'))
         self.figure = plt.figure(figsize=(15, 10), dpi=50, num=20)
         self.canvas = FigureCanvas(self.figure)
 
@@ -71,15 +74,23 @@ class Window(QDialog):
         graphbox.addStretch()
         graphbox.addWidget(self.canvas)
         self.setLayout(graphbox)
+
+        self.addlistbtc()
+
 ###########################################################################
-    def zoom_factory(self, ax, base_scale=1.):
+
+
+    def zoom_factory(self, ax, base_scale=2.):
 
         def zoom(event):
             cur_xlim = ax.get_xlim()
-            cur_ylim = ax.get_ylim()
+            # cur_ylim = ax.get_ylim()
 
             xdata = event.xdata  # get event x location
-            ydata = event.ydata  # get event y location
+            # ydata = event.ydata  # get event y location
+
+            if xdata == None:
+                return None
 
             if event.button == 'down':
                 # deal with zoom in
@@ -92,57 +103,100 @@ class Window(QDialog):
                 print(event.button)
 
             new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
-            new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
+            # new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
 
             relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
-            rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
+            # rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
 
             ax.set_xlim([xdata - new_width * (1 - relx), xdata + new_width * (relx)])
-            ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
+            # ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
             ax.figure.canvas.draw()
+
+
 
         fig = ax.get_figure()
         fig.canvas.mpl_connect('scroll_event', zoom)
 
+
         return zoom
+
+    def pan_factory(self, ax):
+        def onPress(event):
+            if event.inaxes != ax: return
+            self.cur_xlim = ax.get_xlim()
+            self.cur_ylim = ax.get_ylim()
+            self.press = self.x0, self.y0, event.xdata, event.ydata
+            self.x0, self.y0, self.xpress, self.ypress = self.press
+
+        def onRelease(event):
+            self.press = None
+            ax.figure.canvas.draw()
+
+        def onMotion(event):
+            if self.press is None: return
+            if event.inaxes != ax: return
+            dx = event.xdata - self.xpress
+            dy = event.ydata - self.ypress
+            self.cur_xlim -= dx
+            # self.cur_ylim -= dy
+            ax.set_xlim(self.cur_xlim)
+            # ax.set_ylim(self.cur_ylim)
+            ax.figure.canvas.draw()
+
+        def enter_figure(event):
+            event.canvas.figure.patch.set_facecolor('red')
+            event.canvas.draw()
+
+        fig = ax.get_figure()
+        fig.canvas.mpl_connect('button_press_event', onPress)
+        fig.canvas.mpl_connect('button_release_event', onRelease)
+        fig.canvas.mpl_connect('motion_notify_event', onMotion)
+        fig.canvas.mpl_connect('figure_enter_eventasdfasdf', enter_figure)
+        return onMotion
 ###########################################################################
+
+    def event(self, event):
+
+        if event.type() == QEvent.EnterWhatsThisMode:
+            QMessageBox.about(self, 'GUIde to GUI', "         WELCOME TO GUI 2018     \n\n 1-You can use scroll of mouse to zoom & out\n 2-You can use textbox as small console\n 3-If you write '.ETH' you open ETH LIST\n 4-If you write '.BTC' you open BTC list \n 5-If you write '.USDT' you open USDT list \n 6-You can search curreny which you want \n\n\n  More information: bakialmaci@gmail.com ")
+            return True
+
+        return QDialog.event(self, event)
+
     def keyPressEvent(self, e):
+
         if e.key() == Qt.Key_F4:
             self.close()
-        elif e.key() == Qt.Key_F3:
+        elif e.key() == Qt.Key_Enter:
             self.search()
+
+    def sizes(self):
+        mainWindow = self.window()
+        width = mainWindow.frameGeometry().width()
+        height = mainWindow.frameGeometry().height()
+        print(width)
+        print(height)
+
 
     def search(self):
         global a
         global items
         global type1
         global select1
+        self.figure.clear()
         a = str(self.textbox.text())
         print(a.upper())
 
-        if a.upper() == "BTC-O":
+        if a.upper() == ".BTC":
             self.addlistbtc()
-        elif a.upper() == "ETH-O":
+        elif a.upper() == ".ETH":
             self.addlisteth()
-        elif a.upper() == "USDT-O":
+        elif a.upper() == ".USDT":
             self.addlistusdt()
+        elif a.upper() == "EXPAND":
+            self.dialog.show()
 
         items = []
-        s = 0
-        for i in range(self.listWidget.count()):
-            s += 1
-
-        if s == 0:
-            buttonReply = QMessageBox.question(self, 'Beklenen HATA !!!',
-                                               "Bir dahaki sefere Listeyi doldurmadan basmayacağıma söz veriyorum.",
-                                               QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-            if buttonReply == QMessageBox.Yes:
-                self.close()
-                self.open()
-                self.textbox.clear()
-            else:
-                print(" Designed by bakialmaci ")
-                self.close()
 
         for i in range(self.listWidget.count()):
             if a.upper() == self.listWidget.item(i).text() and type1 == "BTC":
@@ -157,6 +211,8 @@ class Window(QDialog):
             print(self.listWidget.item(i).text())
         self.textbox.clear()
 
+
+
     def addlistbtc(self):
         global type1
         eth, btc, usdt = names_eth_btc_usdt()
@@ -167,6 +223,7 @@ class Window(QDialog):
         self.canvas.close_event()
         self.figure.clear()
 
+
     def addlisteth(self):
         global type1
         eth, btc, usdt = names_eth_btc_usdt()
@@ -174,12 +231,12 @@ class Window(QDialog):
         self.listWidget.addItems(eth)
         type1 = "ETH"
         print(type1)
+
         self.canvas.close_event()
         self.figure.clear()
 
     def addlistusdt(self):
         global type1
-        eth, btc, usdt = names_eth_btc_usdt()
         self.listWidget.clear()
         self.listWidget.addItem("ETH")
         self.listWidget.addItem("BTC")
@@ -211,12 +268,28 @@ class Window(QDialog):
         print(select1)
 
         style.use('ggplot')
+
         fig = plt.figure(figsize=(15, 10), dpi=50, num=20)
         ax = fig.add_subplot(1, 1, 1)
+        time, value = current(type1, select1)
+        plt.xticks(rotation=45, size=15)
+        plt.yticks(size=15)
+        plt.gcf().autofmt_xdate()
+        myFmt = mdates.DateFormatter('%H:%M:%S')
+        plt.gca().xaxis.set_major_formatter(myFmt)
+        ax.set_title(type1 + " - " + select1 + " Latest History Chart\nCurrent Price = " + str(value),color = "darkBlue")
+        x, y = history(type1, select1)
+        ax.plot(x, y, color='red')
+        scale = 1.1
+        plt.xlabel("TIME",size = 25,color = "darkBlue")
+        plt.ylabel(select1+"/"+type1,size = 25,color = "darkBlue")
+        plt.text(value, 0, r'$\cos(2 \pi t) \exp(-t)$',size = 50)
+        self.zoom_factory(ax, base_scale=scale)
+        self.pan_factory(ax)
 
         def animate(i):
             time, value = current(type1, select1)
-            plt.xticks(rotation=45, size=10)
+            plt.xticks(rotation=45, size=15)
             plt.gcf().autofmt_xdate()
             myFmt = mdates.DateFormatter('%H:%M:%S')
             plt.gca().xaxis.set_major_formatter(myFmt)
@@ -227,7 +300,7 @@ class Window(QDialog):
             self.zoom_factory(ax, base_scale=scale)
 
 
-        ani = animation.FuncAnimation(self.figure, animate, interval=2000)
+        ani = animation.FuncAnimation(self.figure, animate, interval=20000)
         self.canvas.draw()
 
     def graph_latest2(self):
@@ -239,9 +312,25 @@ class Window(QDialog):
         fig = plt.figure(figsize=(15, 10), dpi=50, num=20)
         ax = fig.add_subplot(1, 1, 1)
 
+        time, value = current(type1, select1)
+        plt.xticks(rotation=45, size=15)
+        plt.yticks(size=15)
+        plt.gcf().autofmt_xdate()
+        myFmt = mdates.DateFormatter('%H:%M:%S')
+        plt.gca().xaxis.set_major_formatter(myFmt)
+        ax.set_title(type1 + " - " + select1 + " Latest History Chart\nCurrent Price = " + str(value))
+        x, y = history(type1, select1)
+        ax.plot(x, y, color='red')
+        scale = 1.1
+        plt.xlabel("TIME",size = 25,color = "darkBlue")
+        plt.ylabel(select1+"/"+type1,size = 25,color = "darkBlue")
+        self.zoom_factory(ax, base_scale=scale)
+        self.pan_factory(ax)
+
         def animate(i):
             time, value = current(type1, select1)
-            plt.xticks(rotation=45, size=10)
+            plt.xticks(rotation=45, size=15)
+            plt.yticks(size=15)
             plt.gcf().autofmt_xdate()
             myFmt = mdates.DateFormatter('%H:%M:%S')
             plt.gca().xaxis.set_major_formatter(myFmt)
@@ -252,7 +341,7 @@ class Window(QDialog):
             self.zoom_factory(ax, base_scale=scale)
 
 
-        ani = animation.FuncAnimation(self.figure, animate, interval=2000)
+        ani = animation.FuncAnimation(self.figure, animate, interval=20000)
         self.canvas.draw()
 
     def graph_usd_x_alltime2(self):
@@ -265,9 +354,24 @@ class Window(QDialog):
             fig = plt.figure(figsize=(15, 10), dpi=50, num=20)
             ax = fig.add_subplot(1, 1, 1)
 
+            time, value = current("USDT", select1)
+            plt.xticks(rotation=45, size=15)
+            plt.yticks(size=15)
+            plt.gcf().autofmt_xdate()
+            myFmt = mdates.DateFormatter('%H:%M:%S')
+            plt.gca().xaxis.set_major_formatter(myFmt)
+            ax.set_title(type1 + " - " + select1 + " Latest History Chart\nCurrent Price = " + str(value))
+            x, y = usd_x_alltime(select1)
+            ax.plot(x, y, color='red')
+            scale = 1.1
+            plt.xlabel("TIME", size=25, color="darkBlue")
+            plt.ylabel(select1 + "/" + type1, size=25, color="darkBlue")
+            self.zoom_factory(ax, base_scale=scale)
+            self.pan_factory(ax)
+
             def animate(i):
                 time, value = current("USDT", select1)
-                plt.xticks(rotation=45, size=10)
+                plt.xticks(rotation=45, size=15)
                 plt.gcf().autofmt_xdate()
                 myFmt = mdates.DateFormatter('%H:%M:%S')
                 plt.gca().xaxis.set_major_formatter(myFmt)
@@ -278,7 +382,7 @@ class Window(QDialog):
                 self.zoom_factory(ax, base_scale=scale)
 
 
-            ani = animation.FuncAnimation(self.figure, animate, interval=1000)
+            ani = animation.FuncAnimation(self.figure, animate, interval=20000)
             self.canvas.draw()
 
     def graph_usd_x_alltime(self):
@@ -286,15 +390,29 @@ class Window(QDialog):
         global select1
         select1 = self.listWidget.currentItem().text()
         print(select1)
-
         if (select1 == "BTC" or select1 == "ETH" or select1 == "ETH"):
             style.use('ggplot')
             fig = plt.figure(figsize=(15, 10), dpi=50, num=20)
             ax = fig.add_subplot(1, 1, 1)
 
+            time, value = current("USDT", select1)
+            plt.xticks(rotation=45, size=15)
+            plt.yticks(size=15)
+            plt.gcf().autofmt_xdate()
+            myFmt = mdates.DateFormatter('%H:%M:%S')
+            plt.gca().xaxis.set_major_formatter(myFmt)
+            ax.set_title(type1 + " - " + select1 + " Latest History Chart\nCurrent Price = " + str(value))
+            x, y = usd_x_alltime(select1)
+            ax.plot(x, y, color='red')
+            scale = 1.1
+            plt.xlabel("TIME", size=25, color="darkBlue")
+            plt.ylabel(select1 + "/" + type1, size=25, color="darkBlue")
+            self.zoom_factory(ax, base_scale=scale)
+            self.pan_factory(ax)
+
             def animate(i):
                 time, value = current("USDT", select1)
-                plt.xticks(rotation=45, size=10)
+                plt.xticks(rotation=45, size=15)
                 plt.gcf().autofmt_xdate()
                 myFmt = mdates.DateFormatter('%H:%M:%S')
                 plt.gca().xaxis.set_major_formatter(myFmt)
@@ -305,7 +423,7 @@ class Window(QDialog):
                 self.zoom_factory(ax, base_scale=scale)
 
 
-            ani = animation.FuncAnimation(self.figure, animate, interval=1000)
+            ani = animation.FuncAnimation(self.figure, animate, interval=20000)
             self.canvas.draw()
 
 app = QApplication(sys.argv)
@@ -313,3 +431,5 @@ main = Window()
 main.setGeometry(450, 300, 1000, 800)
 main.show()
 sys.exit(app.exec_())
+
+
