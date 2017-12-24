@@ -3,7 +3,7 @@ from data import *
 from PyQt5.QtWidgets import QDialog,QApplication, QPushButton, QHBoxLayout, QListWidget, QLineEdit,QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtCore import Qt,QEvent
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon,QColor
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.dates as mdates
@@ -27,17 +27,31 @@ class Window(QDialog):
         p.setColor(self.backgroundRole(), Qt.darkGray)
         self.setPalette(p)
 
+
+
+
         self.setWindowTitle('GUI 2018')
         self.listWidget = QListWidget(self)
+        self.listWidget.setAutoFillBackground(True)
+
 
         self.button = QPushButton('Search and Plot', self)
         self.button.clicked.connect(self.search)
+        self.button.setFlat(False)
+        self.button.setStyleSheet("background-color: darkgray")
+
         self.button2 = QPushButton('BTC', self)
         self.button2.clicked.connect(self.addlistbtc)
+        self.button2.setFlat(False)
+        self.button2.setStyleSheet("background-color:darkgray")
         self.button3 = QPushButton('ETH', self)
         self.button3.clicked.connect(self.addlisteth)
+        self.button3.setFlat(False)
+        self.button3.setStyleSheet("background-color:darkgray")
         self.button4 = QPushButton('USDT', self)
         self.button4.clicked.connect(self.addlistusdt)
+        self.button4.setFlat(False)
+        self.button4.setStyleSheet("background-color:darkgray")
         self.button.move(10, 427)
         self.button.resize(175, 25)
         self.button2.move(10, 455)
@@ -74,8 +88,10 @@ class Window(QDialog):
         graphbox.addStretch()
         graphbox.addWidget(self.canvas)
         self.setLayout(graphbox)
+        self.setStyleSheet("QListWidget{background: darkgray;}")
 
         self.addlistbtc()
+
 
 ###########################################################################
 
@@ -193,8 +209,11 @@ class Window(QDialog):
             self.addlisteth()
         elif a.upper() == ".USDT":
             self.addlistusdt()
-        elif a.upper() == "EXPAND":
-            self.dialog.show()
+        elif a.upper() == "ABOUT":
+            QMessageBox.about(self, 'GUIde to GUI',
+                                      "         WELCOME TO GUI 2018     \n\n 1-You can use scroll of mouse to zoom & out\n 2-You can use textbox as small console\n 3-If you write '.ETH' you open ETH LIST\n 4-If you write '.BTC' you open BTC list \n 5-If you write '.USDT' you open USDT list \n 6-You can search curreny which you want \n\n\n  More information: bakialmaci@gmail.com ")
+            self.textbox.clear()
+
 
         items = []
 
@@ -208,18 +227,21 @@ class Window(QDialog):
             elif a.upper() == self.listWidget.item(i).text() and type1 == "USDT":
                 select1 = a.upper()
                 self.graph_usd_x_alltime2()
-            print(self.listWidget.item(i).text())
+            # print(self.listWidget.item(i).text())
         self.textbox.clear()
 
 
 
     def addlistbtc(self):
         global type1
+
         eth, btc, usdt = names_eth_btc_usdt()
         self.listWidget.clear()
         self.listWidget.addItems(btc)
         type1 = "BTC"
         print(type1)
+
+
         self.canvas.close_event()
         self.figure.clear()
 
@@ -229,6 +251,7 @@ class Window(QDialog):
         eth, btc, usdt = names_eth_btc_usdt()
         self.listWidget.clear()
         self.listWidget.addItems(eth)
+
         type1 = "ETH"
         print(type1)
 
@@ -262,6 +285,8 @@ class Window(QDialog):
 
     def graph_latest(self):
 
+
+
         self.textbox.clear()
         global select1
         select1 = self.listWidget.currentItem().text()
@@ -286,6 +311,7 @@ class Window(QDialog):
         plt.text(value, 0, r'$\cos(2 \pi t) \exp(-t)$',size = 50)
         self.zoom_factory(ax, base_scale=scale)
         self.pan_factory(ax)
+
 
         def animate(i):
             time, value = current(type1, select1)
