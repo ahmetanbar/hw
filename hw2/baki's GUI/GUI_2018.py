@@ -3,7 +3,7 @@ from data import *
 from PyQt5.QtWidgets import QDialog,QApplication, QPushButton, QHBoxLayout, QListWidget, QLineEdit,QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from PyQt5.QtCore import Qt,QEvent
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QIcon,QColor
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.dates as mdates
@@ -32,15 +32,26 @@ class Window(QDialog):
 
         self.setWindowTitle('GUI 2018')
         self.listWidget = QListWidget(self)
+        self.listWidget.setAutoFillBackground(True)
+
 
         self.button = QPushButton('Search and Plot', self)
         self.button.clicked.connect(self.search)
+        self.button.setFlat(False)
+        self.button.setStyleSheet("background-color: darkgray")
+
         self.button2 = QPushButton('BTC', self)
         self.button2.clicked.connect(self.addlistbtc)
+        self.button2.setFlat(False)
+        self.button2.setStyleSheet("background-color:darkgray")
         self.button3 = QPushButton('ETH', self)
         self.button3.clicked.connect(self.addlisteth)
+        self.button3.setFlat(False)
+        self.button3.setStyleSheet("background-color:darkgray")
         self.button4 = QPushButton('USDT', self)
         self.button4.clicked.connect(self.addlistusdt)
+        self.button4.setFlat(False)
+        self.button4.setStyleSheet("background-color:darkgray")
         self.button.move(10, 427)
         self.button.resize(175, 25)
         self.button2.move(10, 455)
@@ -77,8 +88,10 @@ class Window(QDialog):
         graphbox.addStretch()
         graphbox.addWidget(self.canvas)
         self.setLayout(graphbox)
+        self.setStyleSheet("QListWidget{background: darkgray;}")
 
         self.addlistbtc()
+
 
 ###########################################################################
 
@@ -221,11 +234,14 @@ class Window(QDialog):
 
     def addlistbtc(self):
         global type1
+
         eth, btc, usdt = names_eth_btc_usdt()
         self.listWidget.clear()
         self.listWidget.addItems(btc)
         type1 = "BTC"
         print(type1)
+
+
         self.canvas.close_event()
         self.figure.clear()
 
@@ -235,6 +251,7 @@ class Window(QDialog):
         eth, btc, usdt = names_eth_btc_usdt()
         self.listWidget.clear()
         self.listWidget.addItems(eth)
+
         type1 = "ETH"
         print(type1)
 
