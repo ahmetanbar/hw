@@ -1,7 +1,8 @@
 import sys
 from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot, QBasicTimer,QStringListModel
+from PyQt5.QtCore import pyqtSlot, QBasicTimer,QStringListModel,QTimer
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 from matplotlib.figure import Figure
@@ -77,7 +78,8 @@ class MyTableWidget(QWidget):
         self.tab2.layout = QHBoxLayout(self)
         self.layout1 = QHBoxLayout(self)
         self.layout2 = QVBoxLayout(self)
-        self.figure1 = Figure(figsize=(15, 10), dpi=50)
+        self.layout99=QHBoxLayout(self)
+        self.figure1 = Figure(figsize=(20, 20), dpi=60)
         self.canvas1 = FigureCanvas(self.figure1)
         self.toolbar1 = NavigationToolbar(self.canvas1, self)
         self.search1 = QLineEdit(self)
@@ -92,13 +94,22 @@ class MyTableWidget(QWidget):
         self.search1.returnPressed.connect(self.searchitem)
         self.button2 = QPushButton("Search")
         self.button2.clicked.connect(self.searchitem)
+        self.zoombutton1=QPushButton("Zoom")
+        self.zoombutton1.clicked.connect(self.full1)
+        self.unzoombutton1=QPushButton("Unzoom")
+        self.unzoombutton1.clicked.connect(self.unfull1)
+        self.unzoombutton1.setVisible(0)
         self.layout1.addWidget(self.search1)
         self.layout1.addWidget(self.button2)
         self.list1 = QListWidget(self)
         self.list1.itemClicked.connect(self.touchme)
+        self.list1.addItem("KAAN")
         self.layout2.addLayout(self.layout1)
         self.layout2.addWidget(self.canvas1)
-        self.layout2.addWidget(self.toolbar1)
+        self.layout99.addWidget(self.toolbar1)
+        self.layout99.addWidget(self.unzoombutton1)
+        self.layout99.addWidget(self.zoombutton1)
+        self.layout2.addLayout(self.layout99)
         self.tab2.layout.addLayout(self.layout2)
         self.tab2.layout.addWidget(self.list1)
         self.tab2.setLayout(self.tab2.layout)
@@ -108,6 +119,7 @@ class MyTableWidget(QWidget):
         self.tab3.layout = QHBoxLayout(self)
         self.layout3 = QHBoxLayout(self)
         self.layout4 = QVBoxLayout(self)
+        self.layout98=QHBoxLayout(self)
         self.figure2 = Figure(figsize=(15, 10), dpi=50)
         self.canvas2 = FigureCanvas(self.figure2)
         self.toolbar2 = NavigationToolbar(self.canvas2, self)
@@ -123,13 +135,21 @@ class MyTableWidget(QWidget):
         self.search2.returnPressed.connect(self.searchitem2)
         self.button3 = QPushButton("Search")
         self.button3.clicked.connect(self.searchitem2)
+        self.zoombutton2 = QPushButton("Zoom")
+        self.zoombutton2.clicked.connect(self.full2)
+        self.unzoombutton2 = QPushButton("Unzoom")
+        self.unzoombutton2.clicked.connect(self.unfull2)
+        self.unzoombutton2.setVisible(0)
         self.layout3.addWidget(self.search2)
         self.layout3.addWidget(self.button3)
         self.list2 = QListWidget(self)
         self.list2.itemClicked.connect(self.touchme2)
         self.layout4.addLayout(self.layout3)
         self.layout4.addWidget(self.canvas2)
-        self.layout4.addWidget(self.toolbar2)
+        self.layout98.addWidget(self.toolbar2)
+        self.layout98.addWidget(self.unzoombutton2)
+        self.layout98.addWidget(self.zoombutton2)
+        self.layout4.addLayout(self.layout98)
         self.tab3.layout.addLayout(self.layout4)
         self.tab3.layout.addWidget(self.list2)
         self.tab3.setLayout(self.tab3.layout)
@@ -139,6 +159,7 @@ class MyTableWidget(QWidget):
         self.tab4.layout = QHBoxLayout(self)
         self.layout5 = QHBoxLayout(self)
         self.layout6 = QVBoxLayout(self)
+        self.layout97=QHBoxLayout(self)
         self.figure3 = Figure(figsize=(15, 10), dpi=50)
         self.canvas3 = FigureCanvas(self.figure3)
         self.toolbar3 = NavigationToolbar(self.canvas3, self)
@@ -158,6 +179,11 @@ class MyTableWidget(QWidget):
         self.box1.activated[int].connect(self.onActivated)
         self.button4 = QPushButton("Search")
         self.button4.clicked.connect(self.searchitem3)
+        self.zoombutton3 = QPushButton("Zoom")
+        self.zoombutton3.clicked.connect(self.full3)
+        self.unzoombutton3 = QPushButton("Unzoom")
+        self.unzoombutton3.clicked.connect(self.unfull3)
+        self.unzoombutton3.setVisible(0)
         self.layout5.addWidget(self.search3)
         self.layout5.addWidget(self.button4)
         self.layout5.addWidget(self.box1)
@@ -165,7 +191,10 @@ class MyTableWidget(QWidget):
         self.list3.itemClicked.connect(self.touchme3)
         self.layout6.addLayout(self.layout5)
         self.layout6.addWidget(self.canvas3)
-        self.layout6.addWidget(self.toolbar3)
+        self.layout97.addWidget(self.toolbar3)
+        self.layout97.addWidget(self.unzoombutton3)
+        self.layout97.addWidget(self.zoombutton3)
+        self.layout6.addLayout(self.layout97)
         self.tab4.layout.addLayout(self.layout6)
         self.tab4.layout.addWidget(self.list3)
         self.tab4.setLayout(self.tab4.layout)
@@ -223,8 +252,83 @@ class MyTableWidget(QWidget):
         self.setLayout(self.layout)
 
         #################----------------------#FUNCTIONS#-----------------------#####################################
-
-
+    def full1(self):
+        self.list1.setVisible(0)
+        self.button2.setVisible(0)
+        self.search1.setVisible(0)
+        self.toolbar1.setVisible(0)
+        self.zoombutton1.setVisible(0)
+        self.unzoombutton1.setVisible(1)
+        ex.resize(620, 630)
+        ex.setMaximumWidth(1200)
+        ex.setMaximumHeight(1200)
+        ex.setMinimumWidth(630)
+        ex.setMinimumHeight(620)
+    def unfull1(self):
+        self.list1.setVisible(1)
+        self.button2.setVisible(1)
+        self.search1.setVisible(1)
+        self.toolbar1.setVisible(1)
+        self.zoombutton1.setVisible(1)
+        self.unzoombutton1.setVisible(0)
+        ex.resize(600, 610)
+        ex.setMaximumWidth(610)
+        ex.setMaximumHeight(600)
+        ex.setMinimumWidth(610)
+        ex.setMinimumHeight(600)
+        #ex.move(400, 80)
+    def full2(self):
+        self.list2.setVisible(0)
+        self.button3.setVisible(0)
+        self.search2.setVisible(0)
+        self.toolbar2.setVisible(0)
+        self.zoombutton2.setVisible(0)
+        self.unzoombutton2.setVisible(1)
+        ex.resize(620, 630)
+        ex.setMaximumWidth(1200)
+        ex.setMaximumHeight(1200)
+        ex.setMinimumWidth(630)
+        ex.setMinimumHeight(620)
+    def unfull2(self):
+        self.list2.setVisible(1)
+        self.button3.setVisible(1)
+        self.search2.setVisible(1)
+        self.toolbar2.setVisible(1)
+        self.zoombutton2.setVisible(1)
+        self.unzoombutton2.setVisible(0)
+        ex.resize(600, 610)
+        ex.setMaximumWidth(610)
+        ex.setMaximumHeight(600)
+        ex.setMinimumWidth(610)
+        ex.setMinimumHeight(600)
+        #ex.move(400, 80)
+    def full3(self):
+        self.box1.setVisible(0)
+        self.list3.setVisible(0)
+        self.button4.setVisible(0)
+        self.search3.setVisible(0)
+        self.toolbar3.setVisible(0)
+        self.zoombutton3.setVisible(0)
+        self.unzoombutton3.setVisible(1)
+        ex.resize(620, 630)
+        ex.setMaximumWidth(1200)
+        ex.setMaximumHeight(1200)
+        ex.setMinimumWidth(630)
+        ex.setMinimumHeight(620)
+    def unfull3(self):
+        self.box1.setVisible(1)
+        self.list3.setVisible(1)
+        self.button4.setVisible(1)
+        self.search3.setVisible(1)
+        self.toolbar3.setVisible(1)
+        self.zoombutton3.setVisible(1)
+        self.unzoombutton3.setVisible(0)
+        ex.resize(600, 610)
+        ex.setMaximumWidth(610)
+        ex.setMaximumHeight(600)
+        ex.setMinimumWidth(610)
+        ex.setMinimumHeight(600)
+        #ex.move(400, 80)
     def upperer(self):
         search1=self.search1.text()
         self.search1.setText(search1.upper())
@@ -267,9 +371,13 @@ class MyTableWidget(QWidget):
 
     def calculator5(self):
         if (self.calc1.text() != ""):
-            x, y = current(coin2, coin1)
-            y = float(y) * float(self.calc1.text())
-            self.info6.setText(format(y, '.10f'))
+            correct1,x, y = current(coin2, coin1)
+            if correct1==True:
+                y = float(y) * float(self.calc1.text())
+                self.info6.setText(format(y, '.10f'))
+            else:
+                errortitle = "Our services aren't avaible for " + coin1 + " and " + coin2
+                QMessageBox.about(self, 'Service Error', errortitle)
         else:
             self.info6.setText("Please Write Down Some Value")
 
@@ -349,32 +457,37 @@ class MyTableWidget(QWidget):
         style.use('ggplot')
         ax = self.figure1.add_subplot(1, 1, 1)
         type5 = "BTC"
-        time1, value1 = current(type5, type6)
-        title2 = type5 + " - " + type6 + " Latest History Chart\nCurrent Price = " + format(value1, '.10f')
-        ax.set_title(title2)
-        plt.xticks(rotation=90, size=15)
-        plt.yticks(size=15)
-        self.figure1.autofmt_xdate()
-        myFmt = mdates.DateFormatter('%H:%M:%S')
-        ax.xaxis.set_major_formatter(myFmt)
-        x1, y1 = history(type5, type6)
-        ax.plot(x1, y1, color='red')
-        def animate1(i):
-            time1, value1 = current(type5, type6)
-            title2 = type5 + " - " + type6 + " Latest History Chart\nCurrent Price = " + str(value1)
+        correct1,time1, value1 = current(type5, type6)
+        if correct1 ==True:
+            title2 = type5 + " - " + type6 + " Latest History Chart\nCurrent Price = " + format(value1, '.10f')
             ax.set_title(title2)
-            plt.xticks(rotation=90, size=15)
-            plt.yticks(size=15)
+            plt.xticks(rotation=90, fontsize=15)
+            plt.yticks(fontsize=15)
             self.figure1.autofmt_xdate()
             myFmt = mdates.DateFormatter('%H:%M:%S')
             ax.xaxis.set_major_formatter(myFmt)
-            x1, y1 = history(type5, type6)
-            ax.plot(x1, y1, color='red')
-        ani1 = animation.FuncAnimation(self.figure1, animate1, interval=15000)
-        scale = 1.1
-        figZoom = self.zoom_factory(ax, base_scale=scale)
-        figPan = self.pan_factory(ax)
-        self.canvas1.draw()
+            x, y = history(type5, type6)
+            ax.plot(x, y, color='red')
+            def animate1(i):
+                correct1,time1, value1 = current(type5, type6)
+                title2 = type5 + " - " + type6 + " Latest History Chart\nCurrent Price = " + str(value1)
+                ax.set_title(title2)
+                plt.xticks(rotation=90, size=15)
+                plt.yticks(size=15)
+                self.figure1.autofmt_xdate()
+                myFmt = mdates.DateFormatter('%H:%M:%S')
+                ax.xaxis.set_major_formatter(myFmt)
+                x, y = history(type5, type6)
+                ax.plot(x, y, color='red')
+            ani1 = animation.FuncAnimation(self.figure1, animate1, interval=15000)
+            scale = 1.1
+            figZoom = self.zoom_factory(ax, base_scale=scale)
+            figPan = self.pan_factory(ax)
+            self.canvas1.draw()
+        else:
+            errortitle="Our services aren't avaible for "+type6
+            QMessageBox.about(self, 'Service Error',errortitle)
+
     ###############################################-----PLOT2 Sorunsuz-------################################################
 
     def plot2(self):
@@ -383,19 +496,9 @@ class MyTableWidget(QWidget):
         style.use('ggplot')
         ax = self.figure2.add_subplot(1, 1, 1)
         type3 = "ETH"
-        time2, value2 = current(type3, type4)
-        title2 = type3 + " - " + type4 + " Latest History Chart\nCurrent Price = " + format(value2, '.10f')
-        ax.set_title(title2)
-        plt.xticks(rotation=90, size=15)
-        plt.yticks(size=15)
-        self.figure2.autofmt_xdate()
-        myFmt = mdates.DateFormatter('%H:%M:%S')
-        ax.xaxis.set_major_formatter(myFmt)
-        x2, y2 = history(type3, type4)
-        ax.plot(x2, y2, color='red')
-        def animate2(i):
-            time2, value2 = current(type3, type4)
-            title2 = type3 + " - " + type4 + " Latest History Chart\nCurrent Price = " + str(value2)
+        correct1,time2, value2 = current(type3, type4)
+        if correct1 ==True:
+            title2 = type3 + " - " + type4 + " Latest History Chart\nCurrent Price = " + format(value2, '.10f')
             ax.set_title(title2)
             plt.xticks(rotation=90, size=15)
             plt.yticks(size=15)
@@ -403,12 +506,26 @@ class MyTableWidget(QWidget):
             myFmt = mdates.DateFormatter('%H:%M:%S')
             ax.xaxis.set_major_formatter(myFmt)
             x, y = history(type3, type4)
-            ax.plot(x2, y2, color='red')
-        ani = animation.FuncAnimation(self.figure2, animate2, interval=15000)
-        scale = 1.1
-        figZoom = self.zoom_factory(ax, base_scale=scale)
-        figPan = self.pan_factory(ax)
-        self.canvas2.draw()
+            ax.plot(x, y, color='red')
+            def animate2(i):
+                correct1,time2, value2 = current(type3, type4)
+                title2 = type3 + " - " + type4 + " Latest History Chart\nCurrent Price = " + str(value2)
+                ax.set_title(title2)
+                plt.xticks(rotation=90, size=15)
+                plt.yticks(size=15)
+                self.figure2.autofmt_xdate()
+                myFmt = mdates.DateFormatter('%H:%M:%S')
+                ax.xaxis.set_major_formatter(myFmt)
+                x, y = history(type3, type4)
+                ax.plot(x, y, color='red')
+            ani = animation.FuncAnimation(self.figure2, animate2, interval=15000)
+            scale = 1.1
+            figZoom = self.zoom_factory(ax, base_scale=scale)
+            figPan = self.pan_factory(ax)
+            self.canvas2.draw()
+        else:
+            errortitle = "Our services aren't avaible for " + type4
+            QMessageBox.about(self, 'Service Error', errortitle)
 
     def plot3(self):
         style.use('ggplot')
@@ -418,26 +535,30 @@ class MyTableWidget(QWidget):
         if choose1==0:
             type2 = ss3
             type1 = "USDT"
-            time, value = current(type1, type2)
-            title1 = type1 + " - " + type2 + " Latest History Chart\nCurrent Price = " + format(value, '.10f')
-            ax.set_title(title1)
-            self.figure3.autofmt_xdate()
-            myFmt = mdates.DateFormatter('%H:%M:%S')
-            ax.xaxis.set_major_formatter(myFmt)
-            x, y = history(type1, type2)
-            ax.plot(x, y, color='red')
-            def animate(i):
-                time, value = current(type1, type2)
-                title1 = type1 + " - " + type2 + " Latest History Chart\nCurrent Price = " + str(value)
+            correct1,time, value = current(type1, type2)
+            if correct1 ==True:
+                title1 = type1 + " - " + type2 + " Latest History Chart\nCurrent Price = " + format(value, '.10f')
                 ax.set_title(title1)
-                plt.xticks(rotation=90, size=15)
-                plt.yticks(size=15)
                 self.figure3.autofmt_xdate()
                 myFmt = mdates.DateFormatter('%H:%M:%S')
                 ax.xaxis.set_major_formatter(myFmt)
                 x, y = history(type1, type2)
                 ax.plot(x, y, color='red')
-            ani = animation.FuncAnimation(self.figure3, animate, interval=15000)
+                def animate(i):
+                    correct1,time, value = current(type1, type2)
+                    title1 = type1 + " - " + type2 + " Latest History Chart\nCurrent Price = " + str(value)
+                    ax.set_title(title1)
+                    plt.xticks(rotation=90, size=15)
+                    plt.yticks(size=15)
+                    self.figure3.autofmt_xdate()
+                    myFmt = mdates.DateFormatter('%H:%M:%S')
+                    ax.xaxis.set_major_formatter(myFmt)
+                    x, y = history(type1, type2)
+                    ax.plot(x, y, color='red')
+                ani = animation.FuncAnimation(self.figure3, animate, interval=15000)
+            else:
+                errortitle = "Our services aren't avaible for " + type2
+                QMessageBox.about(self, 'Service Error', errortitle)
         else:
             type1 = ss3
             style.use('ggplot')
@@ -450,7 +571,7 @@ class MyTableWidget(QWidget):
             plt.gca().xaxis.set_major_formatter(myFmt)
             x, y = usd_x_alltime(type1)
             ax.plot(x, y, color='red')
-            time, value = current(type2, type1)
+            correct1,time, value = current(type2, type1)
             title = "USD - " + type1 + " All Time History Chart\nCurrent Price = " + format(value, '.10f')
             ax.set_title(title)
         scale = 1.1
@@ -508,9 +629,9 @@ class MyTableWidget(QWidget):
     def zoom_factory(self, ax, base_scale=2.):
         def zoom(event):
             cur_xlim = ax.get_xlim()
-            cur_ylim = ax.get_ylim()
+            #cur_ylim = ax.get_ylim()
             xdata = event.xdata
-            ydata = event.ydata
+            #ydata = event.ydata
             if event.button == 'down':
                 scale_factor = base_scale
             elif event.button == 'up':
@@ -518,11 +639,11 @@ class MyTableWidget(QWidget):
             else:
                 scale_factor = 1
             new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
-            new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
+            #new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
             relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
-            rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
+            #rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
             ax.set_xlim([xdata - new_width * (1 - relx), xdata + new_width * (relx)])
-            ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
+            #ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
             ax.figure.canvas.draw()
 
         fig = ax.get_figure()
@@ -533,9 +654,11 @@ class MyTableWidget(QWidget):
         def onPress(event):
             if event.inaxes != ax: return
             self.cur_xlim = ax.get_xlim()
-            self.cur_ylim = ax.get_ylim()
-            self.press = self.x0, self.y0, event.xdata, event.ydata
-            self.x0, self.y0, self.xpress, self.ypress = self.press
+            #self.cur_ylim = ax.get_ylim()
+            self.press = self.x0,event.xdata,
+            #self.press = self.y0,event.ydata
+            self.x0, self.xpress, = self.press
+            #self.y0,self.ypress =self.press
 
         def onRelease(event):
             self.press = None
@@ -545,22 +668,22 @@ class MyTableWidget(QWidget):
             if self.press is None: return
             if event.inaxes != ax: return
             dx = event.xdata - self.xpress
-            dy = event.ydata - self.ypress
+            #dy = event.ydata - self.ypress
             self.cur_xlim -= dx
-            self.cur_ylim -= dy
+            #self.cur_ylim -= dy
             ax.set_xlim(self.cur_xlim)
-            ax.set_ylim(self.cur_ylim)
+            #ax.set_ylim(self.cur_ylim)
             ax.figure.canvas.draw()
 
         def enter_figure(event):
-            event.canvas.figure.patch.set_facecolor('red')
+            #event.canvas.figure.patch.set_facecolor('red')
             event.canvas.draw()
 
         fig = ax.get_figure()
         fig.canvas.mpl_connect('button_press_event', onPress)
         fig.canvas.mpl_connect('button_release_event', onRelease)
         fig.canvas.mpl_connect('motion_notify_event', onMotion)
-        fig.canvas.mpl_connect('figure_enter_eventasdfasdf', enter_figure)
+        fig.canvas.mpl_connect('figure_enter_event', enter_figure)
         return onMotion
 
     @pyqtSlot()
