@@ -1,13 +1,14 @@
 #!/usr/bin/python
 #--coding:cp1254
-
+from data import *
 import sys
-from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBoxLayout,QListWidget, QLineEdit, QLabel,QMessageBox
+from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBoxLayout,QListWidget, QLineEdit, QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 from PyQt5.QtGui import QIcon,QPixmap
-from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QEvent,Qt
 import matplotlib.dates as mdates
 from matplotlib import style
 import requests
@@ -53,7 +54,6 @@ class Window(QDialog):
 
         self.fig = plt.figure(figsize=(15,10),dpi=50, num=30)
         self.canvas = FigureCanvas(self.fig)
-        self.toolbar = NavigationToolbar(self.canvas, self)
         self.canvas.move(20, 20)
         self.canvas.resize(40, 40)
         style.use('ggplot')
@@ -89,7 +89,6 @@ class Window(QDialog):
         layout.addWidget(self.listWidget)
         layout.addLayout(myobject)
         layout.addWidget(self.canvas)
-        layout.addWidget(self.toolbar)
         self.setLayout(layout)
 
 
@@ -103,28 +102,28 @@ class Window(QDialog):
     def zoom_factory(self, ax, base_scale=2.):
         def zoom(event):
             cur_xlim = ax.get_xlim()
-            cur_ylim = ax.get_ylim()
+            # cur_ylim = ax.get_ylim()
 
             xdata = event.xdata  # get event x location
-            ydata = event.ydata  # get event y location
-            if xdata==None or ydata==None:
+            # ydata = event.ydata  # get event y location
+            if xdata==None:
                 return None
 
             if event.button == 'down':
-                scale_factor = 1 / base_scale
-            elif event.button == 'up':
                 scale_factor = base_scale
+            elif event.button == 'up':
+                scale_factor = 1/base_scale
             else:
                 scale_factor = 1
                 print(event.button)
 
             new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
-            new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
+            # new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
 
             relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
-            rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
+            # rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
             ax.set_xlim([xdata - new_width * (1 - relx), xdata + new_width * (relx)])
-            ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
+            # ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
             ax.figure.canvas.draw()
 
         fig = ax.get_figure()  # get the figure of interest
@@ -170,6 +169,8 @@ class Window(QDialog):
     def touchme(self):
         global ss
         ss= self.listWidget.currentItem().text()
+        self.textbox.clear()
+        self.fig.clear()
         self.plot()
 
     def buttonsee(self,button_id):
@@ -202,15 +203,16 @@ class Window(QDialog):
                           "\n\nThanks for choosing us.")
 
     def plot(self):
+
         global ss
         global choose
-        values = []
-        times = []
-        summaryurl = "https://bittrex.com/api/v1.1/public/getmarkethistory?market="
+        global summaryurl
+
         if (not choose):
             QMessageBox.question(self, 'what the!!!',
                                  "You haven't choose any markets.What are you doing?",
                                  QMessageBox.Ok, QMessageBox.Ok)
+            self.textbox.clear()
             return None
         if ("BTC"==choose):
             if (self.textbox.text() in btcList):
@@ -227,7 +229,6 @@ class Window(QDialog):
             elif not ss:
                 QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list or wrote any item", QMessageBox.Ok, QMessageBox.Ok)
                 return None
-            summaryurl=summaryurl+"BTC-"+ ss
 
         elif ("ETH"==choose):
             if (self.textbox.text() in ethList):
@@ -244,7 +245,6 @@ class Window(QDialog):
             elif not ss:
                 QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list and wrote any item", QMessageBox.Ok, QMessageBox.Ok)
                 return None
-            summaryurl=summaryurl+"ETH-"+ ss
 
         elif ("USDT"==choose):
             if (self.textbox.text() in usdList):
@@ -262,29 +262,42 @@ class Window(QDialog):
             elif not ss:
                 QMessageBox.question(self, 'what the!!!',"Haven't selected item in the list and wrote any item", QMessageBox.Ok, QMessageBox.Ok)
                 return None
-            summaryurl=summaryurl+"USDT-"+ ss
-        self.textbox.setText(editmessage)
-        summary = requests.get(summaryurl)
-        json_summary = summary.json()
 
-        for value in json_summary["result"]:
-            if "BUY" == value["OrderType"]:
-                values.append(float(format(value["Price"], '.8f')))
-                times.append(dateutil.parser.parse(value["TimeStamp"]))
-        self.fig.clear()
-        x, y = times, values
-        ax= self.fig.add_subplot(111)
 
-        plt.xticks(rotation=90, size=15)
+
+        style.use('ggplot')
+
+        # fig = plt.figure(figsize=(15, 10), dpi=50, num=20)
+        ax = self.fig.add_subplot(1, 1, 1)
+        time, value = current(choose, ss)
+        plt.xticks(rotation=45, size=15)
         plt.yticks(size=15)
         plt.gcf().autofmt_xdate()
         myFmt = mdates.DateFormatter('%H:%M:%S')
         plt.gca().xaxis.set_major_formatter(myFmt)
-        ax.set_title("{}/{} Last Price= {:f}".format(choose,ss,json_summary["result"][0]["Price"]))
-        ax.plot(x,y,color='red')
-        scale=1.1
-        self.zoom_factory(ax,base_scale=scale)
+        ax.set_title(choose + " - " + ss + " Latest History Chart\nCurrent Price = " + str(value), color="darkBlue")
+        x, y = history(choose, ss)
+        ax.plot(x, y, color='red')
+        scale = 1.1
+        plt.xlabel("TIME", size=25, color="darkBlue")
+        plt.ylabel(ss + "/" + choose, size=25, color="darkBlue")
+        plt.text(value, 0, r'$\cos(2 \pi t) \exp(-t)$', size=50)
+        self.zoom_factory(ax, base_scale=scale)
         self.pan_factory(ax)
+
+        def animate(i):
+            time, value = current(choose, ss)
+            plt.xticks(rotation=45, size=15)
+            plt.gcf().autofmt_xdate()
+            myFmt = mdates.DateFormatter('%H:%M:%S')
+            plt.gca().xaxis.set_major_formatter(myFmt)
+            ax.set_title(choose + " - " + ss + " Latest History Chart\nCurrent Price = " + str(value))
+            x, y = history(choose, ss)
+            ax.plot(x, y, color='red')
+            scale = 1.1
+            self.zoom_factory(ax, base_scale=scale)
+
+        ani = animation.FuncAnimation(self.fig, animate, interval=10000)
         self.canvas.draw()
 
     def event(self, event):
@@ -338,10 +351,10 @@ class Window(QDialog):
 
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    scale=1.1
-    main = Window()
-    main.setGeometry(450,38,600,800)
-    main.show()
-    sys.exit(app.exec_())
+
+app = QApplication(sys.argv)
+scale=1.1
+main = Window()
+main.setGeometry(450,38,600,800)
+main.show()
+sys.exit(app.exec_())
