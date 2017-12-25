@@ -15,7 +15,11 @@ from matplotlib import style
 eth, btc, usdt = names_eth_btc_usdt()
 usd=["BTC","ETH","ZEC","LTC","XRP","XMR"]
 choose1 = 0
-
+ss1="LTC"
+ss2="DGD"
+ss3="BTC"
+coin1="1.Coin"
+coin2="2.Coin"
 
 class App(QMainWindow):
     def __init__(self):
@@ -79,7 +83,7 @@ class MyTableWidget(QWidget):
         self.layout1 = QHBoxLayout(self)
         self.layout2 = QVBoxLayout(self)
         self.layout99=QHBoxLayout(self)
-        self.figure1 = Figure(figsize=(20, 20), dpi=60)
+        self.figure1 = Figure(figsize=(20, 20), dpi=70)
         self.canvas1 = FigureCanvas(self.figure1)
         self.toolbar1 = NavigationToolbar(self.canvas1, self)
         self.search1 = QLineEdit(self)
@@ -120,7 +124,7 @@ class MyTableWidget(QWidget):
         self.layout3 = QHBoxLayout(self)
         self.layout4 = QVBoxLayout(self)
         self.layout98=QHBoxLayout(self)
-        self.figure2 = Figure(figsize=(15, 10), dpi=50)
+        self.figure2 = Figure(figsize=(15, 10), dpi=70)
         self.canvas2 = FigureCanvas(self.figure2)
         self.toolbar2 = NavigationToolbar(self.canvas2, self)
         self.search2 = QLineEdit(self)
@@ -160,7 +164,7 @@ class MyTableWidget(QWidget):
         self.layout5 = QHBoxLayout(self)
         self.layout6 = QVBoxLayout(self)
         self.layout97=QHBoxLayout(self)
-        self.figure3 = Figure(figsize=(15, 10), dpi=50)
+        self.figure3 = Figure(figsize=(15, 10), dpi=70)
         self.canvas3 = FigureCanvas(self.figure3)
         self.toolbar3 = NavigationToolbar(self.canvas3, self)
         self.search3 = QLineEdit(self)
@@ -220,7 +224,8 @@ class MyTableWidget(QWidget):
         self.layout9.addWidget(self.calc1)
         self.box7 = QComboBox(self)
         self.box7.addItem("1.Coin")
-        self.box7.activated[int].connect(self.calculator3)
+        self.box7.activated[str].connect(self.calculator3)
+        self.box7.setEnabled(0)
         self.layout9.addWidget(self.box7)
         self.info5 = QLabel(" =========== ")
         self.layout9.addWidget(self.info5)
@@ -347,39 +352,45 @@ class MyTableWidget(QWidget):
     def calculator1(self):
         global selected1
         self.box7.clear()
-        self.box7.addItem("Select")
+        self.box7.addItem("1.Coin")
+        self.box7.setEnabled(1)
         self.box7.addItems(btc)
         selected1 = 0
 
     def calculator2(self):
         global selected1
         self.box7.clear()
-        self.box7.addItem("Select")
+        self.box7.setEnabled(1)
+        self.box7.addItem("1.Coin")
         self.box7.addItems(eth)
         selected1 = 1
 
     def calculator3(self, number5):
         global coin1
         if selected1 == 0:
-            if number5 != 0: coin1 = btc[number5 - 1]
+            coin1 = number5
         else:
-            if number5 != 0: coin1 = eth[number5 - 1]
+            coin1 = number5
 
     def calculator4(self, type55):
         global coin2
-        coin2 = type55
+        if type55=="2.Coin":
+            errortitle = "Please Select Coin 2"
+            QMessageBox.about(self, 'Service Error', errortitle)
+        else:
+            coin2 = type55
 
     def calculator5(self):
         if (self.calc1.text() != ""):
             correct1,x, y = current(coin2, coin1)
-            if correct1==True:
+            if correct1==True and (self.calc1.text().isnumeric()==True):
                 y = float(y) * float(self.calc1.text())
                 self.info6.setText(format(y, '.10f'))
             else:
-                errortitle = "Our services aren't avaible for " + coin1 + " and " + coin2
+                errortitle = "We detected some error.\nYou may did like\n1)Selected coin type is wrong\n2)Unselected any coin type\n3)Writed charecter in the value box"
                 QMessageBox.about(self, 'Service Error', errortitle)
         else:
-            self.info6.setText("Please Write Down Some Value")
+            self.calc1.setText("Please Write Down Some Value")
 
     def onActivated(self, number):  ####SORUNSUZ#####
         self.figure3.clear()
