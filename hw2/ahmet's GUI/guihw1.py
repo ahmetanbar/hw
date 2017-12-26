@@ -4,7 +4,7 @@ from data import *
 import sys
 from PyQt5.QtWidgets import QDialog, QApplication, QPushButton, QVBoxLayout,QHBoxLayout,QListWidget, QLineEdit, QMessageBox
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+# from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 from PyQt5.QtGui import QIcon,QPixmap
@@ -54,6 +54,7 @@ class Window(QDialog):
 
         self.fig = plt.figure(figsize=(15,10),dpi=50, num=30)
         self.canvas = FigureCanvas(self.fig)
+        # self.toolbar = NavigationToolbar(self.canvas, self)
         self.canvas.move(20, 20)
         self.canvas.resize(40, 40)
         style.use('ggplot')
@@ -89,11 +90,9 @@ class Window(QDialog):
         layout.addWidget(self.listWidget)
         layout.addLayout(myobject)
         layout.addWidget(self.canvas)
+        # layout.addWidget(self.toolbar)
         self.setLayout(layout)
 
-
-    def printted(self):
-        print("girdim")
 
     def editted(self):
         if self.textbox.text()==editmessage:
@@ -102,15 +101,17 @@ class Window(QDialog):
     def zoom_factory(self, ax, base_scale=2.):
         def zoom(event):
             cur_xlim = ax.get_xlim()
-            # cur_ylim = ax.get_ylim()
+            cur_ylim = ax.get_ylim()
 
             xdata = event.xdata  # get event x location
-            # ydata = event.ydata  # get event y location
+            ydata = event.ydata # get event y location
+
             if xdata==None:
                 return None
 
             if event.button == 'down':
                 scale_factor = base_scale
+
             elif event.button == 'up':
                 scale_factor = 1/base_scale
             else:
@@ -118,12 +119,12 @@ class Window(QDialog):
                 print(event.button)
 
             new_width = (cur_xlim[1] - cur_xlim[0]) * scale_factor
-            # new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
+            new_height = (cur_ylim[1] - cur_ylim[0]) * scale_factor
 
             relx = (cur_xlim[1] - xdata) / (cur_xlim[1] - cur_xlim[0])
-            # rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
+            rely = (cur_ylim[1] - ydata) / (cur_ylim[1] - cur_ylim[0])
             ax.set_xlim([xdata - new_width * (1 - relx), xdata + new_width * (relx)])
-            # ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
+            ax.set_ylim([ydata - new_height * (1 - rely), ydata + new_height * (rely)])
             ax.figure.canvas.draw()
 
         fig = ax.get_figure()  # get the figure of interest
@@ -208,6 +209,8 @@ class Window(QDialog):
         global choose
         global summaryurl
 
+
+
         if (not choose):
             QMessageBox.question(self, 'what the!!!',
                                  "You haven't choose any markets.What are you doing?",
@@ -250,7 +253,6 @@ class Window(QDialog):
             if (self.textbox.text() in usdList):
                 ss=self.textbox.text()
                 self.textbox.clear()
-                print("icerdeyim")
             elif (self.textbox.text().upper() in usdList):
                 ss = self.textbox.text().upper()
                 self.textbox.clear()
@@ -264,18 +266,18 @@ class Window(QDialog):
                 return None
 
 
-
         style.use('ggplot')
 
-        # fig = plt.figure(figsize=(15, 10), dpi=50, num=20)
         ax = self.fig.add_subplot(1, 1, 1)
-        time, value = current(choose, ss)
+        control,time, value = current(choose, ss)
+        if control!=True:
+            return None
         plt.xticks(rotation=45, size=15)
         plt.yticks(size=15)
         plt.gcf().autofmt_xdate()
         myFmt = mdates.DateFormatter('%H:%M:%S')
         plt.gca().xaxis.set_major_formatter(myFmt)
-        ax.set_title(choose + " - " + ss + " Latest History Chart\nCurrent Price = " + str(value), color="darkBlue")
+        ax.set_title(ss + " - " + choose + " Latest History Chart\nCurrent Price = " + str(value), color="darkBlue")
         x, y = history(choose, ss)
         ax.plot(x, y, color='red')
         scale = 1.1
@@ -286,7 +288,9 @@ class Window(QDialog):
         self.pan_factory(ax)
 
         def animate(i):
-            time, value = current(choose, ss)
+            control,time, value = current(choose, ss)
+            if control != True:
+                return None
             plt.xticks(rotation=45, size=15)
             plt.gcf().autofmt_xdate()
             myFmt = mdates.DateFormatter('%H:%M:%S')
@@ -297,8 +301,10 @@ class Window(QDialog):
             scale = 1.1
             self.zoom_factory(ax, base_scale=scale)
 
-        ani = animation.FuncAnimation(self.fig, animate, interval=10000)
+
+        ani = animation.FuncAnimation(self.fig, animate, interval=20000)
         self.canvas.draw()
+        ss = ""
 
     def event(self, event):
         if event.type() == QEvent.EnterWhatsThisMode:
@@ -349,7 +355,18 @@ class Window(QDialog):
         self.listWidget.clear()
         self.listWidget.addItems(usdList)
 
+# Back up the reference to the exceptionhook
+sys._excepthook = sys.excepthook
 
+def my_exception_hook(exctype, value, traceback):
+    # Print the error and traceback
+    print(exctype, value, traceback)
+    # Call the normal Exception hook after
+    sys._excepthook(exctype, value, traceback)
+    sys.exit(1)
+
+# Set the exception hook to our wrapping function
+sys.excepthook = my_exception_hook
 
 
 app = QApplication(sys.argv)
@@ -357,4 +374,8 @@ scale=1.1
 main = Window()
 main.setGeometry(450,38,600,800)
 main.show()
-sys.exit(app.exec_())
+
+try:
+    sys.exit(app.exec_())
+except:
+    print("by by ")
