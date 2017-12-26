@@ -1,8 +1,8 @@
 from tkinter import *
-from tkinter import Tk
 from graph import *
 window = Tk()
-window.title("GUI Interface BETA")
+window.title("BitCoin Analysis - BAK Software Industries")
+window.configure(bg="#fafafa")
 
 window.withdraw()
 window.update_idletasks()  # Update "requested size" from geometry manager
@@ -25,8 +25,8 @@ def select2():
 
 Lb = Listbox(window) #listbox oluşturuldu
 Lb2 = Listbox(window)
-btcname = Label(window,text = "for BTC") #metin oluştruldu
-ethname = Label(window,text = "for ETH")
+btcname = Label(window,text = "for BTC",fg="black",bg="#fafafa") #metin oluştruldu
+ethname = Label(window,text = "for ETH",fg="black",bg="#fafafa")
 
 for j in range(1,15):
     name=names_btc()
@@ -53,13 +53,15 @@ def btc_usd():
     graph_history()  #btc to usd verileri yazdırıldı
 
 search = Entry(window) #arama oluşturuldu
-searchbutton = Button(window, text="Search", command=searching)
+searchbutton = Button(window, text="Search", command=searching,fg="black",bg="#78909c")
 
-button  = Button(window,text = "Show Graph BTC",command = select,fg="red")
-button2 = Button(window,text ="Show Graph ETH",command = select2,fg="blue")
+button  = Button(window,text = "Show Graph BTC",command = select,fg="black",bg="#78909c")
+button2 = Button(window,text ="Show Graph ETH",command = select2,fg="black",bg="#78909c")
 
-btc_usd_button = Button(window,text = "BTC to USD GRAPH",command = btc_usd,fg = "green")
+btc_usd_button = Button(window,text = "BTC to USD GRAPH",command = btc_usd,fg = "black",bg="#78909c")
+jsonkomik =Label(window,text = "JSON JSON BIZI BITIRECEJSON",fg="red",bg="#fafafa")
 
+jsonkomik.pack(side=TOP)
 btc_usd_button.pack(side=BOTTOM) #componentlerın yerleri belirlendi ve onaylandı.
 searchbutton.pack(side=BOTTOM)
 search.pack(side=BOTTOM)
@@ -75,3 +77,4 @@ window.mainloop() #window daima  açık kalmasını sağlıyor bunu yazmassak an
 
 #BTC bazlı 200 tane para birimi var.
 #ETH 58 tane var.
+
