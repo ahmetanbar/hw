@@ -5,8 +5,8 @@ port = 34000 #haberlesme portu
 buf = 1024
 calistir = (host,port)
 
-bagla = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-bagla.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+bagla = socket.socket(socket.AF_INET,socket.SOCK_STREAM) #IPv4 ve TCP kullanimi icin.
+bagla.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
 bagla.bind(calistir)
 bagla.listen(4) #maximum 4 ıstemcıye izin verdim.
 
