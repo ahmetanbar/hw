@@ -11,14 +11,14 @@ bagla.bind(calistir)
 bagla.listen(4) #maximum 4 ıstemcıye izin verdim.
 
 istemci,adres = bagla.accept()
-print ("Baglanti Geldi:",adres[0]) #baglandıgını anladım
+print ("Baglanti Geldi:",adres[0]) #baglandigini anladim
 
 while True:
 	data = istemci.recv(buf)
-	veri = "Ben Sunucu Botuyum. Serverimize hosgeldiniz ben mekan sahibi :)" #karsıda ki her yazdiginda cevap yolluyorum.
+	veri = "Ben Sunucu Botuyum. Serverimize hosgeldiniz ben mekan sahibi :)" #karsidaki ki her yazdiginda cevap yolluyorum.
 	istemci.send(veri.encode())
 
-	if data == "q":    #karsidaki q ile cikis yapıyor
+	if data == "q":    #karsidaki q ile cikis yapiyor
 		break
 	elif len(data) == 0:
 		pass
