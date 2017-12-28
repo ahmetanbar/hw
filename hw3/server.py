@@ -1,30 +1,78 @@
-import socket
+#!/usr/bin/python3
+import socket, sys, threading
 
-host = "159.89.21.124" #server IP
-port = 34000 #connetion port
-buf = 1024
-run = (host,port)
+# Simple chat client that allows multiple connections via threads
 
-connect = socket.socket(socket.AF_INET,socket.SOCK_STREAM) #for IPv4 and TCP using
-connect.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) 
-connect.bind(run)
-connect.listen(4) # I give permision maximum 4 users.
+PORT = 34000  # the port number to run our server on
 
-client,address = connect.accept()
-print ("Connected:",address[0]) #nofication of connection
+class ChatServer(threading.Thread):
 
-while True:
-	data = client.recv(buf)
-	textmessage = "Welcome to code heaven !!!" 
-	client.send(textmessage.encode())
+    def __init__(self, port, host="10.225.162.41"):
+        threading.Thread.__init__(self)
+        self.port = port
+        self.host = host
+        self.server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.users = {}  # current connections
+        try:
+            self.server.bind((self.host, self.port))
+        except socket.error:
+            print('Bind failed %s' % (socket.error))
+            sys.exit()
 
-	if data == "q":    #exit to press q
-		break
-	elif len(data) == 0:
-		pass
-	else:
-		print (data)
+        self.server.listen(10)
+        global descriptors
+        descriptors = [self.server]
+
+    # Not currently used. Ensure sockets are closed on disconnect
+    def exit(self):
+        self.server.close()
+
+    def run_thread(self, conlar, addr):
+        print('Client connected with ' + addr[0] + ':' + str(addr[1]))
+        while True:
+            data = conlar[0].recv(65535)
+            reply = data
+            print(reply.decode("utf-8")) #convert bytes to string
+            conlar[0].sendall(reply)
+        # conn.close()  # Close
+
+    def run(self):
+        global i
+        i = 0
+        # print("PORT: "+str(self.port))
+        # print("HOST: "+str(self.host))
+        print('Waiting for connections on port %s' % (self.port))
+        # We need to run a loop and create a new thread for each connection
+        while True:
+            global conlar
+            conlar=[]
+            conn, addr = self.server.accept()
+            print(addr[0])
+
+            threading.Thread(target=self.run_thread, args=(conn, addr)).start()
+            # print("CONN: "+str(conn))
+            # print("ADDR: "+str(addr))
 
 
-client.close()
-connect.close()
+class ChatClient(object):
+
+    def __init__(self, port, host='localhost'):
+        self.host = host
+        self.port = port
+        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.socket.connect((self.host, port))
+        print(port)
+        print(host)
+
+    def send_message(self, msg):
+        pass
+
+
+server = ChatServer(PORT)
+    # Run the chat server listening on PORT
+server.run()
+
+    # Send a message to the chat server
+
+client = ChatClient(PORT)
+client.send_message("DJ Dikkat")
