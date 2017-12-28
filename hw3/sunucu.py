@@ -1,6 +1,6 @@
 import socket
 
-host = "10.193.14.6" #server IP
+host = "45.55.169.97" #server IP
 port = 34000 #connetion port
 buf = 1024
 run = (host,port)
