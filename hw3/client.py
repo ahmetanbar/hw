@@ -2,24 +2,23 @@
 
 import socket
 
-host = "10.193.14.6"  # fixed server ipsi ile degistirilecek
-port = 34000          # port tanimlandi
+host = "45.55.169.97"  # defining server ip
+port = 34000          #  defining port
 buf = 1024  
-calistir = (host,port)
+work = (host,port)
 
-s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)  #ipv4 turunde ip kullanildigi icin af_inet kullanildi, sock_Stream
-							#  ise iletimimizi TCP kontrollu yaptigimizi gosteriyor
-s.connect(calistir)
+s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)  #representing ipv4 ,representing tcp way
+s.connect(work)
 
 while True:
-	gonder = input(">>")
-	s.send(gonder.encode())
+	text = input(">>")
+	s.send(text.encode())
 	data=s.recv(buf)
 	print(data)
 
 
-	if gonder == "q":
-		print( "Baglanti Kapatildi..")
+	if text == "q":
+		print( "the connection has been terminated.")
 		break
 
 
