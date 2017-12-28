@@ -27,13 +27,13 @@ class ChatServer(threading.Thread):
     def exit(self):
         self.server.close()
 
-    def run_thread(self, conlar, addr):
+    def run_thread(self, conn, addr):
         print('Client connected with ' + addr[0] + ':' + str(addr[1]))
         while True:
-            data = conlar[0].recv(65535)
+            data = conn.recv(65535)
             reply = data
             print(reply.decode("utf-8")) #convert bytes to string
-            conlar[0].sendall(reply)
+            conn.sendall(reply)
         # conn.close()  # Close
 
     def run(self):
@@ -44,8 +44,6 @@ class ChatServer(threading.Thread):
         print('Waiting for connections on port %s' % (self.port))
         # We need to run a loop and create a new thread for each connection
         while True:
-            global conlar
-            conlar=[]
             conn, addr = self.server.accept()
             print(addr[0])
 
@@ -75,4 +73,3 @@ server.run()
     # Send a message to the chat server
 
 client = ChatClient(PORT)
-client.send_message("DJ Dikkat")
