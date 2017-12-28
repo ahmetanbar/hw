@@ -2,7 +2,7 @@
 
 import socket
 
-host = "45.55.169.97"  # defining server ip
+host = "159.89.21.124"  # defining server ip
 port = 34000          #  defining port
 buf = 1024  
 work = (host,port)
