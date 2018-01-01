@@ -1,0 +1,79 @@
+import sys
+from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot, QBasicTimer,QStringListModel,QTimer
+import socket
+import datetime
+from cyrto import cypto,decypto
+file = open("reg.txt",'a')
+users = open("users.txt",'a')
+passwords = open("pass.txt",'a')
+
+#host = "10.225.162.41"  # defining server ip
+host="10.225.183.102"
+port = 34000          #  defining port
+buf = 65535
+work = (host,port)
+s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)  #representing ipv4 ,representing tcp way
+s.connect(work)
+
+
+class App(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        self.height = 200
+        self.width = 500
+        self.setGeometry(500, 250, self.width, self.height)
+        self.setWindowTitle('Crypto Coin Currency Program - Bee Software Industries')
+        self.setMinimumHeight(200)
+        self.setMinimumWidth(500)
+        self.setMaximumHeight(200)
+        self.setMaximumWidth(500)
+        self.table_widget = MyTableWidget(self)
+        self.setCentralWidget(self.table_widget)
+        self.show()
+class MyTableWidget(QWidget):
+    def __init__(self, parent):
+        super(QWidget, self).__init__(parent)
+        self.layout = QVBoxLayout(self)
+        self.layout1=QHBoxLayout(self)
+        # Initialize tab screen
+        self.chat=QTextEdit(self)
+        self.mess=QLineEdit(self)
+        self.button=QPushButton("Gönder")
+        self.button.clicked.connect(self.gonder)
+        self.layout1.addWidget(self.mess)
+        self.layout1.addWidget(self.button)
+        self.layout.addWidget(self.chat)
+        self.layout.addLayout(self.layout1)
+        if self.button.isChecked()!=False:
+            data = s.recv(65535)
+            reply = data.decode("utf-8")
+            reply = reply.split("-:*")
+            self.chat.append(reply)
+            print(reply[0] + " : " + decypto(reply[2], reply[3]) + reply[1])  # convert bytes to string
+
+    def gonder(self):
+        ip = str(socket.gethostname())
+        text=self.mess.text()
+        self.chat.append(text)
+        text, passcode = cypto(text)
+        time = str(datetime.datetime.time(datetime.datetime.now()))[:8]
+        file = open("reg.txt", "a")
+        if len(text) != 0:
+            s.send(ip.encode() + "-:*".encode() + " (".encode() + time.encode() + ") ".encode() + "-:*".encode() + text.encode() + "-:*".encode() + str(passcode).encode())
+            file.write(str(ip) + "--> " + str(text) + " (" + str(time) + ")")
+            file.write('\n')
+            file.flush()
+            file.close()
+            data = s.recv(buf)
+            print(data.decode("utf-8"))
+
+        if text == "q":
+            print("the connection has been terminated.")
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = App()
+    sys.exit(app.exec_())
