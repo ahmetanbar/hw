@@ -1,3 +1,4 @@
+# coding: utf8
 from tkinter import *
 from chat_gui import *
 from chat_client_cli import *

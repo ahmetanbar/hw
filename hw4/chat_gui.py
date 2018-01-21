@@ -1,3 +1,4 @@
+# coding: utf8
 from tkinter import *
 import chat_client as client
 from chat_client import *
