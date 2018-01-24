@@ -110,8 +110,6 @@ class chat_gui(Frame):
             prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+ \
             self.USERNAME+" > "
             self.display(prompt+self.msg.get())
-            print(datetime.now())
-            print(type(datetime.now()))
             client.send_msg(self.SOCKET,self.msg.get())
             self.msg.delete(0,END)
         except(AttributeError):

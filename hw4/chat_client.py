@@ -1,7 +1,6 @@
 # coding: utf8
 from tkinter import *
 from chat_gui import *
-from chat_client_cli import *
 from datetime import datetime
 import socket
 import os
@@ -42,6 +41,7 @@ def recv_msg(gui,socket):
         data = data.decode()
         data = "[" + datetime.now().strftime('%H:%M') + "] " + data
         gui.display("\n"+data)
+
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
             gui.add_user(data.split(" ")[-2])
         if "[*]" in data and "exited" in data:
@@ -52,7 +52,7 @@ def socket_handler(gui,socket):
     try:
         while 1:
             socket_list = [socket]
-            read_sockets, write_sockets, error_sockets = select.select(socket_list , [], [],)
+            read_sockets, write_sockets, error_sockets = select.select(socket_list, [], [], )
 
             for sock in read_sockets:
                 if sock == socket:
@@ -71,9 +71,6 @@ def send_msg(server_socket,msg):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 2 and sys.argv[1] == "-c":
-        cli_chat_client()
-    else:
-        root = Tk()
-        gui_root = chat_gui(master=root)
-        gui_root.mainloop()
+    root = Tk()
+    gui_root = chat_gui(master=root)
+    gui_root.mainloop()
