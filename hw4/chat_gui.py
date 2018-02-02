@@ -213,7 +213,26 @@ class chat_gui(Frame):
 
                     if connection[0] == 1:
 
-                        self.signing()
+                        if self.count % 2 == 1:
+
+                            self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
+                            self.ul_label.pack(side="top")
+                            self.gui_userlist = Listbox(self.Frame1)
+                            self.gui_userlist.pack(side="left", expand=1, fill="both")
+                            self.userlist_scrollbar = Scrollbar(self.Frame1, orient="vertical")
+                            self.userlist_scrollbar.config(command=self.gui_userlist.yview)
+                            self.userlist_scrollbar.pack(side="left", fill="both")
+                            self.gui_userlist.config(yscrollcommand=self.userlist_scrollbar.set)
+
+                            self.jl_label.pack_forget()
+                            self.nu_label.pack_forget()
+                            self.nuser.pack_forget()
+                            self.np_label.pack_forget()
+                            self.npass.pack_forget()
+                            self.nvp_label.pack_forget()
+                            self.nvpass.pack_forget()
+                            self.sgnl_label.pack_forget()
+                            self.signupok.pack_forget()
 
                         self.signup.config(state=DISABLED)
 
@@ -239,6 +258,7 @@ class chat_gui(Frame):
                                     self.add_user(user)
                                 else:
                                     self.display(users[0])
+                                    self.chat.see(END)
                             start_new_thread(client.socket_handler,(self,self.SOCKET))
                         except:
                             pass
