@@ -254,10 +254,8 @@ class chat_gui(Frame):
                             data = self.SOCKET.recv(RECV_BUFR)
                             users = data.decode().split('&')
                             for user in users:
-                                if (user != users[0]):
-                                    self.add_user(user)
-                                else:
-                                    self.display(users[0])
+                                self.add_user(user)
+
                                     # self.chat.see(END)
                             start_new_thread(client.socket_handler,(self,self.SOCKET))
                         except:
