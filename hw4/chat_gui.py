@@ -258,7 +258,7 @@ class chat_gui(Frame):
                                     self.add_user(user)
                                 else:
                                     self.display(users[0])
-                                    self.chat.see(END)
+                                    # self.chat.see(END)
                             start_new_thread(client.socket_handler,(self,self.SOCKET))
                         except:
                             pass
