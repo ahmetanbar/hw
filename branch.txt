@@ -1,0 +1,10 @@
+one
+<<<<<<< HEAD
+two
+five
+six
+=======
+elewen
+ten
+four
+>>>>>>> itsgui
