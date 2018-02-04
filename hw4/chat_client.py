@@ -13,24 +13,46 @@ SOCKET = []
 USERNAME = []
 DEBUG = True
 
-#it run, when click "connect" button
-def connect_to_server(gui,SERVER_IP,SERVER_PORT,username):
+
+def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
     try:
-        #socket_family(AF_UNIX or 
-AF_INET),socket_type(SOCK_STREAM,SOCK_DGRAM)
+        # socket_family(AF_UNIX or AF_INET),socket_type(SOCK_STREAM,SOCK_DGRAM)
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #socket connection start
+        # socket connection start
         clientsocket.connect((SERVER_IP, SERVER_PORT))
-        #username is send
-        clientsocket.send(bytes(username,'UTF-8'))
+        print(gui.count)
+        namepasswd = username + "&" + password
+        clientsocket.send(bytes(str(namepasswd),'UTF-8'))
+        useraccept = clientsocket.recv(RECV_BUFR).decode()
+        if useraccept != "NOT_UNIQUE":
+            return [True]
+        else:
+            return [False]
+    except(ConnectionRefusedError):
+        messagebox.showinfo("Warning", "Server Offline!")
+        gui.chat.see(END)
+        return [-1]
+
+
+
+
+def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
+    try:
+        clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        clientsocket.connect((SERVER_IP, SERVER_PORT))
+        namepasswd = username+"&"+password
+        print(type(namepasswd))
+        clientsocket.send(bytes(namepasswd,'UTF-8'))
 
         useraccept = clientsocket.recv(RECV_BUFR).decode()
-        #username unique or not unique.
-        if useraccept != "NOT_UNIQUE":
+
+        if useraccept== "OK":
+            print("username parola eslesti sohbete girildi")
             SOCKET.append(clientsocket)
-            return [1,clientsocket]
+            return [True,clientsocket]
         else:
-            return [0,clientsocket]
+            messagebox.showinfo("Warning", "Your username or password wrong!")
+            return [False,clientsocket]
 
     except(ConnectionRefusedError):
         gui.display("\nServer offline.\n")
@@ -47,8 +69,7 @@ def recv_msg(gui,socket):
         data = "[" + datetime.now().strftime('%H:%M') + "] " + data
         gui.display("\n" + data)
 
-        if "[*]" in data and "entered" in data and len(data.strip()) >= 
-1:
+        if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
             gui.add_user(data.split(" ")[-2])
         if "[*]" in data and "exited" in data:
             gui.remove_user(data.split(" ")[-2])
@@ -59,8 +80,7 @@ def socket_handler(gui,socket):
     try:
         while 1:
             socket_list = [socket]
-            read_sockets, write_sockets, error_sockets = 
-select.select(socket_list, [], [], )
+            read_sockets, write_sockets, error_sockets = select.select(socket_list, [], [], )
 
             for sock in read_sockets:
                 if sock == socket:
