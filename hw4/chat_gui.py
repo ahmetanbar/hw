@@ -143,7 +143,7 @@ class chat_gui(Frame):
                 if len(joins[1])>5:
                     if joins[0].isalnum():
                         print("hata yok")
-                        # connection = client.connect_to_server(self, self.server.get(), \
+                        # connection = client.connect_for_signup(self, self.server.get(), \
                         # int(self.port.get()), self.user.get(), self.pw.get())
                         # if connection:
                         messagebox.showinfo("CONGRATULATIONS", "Your registration has been completed succesfully.")
