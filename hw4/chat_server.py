@@ -6,6 +6,10 @@ import socket
 import select
 from datetime import datetime
 from datetime import timedelta
+import sqlite3
+
+conn = sqlite3.connect("users.db")
+cursor = conn.cursor()
 
 HOST = "45.55.169.97"
 SOCKET_LIST = {}
@@ -21,14 +25,14 @@ def chat_server():
 
     SOCKET_LIST['Host'] = server_socket
 
-    print("****************************CHAT RUNNİNG***********************")
+
+    print("*********CHAT RUNNİNG********")
     print("\nadmin>")
     while 1:
         try:
             all_sockets = get_all_sockets()
             ready_to_read,ready_to_write,in_error = \
             select.select(all_sockets,[],[],0)
-
             for sock in ready_to_read:
 
                 if sock == server_socket:
@@ -86,27 +90,62 @@ def send_msg_to_all(server_socket, senders_socket,senders_username, message):
 
 
 def add_user(server_socket):
+
+
+
     new_sock, new_addr = server_socket.accept()
     print(type(new_sock))
     print(new_sock)
-    username = new_sock.recv(RECV_BUFR).decode().rstrip()
+    joindata = new_sock.recv(RECV_BUFR).decode().rstrip()
     new_sock.settimeout(30)
-    if username not in SOCKET_LIST and username.strip() != "":
-        SOCKET_LIST[username] = new_sock
-        new_sock.send(bytes("OK",'UTF-8'))
-        all_users = ''
-        for user,socket in SOCKET_LIST.items():
-            all_users += "&"+user
-        new_sock.send(bytes(all_users,'UTF-8'))
-        mesg = "[*]"+username+ " entered."
-        print("\n"+mesg)
-        print_all_users()
-        send_msg_to_all(server_socket,new_sock,username,mesg)
+    namepasswd=joindata.split('&')
+
+
+    username=namepasswd[0]
+    password=namepasswd[1]
+
+    cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
+    # username baki olanlar dondu.
+    data = cursor.fetchall()
+    # print(type(data)) #liste seklinde.
+    print(data)
+
+    if len(data) >0:
+        print("kullanici find")
+        if data[0][1] == password:
+            print("AMCIK")
+            SOCKET_LIST[username] = new_sock
+            new_sock.send(bytes("OK", 'UTF-8'))
+            all_users = ''
+            for user, socket in SOCKET_LIST.items():
+                all_users += "&" + user
+            new_sock.send(bytes(all_users, 'UTF-8'))
+            mesg = "[*]" + username + " entered."
+            print("\n" + mesg)
+            print_all_users()
+            send_msg_to_all(server_socket, new_sock, username, mesg)
     else:
-        print(username+" "+str(new_addr)+" failed to connect.")
-        new_sock.send(bytes("NOT_UNIQUE",'UTF-8'))
+        print(username + " " + str(new_addr) + " failed to connect.")
+        new_sock.send(bytes("NOT_UNIQUE", 'UTF-8'))
         new_sock.close()
         print("admin>")
+
+    # if username not in SOCKET_LIST and username.strip() != "":
+    #     SOCKET_LIST[username] = new_sock
+    #     new_sock.send(bytes("OK",'UTF-8'))
+    #     all_users = ''
+    #     for user,socket in SOCKET_LIST.items():
+    #         all_users += "&"+user
+    #     new_sock.send(bytes(all_users,'UTF-8'))
+    #     mesg = "[*]"+username+ " entered."
+    #     print("\n"+mesg)
+    #     print_all_users()
+    #     send_msg_to_all(server_socket,new_sock,username,mesg)
+    # else:
+    #     print(username+" "+str(new_addr)+" failed to connect.")
+    #     new_sock.send(bytes("NOT_UNIQUE",'UTF-8'))
+    #     new_sock.close()
+    #     print("admin>")
 
 def remove_user(username, kicked = False):
     try:
