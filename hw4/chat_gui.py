@@ -151,6 +151,8 @@ class chat_gui(Frame):
 
                         if connection:
                             messagebox.showinfo("CONGRATULATIONS", "Your registration has been completed succesfully.")
+
+                            self.signing()
                         else:
                             messagebox.showinfo("Warning", "The username is already used.")
                     else:
