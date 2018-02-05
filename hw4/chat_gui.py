@@ -249,24 +249,14 @@ class chat_gui(Frame):
             self.signup.config(state=NORMAL)
 
     def disconnect(self):
-        try:
-            self.chat.config(state = NORMAL)
-            self.chat.delete(1.0,END)
-            self.chat.config(state=DISABLED)
-            self.SOCKET.shutdown(1)
-            self.SOCKET = None
-            self.gui_userlist.delete(0,END)
-            self.IS_CONNECTED = False
-            self.connect.config(text="Connect")
-        except AttributeError:
-            self.chat.config(state = NORMAL)
-            self.chat.delete(1.0,END)
-            self.chat.config(state=DISABLED)
-            self.SOCKET.shutdown(1)
-            self.SOCKET = None
-            self.gui_userlist.delete(0,END)
-            self.IS_CONNECTED = False
-            self.connect.config(text="Connect")
+        self.chat.config(state = NORMAL)
+        self.chat.delete(1.0,END)
+        self.chat.config(state=DISABLED)
+        self.SOCKET.shutdown(1)
+        self.SOCKET = None
+        self.gui_userlist.delete(0,END)
+        self.IS_CONNECTED = False
+        self.connect.config(text="Connect")
 
 
     def send_msg(self, event):
