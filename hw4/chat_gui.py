@@ -5,6 +5,7 @@ from chat_client import *
 from _thread import start_new_thread
 
 class chat_gui(Frame):
+
     def __init__(self, master=None):
         self.USERS_CONNECTED = []
         self.IS_CONNECTED = False
@@ -25,9 +26,11 @@ class chat_gui(Frame):
         self.Frame4 = Frame(master)
         self.Frame4.grid(row=5, column=1, rowspan=1, columnspan=3, \
                          sticky=W + E + N + S)
+
         self.initialize()
 
     def initialize(self):
+
         self.count=0
         self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
         self.ul_label.pack(side="top")
@@ -37,6 +40,7 @@ class chat_gui(Frame):
         self.userlist_scrollbar.config(command=self.gui_userlist.yview)
         self.userlist_scrollbar.pack(side="left", fill="both")
         self.gui_userlist.config(yscrollcommand=self.userlist_scrollbar.set)
+
         # set up connection part
         self.s_label = Label(self.Frame2, text="Server_IP")
         self.p_label = Label(self.Frame2, text="Server_Port")
@@ -51,45 +55,60 @@ class chat_gui(Frame):
         self.user = Entry(self.Frame2)
         self.pw = Entry(self.Frame2, show="*")
         self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green")
+
         self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue")
         self.s_label.grid(row=0, column=0)
         self.p_label.grid(row=1, column=0)
         self.u_label.grid(row=2, column=0)
         self.pw_label.grid(row=3, column=0)
+
         self.server.grid(row=0, column=1, columnspan=2)
         self.port.grid(row=1, column=1, columnspan=2)
         self.user.grid(row=2, column=1, columnspan=2)
         self.pw.grid(row=3, column=1, columnspan=2)
         self.connect.grid(row=4, column=2)
         self.signup.grid(row=4, column=0)
+
         self.chat = Text(self.Frame3)
         self.chat.pack(side="left", expand=1, fill="both")
+
+
         self.chat_scrollbar = Scrollbar(self.Frame3, orient="vertical")
         self.chat_scrollbar.config(command=self.chat.yview)
         self.chat_scrollbar.pack(side="left", fill="both")
         self.chat.config(yscrollcommand=self.chat_scrollbar.set)
+
         self.msg = Entry(self.Frame4)
         self.msg.bind("<Return>", self.send_msg)
         self.msg.pack(side="left", expand=1, fill="both")
         self.msg.config(state=DISABLED)
         self.chat.config(state=DISABLED)
 
+
     def signing(self):
+
         self.count = self.count + 1
+
         if self.count % 2 == 1:
             self.gui_userlist.pack_forget()
             self.ul_label.pack_forget()
             self.userlist_scrollbar.pack_forget()
             self.jl_label = Label(self.Frame1, text="JOIN US !", foreground="blue")
+
             self.jl_label.pack(side="top")
+
             self.nu_label = Label(self.Frame1, text="Username")
             self.nuser = Entry(self.Frame1)
+
             self.np_label = Label(self.Frame1, text="Password")
             self.npass = Entry(self.Frame1, show="*")
+
             self.nvp_label = Label(self.Frame1, text="Password Verify")
             self.nvpass = Entry(self.Frame1, show="*")
+
             self.sgnl_label = Label(self.Frame1, text="----------")
             self.signupok = Button(self.Frame1, text="JOIN", foreground="green", command=self.save)
+
             self.nu_label.pack(side="top")
             self.nuser.pack(side="top")
             self.np_label.pack(side="top")
@@ -107,6 +126,7 @@ class chat_gui(Frame):
             self.userlist_scrollbar.config(command=self.gui_userlist.yview)
             self.userlist_scrollbar.pack(side="left", fill="both")
             self.gui_userlist.config(yscrollcommand=self.userlist_scrollbar.set)
+
             self.jl_label.pack_forget()
             self.nu_label.pack_forget()
             self.nuser.pack_forget()
@@ -119,14 +139,19 @@ class chat_gui(Frame):
 
     def save(self):
         joins=[self.nuser.get(),self.npass.get(),self.nvpass.get()]
+
         if joins[0] and joins[1] and joins[2]:
             if joins[1]==joins[2]:
                 if len(joins[1])>5:
                     if joins[0].isalnum():
+
+
                         connection=client.connect_for_signup(self, self.server.get(), \
                         int(self.port.get()), self.nuser.get(), self.npass.get())
+
                         if connection:
                             messagebox.showinfo("CONGRATULATIONS", "Your registration has been completed succesfully.")
+
                             self.signing()
                         else:
                             messagebox.showinfo("Warning", "The username is already used.")
@@ -158,6 +183,7 @@ class chat_gui(Frame):
                     self.userlist_scrollbar.config(command=self.gui_userlist.yview)
                     self.userlist_scrollbar.pack(side="left", fill="both")
                     self.gui_userlist.config(yscrollcommand=self.userlist_scrollbar.set)
+
                     self.jl_label.pack_forget()
                     self.nu_label.pack_forget()
                     self.nuser.pack_forget()
@@ -183,8 +209,15 @@ class chat_gui(Frame):
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
                 try:
+                    #server send alluser with &
+                    # data = self.SOCKET.recv(RECV_BUFR)
+                    # users = data.decode().split('&')
+                    temp = ''
                     i=0
+
+                    # ahmet=temp.split('&')
                     temp=''
+
                     while True:
                         data = self.SOCKET.recv(1024)
                         users = data.decode()
@@ -192,7 +225,9 @@ class chat_gui(Frame):
                         if (users[-5:]=="#True"):
                             break
                     temp = temp.split('&')
+
                     temp=temp[:-1]
+
                     for user in temp:
                         if(user!=temp[0] and user!="True"):
                             self.add_user(user)
@@ -226,6 +261,7 @@ class chat_gui(Frame):
         self.IS_CONNECTED = False
         self.connect.config(text="Connect")
 
+
     def send_msg(self, event):
         try:
             prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+ \
@@ -253,5 +289,6 @@ class chat_gui(Frame):
         self.chat.insert(END,msg)
         self.chat.tag_configure(msg, foreground="")
         self.chat.configure(state='disabled')
+
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
             self.disconnect()
