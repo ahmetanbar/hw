@@ -18,10 +18,10 @@ def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
         # socket_family(AF_UNIX or AF_INET),socket_type(SOCK_STREAM,SOCK_DGRAM)
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # socket connection start
-        password=hashlib.sha224().update(password.encode("UTF-8"))
-        print(password)
+        h = hashlib.sha512()
+        h.update(password.encode("utf8"))
+        password = h.hexdigest()
         clientsocket.connect((SERVER_IP, SERVER_PORT))
-        print(gui.count)
         print(username + password)
         namepasswd = username + "&" + password + "&" + "0"
         clientsocket.send(bytes(str(namepasswd),'UTF-8'))
@@ -46,6 +46,7 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         h.update(password.encode("utf8"))
         password=h.hexdigest()
         namepasswd = username+"&"+password+"&"+"1"
+        print(namepasswd)
         clientsocket.send(bytes(namepasswd,'UTF-8'))
 
         useraccept = clientsocket.recv(RECV_BUFR).decode()

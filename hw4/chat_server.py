@@ -99,14 +99,15 @@ def add_user(server_socket):
     print(new_sock)
     joindata = new_sock.recv(RECV_BUFR).decode().rstrip()
     new_sock.settimeout(30)
-    password=joindata
     namepasswd=joindata.split('&')
     username=namepasswd[0]
+    password=namepasswd[0]+namepasswd[1]
     if namepasswd[2]=="1":
         print("Giriş")
         h = hashlib.sha512()
         h.update(password.encode("utf8"))
         password = h.hexdigest()
+        print(password)
         cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
         # username baki olanlar dondu.
         data = cursor.fetchall()
@@ -141,7 +142,10 @@ def add_user(server_socket):
         # print(type(data)) #liste seklinde.
         print(data)
         if not(len(data) > 0):
-            cursor.execute("INSERT INTO users VALUES ('%s','&s')")%(username,password)
+            print(username)
+            print(password)
+            cursor.execute("Insert into users Values(?,?)", (username, password))
+            #cursor.execute("INSERT INTO users VALUES ('%s','&s')"%(username,password))
             conn.commit()
         else:
             print(username + " " + str(new_addr) + " is already used.")
