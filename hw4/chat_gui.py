@@ -55,6 +55,7 @@ class chat_gui(Frame):
         self.user = Entry(self.Frame2)
         self.pw = Entry(self.Frame2, show="*")
         self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green")
+
         self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue")
         self.s_label.grid(row=0, column=0)
         self.p_label.grid(row=1, column=0)
@@ -71,6 +72,7 @@ class chat_gui(Frame):
         self.chat = Text(self.Frame3)
         self.chat.pack(side="left", expand=1, fill="both")
 
+
         self.chat_scrollbar = Scrollbar(self.Frame3, orient="vertical")
         self.chat_scrollbar.config(command=self.chat.yview)
         self.chat_scrollbar.pack(side="left", fill="both")
@@ -81,6 +83,7 @@ class chat_gui(Frame):
         self.msg.pack(side="left", expand=1, fill="both")
         self.msg.config(state=DISABLED)
         self.chat.config(state=DISABLED)
+
 
     def signing(self):
 
@@ -188,6 +191,9 @@ class chat_gui(Frame):
                     self.nvpass.pack_forget()
                     self.sgnl_label.pack_forget()
                     self.signupok.pack_forget()
+                self.chat.config(state=NORMAL)
+                self.chat.delete(1.0, END)
+                self.chat.config(state=DISABLED)
                 self.signup.config(state=DISABLED)
                 self.IS_CONNECTED = True
                 self.connect.config(text="Disconnect")
@@ -229,11 +235,25 @@ class chat_gui(Frame):
             self.signup.config(state=NORMAL)
 
     def disconnect(self):
-        self.SOCKET.shutdown(1)
-        self.SOCKET = None
-        self.gui_userlist.delete(0,END)
-        self.IS_CONNECTED = False
-        self.connect.config(text="Connect")
+        try:
+            self.chat.config(state = NORMAL)
+            self.chat.delete(1.0,END)
+            self.chat.config(state=DISABLED)
+            self.SOCKET.shutdown(1)
+            self.SOCKET = None
+            self.gui_userlist.delete(0,END)
+            self.IS_CONNECTED = False
+            self.connect.config(text="Connect")
+        except AttributeError:
+            self.chat.config(state = NORMAL)
+            self.chat.delete(1.0,END)
+            self.chat.config(state=DISABLED)
+            self.SOCKET.shutdown(1)
+            self.SOCKET = None
+            self.gui_userlist.delete(0,END)
+            self.IS_CONNECTED = False
+            self.connect.config(text="Connect")
+
 
     def send_msg(self, event):
         try:
