@@ -208,15 +208,29 @@ class chat_gui(Frame):
                 self.chat.config(state=NORMAL)
                 try:
                     #server send alluser with &
-                    data = self.SOCKET.recv(RECV_BUFR)
-                    users = data.decode().split('&')
+                    # data = self.SOCKET.recv(RECV_BUFR)
+                    # users = data.decode().split('&')
+                    temp = ''
+                    i=0
 
-                    print(users)
-                    for user in users:
-                        if(user!=users[0]):
+                    # ahmet=temp.split('&')
+                    temp=''
+
+                    while True:
+                        data = self.SOCKET.recv(1024)
+                        users = data.decode()
+                        temp=temp+users
+                        if (users[-5:]=="#True"):
+                            break
+                    temp = temp.split('&')
+                    print(temp)
+                    temp=temp[:-1]
+                    print(temp)
+                    for user in temp:
+                        if(user!=temp[0] and user!="True"):
                             self.add_user(user)
-                        else:
-                            self.display(users[0])
+                        elif user!=True:
+                            self.display(temp[0])
 
                     start_new_thread(client.socket_handler,(self,self.SOCKET))
                 except:
