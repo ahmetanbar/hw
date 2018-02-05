@@ -204,6 +204,8 @@ class chat_gui(Frame):
                     #server send alluser with &
                     data = self.SOCKET.recv(RECV_BUFR)
                     users = data.decode().split('&')
+
+                    print(users)
                     for user in users:
                         if(user!=users[0]):
                             self.add_user(user)
