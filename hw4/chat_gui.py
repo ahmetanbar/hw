@@ -267,6 +267,7 @@ class chat_gui(Frame):
             self.display(prompt+self.msg.get())
             client.send_msg(self.SOCKET,self.msg.get())
             self.msg.delete(0,END)
+            self.chat.see(END)
         except(AttributeError):
             self.display("\nNo connection.\n")
 
