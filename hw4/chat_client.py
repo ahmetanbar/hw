@@ -21,13 +21,13 @@ def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
         h = hashlib.sha512()
         h.update(password.encode("utf8"))
         password = h.hexdigest()
-        print(password)
+        # print(password)
         clientsocket.connect((SERVER_IP, SERVER_PORT))
         namepasswd = username + "&" + password + "&" + "0"
-        print(namepasswd)
+        # print(namepasswd)
         clientsocket.send(bytes(str(namepasswd),'UTF-8'))
         useraccept = clientsocket.recv(RECV_BUFR).decode()
-        print(useraccept)
+        # print(useraccept)
         if useraccept != "NOT_UNIQUE":
             return True
         else:
@@ -53,7 +53,7 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         useraccept = clientsocket.recv(RECV_BUFR).decode()
 
         if useraccept== "OK":
-            print("username parola eslesti sohbete girildi")
+            # print("username parola eslesti sohbete girildi")
             SOCKET.append(clientsocket)
             return [True,clientsocket]
         else:
@@ -93,7 +93,7 @@ def socket_handler(gui,socket):
                     recv_msg(gui,sock)
 
     except(KeyboardInterrupt):
-        print("Program terminated.")
+        # print("Program terminated.")
         sys.exit()
 
     except:

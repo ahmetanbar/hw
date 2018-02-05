@@ -144,11 +144,11 @@ class chat_gui(Frame):
             if joins[1]==joins[2]:
                 if len(joins[1])>5:
                     if joins[0].isalnum():
-                        print("hata yok")
+
 
                         connection=client.connect_for_signup(self, self.server.get(), \
                         int(self.port.get()), self.nuser.get(), self.npass.get())
-                        print(connection)
+
                         if connection:
                             messagebox.showinfo("CONGRATULATIONS", "Your registration has been completed succesfully.")
                         else:
@@ -223,9 +223,9 @@ class chat_gui(Frame):
                         if (users[-5:]=="#True"):
                             break
                     temp = temp.split('&')
-                    print(temp)
+
                     temp=temp[:-1]
-                    print(temp)
+
                     for user in temp:
                         if(user!=temp[0] and user!="True"):
                             self.add_user(user)
@@ -233,6 +233,7 @@ class chat_gui(Frame):
                             self.display(temp[0])
 
                     start_new_thread(client.socket_handler,(self,self.SOCKET))
+                    self.chat.see(END)
                 except:
                     pass
 
