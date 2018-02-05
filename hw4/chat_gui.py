@@ -142,8 +142,14 @@ class chat_gui(Frame):
                 if len(joins[1])>5:
                     if joins[0].isalnum():
                         print("hata yok")
-                        client.connect_for_signup(self, self.server.get(), \
+
+                        connection=client.connect_for_signup(self, self.server.get(), \
                         int(self.port.get()), self.nuser.get(), self.npass.get())
+                        print(connection)
+                        if connection:
+                            messagebox.showinfo("CONGRATULATIONS", "Your registration has been completed succesfully.")
+                        else:
+                            messagebox.showinfo("Warning", "The username is already used.")
                     else:
                         messagebox.showinfo("Warning", "Please use only alphanumeric character as username")
                 else:

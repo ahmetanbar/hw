@@ -21,15 +21,17 @@ def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
         h = hashlib.sha512()
         h.update(password.encode("utf8"))
         password = h.hexdigest()
+        print(password)
         clientsocket.connect((SERVER_IP, SERVER_PORT))
-        print(username + password)
         namepasswd = username + "&" + password + "&" + "0"
+        print(namepasswd)
         clientsocket.send(bytes(str(namepasswd),'UTF-8'))
         useraccept = clientsocket.recv(RECV_BUFR).decode()
+        print(useraccept)
         if useraccept != "NOT_UNIQUE":
-            return [True]
+            return True
         else:
-            return [False]
+            return False
     except(ConnectionRefusedError):
         messagebox.showinfo("Warning", "Server Offline!")
         gui.chat.see(END)
@@ -46,7 +48,6 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         h.update(password.encode("utf8"))
         password=h.hexdigest()
         namepasswd = username+"&"+password+"&"+"1"
-        print(namepasswd)
         clientsocket.send(bytes(namepasswd,'UTF-8'))
 
         useraccept = clientsocket.recv(RECV_BUFR).decode()
