@@ -5,11 +5,11 @@ import socket
 import os
 import sys
 import select
-
+import hashlib
 RECV_BUFR = 16384
 USERS_CONNECTED = []
 SOCKET = []
-USERNAME = []
+username = []
 DEBUG = True
 
 
@@ -18,9 +18,12 @@ def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
         # socket_family(AF_UNIX or AF_INET),socket_type(SOCK_STREAM,SOCK_DGRAM)
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # socket connection start
+        password=hashlib.sha224().update(password.encode("UTF-8"))
+        print(password)
         clientsocket.connect((SERVER_IP, SERVER_PORT))
         print(gui.count)
-        namepasswd = username + "&" + password
+        print(username + password)
+        namepasswd = username + "&" + password + "&" + "0"
         clientsocket.send(bytes(str(namepasswd),'UTF-8'))
         useraccept = clientsocket.recv(RECV_BUFR).decode()
         if useraccept != "NOT_UNIQUE":
@@ -39,8 +42,10 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
     try:
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         clientsocket.connect((SERVER_IP, SERVER_PORT))
-        namepasswd = username+"&"+password
-        print(type(namepasswd))
+        h = hashlib.sha512()
+        h.update(password.encode("utf8"))
+        password=h.hexdigest()
+        namepasswd = username+"&"+password+"&"+"1"
         clientsocket.send(bytes(namepasswd,'UTF-8'))
 
         useraccept = clientsocket.recv(RECV_BUFR).decode()
@@ -103,7 +108,10 @@ def on_closing():
             sys.exit()
     except AttributeError:
         sys.exit()
-
+def hashing(pw,salt):
+    pw_bytes = pw.encode('utf-8')
+    salt_bytes = salt.encode('utf-8')
+    return hashlib.sha256(pw_bytes + salt_bytes).hexdigest() + "," + salt
 if __name__ == "__main__":
     root = Tk()
     root.minsize(width=850, height=410)

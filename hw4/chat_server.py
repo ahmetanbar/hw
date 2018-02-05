@@ -7,6 +7,7 @@ import select
 from datetime import datetime
 from datetime import timedelta
 import sqlite3
+import hashlib
 
 conn = sqlite3.connect("users.db")
 cursor = conn.cursor()
@@ -98,37 +99,56 @@ def add_user(server_socket):
     print(new_sock)
     joindata = new_sock.recv(RECV_BUFR).decode().rstrip()
     new_sock.settimeout(30)
+    password=joindata
     namepasswd=joindata.split('&')
-
-
     username=namepasswd[0]
-    password=namepasswd[1]
+    if namepasswd[2]=="1":
+        print("Giriş")
+        h = hashlib.sha512()
+        h.update(password.encode("utf8"))
+        password = h.hexdigest()
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
+        # username baki olanlar dondu.
+        data = cursor.fetchall()
+        # print(type(data)) #liste seklinde.
+        print(data)
 
-    cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
-    # username baki olanlar dondu.
-    data = cursor.fetchall()
-    # print(type(data)) #liste seklinde.
-    print(data)
+        if len(data) > 0:
+            if data[0][1] == password:
+                SOCKET_LIST[username] = new_sock
+                new_sock.send(bytes("OK", 'UTF-8'))
+                all_users = ''
+                for user, socket in SOCKET_LIST.items():
+                    all_users += "&" + user
+                new_sock.send(bytes(all_users, 'UTF-8'))
+                mesg = "[*]" + username + " entered."
+                print("\n" + mesg)
+                print_all_users()
+                send_msg_to_all(server_socket, new_sock, username, mesg)
+        else:
+            print(username + " " + str(new_addr) + " failed to connect.")
+            new_sock.send(bytes("NOT_UNIQUE", 'UTF-8'))
+            new_sock.close()
+            print("admin>")
+    elif namepasswd[2]=="0":
+        print("KAYIT")
+        h = hashlib.sha512()
+        h.update(password.encode("utf8"))
+        password = h.hexdigest()
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
+        # username baki olanlar dondu.
+        data = cursor.fetchall()
+        # print(type(data)) #liste seklinde.
+        print(data)
+        if not(len(data) > 0):
+            cursor.execute("INSERT INTO users VALUES ('%s','&s')")%(username,password)
+            conn.commit()
+        else:
+            print(username + " " + str(new_addr) + " is already used.")
+            new_sock.send(bytes("NOT_UNIQUE", 'UTF-8'))
+            new_sock.close()
+            print("admin>")
 
-    if len(data) >0:
-        print("kullanici find")
-        if data[0][1] == password:
-            print("AMCIK")
-            SOCKET_LIST[username] = new_sock
-            new_sock.send(bytes("OK", 'UTF-8'))
-            all_users = ''
-            for user, socket in SOCKET_LIST.items():
-                all_users += "&" + user
-            new_sock.send(bytes(all_users, 'UTF-8'))
-            mesg = "[*]" + username + " entered."
-            print("\n" + mesg)
-            print_all_users()
-            send_msg_to_all(server_socket, new_sock, username, mesg)
-    else:
-        print(username + " " + str(new_addr) + " failed to connect.")
-        new_sock.send(bytes("NOT_UNIQUE", 'UTF-8'))
-        new_sock.close()
-        print("admin>")
 
     # if username not in SOCKET_LIST and username.strip() != "":
     #     SOCKET_LIST[username] = new_sock
