@@ -49,7 +49,7 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         password=h.hexdigest()
         namepasswd = username+"&"+password+"&"+"1"
         clientsocket.send(bytes(namepasswd,'UTF-8'))
-
+        clientsocket.settimeout(30)
         useraccept = clientsocket.recv(RECV_BUFR).decode()
 
         if useraccept== "OK":

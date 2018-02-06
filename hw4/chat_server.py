@@ -54,7 +54,7 @@ def chat_server():
             sys.exit()
 
 
-def recv_msg(server_socket, sock):
+def recv_msg(server_socket, sock,):
     try:
         data = sock.recv(RECV_BUFR).decode()
         username = get_username(sock)
