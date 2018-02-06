@@ -193,6 +193,9 @@ class chat_gui(Frame):
                     self.nvpass.pack_forget()
                     self.sgnl_label.pack_forget()
                     self.signupok.pack_forget()
+
+                self.user.config(state=DISABLED)
+                self.pw.config(state=DISABLED)
                 self.chat.config(state=NORMAL)
                 self.chat.delete(1.0, END)
                 self.chat.config(state=DISABLED)
@@ -209,29 +212,21 @@ class chat_gui(Frame):
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
                 try:
-                    #server send alluser with &
-                    # data = self.SOCKET.recv(RECV_BUFR)
-                    # users = data.decode().split('&')
-                    temp = ''
-                    i=0
-
-                    # ahmet=temp.split('&')
-                    temp=''
-
-                    while True:
-                        data = self.SOCKET.recv(1024)
-                        users = data.decode()
-                        temp=temp+users
-                        if (users[-5:]=="#True"):
-                            break
+                    temp=""
+                    print("while")
+                    data = self.SOCKET.recv(4096)
+                    users = data.decode()
+                    temp = temp + users
                     temp = temp.split('&')
+                    print(temp)
 
-                    temp=temp[:-1]
+                    temp = temp[:-1]
+                    print(temp)
 
                     for user in temp:
-                        if(user!=temp[0] and user!="True"):
+                        if(user!=temp[0]):
                             self.add_user(user)
-                        elif user!=True:
+                        else:
                             self.display(temp[0])
 
                     start_new_thread(client.socket_handler,(self,self.SOCKET))
@@ -247,11 +242,16 @@ class chat_gui(Frame):
                 self.signup.config(state=NORMAL)
                 self.display("Connection failed.")
         else:
-            self.disconnect()
-            self.count = 0
-            self.signup.config(state=NORMAL)
+            try:
+                self.disconnect()
+                self.count = 0
+                self.signup.config(state=NORMAL)
+            except AttributeError:
+                print("sa")
 
     def disconnect(self):
+        self.user.config(state=NORMAL)
+        self.pw.config(state=NORMAL)
         self.chat.config(state = NORMAL)
         self.chat.delete(1.0,END)
         self.chat.config(state=DISABLED)
@@ -260,6 +260,7 @@ class chat_gui(Frame):
         self.gui_userlist.delete(0,END)
         self.IS_CONNECTED = False
         self.connect.config(text="Connect")
+
 
 
     def send_msg(self, event):
@@ -287,7 +288,7 @@ class chat_gui(Frame):
     def display(self, msg):
         self.chat.configure(state='normal')
         self.chat.insert(END,msg)
-        self.chat.tag_configure(msg, foreground="")
+        self.chat.tag_configure(msg, foreground="",)
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
