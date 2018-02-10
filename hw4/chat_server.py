@@ -7,7 +7,8 @@ import select
 from datetime import datetime
 from datetime import timedelta
 import sqlite3
-import hashlib
+import bcrypt
+from _thread import start_new_thread
 
 conn = sqlite3.connect("users.db")
 cursor = conn.cursor()
@@ -72,6 +73,7 @@ def recv_msg(server_socket, sock,):
         print("The user doesnt exist.")
 
     except(ConnectionResetError, NameError, socket.timeout) as e:
+        username=get_username(sock)
         msg = "[*]" + username + " exited."
         print("\n" + msg)
         send_msg_to_all(server_socket, sock, username, msg)
@@ -93,36 +95,26 @@ def send_msg_to_all(server_socket, senders_socket, senders_username, message):
 
 def add_user(server_socket):
     new_sock, new_addr = server_socket.accept()
-    print(type(new_sock))
-    print(new_sock)
     joindata = new_sock.recv(RECV_BUFR).decode().rstrip()
     new_sock.settimeout(30)
     namepasswd = joindata.split('&')
     username = namepasswd[0]
-    password = namepasswd[0] + namepasswd[1]
-    if namepasswd[2] == "1":
+    password = namepasswd[1]
+    if namepasswd[2]=="1":
         print("Giriş")
-        h = hashlib.sha512()
-        h.update(password.encode("utf8"))
-        password = h.hexdigest()
-        print(password)
         cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
-        # username baki olanlar dondu.
         data = cursor.fetchall()
-        # print(type(data)) #liste seklinde.
-        print(data)
-
         if len(data) > 0:
-            if data[0][1] == password:
+            if bcrypt.checkpw(password.encode('utf-8'),data[0][1]):
                 SOCKET_LIST[username] = new_sock
-                new_sock.send(bytes("OK", 'UTF-8'))
+                new_sock.send(bytes("OK","UTF-8"))
                 all_users = ''
                 for user, socket in SOCKET_LIST.items():
                     all_users += "&" + user
                 with open("messages.txt", "r", encoding="utf-8") as file:
                     pastmessage = file.read()
                 all_users = pastmessage + all_users + "&#True"
-                new_sock.send(bytes(all_users, 'UTF-8'))
+                start_new_thread(new_sock.send, (bytes(all_users, 'UTF-8'),))
                 mesg = "[*]" + username + " entered."
                 print("\n" + mesg)
                 print_all_users()
@@ -132,25 +124,24 @@ def add_user(server_socket):
             new_sock.send(bytes("NOT_UNIQUE", 'UTF-8'))
             new_sock.close()
             print("admin>")
-    elif namepasswd[2] == "0":
+    elif namepasswd[2]=="0":
         print("KAYIT")
-        h = hashlib.sha512()
-        h.update(password.encode("utf8"))
-        password = h.hexdigest()
+        password = bytes(password, encoding='utf-8')
         cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
         # username baki olanlar dondu.
         data = cursor.fetchall()
         # print(type(data)) #liste seklinde.
-        print(data)
         if not (len(data) > 0):
             print(username)
             print(password)
+            password=bcrypt.hashpw(password,bcrypt.gensalt(14))
             cursor.execute("Insert into users Values(?,?)", (username, password))
-            # cursor.execute("INSERT INTO users VALUES ('%s','&s')"%(username,password))
             conn.commit()
+            new_sock.send(bytes("True", 'UTF-8'))
+            new_sock.close()
         else:
             print(username + " " + str(new_addr) + " is already used.")
-            new_sock.send(bytes("NOT_UNIQUE", 'UTF-8'))
+            new_sock.send(bytes("False", 'UTF-8'))
             new_sock.close()
             print("admin>")
 

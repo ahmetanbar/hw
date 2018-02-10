@@ -6,6 +6,8 @@ import os
 import sys
 import select
 import hashlib
+from _thread import start_new_thread
+
 RECV_BUFR = 16384
 USERS_CONNECTED = []
 SOCKET = []
@@ -17,17 +19,18 @@ def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
     try:
         # socket_family(AF_UNIX or AF_INET),socket_type(SOCK_STREAM,SOCK_DGRAM)
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # socket connection start
+        # # socket connection start
         h = hashlib.sha512()
         h.update(password.encode("utf8"))
         password = h.hexdigest()
-        # print(password)
+        # password = bytes(password, encoding='utf-8')
+        # password = bcrypt.hashpw(password, bcrypt.gensalt())
+        # password=str(password, encoding='utf-8')
+
         clientsocket.connect((SERVER_IP, SERVER_PORT))
         namepasswd = username + "&" + password + "&" + "0"
-        # print(namepasswd)
-        clientsocket.send(bytes(str(namepasswd),'UTF-8'))
+        clientsocket.send(bytes(namepasswd,'UTF-8'))
         useraccept = clientsocket.recv(RECV_BUFR).decode()
-        # print(useraccept)
         if useraccept != "NOT_UNIQUE":
             return True
         else:
@@ -47,9 +50,11 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         h = hashlib.sha512()
         h.update(password.encode("utf8"))
         password=h.hexdigest()
+        # password = bytes(password, encoding='utf-8')
+        # password = bcrypt.hashpw(password, bcrypt.gensalt())
         namepasswd = username+"&"+password+"&"+"1"
-        clientsocket.send(bytes(namepasswd,'UTF-8'))
-        clientsocket.settimeout(30)
+        clientsocket.send(bytes(namepasswd,encoding='utf-8'))
+
         useraccept = clientsocket.recv(RECV_BUFR).decode()
 
         if useraccept== "OK":
