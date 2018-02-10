@@ -229,9 +229,9 @@ class chat_gui(Frame):
                     temp=temp[:-1]
 
                     for user in temp:
-                        if(user!=temp[0] and user!="True"):
+                        if(user!=temp[0]):
                             self.add_user(user)
-                        elif user!=True:
+                        else:
                             self.display(temp[0])
 
                     start_new_thread(client.socket_handler,(self,self.SOCKET))
