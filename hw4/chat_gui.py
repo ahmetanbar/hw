@@ -250,16 +250,19 @@ class chat_gui(Frame):
                 print("sa")
 
     def disconnect(self):
-        self.user.config(state=NORMAL)
-        self.pw.config(state=NORMAL)
-        self.chat.config(state = NORMAL)
-        self.chat.delete(1.0,END)
-        self.chat.config(state=DISABLED)
-        self.SOCKET.shutdown(1)
-        self.SOCKET = None
-        self.gui_userlist.delete(0,END)
-        self.IS_CONNECTED = False
-        self.connect.config(text="Connect")
+        try:
+            self.user.config(state=NORMAL)
+            self.pw.config(state=NORMAL)
+            self.chat.config(state = NORMAL)
+            self.chat.delete(1.0,END)
+            self.chat.config(state=DISABLED)
+            self.SOCKET.shutdown(1)
+            self.SOCKET = None
+            self.gui_userlist.delete(0,END)
+            self.IS_CONNECTED = False
+            self.connect.config(text="Connect")
+        except:
+            pass
 
 
 
