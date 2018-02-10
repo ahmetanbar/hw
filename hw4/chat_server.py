@@ -82,7 +82,7 @@ def recv_msg(server_socket, sock,):
 def send_msg_to_all(server_socket, senders_socket, senders_username, message):
     print("Entering send_msg_to_all")
 
-    message = "" + message
+    message = "" + message ######gereksiz olabilir bak.
     for username, socket in SOCKET_LIST.items():
         if socket != server_socket and socket != senders_socket:
             try:
@@ -109,7 +109,7 @@ def add_user(server_socket):
                 SOCKET_LIST[username] = new_sock
                 new_sock.send(bytes("OK","UTF-8"))
                 all_users = ''
-                for user, socket in SOCKET_LIST.items():
+                for user, socket in SOCKET_LIST.items(): #######USER_DICT olacak
                     all_users += "&" + user
                 with open("messages.txt", "r", encoding="utf-8") as file:
                     pastmessage = file.read()
@@ -121,7 +121,7 @@ def add_user(server_socket):
                 send_msg_to_all(server_socket, new_sock, username, mesg)
         else:
             print(username + " " + str(new_addr) + " failed to connect.")
-            new_sock.send(bytes("NOT_UNIQUE", 'UTF-8'))
+            new_sock.send(bytes("NOT_UNIQUE", 'UTF-8')) #####not unique kullanma (rakam yolla)
             new_sock.close()
             print("admin>")
     elif namepasswd[2]=="0":

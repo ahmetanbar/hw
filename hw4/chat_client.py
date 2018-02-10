@@ -111,10 +111,10 @@ def send_msg(server_socket,msg):
 def on_closing():
     try:
         if messagebox.askokcancel("Quit", "Do you want to quit?"):
-            gui_root.disconnect()
             sys.exit()
     except AttributeError:
         sys.exit()
+
 def hashing(pw,salt):
     pw_bytes = pw.encode('utf-8')
     salt_bytes = salt.encode('utf-8')
