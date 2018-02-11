@@ -7,6 +7,7 @@ import sys
 import select
 import hashlib
 from _thread import start_new_thread
+import winsound
 
 RECV_BUFR = 16384
 USERS_CONNECTED = []
@@ -69,6 +70,10 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         gui.display("\nServer offline.\n")
         gui.chat.see(END)
         return [-1,0]
+def sound():
+    winsound.Beep(2000, 200)
+    winsound.Beep(1500, 200)
+    winsound.Beep(1000, 200)
 
 
 def recv_msg(gui,socket):
@@ -79,6 +84,8 @@ def recv_msg(gui,socket):
         data = data.decode()
         data = "[" + datetime.now().strftime('%H:%M') + "] " + data
         gui.display("\n" + data)
+        sound()
+
 
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
             gui.add_user(data.split(" ")[-2])
