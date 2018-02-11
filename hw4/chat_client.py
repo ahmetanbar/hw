@@ -112,7 +112,6 @@ def sound_intro():
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
 
-
 def recv_msg(gui,socket):
     data = socket.recv(RECV_BUFR)
     if not data :
