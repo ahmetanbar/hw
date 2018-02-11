@@ -7,7 +7,7 @@ import sys
 import select
 import hashlib
 from _thread import start_new_thread
-import winsound
+from winsound import Beep
 
 RECV_BUFR = 16384
 USERS_CONNECTED = []
@@ -61,6 +61,7 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         if useraccept== "OK":
             # print("username parola eslesti sohbete girildi")
             SOCKET.append(clientsocket)
+            start_new_thread(sound_intro,())
             return [True,clientsocket]
         else:
             messagebox.showinfo("Warning", "Your username or password wrong!")
@@ -70,10 +71,30 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         gui.display("\nServer offline.\n")
         gui.chat.see(END)
         return [-1,0]
-def sound():
-    winsound.Beep(2000, 200)
-    winsound.Beep(1500, 200)
-    winsound.Beep(1000, 200)
+def sound_msg():
+    Beep(2000, 200)
+    Beep(1500, 200)
+    Beep(1000, 200)
+
+def sound_intro():
+    Beep(440, 500)
+    Beep(440, 500)
+    Beep(440, 500)
+    Beep(349, 350)
+    Beep(523, 150)
+    Beep(440, 500)
+    Beep(349, 350)
+    Beep(523, 150)
+    Beep(440, 1000)
+    Beep(659, 500)
+    Beep(659, 500)
+    Beep(659, 500)
+    Beep(698, 350)
+    Beep(523, 150)
+    Beep(415, 500)
+    Beep(349, 350)
+    Beep(523, 150)
+    Beep(440, 1000)
 
 
 def recv_msg(gui,socket):
@@ -84,7 +105,7 @@ def recv_msg(gui,socket):
         data = data.decode()
         data = "[" + datetime.now().strftime('%H:%M') + "] " + data
         gui.display("\n" + data)
-        sound()
+        sound_msg()
 
 
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:

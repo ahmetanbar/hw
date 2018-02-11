@@ -3,6 +3,8 @@ from tkinter import messagebox
 import chat_client as client
 from chat_client import *
 from _thread import start_new_thread
+from tkinter import ttk
+import winsound
 
 class chat_gui(Frame):
 
@@ -30,6 +32,9 @@ class chat_gui(Frame):
         self.initialize()
 
     def initialize(self):
+
+        self.pb = ttk.Progressbar(self.Frame4,mode="determinate")
+
 
         self.count=0
         self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
@@ -83,6 +88,7 @@ class chat_gui(Frame):
         self.msg.pack(side="left", expand=1, fill="both")
         self.msg.config(state=DISABLED)
         self.chat.config(state=DISABLED)
+
 
 
     def signing(self):
@@ -174,6 +180,10 @@ class chat_gui(Frame):
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
             if connection[0]:
+
+
+
+
                 if self.count % 2 == 1:
                     self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
                     self.ul_label.pack(side="top")
@@ -194,6 +204,7 @@ class chat_gui(Frame):
                     self.sgnl_label.pack_forget()
                     self.signupok.pack_forget()
 
+
                 self.user.config(state=DISABLED)
                 self.pw.config(state=DISABLED)
                 self.chat.config(state=NORMAL)
@@ -211,17 +222,16 @@ class chat_gui(Frame):
                 #################################################
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
+
+
                 try:
                     temp=""
-                    print("while")
+
                     data = self.SOCKET.recv(4096)
                     users = data.decode()
                     temp = temp + users
                     temp = temp.split('&')
-                    print(temp)
-
                     temp = temp[:-1]
-                    print(temp)
 
                     for user in temp:
                         if(user!=temp[0]):
@@ -289,6 +299,8 @@ class chat_gui(Frame):
             i+=1
 
     def display(self, msg):
+
+
         self.chat.configure(state='normal')
         self.chat.insert(END,msg)
         self.chat.tag_configure(msg, foreground="",)
