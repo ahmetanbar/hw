@@ -7,7 +7,14 @@ import sys
 import select
 import hashlib
 from _thread import start_new_thread
-import winsound
+
+
+try:
+    import winsound
+    from winsound import Beep
+except:
+    import os
+
 RECV_BUFR = 16384
 USERS_CONNECTED = []
 SOCKET = []
@@ -60,6 +67,7 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         if useraccept== "OK":
             # print("username parola eslesti sohbete girildi")
             SOCKET.append(clientsocket)
+            start_new_thread(sound_intro,())
             return [True,clientsocket]
         else:
             messagebox.showinfo("Warning", "Your username or password wrong!")
@@ -69,10 +77,59 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         gui.display("\nServer offline.\n")
         gui.chat.see(END)
         return [-1,0]
-def sound():
-    winsound.Beep(2000, 200)
-    winsound.Beep(1500, 200)
-    winsound.Beep(1000, 200)
+
+def sound_msg():
+    try:
+        winsound.Beep(2000, 200)
+        winsound.Beep(1500, 200)
+        winsound.Beep(1000, 200)
+    except:
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (2000, 200))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (1500, 200))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (1000, 200))
+
+def sound_intro():
+    try:
+        Beep(440, 500)
+        Beep(440, 500)
+        Beep(440, 500)
+        Beep(349, 350)
+        Beep(523, 150)
+        Beep(440, 500)
+        Beep(349, 350)
+        Beep(523, 150)
+        Beep(440, 1000)
+        Beep(659, 500)
+        Beep(659, 500)
+        Beep(659, 500)
+        Beep(698, 350)
+        Beep(523, 150)
+        Beep(415, 500)
+        Beep(349, 350)
+        Beep(523, 150)
+        Beep(440, 1000)
+    except:
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (698, 350))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (415, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
+
+
+
 
 
 def recv_msg(gui,socket):
@@ -83,7 +140,7 @@ def recv_msg(gui,socket):
         data = data.decode()
         data = "[" + datetime.now().strftime('%H:%M') + "] " + data
         gui.display("\n" + data)
-        sound()
+        sound_msg()
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
             gui.add_user(data.split(" ")[-2])
         if "[*]" in data and "exited" in data:
@@ -119,10 +176,12 @@ def on_closing():
             sys.exit()
     except AttributeError:
         sys.exit()
+
 def hashing(pw,salt):
     pw_bytes = pw.encode('utf-8')
     salt_bytes = salt.encode('utf-8')
     return hashlib.sha256(pw_bytes + salt_bytes).hexdigest() + "," + salt
+
 if __name__ == "__main__":
     root = Tk()
     root.minsize(width=850, height=410)
