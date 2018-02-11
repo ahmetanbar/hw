@@ -14,13 +14,11 @@ try:
 except:
     import os
 
-
 RECV_BUFR = 16384
 USERS_CONNECTED = []
 SOCKET = []
 username = []
 DEBUG = True
-
 
 def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
     try:
@@ -38,9 +36,6 @@ def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
         messagebox.showinfo("Warning", "Server Offline!")
         gui.chat.see(END)
         return [-1]
-
-
-
 
 def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
     try:
@@ -128,9 +123,9 @@ def recv_msg(gui,socket):
         gui.display("\n" + data)
 
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
-            gui.add_user(data.split(" ")[-2])
+            start_new_thread(gui.add_user,(data.split(" ")[-2],))
         if "[*]" in data and "exited" in data:
-            gui.remove_user(data.split(" ")[-2])
+            start_new_thread(gui.remove_user,(data.split(" ")[-2],))
         sound_msg()
         gui.chat.see(END)
 
@@ -165,6 +160,7 @@ def hashing(pw,salt):
     pw_bytes = pw.encode('utf-8')
     salt_bytes = salt.encode('utf-8')
     return hashlib.sha256(pw_bytes + salt_bytes).hexdigest() + "," + salt
+
 if __name__ == "__main__":
     root = Tk()
     root.minsize(width=850, height=410)
