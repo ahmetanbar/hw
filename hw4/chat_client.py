@@ -47,9 +47,6 @@ def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
         gui.chat.see(END)
         return [-1]
 
-
-
-
 def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
     try:
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
