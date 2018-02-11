@@ -24,15 +24,10 @@ DEBUG = True
 
 def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
     try:
-        # socket_family(AF_UNIX or AF_INET),socket_type(SOCK_STREAM,SOCK_DGRAM)
         clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        # # socket connection start
         h = hashlib.sha512()
         h.update(password.encode("utf8"))
         password = h.hexdigest()
-        # password = bytes(password, encoding='utf-8')
-        # password = bcrypt.hashpw(password, bcrypt.gensalt())
-        # password=str(password, encoding='utf-8')
 
         clientsocket.connect((SERVER_IP, SERVER_PORT))
         namepasswd = username + "&" + password + "&" + "0"
@@ -54,15 +49,12 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         h = hashlib.sha512()
         h.update(password.encode("utf8"))
         password=h.hexdigest()
-        # password = bytes(password, encoding='utf-8')
-        # password = bcrypt.hashpw(password, bcrypt.gensalt())
         namepasswd = username+"&"+password+"&"+"1"
         clientsocket.send(bytes(namepasswd,encoding='utf-8'))
         start_new_thread(sound_intro,())
         useraccept = clientsocket.recv(RECV_BUFR).decode()
 
         if useraccept== "1":
-            # print("username parola eslesti sohbete girildi")
             SOCKET.append(clientsocket)
             return [True,clientsocket]
         else:
@@ -153,7 +145,6 @@ def socket_handler(gui,socket):
                     recv_msg(gui,sock)
 
     except(KeyboardInterrupt):
-        # print("Program terminated.")
         sys.exit()
 
     except:
