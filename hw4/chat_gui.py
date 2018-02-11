@@ -1,4 +1,3 @@
-from tkinter import *
 from tkinter import messagebox
 import chat_client as client
 from chat_client import *
@@ -249,7 +248,7 @@ class chat_gui(Frame):
             self.connect.config(text="Connect")
             sys.exit()
 
-    def send_msg(self):
+    def send_msg(self,event):
         try:
             prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+ \
             self.USERNAME+" > "
