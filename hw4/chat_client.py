@@ -71,6 +71,7 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         gui.display("\nServer offline.\n")
         gui.chat.see(END)
         return [-1,0]
+
 def sound_msg():
     Beep(2000, 200)
     Beep(1500, 200)

@@ -272,7 +272,7 @@ class chat_gui(Frame):
             self.IS_CONNECTED = False
             self.connect.config(text="Connect")
         except:
-            sys.exit()
+            pass
 
 
 
