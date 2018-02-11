@@ -121,11 +121,12 @@ def recv_msg(gui,socket):
         data = data.decode()
         data = "[" + datetime.now().strftime('%H:%M') + "] " + data
         gui.display("\n" + data)
-
+        data.split(" ")
+        print(data)
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
-            start_new_thread(gui.add_user,(data.split(" ")[-2],))
+            gui.add_user(data.split(" ")[1][3:])
         if "[*]" in data and "exited" in data:
-            start_new_thread(gui.remove_user,(data.split(" ")[-2],))
+            gui.remove_user(data.split(" ")[1][3:])
         sound_msg()
         gui.chat.see(END)
 
