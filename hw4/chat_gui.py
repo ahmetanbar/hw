@@ -3,8 +3,6 @@ from tkinter import messagebox
 import chat_client as client
 from chat_client import *
 from _thread import start_new_thread
-from tkinter import ttk
-import winsound
 
 class chat_gui(Frame):
 
@@ -15,29 +13,20 @@ class chat_gui(Frame):
         Frame.__init__(self, master)
         self.grid(sticky = W+E+N+S)
         self.master.title("Chat")
-
         self.Frame1 = Frame(master)
-        self.Frame1.grid(row=0, column=0, rowspan=5, columnspan=1, \
-                         sticky=W + E + N + S)
+        self.Frame1.grid(row=0, column=0, rowspan=5, columnspan=1, sticky=W + E + N + S)
         self.Frame2 = Frame(master)
-        self.Frame2.grid(row=4, column=0, rowspan=3, columnspan=1, \
-                         sticky=W + E + N + S)
+        self.Frame2.grid(row=4, column=0, rowspan=3, columnspan=1, sticky=W + E + N + S)
         self.Frame3 = Frame(master)
-        self.Frame3.grid(row=0, column=1, rowspan=5, columnspan=3, \
-                         sticky=W + E + N + S)
+        self.Frame3.grid(row=0, column=1, rowspan=5, columnspan=3, sticky=W + E + N + S)
         self.Frame4 = Frame(master)
-        self.Frame4.grid(row=5, column=1, rowspan=1, columnspan=3, \
-                         sticky=W + E + N + S)
-
+        self.Frame4.grid(row=5, column=1, rowspan=1, columnspan=3, sticky=W + E + N + S)
         self.initialize()
 
     def initialize(self):
 
-        self.pb = ttk.Progressbar(self.Frame4,mode="determinate")
-
-
         self.count=0
-        self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
+        self.ul_label = Label(self.Frame1,text="Online Userlist", foreground="green")
         self.ul_label.pack(side="top")
         self.gui_userlist = Listbox(self.Frame1)
         self.gui_userlist.pack(side="left", expand=1, fill="both")
@@ -46,7 +35,6 @@ class chat_gui(Frame):
         self.userlist_scrollbar.pack(side="left", fill="both")
         self.gui_userlist.config(yscrollcommand=self.userlist_scrollbar.set)
 
-        # set up connection part
         self.s_label = Label(self.Frame2, text="Server_IP")
         self.p_label = Label(self.Frame2, text="Server_Port")
         self.u_label = Label(self.Frame2, text="Username")
@@ -88,8 +76,6 @@ class chat_gui(Frame):
         self.msg.pack(side="left", expand=1, fill="both")
         self.msg.config(state=DISABLED)
         self.chat.config(state=DISABLED)
-
-
 
     def signing(self):
 
@@ -150,8 +136,6 @@ class chat_gui(Frame):
             if joins[1]==joins[2]:
                 if len(joins[1])>5:
                     if joins[0].isalnum():
-
-
                         connection=client.connect_for_signup(self, self.server.get(), \
                         int(self.port.get()), self.nuser.get(), self.npass.get())
 
@@ -180,10 +164,6 @@ class chat_gui(Frame):
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
             if connection[0]:
-
-
-
-
                 if self.count % 2 == 1:
                     self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
                     self.ul_label.pack(side="top")
@@ -203,10 +183,6 @@ class chat_gui(Frame):
                     self.nvpass.pack_forget()
                     self.sgnl_label.pack_forget()
                     self.signupok.pack_forget()
-
-
-                self.user.config(state=DISABLED)
-                self.pw.config(state=DISABLED)
                 self.chat.config(state=NORMAL)
                 self.chat.delete(1.0, END)
                 self.chat.config(state=DISABLED)
@@ -217,21 +193,20 @@ class chat_gui(Frame):
                 self.SOCKET = connection[1]
                 self.display("Connected to "+self.server.get()+" as "\
                 +self.USERNAME)
-                #################################################
-                #  when users login, past messages will be add
-                #################################################
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
 
-
                 try:
-                    temp=""
-
-                    data = self.SOCKET.recv(4096)
-                    users = data.decode()
-                    temp = temp + users
+                    temp=''
+                    while True:
+                        data = self.SOCKET.recv(1024)
+                        users = data.decode()
+                        temp=temp+users
+                        if (users[-5:]=="#True"):
+                            break
                     temp = temp.split('&')
-                    temp = temp[:-1]
+
+                    temp=temp[:-1]
 
                     for user in temp:
                         if(user!=temp[0]):
@@ -257,12 +232,11 @@ class chat_gui(Frame):
                 self.count = 0
                 self.signup.config(state=NORMAL)
             except AttributeError:
-                print("sa")
+                self.display("Plese fill in the textbox correctly")
+                pass
 
     def disconnect(self):
         try:
-            self.user.config(state=NORMAL)
-            self.pw.config(state=NORMAL)
             self.chat.config(state = NORMAL)
             self.chat.delete(1.0,END)
             self.chat.config(state=DISABLED)
@@ -272,11 +246,10 @@ class chat_gui(Frame):
             self.IS_CONNECTED = False
             self.connect.config(text="Connect")
         except:
-            pass
+            self.connect.config(text="Connect")
+            sys.exit()
 
-
-
-    def send_msg(self, event):
+    def send_msg(self):
         try:
             prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+ \
             self.USERNAME+" > "
@@ -299,11 +272,9 @@ class chat_gui(Frame):
             i+=1
 
     def display(self, msg):
-
-
         self.chat.configure(state='normal')
         self.chat.insert(END,msg)
-        self.chat.tag_configure(msg, foreground="",)
+        self.chat.tag_configure(msg, foreground="")
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:

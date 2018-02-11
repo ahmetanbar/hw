@@ -145,23 +145,6 @@ def add_user(server_socket):
             new_sock.close()
             print("admin>")
 
-    # if username not in SOCKET_LIST and username.strip() != "":
-    #     SOCKET_LIST[username] = new_sock
-    #     new_sock.send(bytes("OK",'UTF-8'))
-    #     all_users = ''
-    #     for user,socket in SOCKET_LIST.items():
-    #         all_users += "&"+user
-    #     new_sock.send(bytes(all_users,'UTF-8'))
-    #     mesg = "[*]"+username+ " entered."
-    #     print("\n"+mesg)
-    #     print_all_users()
-    #     send_msg_to_all(server_socket,new_sock,username,mesg)
-    # else:
-    #     print(username+" "+str(new_addr)+" failed to connect.")
-    #     new_sock.send(bytes("NOT_UNIQUE",'UTF-8'))
-    #     new_sock.close()
-    #     print("admin>")
-
 
 def remove_user(username, kicked=False):
     try:
