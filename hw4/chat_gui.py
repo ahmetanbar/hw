@@ -3,8 +3,6 @@ from tkinter import messagebox
 import chat_client as client
 from chat_client import *
 from _thread import start_new_thread
-from tkinter import ttk
-import winsound
 
 class chat_gui(Frame):
 
@@ -32,9 +30,6 @@ class chat_gui(Frame):
         self.initialize()
 
     def initialize(self):
-
-        self.pb = ttk.Progressbar(self.Frame4,mode="determinate")
-
 
         self.count=0
         self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
@@ -88,7 +83,6 @@ class chat_gui(Frame):
         self.msg.pack(side="left", expand=1, fill="both")
         self.msg.config(state=DISABLED)
         self.chat.config(state=DISABLED)
-
 
 
     def signing(self):
@@ -180,10 +174,6 @@ class chat_gui(Frame):
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
             if connection[0]:
-
-
-
-
                 if self.count % 2 == 1:
                     self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
                     self.ul_label.pack(side="top")
@@ -203,10 +193,6 @@ class chat_gui(Frame):
                     self.nvpass.pack_forget()
                     self.sgnl_label.pack_forget()
                     self.signupok.pack_forget()
-
-
-                self.user.config(state=DISABLED)
-                self.pw.config(state=DISABLED)
                 self.chat.config(state=NORMAL)
                 self.chat.delete(1.0, END)
                 self.chat.config(state=DISABLED)
@@ -222,16 +208,25 @@ class chat_gui(Frame):
                 #################################################
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
-
-
                 try:
-                    temp=""
+                    #server send alluser with &
+                    # data = self.SOCKET.recv(RECV_BUFR)
+                    # users = data.decode().split('&')
+                    temp = ''
+                    i=0
 
-                    data = self.SOCKET.recv(4096)
-                    users = data.decode()
-                    temp = temp + users
+                    # ahmet=temp.split('&')
+                    temp=''
+
+                    while True:
+                        data = self.SOCKET.recv(1024)
+                        users = data.decode()
+                        temp=temp+users
+                        if (users[-5:]=="#True"):
+                            break
                     temp = temp.split('&')
-                    temp = temp[:-1]
+
+                    temp=temp[:-1]
 
                     for user in temp:
                         if(user!=temp[0]):
@@ -252,28 +247,19 @@ class chat_gui(Frame):
                 self.signup.config(state=NORMAL)
                 self.display("Connection failed.")
         else:
-            try:
-                self.disconnect()
-                self.count = 0
-                self.signup.config(state=NORMAL)
-            except AttributeError:
-                print("sa")
+            self.disconnect()
+            self.count = 0
+            self.signup.config(state=NORMAL)
 
     def disconnect(self):
-        try:
-            self.user.config(state=NORMAL)
-            self.pw.config(state=NORMAL)
-            self.chat.config(state = NORMAL)
-            self.chat.delete(1.0,END)
-            self.chat.config(state=DISABLED)
-            self.SOCKET.shutdown(1)
-            self.SOCKET = None
-            self.gui_userlist.delete(0,END)
-            self.IS_CONNECTED = False
-            self.connect.config(text="Connect")
-        except:
-            sys.exit()
-
+        self.chat.config(state = NORMAL)
+        self.chat.delete(1.0,END)
+        self.chat.config(state=DISABLED)
+        self.SOCKET.shutdown(1)
+        self.SOCKET = None
+        self.gui_userlist.delete(0,END)
+        self.IS_CONNECTED = False
+        self.connect.config(text="Connect")
 
 
     def send_msg(self, event):
@@ -299,11 +285,9 @@ class chat_gui(Frame):
             i+=1
 
     def display(self, msg):
-
-
         self.chat.configure(state='normal')
         self.chat.insert(END,msg)
-        self.chat.tag_configure(msg, foreground="",)
+        self.chat.tag_configure(msg, foreground="")
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
