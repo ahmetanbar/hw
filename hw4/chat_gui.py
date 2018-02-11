@@ -1,4 +1,3 @@
-from tkinter import *
 from tkinter import messagebox
 import chat_client as client
 from chat_client import *
