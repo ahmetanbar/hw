@@ -1,4 +1,3 @@
-from tkinter import *
 from tkinter import messagebox
 import chat_client as client
 from chat_client import *
@@ -73,9 +72,12 @@ class chat_gui(Frame):
 
         self.msg = Entry(self.Frame4)
         self.msg.bind("<Return>", self.send_msg)
+
         self.msg.pack(side="left", expand=1, fill="both")
         self.msg.config(state=DISABLED)
         self.chat.config(state=DISABLED)
+
+
 
     def signing(self):
 
@@ -192,7 +194,7 @@ class chat_gui(Frame):
                 self.USERNAME = self.user.get()
                 self.SOCKET = connection[1]
                 self.display("Connected to "+self.server.get()+" as "\
-                +self.USERNAME)
+                +self.USERNAME+ " $$")
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
 
@@ -249,11 +251,12 @@ class chat_gui(Frame):
             self.connect.config(text="Connect")
             sys.exit()
 
-    def send_msg(self):
+    def send_msg(self,event):
         try:
+
             prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+ \
             self.USERNAME+" > "
-            self.display(prompt+self.msg.get())
+            self.display(prompt+self.msg.get()+" $$")
             client.send_msg(self.SOCKET,self.msg.get())
             self.msg.delete(0,END)
             self.chat.see(END)
