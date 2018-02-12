@@ -8,8 +8,6 @@ import select
 import hashlib
 from _thread import start_new_thread
 
-global sound_thread
-
 try:
     import winsound
     from winsound import Beep
@@ -48,11 +46,10 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         password=h.hexdigest()
         namepasswd = username+"&"+password+"&"+"1"
         clientsocket.send(bytes(namepasswd,encoding='utf-8'))
-
+        start_new_thread(sound_intro,())
         useraccept = clientsocket.recv(RECV_BUFR).decode()
 
         if useraccept== "1":
-            start_new_thread(sound_intro, ())
             SOCKET.append(clientsocket)
             return [True,clientsocket]
         else:
@@ -115,21 +112,20 @@ def sound_intro():
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
 
-
 def recv_msg(gui,socket):
     data = socket.recv(RECV_BUFR)
     if not data :
         gui.disconnect()
     else:
         data = data.decode()
-        print(data)
-        data = "[" + datetime.now().strftime('%H:%M') + "] " +data + " $$"
+        data = "[" + datetime.now().strftime('%H:%M') + "] " + data
         gui.display("\n" + data)
         data.split(" ")
+        print(data)
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
-            gui.add_user(data.split(" ")[1][4:])
+            gui.add_user(data.split(" ")[1][3:])
         if "[*]" in data and "exited" in data:
-            gui.remove_user(data.split(" ")[1][4:])
+            gui.remove_user(data.split(" ")[1][3:])
         sound_msg()
         gui.chat.see(END)
 
@@ -151,8 +147,8 @@ def socket_handler(gui,socket):
         gui.chat.see(END)
 
 def send_msg(server_socket,msg):
-    print(msg)
     server_socket.send(bytes(msg,'UTF-8'))
+
 
 def on_closing():
     try:
