@@ -8,6 +8,8 @@ import select
 import hashlib
 from _thread import start_new_thread
 
+global sound_thread
+
 try:
     import winsound
     from winsound import Beep
@@ -46,10 +48,11 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         password=h.hexdigest()
         namepasswd = username+"&"+password+"&"+"1"
         clientsocket.send(bytes(namepasswd,encoding='utf-8'))
-        start_new_thread(sound_intro,())
+
         useraccept = clientsocket.recv(RECV_BUFR).decode()
 
         if useraccept== "1":
+            start_new_thread(sound_intro, ())
             SOCKET.append(clientsocket)
             return [True,clientsocket]
         else:

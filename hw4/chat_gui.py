@@ -46,9 +46,9 @@ class chat_gui(Frame):
         self.port.config(state=DISABLED)
         self.user = Entry(self.Frame2)
         self.pw = Entry(self.Frame2, show="*")
-        self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green")
+        self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green",relief = GROOVE)
 
-        self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue")
+        self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue",relief = GROOVE)
         self.s_label.grid(row=0, column=0)
         self.p_label.grid(row=1, column=0)
         self.u_label.grid(row=2, column=0)
@@ -165,7 +165,7 @@ class chat_gui(Frame):
             else:
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
-            if connection[0]:
+            if connection[0] and connection[1]:
                 if self.count % 2 == 1:
                     self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
                     self.ul_label.pack(side="top")
@@ -185,6 +185,7 @@ class chat_gui(Frame):
                     self.nvpass.pack_forget()
                     self.sgnl_label.pack_forget()
                     self.signupok.pack_forget()
+
                 self.chat.config(state=NORMAL)
                 self.chat.delete(1.0, END)
                 self.chat.config(state=DISABLED)
@@ -239,6 +240,7 @@ class chat_gui(Frame):
 
     def disconnect(self):
         try:
+
             self.chat.config(state = NORMAL)
             self.chat.delete(1.0,END)
             self.chat.config(state=DISABLED)
