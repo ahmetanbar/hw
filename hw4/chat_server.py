@@ -145,7 +145,7 @@ def get_username(socket):
         if socket == sock:
             u = username
     return u
-
+#
 def get_all_sockets():
     all_sockets = []
     all_sockets.append(sys.stdin)
