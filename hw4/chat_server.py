@@ -1,163 +1,172 @@
-# file: chat_server.py
-from datetime import datetime,timedelta
-import socket,sys,select,sqlite3,bcrypt
+from tkinter import *
+from chat_gui import *
+from datetime import datetime
+import socket
+import os
+import sys
+import select
+import hashlib
 from _thread import start_new_thread
 
-HOST = "45.55.169.97"
-user_list = {}
-RECV_BUFR = 4096
-PORT = 34000
-CONN = sqlite3.connect("users.db")
-CURSOR = CONN.cursor()
+try:
+    import winsound
+    from winsound import Beep
+except:
+    import os
 
-def chat_server():
-    server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server_socket.bind((HOST, PORT))
-    server_socket.listen(10)
-    user_list[''] = server_socket
-    print("*********CHAT RUNNİNG********")
-    print("\nadmin>")
-    while 1:
-        try:
-            all_sockets = get_all_sockets()
-            ready_to_read, ready_to_write, in_error = \
-                select.select(all_sockets, [], [], 0)
-            for sock in ready_to_read:
-                if sock == server_socket:
-                    add_user(server_socket)
-                elif sock == sys.stdin:
-                    m = sys.stdin.readline().rstrip()
-                    send_msg_to_all(server_socket, server_socket, "server",
-                                    "server > " + m)
-                    if m:
-                        with open("messages", "a", encoding="utf-8") as file:
-                            file.write("\n" + "[" + (datetime.now() + timedelta(hours=3)).strftime(
-                                '%Y:%m:%d:%H:%M') + "] server > " + m)
-                else:
-                    recv_msg(server_socket, sock)
-        except(KeyboardInterrupt):
-            print("Program terminated.")
-            sys.exit()
+RECV_BUFR = 16384
+USERS_CONNECTED = []
+SOCKET = []
+username = []
+DEBUG = True
 
-def recv_msg(server_socket, sock):
+def connect_for_signup(gui,SERVER_IP,SERVER_PORT,username,password):
     try:
-        data = sock.recv(RECV_BUFR).decode()
-        username = get_username(sock)
-        if data:
-            msg = username + " > " + data.rstrip()
-            print("\n" + "[" + (datetime.now() + timedelta(hours=3)).strftime('%H:%M') + "] " + msg)
-            send_msg_to_all(server_socket, sock, username, msg)
-            with open("messages", "a", encoding="utf-8") as file:
-                file.write("\n" + "[" + (datetime.now() + timedelta(hours=3)).strftime('%Y:%m:%d:%H:%M') + "] " + msg)
+        clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        h = hashlib.sha512()
+        h.update(password.encode("utf8"))
+        password = h.hexdigest()
+
+        clientsocket.connect((SERVER_IP, SERVER_PORT))
+        namepasswd = username + "&" + password + "&" + "0"
+        clientsocket.send(bytes(namepasswd,'UTF-8'))
+        useraccept = bool(int(clientsocket.recv(RECV_BUFR).decode()))
+        return useraccept
+    except(ConnectionRefusedError):
+        messagebox.showinfo("Warning", "Server Offline!")
+        gui.chat.see(END)
+        return [-1]
+
+def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
+    try:
+        clientsocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        clientsocket.connect((SERVER_IP, SERVER_PORT))
+        h = hashlib.sha512()
+        h.update(password.encode("utf8"))
+        password=h.hexdigest()
+        namepasswd = username+"&"+password+"&"+"1"
+        clientsocket.send(bytes(namepasswd,encoding='utf-8'))
+        start_new_thread(sound_intro,())
+        useraccept = clientsocket.recv(RECV_BUFR).decode()
+
+        if useraccept== "1":
+            SOCKET.append(clientsocket)
+            return [True,clientsocket]
         else:
-            remove_user(username)
+            messagebox.showinfo("Warning", "Your username or password wrong!")
+            return [False,clientsocket]
 
-    except(UnboundLocalError):
-        print("The user doesnt exist.")
+    except(ConnectionRefusedError):
+        gui.display("\nServer offline.\n")
+        gui.chat.see(END)
+        return [-1,0]
 
-    except(ConnectionResetError, NameError, socket.timeout) as e:
-        username=get_username(sock)
-        msg = "[*]" + username + " exited."
-        print("\n" + msg)
-        send_msg_to_all(server_socket, sock, username, msg)
-
-def send_msg_to_all(server_socket, senders_socket, senders_username, message):
-    print("Entering send_msg_to_all")
-    message = "" + message
-    for username, socket in user_list.items():
-        if socket != server_socket and socket != senders_socket:
-            try:
-                socket.send(bytes(message, 'UTF-8'))
-            except:
-                socket.close()
-                remove_user(username)
-    print("admin>")
-
-def add_user(server_socket):
+def sound_msg():
     try:
-        new_sock, new_addr = server_socket.accept()
-        joindata = new_sock.recv(RECV_BUFR).decode().rstrip()
-        new_sock.settimeout(30)
-        namepasswd = joindata.split('&')
-        username = namepasswd[0]
-        password = namepasswd[1]
-        if namepasswd[2]=="1":
-            CURSOR.execute("SELECT * FROM users WHERE username = '%s'" % (username))
-            data = CURSOR.fetchall()
-            if len(data) > 0:
-                if bcrypt.checkpw(password.encode('utf-8'),data[0][1]):
-                    user_list[username] = new_sock
-                    new_sock.send(bytes("1","UTF-8"))
-                    all_users = ''
-                    for user, socket in user_list.items():
-                        all_users += "&" + user
-                    with open("messages", "r", encoding="utf-8") as file:
-                        pastmessage = file.read()
-                    all_users = pastmessage + all_users + "&#True"
-                    start_new_thread(new_sock.send, (bytes(all_users, 'UTF-8'),))
-                    mesg = "[*]" + username + " entered."
-                    print("\n" + mesg)
-                    print_all_users()
-                    send_msg_to_all(server_socket, new_sock, username, mesg)
-            else:
-                print(username + " " + str(new_addr) + " failed to connect.")
-                new_sock.send(bytes("0", 'UTF-8'))
-                new_sock.close()
-                print("admin>")
-        elif namepasswd[2]=="0":
-            print("KAYIT")
-            password = bytes(password, encoding='utf-8')
-            CURSOR.execute("SELECT * FROM users WHERE username = '%s'" % (username))
-            data = CURSOR.fetchall()
-            if not (len(data) > 0):
-                print(username)
-                print(password)
-                password=bcrypt.hashpw(password,bcrypt.gensalt(14))
-                CURSOR.execute("Insert into users Values(?,?)", (username, password))
-                CONN.commit()
-                new_sock.send(bytes("1", 'UTF-8'))
-                new_sock.close()
-            else:
-                print(username + " " + str(new_addr) + " is already used.")
-                new_sock.send(bytes("0",'UTF-8'))
-                new_sock.close()
-                print("admin>")
+        Beep(2000, 200)
+        Beep(1500, 200)
+        Beep(1000, 200)
     except:
-        for i in range(0,10):
-            new_sock.send(bytes("USE MY FUCKING GUI\n", 'UTF-8'))
-        new_sock.close()
-def remove_user(username, kicked=False):
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (2000, 200))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (1500, 200))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (1000, 200))
+
+
+def sound_intro():
     try:
-        user_list[username].close()
-        del user_list[username]
-        msg = "[*]" + username + " exited."
-        print(msg)
-        print_all_users()
-        send_msg_to_all(user_list[''], user_list[''], \
-                        '', msg)
-    except KeyError:
-        pass
+        Beep(440, 500)
+        Beep(440, 500)
+        Beep(440, 500)
+        Beep(349, 350)
+        Beep(523, 150)
+        Beep(440, 500)
+        Beep(349, 350)
+        Beep(523, 150)
+        Beep(440, 1000)
+        Beep(659, 500)
+        Beep(659, 500)
+        Beep(659, 500)
+        Beep(698, 350)
+        Beep(523, 150)
+        Beep(415, 500)
+        Beep(349, 350)
+        Beep(523, 150)
+        Beep(440, 1000)
+    except:
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (698, 350))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (415, 500))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
+        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
 
-def get_username(socket):
-    u = ''
-    for username, sock in user_list.items():
-        if socket == sock:
-            u = username
-    return u
-#
-def get_all_sockets():
-    all_sockets = []
-    all_sockets.append(sys.stdin)
-    for username, socket in user_list.items():
-        all_sockets.append(socket)
-    return all_sockets
 
-def print_all_users():
-    all_users = "\nUSERS: ["
-    for user, socket in user_list.items():
-        all_users += user + ","
-    print(all_users[:-1] + "]")
+def recv_msg(gui,socket):
+    data = socket.recv(RECV_BUFR)
+    if not data :
+        gui.disconnect()
+    else:
+        data = data.decode()
+        print(data)
+        data = "[" + datetime.now().strftime('%H:%M') + "] " +data + " $$"
+        gui.display("\n" + data)
+        data.split(" ")
+        if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
+            gui.add_user(data.split(" ")[1][4:])
+        if "[*]" in data and "exited" in data:
+            gui.remove_user(data.split(" ")[1][4:])
+        sound_msg()
+        gui.chat.see(END)
+
+def socket_handler(gui,socket):
+    try:
+        while 1:
+            socket_list = [socket]
+            read_sockets, write_sockets, error_sockets = select.select(socket_list, [], [], )
+
+            for sock in read_sockets:
+                if sock == socket:
+                    recv_msg(gui,sock)
+
+    except(KeyboardInterrupt):
+        sys.exit()
+
+    except:
+        gui.display("\nDisconnected.\n")
+        gui.chat.see(END)
+
+def send_msg(server_socket,msg):
+    print(msg)
+    server_socket.send(bytes(msg,'UTF-8'))
+
+def on_closing():
+    try:
+        if messagebox.askokcancel("Quit", "Do you want to quit?"):
+            sys.exit()
+    except AttributeError:
+        sys.exit()
+
+def hashing(pw,salt):
+    pw_bytes = pw.encode('utf-8')
+    salt_bytes = salt.encode('utf-8')
+    return hashlib.sha256(pw_bytes + salt_bytes).hexdigest() + "," + salt
 
 if __name__ == "__main__":
-    chat_server()
+    root = Tk()
+    root.minsize(width=850, height=410)
+    root.maxsize(width=850, height=410)
+    root.protocol("WM_DELETE_WINDOW", on_closing)
+    gui_root = chat_gui(master=root)
+    gui_root.mainloop()
