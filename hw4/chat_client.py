@@ -112,20 +112,21 @@ def sound_intro():
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
 
+
 def recv_msg(gui,socket):
     data = socket.recv(RECV_BUFR)
     if not data :
         gui.disconnect()
     else:
         data = data.decode()
-        data = "[" + datetime.now().strftime('%H:%M') + "] " + data
+        print(data)
+        data = "[" + datetime.now().strftime('%H:%M') + "] " +data + " $$"
         gui.display("\n" + data)
         data.split(" ")
-        print(data)
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
-            gui.add_user(data.split(" ")[1][3:])
+            gui.add_user(data.split(" ")[1][4:])
         if "[*]" in data and "exited" in data:
-            gui.remove_user(data.split(" ")[1][3:])
+            gui.remove_user(data.split(" ")[1][4:])
         sound_msg()
         gui.chat.see(END)
 
@@ -147,6 +148,7 @@ def socket_handler(gui,socket):
         gui.chat.see(END)
 
 def send_msg(server_socket,msg):
+    print(msg)
     server_socket.send(bytes(msg,'UTF-8'))
 
 def on_closing():
