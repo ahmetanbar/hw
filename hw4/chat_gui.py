@@ -283,7 +283,6 @@ class chat_gui(Frame):
             edit.tag_add(tag, begin_index, end_index)
             edit.tag_config(tag, foreground=fg_color, background=bg_color)
         self.chat.configure(state='normal')
-
         word_list = msg.split()
         print(word_list)
         myword1 = '@kaanaritr'
