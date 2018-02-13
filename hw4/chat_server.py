@@ -33,7 +33,7 @@ def chat_server():
                     if m:
                         with open("messages", "a", encoding="utf-8") as file:
                             file.write("\n" + "[" + (datetime.now() + timedelta(hours=3)).strftime(
-                                '%Y:%m:%d:%H:%M') + "] server > " + m)
+                                '%Y:%m:%d:%H:%M') + "] server > " + m + " $$")
                 else:
                     recv_msg(server_socket, sock)
         except(KeyboardInterrupt):
@@ -46,10 +46,10 @@ def recv_msg(server_socket, sock):
         username = get_username(sock)
         if data:
             msg = username + " > " + data.rstrip()
-            print("\n" + "[" + (datetime.now() + timedelta(hours=3)).strftime('%H:%M') + "] " + msg)
+            print("\n" + "[" + (datetime.now() + timedelta(hours=3)).strftime('%H:%M') + "] "+ msg)
             send_msg_to_all(server_socket, sock, username, msg)
             with open("messages", "a", encoding="utf-8") as file:
-                file.write("\n" + "[" + (datetime.now() + timedelta(hours=3)).strftime('%Y:%m:%d:%H:%M') + "] " + msg)
+                file.write("\n" + "[" + (datetime.now() + timedelta(hours=3)).strftime('%Y:%m:%d:%H:%M') + "] " +"@"+ msg+ " $$")
         else:
             remove_user(username)
 
@@ -58,7 +58,7 @@ def recv_msg(server_socket, sock):
 
     except(ConnectionResetError, NameError, socket.timeout) as e:
         username=get_username(sock)
-        msg = "[*]" + username + " exited."
+        msg = "[*]" +"@"+ username + " exited."
         print("\n" + msg)
         send_msg_to_all(server_socket, sock, username, msg)
 
@@ -85,6 +85,7 @@ def add_user(server_socket):
         if namepasswd[2]=="1":
             CURSOR.execute("SELECT * FROM users WHERE username = '%s'" % (username))
             data = CURSOR.fetchall()
+            print(data)
             if len(data) > 0:
                 if bcrypt.checkpw(password.encode('utf-8'),data[0][1]):
                     user_list[username] = new_sock
@@ -96,7 +97,7 @@ def add_user(server_socket):
                         pastmessage = file.read()
                     all_users = pastmessage + all_users + "&#True"
                     start_new_thread(new_sock.send, (bytes(all_users, 'UTF-8'),))
-                    mesg = "[*]" + username + " entered."
+                    mesg = "[*]" +"@"+ username + " entered."
                     print("\n" + mesg)
                     print_all_users()
                     send_msg_to_all(server_socket, new_sock, username, mesg)
@@ -131,13 +132,14 @@ def remove_user(username, kicked=False):
     try:
         user_list[username].close()
         del user_list[username]
-        msg = "[*]" + username + " exited."
+        msg = "[*]" +"@"+ username + " exited."
         print(msg)
         print_all_users()
         send_msg_to_all(user_list[''], user_list[''], \
                         '', msg)
     except KeyError:
         pass
+
 
 def get_username(socket):
     u = ''
