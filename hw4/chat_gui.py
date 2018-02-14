@@ -2,7 +2,7 @@ from tkinter import messagebox
 import chat_client as client
 from chat_client import *
 from _thread import start_new_thread
-count=0
+
 class chat_gui(Frame):
 
     def __init__(self, master=None):
@@ -23,7 +23,6 @@ class chat_gui(Frame):
         self.initialize()
 
     def initialize(self):
-
         self.count=0
         self.ul_label = Label(self.Frame1,text="Online Userlist", foreground="green")
         self.ul_label.pack(side="top")
@@ -47,7 +46,6 @@ class chat_gui(Frame):
         self.user = Entry(self.Frame2)
         self.pw = Entry(self.Frame2, show="*")
         self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green")
-
         self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue")
         self.s_label.grid(row=0, column=0)
         self.p_label.grid(row=1, column=0)
@@ -72,9 +70,12 @@ class chat_gui(Frame):
 
         self.msg = Entry(self.Frame4)
         self.msg.bind("<Return>", self.send_msg)
+
         self.msg.pack(side="left", expand=1, fill="both")
         self.msg.config(state=DISABLED)
         self.chat.config(state=DISABLED)
+
+
 
     def signing(self):
 
@@ -154,6 +155,7 @@ class chat_gui(Frame):
             messagebox.showinfo("Warning","Please don't leave any.")
 
     def connect(self):
+
         if not(self.IS_CONNECTED) and self.pw.get() \
         and self.user.get():
             if self.user.get().isalnum():
@@ -190,7 +192,8 @@ class chat_gui(Frame):
                 self.connect.config(text="Disconnect")
                 self.USERNAME = self.user.get()
                 self.SOCKET = connection[1]
-                self.display("Connected to "+self.server.get()+" as "+self.USERNAME+ " $$")
+                self.display("Connected to "+self.server.get()+" as "\
+                +self.USERNAME)
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
 
@@ -200,6 +203,8 @@ class chat_gui(Frame):
                         data = self.SOCKET.recv(1024)
                         users = data.decode()
                         temp=temp+users
+                        print(temp)
+                        print("-----------------------------------"+users)
                         if (users[-5:]=="#True"):
                             break
                     temp = temp.split('&')
@@ -218,19 +223,19 @@ class chat_gui(Frame):
                     pass
 
             elif connection[0]:
-                self.display("Username exists. Please choose another $$")
+                self.display("Username exists. Please choose another")
                 self.signup.config(state=NORMAL)
 
             else:
                 self.signup.config(state=NORMAL)
-                self.display("Connection failed. $$")
+                self.display("Connection failed.")
         else:
             try:
                 self.disconnect()
                 self.count = 0
                 self.signup.config(state=NORMAL)
             except AttributeError:
-                self.display("Plese fill in the textbox correctly $$")
+                self.display("Plese fill in the textbox correctly")
                 pass
 
     def disconnect(self):
@@ -249,7 +254,7 @@ class chat_gui(Frame):
 
     def send_msg(self,event):
         try:
-            prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
+            prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+ \
             self.USERNAME+" > "
             self.display(prompt+self.msg.get()+" $$")
             client.send_msg(self.SOCKET,self.msg.get())
@@ -270,39 +275,9 @@ class chat_gui(Frame):
             i+=1
 
     def display(self, msg):
-        def color_text(edit, tag, word, fg_color='black', bg_color='white'):
-            # add a space to the end of the word
-            if word=="$$":
-                word="\n "
-                edit.insert('end',word)
-            word = word + " "
-
-            edit.insert('end', word)
-            end_index = edit.index('end')
-            begin_index = "%s-%sc" % (end_index, len(word) + 1)
-            edit.tag_add(tag, begin_index, end_index)
-            edit.tag_config(tag, foreground=fg_color, background=bg_color)
+        self.chat.tag_configure(msg, foreground="")
         self.chat.configure(state='normal')
-
-        word_list = msg.split()
-        print(word_list)
-        myword1 = '@kaanaritr'
-        myword2 = '@baki'
-        myword3 = '@ubuntu'
-
-        tags = ["tg" + str(k) for k in range(len(word_list))]
-        for ix, word in enumerate(word_list):
-            # word[:len(myword)] for word ending with a punctuation mark
-            if word[:len(myword1)] == myword1:
-                color_text(self.chat, tags[ix], word, 'blue')
-            elif word[:len(myword2)] == myword2:
-                color_text(self.chat, tags[ix], word, 'red')
-            elif word[:len(myword3)]==myword3:
-                color_text(self.chat,tags[ix],word,'orange')
-            else:
-                color_text(self.chat, tags[ix], word)
-        #self.chat.insert(END,msg)
-
+        self.chat.insert(END,msg)
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
