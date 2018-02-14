@@ -216,6 +216,7 @@ class chat_gui(Frame):
                             temp = temp + users
                     temp = temp.split('&')
                     temp=temp[:-1]
+                    print(temp)
 
                     for user in temp:
                         if(user!=temp[0]):
