@@ -128,9 +128,11 @@ def recv_msg(gui,socket):
 
         users.split(" ")
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
-            gui.add_user(data.split(" ")[1][4:])
+            gui.add_user(data.split(" ")[1][5:])
         if "[*]" in data and "exited" in data:
-            gui.remove_user(data.split(" ")[1][4:])
+            print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+            gui.remove_user(data.split(" ")[1][5:])
+            print(data.split(" ")[1][5:]) #@ahmet
         gui.display("\n" + data)
 
         sound_msg()
