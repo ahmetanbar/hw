@@ -47,10 +47,7 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         namepasswd = username+"&"+password+"&"+"1"
         clientsocket.send(bytes(namepasswd,encoding='utf-8'))
         start_new_thread(sound_intro,())
-        print("user accept üstü")
         useraccept = clientsocket.recv(RECV_BUFR).decode()
-        print("useraccept altii")
-        print(useraccept)
         if useraccept== "1":
             SOCKET.append(clientsocket)
             return [True,clientsocket]
@@ -117,8 +114,7 @@ def sound_intro():
 
 def recv_msg(gui,socket):
     data = socket.recv(RECV_BUFR)
-    print("recv_msg fonksiyonu -> ")
-    print(data)
+
     if not data :
         gui.disconnect()
     else:
@@ -130,9 +126,7 @@ def recv_msg(gui,socket):
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
             gui.add_user(data.split(" ")[1][5:])
         if "[*]" in data and "exited" in data:
-            print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
             gui.remove_user(data.split(" ")[1][5:])
-            print(data.split(" ")[1][5:]) #@ahmet
         gui.display("\n" + data)
 
         sound_msg()
@@ -156,7 +150,6 @@ def socket_handler(gui,socket):
         gui.chat.see(END)
 
 def send_msg(server_socket,msg):
-    print(msg)
     server_socket.send(bytes(msg,'UTF-8'))
 
 def on_closing():
@@ -175,6 +168,13 @@ if __name__ == "__main__":
     root = Tk()
     root.minsize(width=850, height=410)
     root.maxsize(width=850, height=410)
+
+    root.update_idletasks()
+    x = (root.winfo_screenwidth() - root.winfo_reqwidth()) / 2
+    y = (root.winfo_screenheight() - root.winfo_reqheight()) / 2
+    root.geometry("+%d+%d" % (x-425, y-205))
+    root.deiconify()
+
     root.protocol("WM_DELETE_WINDOW", on_closing)
     gui_root = chat_gui(master=root)
     gui_root.mainloop()
