@@ -46,9 +46,9 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         password=h.hexdigest()
         namepasswd = username+"&"+password+"&"+"1"
         clientsocket.send(bytes(namepasswd,encoding='utf-8'))
-        start_new_thread(sound_intro,())
         useraccept = clientsocket.recv(RECV_BUFR).decode()
         if useraccept== "1":
+            start_new_thread(sound_intro, ())
             SOCKET.append(clientsocket)
             return [True,clientsocket]
         else:
@@ -62,9 +62,8 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
 
 def sound_msg():
     try:
-        Beep(2000, 200)
-        Beep(1500, 200)
-        Beep(1000, 200)
+        Beep(500, 200)
+        Beep(250, 200)
     except:
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (2000, 200))
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (1500, 200))
@@ -73,24 +72,9 @@ def sound_msg():
 
 def sound_intro():
     try:
-        Beep(440, 500)
-        Beep(440, 500)
-        Beep(440, 500)
-        Beep(349, 350)
-        Beep(523, 150)
-        Beep(440, 500)
-        Beep(349, 350)
-        Beep(523, 150)
-        Beep(440, 1000)
-        Beep(659, 500)
-        Beep(659, 500)
-        Beep(659, 500)
-        Beep(698, 350)
-        Beep(523, 150)
-        Beep(415, 500)
-        Beep(349, 350)
-        Beep(523, 150)
-        Beep(440, 1000)
+        Beep(1000,200)
+        Beep(800, 200)
+        Beep(1200, 200)
     except:
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
         os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
@@ -122,13 +106,13 @@ def recv_msg(gui,socket):
         users = "[" + datetime.now().strftime('%H:%M') + "] " +data + " $$"
         data = "[" + datetime.now().strftime('%H:%M') + "] " +"@"+data + " $$"
 
+
         users.split(" ")
         if "[*]" in data and "entered" in data and len(data.strip()) >= 1:
             gui.add_user(data.split(" ")[1][5:])
         if "[*]" in data and "exited" in data:
             gui.remove_user(data.split(" ")[1][5:])
         gui.display("\n" + data)
-
         sound_msg()
         gui.chat.see(END)
 
@@ -166,8 +150,8 @@ def hashing(pw,salt):
 
 if __name__ == "__main__":
     root = Tk()
-    root.minsize(width=850, height=410)
-    root.maxsize(width=850, height=410)
+    root.minsize(width=850, height=415)
+    root.maxsize(width=850, height=415)
 
     root.update_idletasks()
     x = (root.winfo_screenwidth() - root.winfo_reqwidth()) / 2
