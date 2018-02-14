@@ -143,11 +143,6 @@ def on_closing():
     except AttributeError:
         sys.exit()
 
-def hashing(pw,salt):
-    pw_bytes = pw.encode('utf-8')
-    salt_bytes = salt.encode('utf-8')
-    return hashlib.sha256(pw_bytes + salt_bytes).hexdigest() + "," + salt
-
 if __name__ == "__main__":
     root = Tk()
     root.minsize(width=850, height=415)

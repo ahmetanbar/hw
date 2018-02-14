@@ -74,6 +74,7 @@ def send_msg_to_all(server_socket, senders_socket, senders_username, message):
                 socket.close()
                 remove_user(username)
     print("admin>")
+    
 def get_usernames():
     CURSOR.execute("SELECT * FROM users")
     names=""
@@ -90,11 +91,9 @@ def add_user(server_socket):
         namepasswd = joindata.split('&')
         username = namepasswd[0]
         password = namepasswd[1]
-        get_usernames()
         if namepasswd[2]=="1":
             CURSOR.execute("SELECT * FROM users WHERE username = '%s'" % (username))
             data = CURSOR.fetchall()
-
             if len(data) > 0:
                 if bcrypt.checkpw(password.encode('utf-8'),data[0][1]):
                     user_list[username] = new_sock
@@ -104,12 +103,9 @@ def add_user(server_socket):
                         all_users += "&" + user
                     with open("messages", "r", encoding="utf-8") as file:
                         pastmessage = file.read()
-
                     all_users = pastmessage + all_users + "&#True" +"*_*"+ get_usernames()
-                    print(all_users)
                     start_new_thread(new_sock.send, (bytes(all_users, 'UTF-8'),))
                     mesg = "[*]" +"@"+ username + " entered."
-                    #print("\n" + mesg)
                     print_all_users()
                     send_msg_to_all(server_socket, new_sock, username, mesg)
             else:
@@ -171,7 +167,6 @@ def print_all_users():
     for user, socket in user_list.items():
         all_users += user + ","
     print(all_users[:-1] + "]")
-    print(get_usernames())
 
 if __name__ == "__main__":
     chat_server()
