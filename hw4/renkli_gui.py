@@ -303,7 +303,7 @@ class chat_gui(Frame):
         def user_color():
             user_dic ={}
             z=0
-            for i in range(15):
+            for i in range(len(user_list):
                 user_dic[str(user_list[i])]=str(colors[z])
                 z=z+1
                 if z==len(colors):
