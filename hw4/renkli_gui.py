@@ -158,11 +158,11 @@ class chat_gui(Frame):
         if not(self.IS_CONNECTED) and self.pw.get() \
         and self.user.get():
             if self.user.get().isalnum():
-                    connection = client.connect_to_server(self,self.server.get(),int(self.port.get()),self.user.get(),self.pw.get())
+                connection = client.connect_to_server(self,self.server.get(),\
+                int(self.port.get()),self.user.get(),self.pw.get())
             else:
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
-
             if connection[0]:
                 if self.count % 2 == 1:
                     self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
@@ -229,6 +229,10 @@ class chat_gui(Frame):
                 except:
                     pass
 
+            elif connection[0]:
+                self.display("Username exists. Please choose another $$")
+                self.signup.config(state=NORMAL)
+
             else:
                 self.signup.config(state=NORMAL)
                 self.display("Connection failed. $$")
@@ -258,14 +262,13 @@ class chat_gui(Frame):
 
     def send_msg(self,event):
         try:
-            if self.msg.get() != "":
-                prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
-                self.USERNAME+" > "
-                self.display(prompt+self.msg.get()+" $$")
+            prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
+            self.USERNAME+" > "
+            self.display(prompt+self.msg.get()+" $$")
 
-                client.send_msg(self.SOCKET,self.msg.get())
-                self.msg.delete(0,END)
-                self.chat.see(END)
+            client.send_msg(self.SOCKET,self.msg.get())
+            self.msg.delete(0,END)
+            self.chat.see(END)
         except(AttributeError):
             self.display("\nNo connection.\n")
 
@@ -285,10 +288,6 @@ class chat_gui(Frame):
             if word=="$$":
                 word="\n "
                 edit.insert('end',word)
-            if word=='@kaanaritr':
-                word="[AMDIN]"+word
-            elif word=='@ahmet' or word=='@baki' or word=='@dmrc':
-                word = "[ADMIN]" + word
             word = word + " "
             edit.insert('end', word)
             end_index = edit.index('end')
@@ -299,10 +298,11 @@ class chat_gui(Frame):
         global count
 
         word_list = msg.split()
-        colors=['navy','pink','green','red','orange','purple']
+        colors=['red','orange','green','purple','pink','navy']
         tags = ["tg" + str(k) for k in range(len(word_list)+count)]
         def user_color():
             user_dic ={}
+
             z=0
             for i in range(len(user_list)):
                 user_dic[str(user_list[i])]=str(colors[z])
@@ -310,26 +310,18 @@ class chat_gui(Frame):
                 if z==len(colors):
                     z=0
             return user_dic
-
-
         user_dic=user_color()
         for ix, word in enumerate(word_list):
-            try:
-                for user in user_list:
-                    if word==user:
-                        break
+            for user in user_list:
+                if word==user:
+                    break
 
-                if word == user:
-                        color_text(self.chat, tags[count], word, user_dic[user])
-                else:
-                        color_text(self.chat, tags[count], word, 'black')
-                count+=1
-            except:
-                color_text(self.chat, tags[ix],word, 'black')
-
+            if word == user:
+                    color_text(self.chat, tags[count], word, user_dic[user])
+            else:
+                    color_text(self.chat, tags[count], word, 'black')
+            count+=1
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
-            self.chat.configure(state=DISABLED)
             self.disconnect()
-
