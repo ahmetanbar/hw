@@ -1,6 +1,6 @@
 from tkinter import messagebox
-import chat_client as client
-from chat_client import *
+import renkli_client as client
+from renkli_client import *
 from _thread import start_new_thread
 count=0
 user_list=[]
@@ -199,23 +199,27 @@ class chat_gui(Frame):
                 try:
                     temp=''
                     while True:
+                        print("while ici")
                         data = self.SOCKET.recv(RECV_BUFR)
                         try:
+                            print("trya girdi")
                             allmes=(data.decode()).split('*_*')
                             print(allmes)
                             users = allmes[0]
                             temp=temp+users
+                            print("temp")
+                            print(temp)
                             if (users[-5:]=="#True"):
                                 global user_list
                                 user_list = (allmes[1]).split('&')
                                 break
                         except:
                             allmes = data.decode()
-                            print(allmes)
                             users = allmes[0]
                             temp = temp + users
                     temp = temp.split('&')
                     temp=temp[:-1]
+                    print("saf temp")
                     print(temp)
 
                     for user in temp:
@@ -226,6 +230,7 @@ class chat_gui(Frame):
                     start_new_thread(client.socket_handler,(self,self.SOCKET))
                     self.chat.see(END)
                 except:
+                    print("excepte girdi")
                     pass
 
             elif connection[0]:
@@ -294,15 +299,15 @@ class chat_gui(Frame):
             edit.tag_config(tag, foreground=fg_color, background=bg_color)
         self.chat.configure(state='normal')
         global count
+
         word_list = msg.split()
+        print("splitli msg ")
+        print(word_list)
         colors=['black','red','orange','green','purple','pink','navy']
         tags = ["tg" + str(k) for k in range(len(word_list)+count)]
-        print(word_list)
-        print(user_list)
         def user_color():
             user_dic ={}
             z=0
-            print(user_list)
             for i in range(15):
                 user_dic[str(user_list[i])]=str(colors[z])
                 z=z+1
@@ -312,9 +317,12 @@ class chat_gui(Frame):
         user_dic=user_color()
         for ix, word in enumerate(word_list):
             for user in user_list:
-                if word == user:
+                if word==user:
+                    break
+
+            if word == user:
                     color_text(self.chat, tags[count], word, user_dic[user])
-                else:
+            else:
                     color_text(self.chat, tags[count], word, 'purple')
             count+=1
         self.chat.configure(state='disabled')
