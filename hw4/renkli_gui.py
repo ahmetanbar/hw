@@ -199,16 +199,14 @@ class chat_gui(Frame):
                 try:
                     temp=''
                     while True:
-                        print("while ici")
                         data = self.SOCKET.recv(RECV_BUFR)
                         try:
-                            print("trya girdi")
+
                             allmes=(data.decode()).split('*_*')
-                            print(allmes)
+
                             users = allmes[0]
                             temp=temp+users
-                            print("temp")
-                            print(temp)
+
                             if (users[-5:]=="#True"):
                                 global user_list
                                 user_list = (allmes[1]).split('&')
@@ -219,8 +217,7 @@ class chat_gui(Frame):
                             temp = temp + users
                     temp = temp.split('&')
                     temp=temp[:-1]
-                    print("saf temp")
-                    print(temp)
+
 
                     for user in temp:
                         if(user!=temp[0]):
@@ -230,7 +227,6 @@ class chat_gui(Frame):
                     start_new_thread(client.socket_handler,(self,self.SOCKET))
                     self.chat.see(END)
                 except:
-                    print("excepte girdi")
                     pass
 
             elif connection[0]:
@@ -262,6 +258,7 @@ class chat_gui(Frame):
         except:
             self.connect.config(text="Connect")
             sys.exit()
+
 
     def send_msg(self,event):
         try:
@@ -301,8 +298,6 @@ class chat_gui(Frame):
         global count
 
         word_list = msg.split()
-        print("splitli msg ")
-        print(word_list)
         colors=['red','orange','green','purple','pink','navy']
         tags = ["tg" + str(k) for k in range(len(word_list)+count)]
         def user_color():
