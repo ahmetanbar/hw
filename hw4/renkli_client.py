@@ -48,7 +48,6 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         clientsocket.send(bytes(namepasswd,encoding='utf-8'))
         start_new_thread(sound_intro,())
         useraccept = clientsocket.recv(RECV_BUFR).decode()
-
         if useraccept== "1":
             SOCKET.append(clientsocket)
             return [True,clientsocket]
@@ -115,11 +114,11 @@ def sound_intro():
 
 def recv_msg(gui,socket):
     data = socket.recv(RECV_BUFR)
+    print(data)
     if not data :
         gui.disconnect()
     else:
         data = data.decode()
-        print(data)
         users = "[" + datetime.now().strftime('%H:%M') + "] " +data + " $$"
         data = "[" + datetime.now().strftime('%H:%M') + "] " +"@"+data + " $$"
 

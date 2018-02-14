@@ -3,6 +3,7 @@ import chat_client as client
 from chat_client import *
 from _thread import start_new_thread
 count=0
+user_list=[]
 class chat_gui(Frame):
 
     def __init__(self, master=None):
@@ -132,7 +133,7 @@ class chat_gui(Frame):
         joins=[self.nuser.get(),self.npass.get(),self.nvpass.get()]
 
         if joins[0] and joins[1] and joins[2]:
-            if joins[1]==joins[2]:
+            if joins[1] == joins[2]:
                 if len(joins[1])>5:
                     if joins[0].isalnum():
                         connection=client.connect_for_signup(self, self.server.get(), \
@@ -190,28 +191,38 @@ class chat_gui(Frame):
                 self.connect.config(text="Disconnect")
                 self.USERNAME = self.user.get()
                 self.SOCKET = connection[1]
-                self.display("Connected to "+self.server.get()+" as "+self.USERNAME+ " $$")
+                #self.display("Connected to "+self.server.get()+" as "\
+                #+self.USERNAME+ " $$")
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
 
                 try:
                     temp=''
                     while True:
-                        data = self.SOCKET.recv(1024)
-                        users = data.decode()
-                        temp=temp+users
-                        if (users[-5:]=="#True"):
-                            break
+                        data = self.SOCKET.recv(RECV_BUFR)
+                        try:
+                            allmes=(data.decode()).split('*_*')
+                            print(allmes)
+                            users = allmes[0]
+                            temp=temp+users
+                            if (users[-5:]=="#True"):
+                                global user_list
+                                user_list = (allmes[1]).split('&')
+                                break
+                        except:
+                            allmes = data.decode()
+                            print(allmes)
+                            users = allmes[0]
+                            temp = temp + users
                     temp = temp.split('&')
-
                     temp=temp[:-1]
+                    print(temp)
 
                     for user in temp:
                         if(user!=temp[0]):
                             self.add_user(user)
                         else:
                             self.display(temp[0])
-
                     start_new_thread(client.socket_handler,(self,self.SOCKET))
                     self.chat.see(END)
                 except:
@@ -252,6 +263,7 @@ class chat_gui(Frame):
             prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
             self.USERNAME+" > "
             self.display(prompt+self.msg.get()+" $$")
+
             client.send_msg(self.SOCKET,self.msg.get())
             self.msg.delete(0,END)
             self.chat.see(END)
@@ -261,7 +273,6 @@ class chat_gui(Frame):
     def add_user(self,user):
         if len(user.strip()) >= 1:
             self.gui_userlist.insert(0,user)
-
     def remove_user(self,user):
         i = 0
         for name in self.gui_userlist.get(0,END):
@@ -276,32 +287,36 @@ class chat_gui(Frame):
                 word="\n "
                 edit.insert('end',word)
             word = word + " "
-
             edit.insert('end', word)
             end_index = edit.index('end')
             begin_index = "%s-%sc" % (end_index, len(word) + 1)
             edit.tag_add(tag, begin_index, end_index)
             edit.tag_config(tag, foreground=fg_color, background=bg_color)
         self.chat.configure(state='normal')
+        global count
         word_list = msg.split()
+        colors=['black','red','orange','green','purple','pink','navy']
+        tags = ["tg" + str(k) for k in range(len(word_list)+count)]
         print(word_list)
-        myword1 = '@kaanaritr'
-        myword2 = '@baki'
-        myword3 = '@ubuntu'
-
-        tags = ["tg" + str(k) for k in range(len(word_list))]
+        print(user_list)
+        def user_color():
+            user_dic ={}
+            z=0
+            print(user_list)
+            for i in range(15):
+                user_dic[str(user_list[i])]=str(colors[z])
+                z=z+1
+                if z==len(colors):
+                    z=0
+            return user_dic
+        user_dic=user_color()
         for ix, word in enumerate(word_list):
-            # word[:len(myword)] for word ending with a punctuation mark
-            if word[:len(myword1)] == myword1:
-                color_text(self.chat, tags[ix], word, 'blue')
-            elif word[:len(myword2)] == myword2:
-                color_text(self.chat, tags[ix], word, 'red')
-            elif word[:len(myword3)]==myword3:
-                color_text(self.chat,tags[ix],word,'orange')
-            else:
-                color_text(self.chat, tags[ix], word)
-        #self.chat.insert(END,msg)
-
+            for user in user_list:
+                if word == user:
+                    color_text(self.chat, tags[count], word, user_dic[user])
+                else:
+                    color_text(self.chat, tags[count], word, 'purple')
+            count+=1
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
