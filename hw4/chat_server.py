@@ -105,8 +105,7 @@ def add_user(server_socket):
                     with open("messages", "r", encoding="utf-8") as file:
                         pastmessage = file.read()
 
-                    all_users = pastmessage + all_users + "&#True"
-                    #  +"*_*"+ get_usernames()
+                    all_users = pastmessage + all_users + "&#True" +"*_*"+ get_usernames()
                     print(all_users)
                     start_new_thread(new_sock.send, (bytes(all_users, 'UTF-8'),))
                     mesg = "[*]" +"@"+ username + " entered."
