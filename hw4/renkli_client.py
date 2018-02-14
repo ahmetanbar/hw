@@ -1,5 +1,5 @@
 from tkinter import *
-from chat_gui import *
+from renkli_gui import *
 from datetime import datetime
 import socket
 import os
@@ -47,7 +47,10 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
         namepasswd = username+"&"+password+"&"+"1"
         clientsocket.send(bytes(namepasswd,encoding='utf-8'))
         start_new_thread(sound_intro,())
+        print("user accept üstü")
         useraccept = clientsocket.recv(RECV_BUFR).decode()
+        print("useraccept altii")
+        print(useraccept)
         if useraccept== "1":
             SOCKET.append(clientsocket)
             return [True,clientsocket]
@@ -114,6 +117,7 @@ def sound_intro():
 
 def recv_msg(gui,socket):
     data = socket.recv(RECV_BUFR)
+    print("recv_msg fonksiyonu -> ")
     print(data)
     if not data :
         gui.disconnect()
