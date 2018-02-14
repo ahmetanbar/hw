@@ -303,7 +303,7 @@ class chat_gui(Frame):
         word_list = msg.split()
         print("splitli msg ")
         print(word_list)
-        colors=['black','red','orange','green','purple','pink','navy']
+        colors=['red','orange','green','purple','pink','navy']
         tags = ["tg" + str(k) for k in range(len(word_list)+count)]
         def user_color():
             user_dic ={}
@@ -323,7 +323,7 @@ class chat_gui(Frame):
             if word == user:
                     color_text(self.chat, tags[count], word, user_dic[user])
             else:
-                    color_text(self.chat, tags[count], word, 'purple')
+                    color_text(self.chat, tags[count], word, 'black')
             count+=1
         self.chat.configure(state='disabled')
 
