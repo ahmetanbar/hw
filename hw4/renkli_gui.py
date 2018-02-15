@@ -47,9 +47,9 @@ class chat_gui(Frame):
         self.port.config(state=DISABLED)
         self.user = Entry(self.Frame2)
         self.pw = Entry(self.Frame2, show="*")
-        self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green")
+        self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green", relief=GROOVE)
 
-        self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue")
+        self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue", relief=GROOVE)
         self.s_label.grid(row=0, column=0)
         self.p_label.grid(row=1, column=0)
         self.u_label.grid(row=2, column=0)
@@ -158,8 +158,7 @@ class chat_gui(Frame):
         if not(self.IS_CONNECTED) and self.pw.get() \
         and self.user.get():
             if self.user.get().isalnum():
-                connection = client.connect_to_server(self,self.server.get(),\
-                int(self.port.get()),self.user.get(),self.pw.get())
+                    connection = client.connect_to_server(self,self.server.get(),int(self.port.get()),self.user.get(),self.pw.get())
             else:
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
@@ -262,13 +261,14 @@ class chat_gui(Frame):
 
     def send_msg(self,event):
         try:
-            prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
-            self.USERNAME+" > "
-            self.display(prompt+self.msg.get()+" $$")
+            if self.msg.get() != "":
+                prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
+                self.USERNAME+" > "
+                self.display(prompt+self.msg.get()+" $$")
 
-            client.send_msg(self.SOCKET,self.msg.get())
-            self.msg.delete(0,END)
-            self.chat.see(END)
+                client.send_msg(self.SOCKET,self.msg.get())
+                self.msg.delete(0,END)
+                self.chat.see(END)
         except(AttributeError):
             self.display("\nNo connection.\n")
 
@@ -288,6 +288,10 @@ class chat_gui(Frame):
             if word=="$$":
                 word="\n "
                 edit.insert('end',word)
+            if word=='@kaanaritr':
+                word="[AMDIN]"+word
+            elif word=='@ahmet' or word=='@baki' or word=='@dmrc':
+                word = "[ADMIN]" + word
             word = word + " "
             edit.insert('end', word)
             end_index = edit.index('end')
@@ -298,11 +302,10 @@ class chat_gui(Frame):
         global count
 
         word_list = msg.split()
-        colors=['red','orange','green','purple','pink','navy']
+        colors=['navy','pink','green','red','orange','purple']
         tags = ["tg" + str(k) for k in range(len(word_list)+count)]
         def user_color():
             user_dic ={}
-
             z=0
             for i in range(len(user_list)):
                 user_dic[str(user_list[i])]=str(colors[z])
@@ -324,4 +327,5 @@ class chat_gui(Frame):
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
+            self.chat.configure(state=DISABLED)
             self.disconnect()
