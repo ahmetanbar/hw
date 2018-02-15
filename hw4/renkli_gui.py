@@ -2,12 +2,6 @@ from tkinter import messagebox
 import renkli_client as client
 from renkli_client import *
 from _thread import start_new_thread
-try:
-    import winsound
-    from winsound import Beep
-except:
-    import os
-
 count=0
 user_list=[]
 class chat_gui(Frame):
@@ -164,8 +158,7 @@ class chat_gui(Frame):
         if not(self.IS_CONNECTED) and self.pw.get() \
         and self.user.get():
             if self.user.get().isalnum():
-                connection = client.connect_to_server(self,self.server.get(),\
-                int(self.port.get()),self.user.get(),self.pw.get())
+                    connection = client.connect_to_server(self,self.server.get(),int(self.port.get()),self.user.get(),self.pw.get())
             else:
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
@@ -271,7 +264,6 @@ class chat_gui(Frame):
             prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
             self.USERNAME+" > "
             self.display(prompt+self.msg.get()+" $$")
-            Beep(300,80)
 
             client.send_msg(self.SOCKET,self.msg.get())
             self.msg.delete(0,END)
@@ -335,4 +327,5 @@ class chat_gui(Frame):
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
+            self.chat.configure(state=DISABLED)
             self.disconnect()
