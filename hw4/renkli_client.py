@@ -12,7 +12,8 @@ try:
     import winsound
     from winsound import Beep
 except:
-    import os
+    pass
+
 
 RECV_BUFR = 16384
 USERS_CONNECTED = []
@@ -65,9 +66,7 @@ def sound_msg():
         Beep(500, 200)
         Beep(250, 200)
     except:
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (2000, 200))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (1500, 200))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (1000, 200))
+        pass
 
 
 def sound_intro():
@@ -76,24 +75,7 @@ def sound_intro():
         Beep(800, 200)
         Beep(1200, 200)
     except:
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 500))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (659, 500))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (698, 350))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (415, 500))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (349, 350))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (523, 150))
-        os.system('play --no-show-progress --null --channels 1 synth %s sine %f' % (440, 1000))
+        pass
 
 
 def recv_msg(gui,socket):
