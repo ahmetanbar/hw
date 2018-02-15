@@ -286,7 +286,7 @@ class chat_gui(Frame):
                 word="\n "
                 edit.insert('end',word)
             if word=='@dmrc':
-                word="[AMDIN]"+word
+                word="[ADMIN]"+word
             word = word + " "
             edit.insert('end', word)
             end_index = edit.index('end')
