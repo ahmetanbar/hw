@@ -309,6 +309,7 @@ class chat_gui(Frame):
         global count
 
         word_list = msg.split()
+        print(word_list)
         colors=['navy','pink','green','red','orange','purple']
         tags = ["tg" + str(k) for k in range(len(word_list)+count)]
         def user_color():
