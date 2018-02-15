@@ -261,13 +261,14 @@ class chat_gui(Frame):
 
     def send_msg(self,event):
         try:
-            prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
-            self.USERNAME+" > "
-            self.display(prompt+self.msg.get()+" $$")
+            if self.msg.get() != "":
+                prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
+                self.USERNAME+" > "
+                self.display(prompt+self.msg.get()+" $$")
 
-            client.send_msg(self.SOCKET,self.msg.get())
-            self.msg.delete(0,END)
-            self.chat.see(END)
+                client.send_msg(self.SOCKET,self.msg.get())
+                self.msg.delete(0,END)
+                self.chat.see(END)
         except(AttributeError):
             self.display("\nNo connection.\n")
 
@@ -287,8 +288,10 @@ class chat_gui(Frame):
             if word=="$$":
                 word="\n "
                 edit.insert('end',word)
-            if word=='@dmrc':
-                word="[ADMIN]"+word
+            if word=='@kaanaritr':
+                word="[AMDIN]"+word
+            elif word=='@ahmet' or word=='@baki' or word=='@dmrc':
+                word = "[ADMIN]" + word
             word = word + " "
             edit.insert('end', word)
             end_index = edit.index('end')
