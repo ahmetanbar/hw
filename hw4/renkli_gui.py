@@ -162,6 +162,7 @@ class chat_gui(Frame):
             else:
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
+
             if connection[0]:
                 if self.count % 2 == 1:
                     self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
@@ -227,10 +228,6 @@ class chat_gui(Frame):
                     self.chat.see(END)
                 except:
                     pass
-
-            elif connection[0]:
-                self.display("Username exists. Please choose another $$")
-                self.signup.config(state=NORMAL)
 
             else:
                 self.signup.config(state=NORMAL)
@@ -310,19 +307,26 @@ class chat_gui(Frame):
                 if z==len(colors):
                     z=0
             return user_dic
+
+
         user_dic=user_color()
         for ix, word in enumerate(word_list):
-            for user in user_list:
-                if word==user:
-                    break
+            try:
+                for user in user_list:
+                    if word==user:
+                        break
 
-            if word == user:
-                    color_text(self.chat, tags[count], word, user_dic[user])
-            else:
-                    color_text(self.chat, tags[count], word, 'black')
-            count+=1
+                if word == user:
+                        color_text(self.chat, tags[count], word, user_dic[user])
+                else:
+                        color_text(self.chat, tags[count], word, 'black')
+                count+=1
+            except:
+                color_text(self.chat, tags[ix],word, 'black')
+
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
             self.chat.configure(state=DISABLED)
             self.disconnect()
+
