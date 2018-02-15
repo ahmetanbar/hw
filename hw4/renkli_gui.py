@@ -287,10 +287,8 @@ class chat_gui(Frame):
             if word=="$$":
                 word="\n "
                 edit.insert('end',word)
-            if word=='@kaanaritr':
-                word="[AMDIN]"+word
-            elif word=='@ahmet' or word=='@baki' or word=='@dmrc':
-                word = "[ADMIN]" + word
+            if word=='@dmrc':
+                word="[ADMIN]"+word
             word = word + " "
             edit.insert('end', word)
             end_index = edit.index('end')
@@ -301,7 +299,6 @@ class chat_gui(Frame):
         global count
 
         word_list = msg.split()
-        print(word_list)
         colors=['navy','pink','green','red','orange','purple']
         tags = ["tg" + str(k) for k in range(len(word_list)+count)]
         def user_color():

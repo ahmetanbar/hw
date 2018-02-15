@@ -59,7 +59,7 @@ def connect_to_server(gui,SERVER_IP,SERVER_PORT,username,password):
     except(ConnectionRefusedError):
         gui.display("\nServer offline.\n")
         gui.chat.see(END)
-        return [-1,0]
+        return [False,0]
 
 def sound_msg():
     try:
