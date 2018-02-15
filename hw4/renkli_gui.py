@@ -295,14 +295,6 @@ class chat_gui(Frame):
             if word=="$$":
                 word="\n "
                 edit.insert('end',word)
-            if word=='@kaanaritr':
-                word="[ADMIN]"+word
-            elif word=='@dmrc':
-                word = "[HOCA]" + word
-            elif word=="@ahmet":
-                word=="[LAZ]"+word
-            elif word=="@baki":
-                word=="[SLAVE]"
             word = word + " "
             edit.insert('end', word)
             end_index = edit.index('end')
