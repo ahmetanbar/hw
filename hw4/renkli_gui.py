@@ -13,26 +13,20 @@ class chat_gui(Frame):
         Frame.__init__(self, master)
         self.grid(sticky = W+E+N+S)
         self.master.title("Chat")
-
         self.Frame1 = Frame(master)
-        self.Frame1.grid(row=0, column=0, rowspan=5, columnspan=1, \
-                         sticky=W + E + N + S)
+        self.Frame1.grid(row=0, column=0, rowspan=5, columnspan=1, sticky=W + E + N + S)
         self.Frame2 = Frame(master)
-        self.Frame2.grid(row=4, column=0, rowspan=3, columnspan=1, \
-                         sticky=W + E + N + S)
+        self.Frame2.grid(row=4, column=0, rowspan=3, columnspan=1, sticky=W + E + N + S)
         self.Frame3 = Frame(master)
-        self.Frame3.grid(row=0, column=1, rowspan=5, columnspan=3, \
-                         sticky=W + E + N + S)
+        self.Frame3.grid(row=0, column=1, rowspan=5, columnspan=3, sticky=W + E + N + S)
         self.Frame4 = Frame(master)
-        self.Frame4.grid(row=5, column=1, rowspan=1, columnspan=3, \
-                         sticky=W + E + N + S)
-
+        self.Frame4.grid(row=5, column=1, rowspan=1, columnspan=3, sticky=W + E + N + S)
         self.initialize()
 
     def initialize(self):
 
         self.count=0
-        self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
+        self.ul_label = Label(self.Frame1,text="Online Userlist", foreground="green")
         self.ul_label.pack(side="top")
         self.gui_userlist = Listbox(self.Frame1)
         self.gui_userlist.pack(side="left", expand=1, fill="both")
@@ -41,7 +35,6 @@ class chat_gui(Frame):
         self.userlist_scrollbar.pack(side="left", fill="both")
         self.gui_userlist.config(yscrollcommand=self.userlist_scrollbar.set)
 
-        # set up connection part
         self.s_label = Label(self.Frame2, text="Server_IP")
         self.p_label = Label(self.Frame2, text="Server_Port")
         self.u_label = Label(self.Frame2, text="Username")
@@ -83,7 +76,6 @@ class chat_gui(Frame):
         self.msg.pack(side="left", expand=1, fill="both")
         self.msg.config(state=DISABLED)
         self.chat.config(state=DISABLED)
-
 
     def signing(self):
 
@@ -144,8 +136,6 @@ class chat_gui(Frame):
             if joins[1] == joins[2]:
                 if len(joins[1])>5:
                     if joins[0].isalnum():
-
-
                         connection=client.connect_for_signup(self, self.server.get(), \
                         int(self.port.get()), self.nuser.get(), self.npass.get())
 
@@ -201,28 +191,13 @@ class chat_gui(Frame):
                 self.connect.config(text="Disconnect")
                 self.USERNAME = self.user.get()
                 self.SOCKET = connection[1]
-<<<<<<< HEAD:hw4/chat_gui.py
-                self.display("Connected to "+self.server.get()+" as "\
-                +self.USERNAME)
-                #################################################
-                #  when users login, past messages will be add
-                #################################################
-=======
                 #self.display("Connected to "+self.server.get()+" as "\
                 #+self.USERNAME+ " $$")
->>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1:hw4/renkli_gui.py
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
+
                 try:
-                    #server send alluser with &
-                    # data = self.SOCKET.recv(RECV_BUFR)
-                    # users = data.decode().split('&')
-                    temp = ''
-                    i=0
-
-                    # ahmet=temp.split('&')
                     temp=''
-
                     while True:
                         data = self.SOCKET.recv(RECV_BUFR)
                         try:
@@ -258,24 +233,6 @@ class chat_gui(Frame):
                 self.signup.config(state=NORMAL)
                 self.display("Connection failed. $$")
         else:
-<<<<<<< HEAD:hw4/chat_gui.py
-            self.disconnect()
-            self.count = 0
-            self.signup.config(state=NORMAL)
-
-    def disconnect(self):
-        self.chat.config(state = NORMAL)
-        self.chat.delete(1.0,END)
-        self.chat.config(state=DISABLED)
-        self.SOCKET.shutdown(1)
-        self.SOCKET = None
-        self.gui_userlist.delete(0,END)
-        self.IS_CONNECTED = False
-        self.connect.config(text="Connect")
-
-
-    def send_msg(self, event):
-=======
             try:
                 self.disconnect()
                 self.count = 0
@@ -300,7 +257,6 @@ class chat_gui(Frame):
 
 
     def send_msg(self,event):
->>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1:hw4/renkli_gui.py
         try:
             if self.msg.get() != "":
                 prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
@@ -329,8 +285,10 @@ class chat_gui(Frame):
             if word=="$$":
                 word="\n "
                 edit.insert('end',word)
-            if word=='@dmrc':
-                word="[ADMIN]"+word
+            if word=='@kaanaritr':
+                word="[AMDIN]"+word
+            elif word=='@ahmet' or word=='@baki' or word=='@dmrc':
+                word = "[ADMIN]" + word
             word = word + " "
             edit.insert('end', word)
             end_index = edit.index('end')
@@ -372,10 +330,6 @@ class chat_gui(Frame):
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
-<<<<<<< HEAD:hw4/chat_gui.py
-            self.disconnect()
-=======
             self.chat.configure(state=DISABLED)
             self.disconnect()
 
->>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1:hw4/renkli_gui.py
