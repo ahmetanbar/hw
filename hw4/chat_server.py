@@ -3,6 +3,13 @@ from datetime import datetime,timedelta
 import socket,sys,select,sqlite3,bcrypt
 from _thread import start_new_thread
 
+<<<<<<< HEAD
+
+conn = sqlite3.connect("users.db")
+cursor = conn.cursor()
+
+=======
+>>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1
 HOST = "45.55.169.97"
 user_list = {}
 RECV_BUFR = 4096
@@ -41,6 +48,10 @@ def chat_server():
             print("Program terminated.")
             sys.exit()
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1
 def recv_msg(server_socket, sock):
     try:
         data = sock.recv(RECV_BUFR).decode()
@@ -65,8 +76,14 @@ def recv_msg(server_socket, sock):
 
 def send_msg_to_all(server_socket, senders_socket, senders_username, message):
     print("Entering send_msg_to_all")
+<<<<<<< HEAD
+
+    message = "" + message
+    for username, socket in SOCKET_LIST.items():
+=======
     message = "" + message
     for username, socket in user_list.items():
+>>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1
         if socket != server_socket and socket != senders_socket:
             try:
                 socket.send(bytes(message, 'UTF-8'))
@@ -84,6 +101,77 @@ def get_usernames():
     return all_users2
 
 def add_user(server_socket):
+<<<<<<< HEAD
+    new_sock, new_addr = server_socket.accept()
+    joindata = new_sock.recv(RECV_BUFR).decode().rstrip()
+    new_sock.settimeout(30)
+    namepasswd = joindata.split('&')
+    username = namepasswd[0]
+    password = namepasswd[1]
+    if namepasswd[2]=="1":
+        print("Giriş")
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
+        data = cursor.fetchall()
+        if len(data) > 0:
+            if bcrypt.checkpw(password.encode('utf-8'),data[0][1]):
+                SOCKET_LIST[username] = new_sock
+                new_sock.send(bytes("True","UTF-8"))
+                all_users = ''
+                for user, socket in SOCKET_LIST.items():
+                    all_users += "&" + user
+                with open("messages.txt", "r", encoding="utf-8") as file:
+                    pastmessage = file.read()
+                all_users = pastmessage + all_users + "&#True"
+                start_new_thread(new_sock.send, (bytes(all_users, 'UTF-8'),))
+                mesg = "[*]" + username + " entered."
+                print("\n" + mesg)
+                print_all_users()
+                send_msg_to_all(server_socket, new_sock, username, mesg)
+        else:
+            print(username + " " + str(new_addr) + " failed to connect.")
+            new_sock.send(bytes("False", 'UTF-8'))
+            new_sock.close()
+            print("admin>")
+    elif namepasswd[2]=="0":
+        print("KAYIT")
+        password = bytes(password, encoding='utf-8')
+        cursor.execute("SELECT * FROM users WHERE username = '%s'" % (username))
+        # username baki olanlar dondu.
+        data = cursor.fetchall()
+        # print(type(data)) #liste seklinde.
+        if not (len(data) > 0):
+            print(username)
+            print(password)
+            password=bcrypt.hashpw(password,bcrypt.gensalt(14))
+            cursor.execute("Insert into users Values(?,?)", (username, password))
+            conn.commit()
+            new_sock.send(bytes("True", 'UTF-8'))
+            new_sock.close()
+        else:
+            print(username + " " + str(new_addr) + " is already used.")
+            new_sock.send(bytes("False", 'UTF-8'))
+            new_sock.close()
+            print("admin>")
+
+    # if username not in SOCKET_LIST and username.strip() != "":
+    #     SOCKET_LIST[username] = new_sock
+    #     new_sock.send(bytes("OK",'UTF-8'))
+    #     all_users = ''
+    #     for user,socket in SOCKET_LIST.items():
+    #         all_users += "&"+user
+    #     new_sock.send(bytes(all_users,'UTF-8'))
+    #     mesg = "[*]"+username+ " entered."
+    #     print("\n"+mesg)
+    #     print_all_users()
+    #     send_msg_to_all(server_socket,new_sock,username,mesg)
+    # else:
+    #     print(username+" "+str(new_addr)+" failed to connect.")
+    #     new_sock.send(bytes("NOT_UNIQUE",'UTF-8'))
+    #     new_sock.close()
+    #     print("admin>")
+
+
+=======
     try:
         new_sock, new_addr = server_socket.accept()
         joindata = new_sock.recv(RECV_BUFR).decode().rstrip()
@@ -135,6 +223,7 @@ def add_user(server_socket):
         for i in range(0,10):
             new_sock.send(bytes("USE MY FUCKING GUI\n", 'UTF-8'))
         new_sock.close()
+>>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1
 def remove_user(username, kicked=False):
     try:
         user_list[username].close()
