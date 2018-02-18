@@ -1,8 +1,9 @@
 from tkinter import messagebox
-import chat_client as client
-from chat_client import *
+import renkli_client as client
+from renkli_client import *
 from _thread import start_new_thread
-
+count=0
+user_list=[]
 class chat_gui(Frame):
 
     def __init__(self, master=None):
@@ -140,7 +141,7 @@ class chat_gui(Frame):
         joins=[self.nuser.get(),self.npass.get(),self.nvpass.get()]
 
         if joins[0] and joins[1] and joins[2]:
-            if joins[1]==joins[2]:
+            if joins[1] == joins[2]:
                 if len(joins[1])>5:
                     if joins[0].isalnum():
 
@@ -167,11 +168,11 @@ class chat_gui(Frame):
         if not(self.IS_CONNECTED) and self.pw.get() \
         and self.user.get():
             if self.user.get().isalnum():
-                connection = client.connect_to_server(self,self.server.get(),\
-                int(self.port.get()),self.user.get(),self.pw.get())
+                    connection = client.connect_to_server(self,self.server.get(),int(self.port.get()),self.user.get(),self.pw.get())
             else:
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
+
             if connection[0]:
                 if self.count % 2 == 1:
                     self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
@@ -200,11 +201,16 @@ class chat_gui(Frame):
                 self.connect.config(text="Disconnect")
                 self.USERNAME = self.user.get()
                 self.SOCKET = connection[1]
+<<<<<<< HEAD:hw4/chat_gui.py
                 self.display("Connected to "+self.server.get()+" as "\
                 +self.USERNAME)
                 #################################################
                 #  when users login, past messages will be add
                 #################################################
+=======
+                #self.display("Connected to "+self.server.get()+" as "\
+                #+self.USERNAME+ " $$")
+>>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1:hw4/renkli_gui.py
                 self.msg.config(state=NORMAL)
                 self.chat.config(state=NORMAL)
                 try:
@@ -218,34 +224,41 @@ class chat_gui(Frame):
                     temp=''
 
                     while True:
-                        data = self.SOCKET.recv(1024)
-                        users = data.decode()
-                        temp=temp+users
-                        if (users[-5:]=="#True"):
-                            break
-                    temp = temp.split('&')
+                        data = self.SOCKET.recv(RECV_BUFR)
+                        try:
 
+                            allmes=(data.decode()).split('*_*')
+
+                            users = allmes[0]
+                            temp=temp+users
+
+                            if (users[-5:]=="#True"):
+                                global user_list
+                                user_list = (allmes[1]).split('&')
+                                break
+                        except:
+                            allmes = data.decode()
+                            users = allmes[0]
+                            temp = temp + users
+                    temp = temp.split('&')
                     temp=temp[:-1]
+
 
                     for user in temp:
                         if(user!=temp[0]):
                             self.add_user(user)
                         else:
                             self.display(temp[0])
-
                     start_new_thread(client.socket_handler,(self,self.SOCKET))
                     self.chat.see(END)
                 except:
                     pass
 
-            elif connection[0]:
-                self.display("Username exists. Please choose another")
-                self.signup.config(state=NORMAL)
-
             else:
                 self.signup.config(state=NORMAL)
-                self.display("Connection failed.")
+                self.display("Connection failed. $$")
         else:
+<<<<<<< HEAD:hw4/chat_gui.py
             self.disconnect()
             self.count = 0
             self.signup.config(state=NORMAL)
@@ -262,20 +275,47 @@ class chat_gui(Frame):
 
 
     def send_msg(self, event):
+=======
+            try:
+                self.disconnect()
+                self.count = 0
+                self.signup.config(state=NORMAL)
+            except AttributeError:
+                self.display("Plese fill in the textbox correctly $$")
+                pass
+
+    def disconnect(self):
         try:
-            prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+ \
-            self.USERNAME+" > "
-            self.display(prompt+self.msg.get())
-            client.send_msg(self.SOCKET,self.msg.get())
-            self.msg.delete(0,END)
-            self.chat.see(END)
+            self.chat.config(state = NORMAL)
+            self.chat.delete(1.0,END)
+            self.chat.config(state=DISABLED)
+            self.SOCKET.shutdown(1)
+            self.SOCKET = None
+            self.gui_userlist.delete(0,END)
+            self.IS_CONNECTED = False
+            self.connect.config(text="Connect")
+        except:
+            self.connect.config(text="Connect")
+            sys.exit()
+
+
+    def send_msg(self,event):
+>>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1:hw4/renkli_gui.py
+        try:
+            if self.msg.get() != "":
+                prompt = "\n["+datetime.now().strftime('%H:%M')+"] "+"@"+ \
+                self.USERNAME+" > "
+                self.display(prompt+self.msg.get()+" $$")
+
+                client.send_msg(self.SOCKET,self.msg.get())
+                self.msg.delete(0,END)
+                self.chat.see(END)
         except(AttributeError):
             self.display("\nNo connection.\n")
 
     def add_user(self,user):
         if len(user.strip()) >= 1:
             self.gui_userlist.insert(0,user)
-
     def remove_user(self,user):
         i = 0
         for name in self.gui_userlist.get(0,END):
@@ -284,10 +324,58 @@ class chat_gui(Frame):
             i+=1
 
     def display(self, msg):
+        def color_text(edit, tag, word, fg_color='black', bg_color='white'):
+            # add a space to the end of the word
+            if word=="$$":
+                word="\n "
+                edit.insert('end',word)
+            if word=='@dmrc':
+                word="[ADMIN]"+word
+            word = word + " "
+            edit.insert('end', word)
+            end_index = edit.index('end')
+            begin_index = "%s-%sc" % (end_index, len(word) + 1)
+            edit.tag_add(tag, begin_index, end_index)
+            edit.tag_config(tag, foreground=fg_color, background=bg_color)
         self.chat.configure(state='normal')
-        self.chat.insert(END,msg)
-        self.chat.tag_configure(msg, foreground="")
+        global count
+
+        word_list = msg.split()
+        colors=['navy','pink','green','red','orange','purple']
+        tags = ["tg" + str(k) for k in range(len(word_list)+count)]
+        def user_color():
+            user_dic ={}
+            z=0
+            for i in range(len(user_list)):
+                user_dic[str(user_list[i])]=str(colors[z])
+                z=z+1
+                if z==len(colors):
+                    z=0
+            return user_dic
+
+
+        user_dic=user_color()
+        for ix, word in enumerate(word_list):
+            try:
+                for user in user_list:
+                    if word==user:
+                        break
+
+                if word == user:
+                        color_text(self.chat, tags[count], word, user_dic[user])
+                else:
+                        color_text(self.chat, tags[count], word, 'black')
+                count+=1
+            except:
+                color_text(self.chat, tags[ix],word, 'black')
+
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
+<<<<<<< HEAD:hw4/chat_gui.py
             self.disconnect()
+=======
+            self.chat.configure(state=DISABLED)
+            self.disconnect()
+
+>>>>>>> 65f61c9ce7047d64366c83502b69e22baa2136f1:hw4/renkli_gui.py

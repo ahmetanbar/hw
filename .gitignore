@@ -3,3 +3,9 @@ hw4/ckaan.py
 hw4/.idea/misc.xml
 hw4/.idea/modules.xml
 hw4/.idea/workspace.xml
+*.xml
+hw4/chat_server.py
+hw4/chat_client.py
+hw4/__pycache__/chat_gui.cpython-36.pyc
+hw4/__pycache__/chat_client.cpython-36.pyc
+hw4/renkli_gui.py
