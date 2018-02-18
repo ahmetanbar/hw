@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
+
 import java.io.InputStream;
 import android.app.Activity;
 import android.hardware.Sensor;
@@ -20,7 +22,13 @@ import android.hardware.SensorManager;
 
 
 
-    public class MainActivity extends AppCompatActivity {
+    public class MainActivity extends AppCompatActivity implements SensorEventListener {
+
+
+
+
+
+//                  GENERAL
 
         String model_name = Build.MODEL;
         String board = Build.BOARD;
@@ -33,41 +41,8 @@ import android.hardware.SensorManager;
         String manufacturer = Build.MANUFACTURER;
         String user = Build.USER;
 
+        //      CPU USAGE
 
-
-
-
-
-
-
-
-//        public class TempSensorActivity extends Activity implements SensorEventListener {
-//            private final SensorManager mSensorManager;
-//            private final Sensor mTempSensor;
-//
-//            public TempSensorActivity() {
-//                mSensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-//                mTempSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
-//            }
-//
-//            protected void onResume() {
-//                super.onResume();
-//                mSensorManager.registerListener(this, mTempSensor, SensorManager.SENSOR_DELAY_NORMAL);
-//            }
-//
-//            protected void onPause() {
-//                super.onPause();
-//                mSensorManager.unregisterListener(this);
-//            }
-//
-//            public void onAccuracyChanged(Sensor sensor, int accuracy) {
-//            }
-//
-//            public void onSensorChanged(SensorEvent event) {
-//            }
-//        }
-
-        //   CPU USAGE
         TextView textView;
         ProcessBuilder processBuilder;
         String Holder = "";
@@ -76,12 +51,35 @@ import android.hardware.SensorManager;
         Process process;
         byte[] byteArry;
 
+        private TextView xText,yText,zText;
+        private Sensor mySensor;
+        private SensorManager SM;
+
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
+            //Create sensor manager
+
+            SM = (SensorManager)getSystemService(SENSOR_SERVICE);
+
+            //Acc sensor
+            mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+            //Register sensor listener
+            SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+            //Assign Textview
+            xText = (TextView)findViewById(R.id.textView22);
+            yText = (TextView)findViewById(R.id.textView23);
+            zText = (TextView)findViewById(R.id.textView24);
+
+
+
+
+//               RAM USAGE
             long freeSize = 0L;
             long totalSize = 0L;
             long usedSize = -1L;
@@ -93,8 +91,7 @@ import android.hardware.SensorManager;
             } catch (Exception e) {
                 e.printStackTrace();
             }
-//            TextView temp_text = (TextView) findViewById(R.id.textView21);
-//            temp_text.setText("Temperature: "+usedSize);
+
 
 
 //                      CPU TEMPERATURE
@@ -113,7 +110,7 @@ import android.hardware.SensorManager;
             }
 
             TextView temp_text = (TextView) findViewById(R.id.textView21);
-            temp_text.setText("Temperature: "+temp);
+            temp_text.setText("CPU Temperature: "+temp);
 
 
 //                      CPU READING
@@ -194,27 +191,42 @@ import android.hardware.SensorManager;
             spec.setIndicator("SENSORS");
             th.addTab(spec);
 
+//                          USAGE
 
-//        tabHost =findViewById(R.id.tabHost);
-//        tabHost.setup();
-//
-//        tb1 = tabHost.newTabSpec("Etiket1");
-//        tb1.setIndicator("Home");
-//        tb1.setContent();
-//        tabHost.addTab(tb1);
-//
-//        tb2 = tabHost.newTabSpec("Etiket2");
-//        tb2.setIndicator("Device");
-//        tb2.setContent(R.id.textView8);
-//        tabHost.addTab(tb2);
-//
-//        tb3 = tabHost.newTabSpec("Etiket3");
-//        tb3.setIndicator("Sensors");
-//        tb3.setContent(R.id.textView9);
-//        tabHost.addTab(tb3);
+            spec = th.newTabSpec("Tag4");
+            spec.setContent(R.id.tab4);
+            spec.setIndicator("USAGE");
+            th.addTab(spec);
+
+            TextView  ram_txt = (TextView) findViewById(R.id.textView31);
+            ram_txt.setText("Ram Usage: "+usedSize);
+
+            TextView  total_ram_txt = (TextView) findViewById(R.id.textView32);
+            total_ram_txt.setText("Total Ram: "+totalSize);
+
+            TextView  free_ram_txt = (TextView) findViewById(R.id.textView33);
+            free_ram_txt.setText("Free Ram: "+freeSize);
+
+
 
 
         }
 
-    }
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) {
+            // Not in use
+        }
+
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            xText.setText("X Axis: " + event.values[0]);
+            yText.setText("Y Axis: " + event.values[1]);
+            zText.setText("Z Axis: " + event.values[2]);
+        }
+        }
+
+
+
+
+
 
