@@ -56,17 +56,19 @@ import android.hardware.SensorManager;
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-            //Create sensor manager
+//                      SENSOR READING
 
-            SM = (SensorManager)getSystemService(SENSOR_SERVICE);
 
-            //Acc sensor
-            mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
-            //Register sensor listener
-            SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);
+            SM = (SensorManager)getSystemService(SENSOR_SERVICE);            //Create sensor manager
 
-            //Assign Textview
+
+            mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);            //Acc sensor
+
+
+            SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);            //Register sensor listener
+
+
             xText = (TextView)findViewById(R.id.textView22);
             yText = (TextView)findViewById(R.id.textView23);
             zText = (TextView)findViewById(R.id.textView24);
@@ -75,6 +77,7 @@ import android.hardware.SensorManager;
 
 
 //               RAM USAGE
+
             long freeSize = 0L;
             long totalSize = 0L;
             long usedSize = -1L;
@@ -138,6 +141,7 @@ import android.hardware.SensorManager;
 
 
 //                       TAB SETTINGS
+
             TabHost th = (TabHost) findViewById(R.id.tabHost);
             th.setup();
 
@@ -206,11 +210,7 @@ import android.hardware.SensorManager;
 
 
         }
-
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // Not in use
-        }
+        
 
         @Override
         public void onSensorChanged(SensorEvent event) {
