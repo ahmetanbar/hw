@@ -1,145 +1,227 @@
 package com.example.baki.hw_cpu;
 
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.content.Intent;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.app.Activity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-
+import android.widget.TabHost;
 import android.widget.TextView;
+import java.io.InputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.BufferedReader;
 
-public class MainActivity extends AppCompatActivity {
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
-    private SectionsPagerAdapter mSectionsPagerAdapter;
 
-    /**
-     * The {@link ViewPager} that will host the section contents.
-     */
-    private ViewPager mViewPager;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+//                  GENERAL
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+        String model_name = Build.MODEL;
+        String board = Build.BOARD;
+        String brand = Build.BRAND;
+        String display = Build.DISPLAY;
+        String hardware = Build.HARDWARE;
+        String fingerprint = Build.FINGERPRINT;
+        String id = Build.ID;
+        String host = Build.HOST;
+        String manufacturer = Build.MANUFACTURER;
+        String user = Build.USER;
+
+        //      CPU USAGE
+
+        TextView textView;
+        ProcessBuilder processBuilder;
+        String Holder = "";
+        String[] DATA = {"/system/bin/cat", "/proc/cpuinfo"};
+        InputStream inputStream;
+        Process process;
+        byte[] byteArry;
+
+        private TextView xText,yText,zText;
+        private Sensor mySensor;
+        private SensorManager SM;
+
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
+
+//                      SENSOR READING
+
+
+
+            SM = (SensorManager)getSystemService(SENSOR_SERVICE);            //Create sensor manager
+
+
+            mySensor = SM.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);            //Acc sensor
+
+
+            SM.registerListener(this, mySensor, SensorManager.SENSOR_DELAY_NORMAL);            //Register sensor listener
+
+
+            xText = (TextView)findViewById(R.id.textView22);
+            yText = (TextView)findViewById(R.id.textView23);
+            zText = (TextView)findViewById(R.id.textView24);
+
+
+
+
+//               RAM USAGE
+
+            long freeSize = 0L;
+            long totalSize = 0L;
+            long usedSize = -1L;
+            try {
+                Runtime info = Runtime.getRuntime();
+                freeSize = info.freeMemory();
+                totalSize = info.totalMemory();
+                usedSize = totalSize - freeSize;
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        });
-
-    }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+//                      CPU TEMPERATURE
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+            float temp = 0;
+            Process process;
+            try {
+                process = Runtime.getRuntime().exec("cat sys/class/thermal/thermal_zone0/temp");
+                process.waitFor();
+                BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String line = reader.readLine();
+                temp = Float.parseFloat(line) / 1000.0f;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            TextView temp_text = (TextView) findViewById(R.id.textView21);
+            temp_text.setText("CPU Temperature: "+temp);
+
+
+//                      CPU READING
+
+            textView = (TextView) findViewById(R.id.textView11);
+            byteArry = new byte[1024];
+
+            try {
+                processBuilder = new ProcessBuilder(DATA);
+
+                process = processBuilder.start();
+
+                inputStream = process.getInputStream();
+
+                while (inputStream.read(byteArry) != -1) {
+
+                    Holder = Holder + new String(byteArry);
+                }
+
+                inputStream.close();
+
+            } catch (IOException ex) {
+
+                ex.printStackTrace();
+            }
+
+            textView.setText(Holder);
+
+
+
+
+//                       TAB SETTINGS
+
+            TabHost th = (TabHost) findViewById(R.id.tabHost);
+            th.setup();
+
+            TextView model_txt = (TextView) findViewById(R.id.textView1);
+            model_txt.setText("Model: " + model_name + "\n");
+
+            TextView board_txt = (TextView) findViewById(R.id.textView2);
+            board_txt.setText("Board: " + board + "\n");
+
+            TextView brand_txt = (TextView) findViewById(R.id.textView3);
+            brand_txt.setText("Brand: " + brand + "\n");
+
+            TextView display_txt = (TextView) findViewById(R.id.textView4);
+            display_txt.setText("Display: " + display + "\n");
+
+            TextView hardware_txt = (TextView) findViewById(R.id.textView5);
+            hardware_txt.setText("Hardware: " + hardware + "\n");
+
+            TextView fingerprint_txt = (TextView) findViewById(R.id.textView6);
+            fingerprint_txt.setText("Fingerprint: " + fingerprint + "\n");
+
+            TextView id_txt = (TextView) findViewById(R.id.textView7);
+            id_txt.setText("ID: " + id + "\n");
+
+            TextView host_txt = (TextView) findViewById(R.id.textView8);
+            host_txt.setText("Host: " + host + "\n");
+
+            TextView manufacturer_txt = (TextView) findViewById(R.id.textView9);
+            manufacturer_txt.setText("Manufactuer: " + manufacturer + "\n");
+
+            TextView user_txt = (TextView) findViewById(R.id.textView10);
+            user_txt.setText("User: " + user + "\n");
+
+            TabHost.TabSpec spec = th.newTabSpec("Tag1");
+            spec.setContent(R.id.tab1);
+            spec.setIndicator("GENERAL");
+            th.addTab(spec);
+
+            spec = th.newTabSpec("Tag2");
+            spec.setContent(R.id.tab2);
+            spec.setIndicator("CPU");
+            th.addTab(spec);
+
+            spec = th.newTabSpec("Tag3");
+            spec.setContent(R.id.tab3);
+            spec.setIndicator("SENSORS");
+            th.addTab(spec);
+
+//                          USAGE
+
+            spec = th.newTabSpec("Tag4");
+            spec.setContent(R.id.tab4);
+            spec.setIndicator("USAGE");
+            th.addTab(spec);
+
+            TextView  ram_txt = (TextView) findViewById(R.id.textView31);
+            ram_txt.setText("Ram Usage: "+usedSize);
+
+            TextView  total_ram_txt = (TextView) findViewById(R.id.textView32);
+            total_ram_txt.setText("Total Ram: "+totalSize);
+
+            TextView  free_ram_txt = (TextView) findViewById(R.id.textView33);
+            free_ram_txt.setText("Free Ram: "+freeSize);
+
+
+
+
         }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
+        
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
+        public void onSensorChanged(SensorEvent event) {
+            xText.setText("X Axis: " + event.values[0]);
+            yText.setText("Y Axis: " + event.values[1]);
+            zText.setText("Z Axis: " + event.values[2]);
         }
-    }
-
-    /**
-     * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
-     * one of the sections/tabs/pages.
-     */
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
         }
 
-        @Override
-        public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
-        }
 
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-    }
-}
+
+
+
+

@@ -47,9 +47,9 @@ class chat_gui(Frame):
         self.port.config(state=DISABLED)
         self.user = Entry(self.Frame2)
         self.pw = Entry(self.Frame2, show="*")
-        self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green")
+        self.connect = Button(self.Frame2, text="Connect", command=self.connect, width=16, foreground="green", relief=GROOVE)
 
-        self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue")
+        self.signup = Button(self.Frame2, text="Join Us", command=self.signing, foreground="blue", relief=GROOVE)
         self.s_label.grid(row=0, column=0)
         self.p_label.grid(row=1, column=0)
         self.u_label.grid(row=2, column=0)
@@ -162,7 +162,6 @@ class chat_gui(Frame):
             else:
                 messagebox.showinfo("Warning", "Please control username!")
                 return 1
-
             if connection[0]:
                 if self.count % 2 == 1:
                     self.ul_label = Label(self.Frame1, text="Online Userlist", foreground="green")
@@ -228,6 +227,10 @@ class chat_gui(Frame):
                     self.chat.see(END)
                 except:
                     pass
+
+            elif connection[0]:
+                self.display("Username exists. Please choose another $$")
+                self.signup.config(state=NORMAL)
 
             else:
                 self.signup.config(state=NORMAL)
@@ -310,26 +313,19 @@ class chat_gui(Frame):
                 if z==len(colors):
                     z=0
             return user_dic
-
-
         user_dic=user_color()
         for ix, word in enumerate(word_list):
-            try:
-                for user in user_list:
-                    if word==user:
-                        break
+            for user in user_list:
+                if word==user:
+                    break
 
-                if word == user:
-                        color_text(self.chat, tags[count], word, user_dic[user])
-                else:
-                        color_text(self.chat, tags[count], word, 'black')
-                count+=1
-            except:
-                color_text(self.chat, tags[ix],word, 'black')
-
+            if word == user:
+                    color_text(self.chat, tags[count], word, user_dic[user])
+            else:
+                    color_text(self.chat, tags[count], word, 'black')
+            count+=1
         self.chat.configure(state='disabled')
 
         if msg.strip() == 'Disconnected.' and self.IS_CONNECTED == True:
             self.chat.configure(state=DISABLED)
             self.disconnect()
-
