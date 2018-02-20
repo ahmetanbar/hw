@@ -176,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         }
 
-        
+
 
 //                       TAB SETTINGS
         TabHost th = (TabHost) findViewById(R.id.tabHost);
