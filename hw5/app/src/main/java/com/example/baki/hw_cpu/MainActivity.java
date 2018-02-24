@@ -23,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -47,12 +48,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     TextView textView;
     ProcessBuilder processBuilder;
-    String Holder = "------------------------------------------------------------------------------------------\n";
+    String Holder = "\n";
     String[] DATA = {"/system/bin/cat", "/proc/cpuinfo"};
     InputStream inputStream;
     Process process;
     byte[] byteArry;
     String [] my;
+    String [] my2;
 
     private TextView xText,yText,zText;
     private Sensor mySensor;
@@ -157,8 +159,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 Holder = Holder + new String(byteArry);
 //                Holder = Holder + new String(String.valueOf(byteArry[156]));
                 my = Holder.split("\n");
-
-
             }
 
             inputStream.close();
@@ -168,10 +168,24 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             ex.printStackTrace();
         }
 
-
+        String linetest="";
         for (int i=0; i<my.length;i++){
+
 //            textView.setText(my[i]);
-            Log = Log + (my[i]) + "\n\n";
+
+            linetest=my[i];
+            int pointer = linetest.indexOf(":");
+            int finish=linetest.length();
+
+            String str = Integer.toString(pointer);
+            String str2 = Integer.toString(finish);
+            if (pointer!=(finish-1)){
+                my2 = my[i].split(":");
+                Log = Log + (my2[0]) + " : " + (my2[1]) + "\n\n";
+            } else{
+                Log = Log + my[i] + "\n\n";
+            }
+
             textView.setText(Log);
 
         }
