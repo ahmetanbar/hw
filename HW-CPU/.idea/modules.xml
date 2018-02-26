@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HW-CPU.iml" filepath="$PROJECT_DIR$/HW-CPU.iml" />
-      <module fileurl="file://C:\Users\Muhamemd Baki\Desktop\hw-ec965ee69132f94af505f74125be45c869a051f0\HW-CPU\HW-CPU.iml" filepath="C:\Users\Muhamemd Baki\Desktop\hw-ec965ee69132f94af505f74125be45c869a051f0\HW-CPU\HW-CPU.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\Muhamemd Baki\Desktop\hw-ec965ee69132f94af505f74125be45c869a051f0\HW-CPU\app\app.iml" filepath="C:\Users\Muhamemd Baki\Desktop\hw-ec965ee69132f94af505f74125be45c869a051f0\HW-CPU\app\app.iml" />
     </modules>
   </component>
 </project>
