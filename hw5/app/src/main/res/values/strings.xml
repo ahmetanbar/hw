@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">HW-CPU</string>
+    <!--HOME-->
+    <string name="model">MODEL:</string>
+    <string name="board">Board</string>
+    <string name="brand">Brand</string>
+    <string name="display">display</string>
+    <string name="hardware">hardware</string>
+    <string name="fingerprint">fingerprint</string>
+    <string name="id">id</string>
+    <string name="host">host</string>
+    <string name="manufacturers">manufacturers</string>
+    <string name="user">user</string>
+
+    <!--DEVICE-->
+    <string name="cpu">CPU:</string>
+
+    <!--SENSORS-->
+    <string name="sensors">SENSORS:</string>
+    <string name="ram">ram</string>
+    <string name="total_ram">total_ram</string>
+    <string name="free_ram">free_ram</string>
+    <string name="x">x</string>
+    <string name="y">y</string>
+    <string name="z">z</string>
+
+
+</resources>
