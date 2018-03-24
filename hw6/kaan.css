@@ -1,0 +1,70 @@
+body{
+    background-color: #607D8B;
+}
+#menu{
+    float: right;
+    margin-left: 30px;
+    margin-right: 30px;
+    background-color: none;
+    position: static;
+}
+#menu :hover{
+    color:#607D8B;
+
+}
+#menu a{
+    text-decoration: none;
+    color: #E1F5FE;
+}
+.menuler{
+    margin: auto;
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    position:relative;
+    background-color:#263238;
+    padding-top: 16px;
+    padding-bottom: 16px;
+
+}
+.sayfa{
+    border-style: groove;
+    border-width: 5px;
+    border-radius: 10px;
+    border-color: #263238;
+    position: relative;
+    margin: auto;
+    min-width: 561px;
+    width: 50%;
+    height: auto;
+}
+.icerik{
+    margin-top: -22px;
+    position: relative;
+    width: 100%;
+    background-color: #B0BEC5;
+    border-style:solid;
+    border-width: 2px;
+    border-radius: 4px;
+    border-color: #263238;
+}
+#title{
+    text-align: center;
+    position: relative;
+    margin: auto;
+    width: 100%;
+}
+#title h1{
+    padding-top: 10px;
+    color: #263238;
+}
+#metin{
+    text-align: center;
+    color: #37474F;
+}
+#time{
+    text-align: right;
+    padding-right: 50px;
+    color:#263238;
+    padding-bottom: 10px;
+}
