@@ -1,18 +1,49 @@
-.home-page {
+.home-page1 {
     width: 350px;
     padding: 10% 0 0;
     margin: auto;
 }
 
+
+.home-page {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -100;
+}
+
+#myVideo {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: -100;
+}
+
 .form {
-    background: #FFFFFF;
+
+    animation-duration: 20s;
+    animation-timing-function: ease-in-out;
+    animation-name: anim-1;
+    background: #ffffff;
     max-width: 350px;
     height: 600px;
     padding: 40px;
     text-align: center;
     border-radius: 10px;
-
+    opacity: 0.9;
 }
+
+@keyframes anim-1 {
+    0%, 1% { left: -100%; opacity: 0; }
+    8.3%,25% { left: 40%; opacity: 0.9; }
+}
+
 .form input {
     font-family: "Segoe UI Light", sans-serif;
     outline-color: coral;
@@ -23,6 +54,7 @@
     padding: 15px;
     box-sizing: border-box;
     font-size: 14px;
+
 }
 
 
@@ -61,6 +93,7 @@
     padding: 15px;
     box-sizing: border-box;
     font-size: 14px;
+
 }
 
 #login-btn {
@@ -79,6 +112,8 @@
 body {
     background: cadetblue;
     font-family: "Segoe UI Light", sans-serif;
+    color: #FFFFFF;
+    text-align: center;
 }
 
 
