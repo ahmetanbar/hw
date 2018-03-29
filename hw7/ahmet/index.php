@@ -11,29 +11,18 @@
 </header>
 
 <article>
-  <form action="/action_page.php">
-  Name:<br>
-  <input type="text" name="Name">
+  <form action="welcome.php" method="post">
+  <input style="width: 240px;" type="text" name="name" placeholder="Name"><input type="text" name="surname" placeholder="Surname" style="width: 240px;">
+  <br>
+  <input type="text" name="email" placeholder="Phone or Email">
+  <br><input type="password" name="psw" placeholder="Password">
   <br><br>
-  Surname:<br>
-  <input type="text" name="Surname" >
+  <br><input type="radio" name="gender" value="male" style="font-size:1.5em;" checked> <label style="font-size: 30px;">Male</label>
+  <input type="radio" name="gender" value="female"; ><label style="font-size: 30px;">Female</label> <br>
   <br><br>
-  Password:<br>
-  <input type="password" name="psw" size="35">
-  <br><br>
-  Password:<br>
-  <input type="password" name="psw">
-  <br><br>
-  Birthday:<br>
-  <input id="date" type="date">
-  <br><br>
-  <input type="radio" name="gender" value="male" checked> Male
-  <input type="radio" name="gender" value="female">Female <br>
-  <br><br>
-  <input type="submit" onclick="myFunction()" value="Submit">
+  <input type="submit" value="Submit" style="padding: 16px 32px; font-size:1.5em;">
 </form>
 </article>
-
 <footer>Copyright &copy; BAK Software</footer>
 </div>
 </body>
