@@ -24,9 +24,8 @@
     
         function kayit()
         {
-            if(empty($_POST["username"]) or empty($_POST["pwd"]) or empty($_POST["name"]) or empty($_POST["surname"]) or empty($_POST["email"])){
+            if(empty($_POST["username"]) or empty($_POST["pwd"]) or empty($_POST["name"]) or empty($_POST["surname"]) or empty($_POST["email"]) or (strpos($_POST["username"], ' ') !== false) or (strpos($_POST["pwd"], ' ') !== false) or (strpos($_POST["email"], ' ') !== false)){
                 echo ("<script type='text/javascript'>  alert('Please fill all the blanks'); </script>"); 
-
             }else{
                 $username=$_POST["username"];
                 $pwd=password_hash($_POST["pwd"], PASSWORD_DEFAULT);
@@ -53,26 +52,30 @@
 
         function giris()
         {
-            if(!(empty($_POST["username"]))){
-                $pwd=password_hash($_POST["pwd"], PASSWORD_DEFAULT);
-                $read = mysql_query("select id,username,pwd from users where username=? and password=?",$_POST["username"],$pwd);
+            if(!(empty($_POST["username"])) and !(empty($_POST["pwd"]))){
+                $read = mysql_query("select id,pwd from users where username='".$_POST["username"]."'");
                 $list = mysql_fetch_array($read);
                 if(empty($list)){
                     echo ("<script type='text/javascript'>  alert('Wrong Username or Password'); </script>"); 
                 }else{
-                    $read = mysql_query("select id,userid,keys from cookie where userid=?",$list[0]);
-                    $list = mysql_fetch_array($read); 
-                    if(empty($list)){
-                        $auth=random_key();
-                        mysql_query("INSERT INTO cookie (userid, auth) VALUES ('$list[0]', '$auth')");
-                        setcookie("auth","$auth", time()+3600);
-                        header("Location: ./profile.php?profile=$key");
+                    if(password_verify($_POST["pwd"], $list[1])){
+                        $read = mysql_query("select id,userid,keys from cookie where userid='".$list[0]."'");
+                        $list = mysql_fetch_array($read); 
+                        if(empty($list)){
+                            $auth=random_key();
+                            mysql_query("INSERT INTO cookie (userid, auth) VALUES ('$list[0]', '$auth')");
+                            setcookie("auth","$auth", time()+3600);
+                            header("Location: ./profile.php?profile=$userid");
+                        }else{
+                            $auth=random_key();
+                            mysql_query("UPDATE cookie SET auth=$auth WHERE userid=$list[0]");
+                            setcookie("auth","$auth", time()+3600);
+                            header("Location: ./profile.php?profile=$userid");
+                        }
                     }else{
-                        $auth=random_key();
-                        mysql_query("UPDATE cookie SET auth=$auth WHERE userid=$list[0]");
-                        setcookie("auth","$auth", time()+3600);
-                        header("Location: ./profile.php?profile=$userid");
+                        echo ("<script type='text/javascript'>  alert('Wrong Username or Password'); </script>"); 
                     }
+                    
                 
                 }
             }else{
@@ -142,20 +145,29 @@
             <div class="box" style="float:right;">
                     <form action="./index.php" method="post">
                         <center>
-                            <label>Name</label><br>
-                            <input class="textbox" type="text" name="name"><br>
-                            <label>Surname</label><br>
-                            <input class="textbox" type="text" name="surname"><br>
-                            <label>E-Mail</label><br>
-                            <input class="textbox" type="text" name="email"><br>
-                            <label>Username</label><br>
-                            <input class="textbox" type="text" name="username"><br>
-                            <label>Password</label><br>
-                            <input class="textbox" type="password" name="pwd"><br>
-                            <input class="button" type="submit" name="type" value="Signup"><br>
+                            <?php
+                                if($_POST["type"]==Signup){
+                                    $username=$_POST["username"];
+                                    $name=$_POST["name"];
+                                    $surname=$_POST["surname"];
+                                    $email=$_POST["email"];
+                                }
+                                echo("<label>Name</label><br>");
+                                echo("<input class='textbox' type='text' name='name' value='$name'><br>");
+                                echo("<label>Surname</label><br>");
+                                echo("<input class='textbox' type='text' name='surname' value='$surname'><br>");
+                                echo("<label>E-Mail</label><br>");
+                                echo("<input class='textbox' type='text' name='email' value='$email'><br>");
+                                echo("<label>Username</label><br>");
+                                echo("<input class='textbox' type='text' name='username' value='$username'><br>");
+                                echo("<label>Password</label><br>");
+                                echo("<input class='textbox' type='password' name='pwd'><br>");
+                                echo("<input class='button' type='submit' name='type' value='Signup'><br>");
+                            ?>
                         </center>
                     </form>
                 </div>
         </div>
 
     </body>
+</html>
