@@ -52,34 +52,33 @@
 
         function giris()
         {
-            if(!(empty($_POST["username"])) and !(empty($_POST["pwd"]))){
+            if(empty($_POST["username"]) or empty($_POST["pwd"])){
+                echo("<script type='text/javascript'>  alert('Enter Username and Password'); </script>"); 
+            }else{
                 $read = mysql_query("select id,pwd from users where username='".$_POST["username"]."'");
                 $list = mysql_fetch_array($read);
+                $userid2=$list[0];
                 if(empty($list)){
                     echo ("<script type='text/javascript'>  alert('Wrong Username or Password'); </script>"); 
                 }else{
                     if(password_verify($_POST["pwd"], $list[1])){
-                        $read = mysql_query("select id,userid,keys from cookie where userid='".$list[0]."'");
-                        $list = mysql_fetch_array($read); 
-                        if(empty($list)){
+                        $read2 = mysql_query("select id,userid,auth from cookie where userid='".$userid2."'");
+                        $list2 = mysql_fetch_array($read2); 
+                        if(empty($list2)){
                             $auth=random_key();
-                            mysql_query("INSERT INTO cookie (userid, auth) VALUES ('$list[0]', '$auth')");
+                            mysql_query("INSERT INTO cookie (userid, auth) VALUES ('$userid2', '$auth')");
                             setcookie("auth","$auth", time()+3600);
-                            header("Location: ./profile.php?profile=$userid");
+                            header("Refresh: 0;");
                         }else{
                             $auth=random_key();
-                            mysql_query("UPDATE cookie SET auth=$auth WHERE userid=$list[0]");
+                            mysql_query("UPDATE cookie SET auth='$auth' WHERE userid=$userid2");
                             setcookie("auth","$auth", time()+3600);
-                            header("Location: ./profile.php?profile=$userid");
+                            header("Refresh: 0;");
                         }
                     }else{
                         echo ("<script type='text/javascript'>  alert('Wrong Username or Password'); </script>"); 
                     }
-                    
-                
                 }
-            }else{
-                echo("<script type='text/javascript'>  alert('Enter Username and Password'); </script>"); 
             }
         }
 
@@ -93,8 +92,6 @@
     
             return strtr(substr(base64_encode($bytes), 0, $str_length), '+/', "$first$second");
         }
-        echo($_COOKIE["auth"]);
-
         $status=$_POST["type"];
         if(empty($_COOKIE["auth"])){
             if(empty($status)){
@@ -132,7 +129,7 @@
         <center><h2 class="text">Login or Signup</h2></center>
         <div style="margin:auto;width:80%;margin-top:5%;">
             <div class="box" style="margin-top:35px;float:left;padding-top:7%; height:32.5%;min-height:150px;margin-right:35%;">
-                <form action="./index.php?process=2" method="post">
+                <form action="" method="post">
                     <center>
                         <label>Username</label><br>
                         <input class="textbox" type="text" name="username"><br>
@@ -143,7 +140,7 @@
                 </form>
             </div>
             <div class="box" style="float:right;">
-                    <form action="./index.php" method="post">
+                    <form action="" method="post">
                         <center>
                             <?php
                                 if($_POST["type"]==Signup){
