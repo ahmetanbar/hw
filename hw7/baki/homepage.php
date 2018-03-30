@@ -21,13 +21,13 @@
 
             <input  id="login-input" name="username_login" type="text"     placeholder="username"/>
             <input  id="login-input" name="password_login" type="password" placeholder="password"/>
-            <button id="login-btn"   name="login-btn" type="submit" value="login-btn-v" >LOGIN </button>
+            <button id="login-btn"   name="btn" type="submit" value="login-btn-v" >LOGIN </button>
 
-            <input  id="register-input" name="username" type="text" placeholder="username"/>
+                <input  id="register-input" name="username" type="text" placeholder="username"/>
             <input  id="register-input" name="email" type="text" placeholder="email"/>
             <input  id="register-input" name="password" type="password" placeholder="password"/>
             <input  id="register-input" name="passwordv" type="password" placeholder="password verify"/>
-            <button id="register-btn"  name="register-btn" type="submit"  value="register-btn-v"> CREATE NOW! </button>
+            <button id="register-btn"  name="btn" type="submit"  value="register-btn-v"> CREATE NOW! </button>
 
         </form>
 
@@ -41,23 +41,52 @@
             $password_sign = $_POST["password"];
             $passwordv_sign = $_POST["passwordv"];
 
+            $username_login = $_POST["username_login"];
+            $password_login = $_POST["password_login"];
 
-            if($username_sign != null and $mail_sign != null and $password_sign != null and $passwordv_sign != null){
+            $state=$_POST["btn"];
 
-                $state=$_POST["register-btn"];
+            if($state =="register-btn-v")
+            {
 
-                if($state =="register-btn-v")
-                {
+                if($username_sign != null or $mail_sign != null or $password_sign != null or $passwordv_sign != null){
+
                     Signup();
+
                 }
 
+                else{
+                    echo ("Please fill in the blanks correctly");
+                }
             }
 
-            else{
-                echo ("Please fill in the blanks correctly");
+            if($state == "login-btn-v")
+            {
+
+                if($username_login != null or $password_login != null){
+                    Login();
+                }
+
+                else{
+                    echo ("Please fill in the blanks correctly");
+                }
             }
+
+
         }
 
+        function cookie()
+        {
+            $conn = new mysqli("localhost", "root", "","users");
+            $cookie=$_COOKIE["auth"];
+            $read = $conn->query("SELECT user_id FROM cookies WHERE cookie='".$cookie."'");
+            $list = mysqli_fetch_array($read);
+            if(empty($list)){
+                setcookie("auth","", time()-3600);
+            }else{
+                header("Location: ./profile.php?profile=$list[0]");
+            }
+        }
 
 
         function Signup()
@@ -92,21 +121,62 @@
 
         function Login()
         {
-
             $conn = new mysqli("localhost", "root", "","users");
 
-            $username_login = $_POST["username"];
-            $password_login = $_POST["password"];
+            $username_login = $_POST["username_login"];
+            $password_login = $_POST["password_login"];
 
-            if($password_login != null or $username_login != null){
-                $read = $conn->query("SELECT id FROM users_table WHERE username='".$username_login."'");
+            if(!empty($password_login) and !empty($username_login)){
+                $read = $conn->query("SELECT * FROM users_table WHERE username='".$username_login."'");
                 $list = mysqli_fetch_array($read);
-                if(!empty($list)){
-                    
+                $user_id = $list[0];
+                if($password_login == $list[2]){
+
+                    $read = $conn->query("select * from cookies where user_id='".$user_id."'");
+                    $list = mysqli_fetch_array($read);
+
+                    if(empty($list)){
+
+                    $auth=random_key();
+                    $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$list[1]', '$auth')");
+                    setcookie("auth","$auth", time()+3600);
+                    header("Location: ./profile.php?id=$user_id");
+
+                    }else{
+
+                        $auth=random_key();
+                        $conn->query("UPDATE cookies SET cookie=$auth WHERE user_id=$list[1]");
+                        setcookie("auth","$auth", time()+3600);
+                        header("Location: ./profile.php?profile=$user_id");
+
+                    }
+
+//                    $auth=random_key();
+//                    $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$list[0]', '$auth')");
+//                    setcookie("auth","$auth", time()+3600);
+//                    header("Location: ./profile.php?id=$userid");
                 }
+                else{
+                    echo ("Password is wrong !");
+                }
+            }
+            else{
+                echo ("Please check in the blanks");
             }
 
         }
+
+        function random_key($str_length = 24)
+        {
+            $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            $bytes = openssl_random_pseudo_bytes(3*$str_length/4+1);
+            $repl = unpack('C2', $bytes);
+            $first  = $chars[$repl[1]%62];
+            $second = $chars[$repl[2]%62];
+
+            return strtr(substr(base64_encode($bytes), 0, $str_length), '+/', "$first$second");
+        }
+
 
         ?>
 
