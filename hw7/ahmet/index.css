@@ -1,7 +1,7 @@
-div.container {
-    width: 100%;
-    border: 1px solid gray;
-    left=0;
+div {
+	width: 100%;
+	padding: 20px;
+	display: inline-block;
 }
 
 header, footer {
@@ -30,5 +30,3 @@ input[type=text], input[type=password] {
     border: 1.1px solid black;
     width: 480px;
 }
-
-w3-section,.w3-code{margin-top:16px!important;margin-bottom:16px!important}
