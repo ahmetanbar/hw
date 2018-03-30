@@ -20,12 +20,25 @@
                 Profile
             </a>
             <a id="bar-button" href="homepage.php">
-                Logout
+                <?php
+                $auth = $_COOKIE['auth'];
+                $conn = new mysqli("localhost", "root", "","users");
+                $read = $conn->query("select * from cookies where cookie='".$auth."'");
+                $list = mysqli_fetch_array($read);
+                $userid = $list["user_id"];
+                $read = $conn->query("SELECT * FROM users_table WHERE id='".$userid."'");
+                $list = mysqli_fetch_array($read);
+                $username = $list[1];
+                echo "Logout-$username" ;
+                ?>
             </a>
     </div>
 
     <div class="user-page">
-            <a> Welcome to [$username]</a>
+            <?php
+            echo "Welcome to Soceanic";
+            ?>
+
     </div>
 
 
