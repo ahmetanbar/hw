@@ -33,13 +33,15 @@
 
 
         <?php
-        $auth= $_COOKIE['auth'];
-        $conn = new mysqli("localhost", "root", "", "users");
-        $read = $conn->query("DELETE FROM cookies WHERE cookie='" . $auth . "'");
+
+
+        if(count($_POST)!=0){
+
+
+
 
             $conn = new mysqli("localhost", "root", "","users");
 
-        if(count($_POST)!=0){
             $username_sign = $_POST["username"];
             $mail_sign = $_POST["email"];
             $password_sign = $_POST["password"];
