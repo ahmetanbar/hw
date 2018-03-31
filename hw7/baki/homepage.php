@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="homepage.css">
 
     <meta charset="UTF-8">
-    <title>Soceanic</title>
+    <title>Socean</title>
 </head>
 <body>
 
