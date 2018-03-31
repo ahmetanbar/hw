@@ -33,6 +33,10 @@
 
 
         <?php
+        $auth= $_COOKIE['auth'];
+        $conn = new mysqli("localhost", "root", "", "users");
+        $read = $conn->query("DELETE FROM cookies WHERE cookie='" . $auth . "'");
+
             $conn = new mysqli("localhost", "root", "","users");
 
         if(count($_POST)!=0){
@@ -75,18 +79,18 @@
 
         }
 
-        function cookie()
-        {
-            $conn = new mysqli("localhost", "root", "","users");
-            $cookie=$_COOKIE["auth"];
-            $read = $conn->query("SELECT user_id FROM cookies WHERE cookie='".$cookie."'");
-            $list = mysqli_fetch_array($read);
-            if(empty($list)){
-                setcookie("auth","", time()-3600);
-            }else{
-                header("Location: ./profile.php?profile=$list[0]");
-            }
-        }
+//        function cookie()
+//        {
+//            $conn = new mysqli("localhost", "root", "","users");
+//            $cookie=$_COOKIE["auth"];
+//            $read = $conn->query("SELECT user_id FROM cookies WHERE cookie='".$cookie."'");
+//            $list = mysqli_fetch_array($read);
+//            if(empty($list)){
+//                setcookie("auth","", time()-3600);
+//            }else{
+//                header("Location: ./profile.php?profile=$list[0]");
+//            }
+//        }
 
 
         function Signup()
@@ -137,30 +141,28 @@
                 $read = $conn->query("SELECT * FROM users_table WHERE username='".$username_login."'");
                 $list = mysqli_fetch_array($read);
                 $userid = $list[0];
+                $username = $list[1];
                 if($password_login == $list[2]){
 
                     $read = $conn->query("select * from cookies where user_id='".$userid."'");
                     $list = mysqli_fetch_array($read);
 
                     if(empty($list)){
-                    $auth=random_key();
-                    $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$userid', '$auth')");
-                    setcookie("auth","$auth", time()+3600);
-                    header("Location: ./profile.php?id=$userid");
+
+                        $auth=random_key();
+                        $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$userid', '$auth')");
+                        setcookie("auth","$auth", time()+3600);
+                        header("Location: ./profile.php?$username");
 
                     }else{
 
                         $auth=random_key();
                         $conn->query("UPDATE cookies SET cookie=$auth WHERE user_id=$userid");
                         setcookie("auth","$auth", time()+3600);
-                        header("Location: ./profile.php?profile=$userid");
+                        header("Location: ./profile.php?$username");
 
                     }
 
-//                    $auth=random_key();
-//                    $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$userid', '$auth')");
-//                    setcookie("auth","$auth", time()+3600);
-//                    header("Location: ./profile.php?id=$userid");
                 }
                 else{
                     echo ("Password or Username is wrong !");
