@@ -45,7 +45,8 @@
 
     <div class="user-page">
             <?php
-            echo "Welcome to Soceanic";
+            echo "Welcome to Socean <br>";
+            echo "Socean mean is = Social <-> Ocean";
             ?>
 
     </div>
