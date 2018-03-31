@@ -102,20 +102,27 @@
             $read = $conn->query("SELECT id FROM users_table WHERE username='".$username_sign."'");
             $list = mysqli_fetch_array($read);
 
-            if($passwordv_sign == $password_sign and empty($list))
+            if (!empty($list)){
+                echo ("USER ALREADY EXIST");
+            }
+            else if (!filter_var($mail_sign, FILTER_VALIDATE_EMAIL)) {
+                echo "Invalid email format";
+            }
+            else if(strlen($password_sign) < 6){
+                echo ("PASSWORD LENGTH MUST BE LEAST 6 CHARACTER");
+            }
+            else if($passwordv_sign != $password_sign or !empty($list) or $password_sign == null)
             {
+                echo ("PLEASE CHECK PASSWORDS BLANKS");
+            }
 
+            else
+            {
                 $conn->query("INSERT INTO users_table (username,pwd,mail) VALUES('$username_sign','$password_sign','$mail_sign')");
 
                 echo ("REGISTERING IS SUCCESSFUL !");
             }
-            else if (!empty($list)){
-                echo ("USER ALREADY EXIST");
-            }
-            else
-            {
-                echo ("PASSWORDS ARE DIFFERENT");
-            }
+
 
         }
 
@@ -129,35 +136,34 @@
             if(!empty($password_login) and !empty($username_login)){
                 $read = $conn->query("SELECT * FROM users_table WHERE username='".$username_login."'");
                 $list = mysqli_fetch_array($read);
-                $user_id = $list[0];
+                $userid = $list[0];
                 if($password_login == $list[2]){
 
-                    $read = $conn->query("select * from cookies where user_id='".$user_id."'");
+                    $read = $conn->query("select * from cookies where user_id='".$userid."'");
                     $list = mysqli_fetch_array($read);
 
                     if(empty($list)){
-
                     $auth=random_key();
-                    $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$list[1]', '$auth')");
+                    $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$userid', '$auth')");
                     setcookie("auth","$auth", time()+3600);
-                    header("Location: ./profile.php?id=$user_id");
+                    header("Location: ./profile.php?id=$userid");
 
                     }else{
 
                         $auth=random_key();
-                        $conn->query("UPDATE cookies SET cookie=$auth WHERE user_id=$list[1]");
+                        $conn->query("UPDATE cookies SET cookie=$auth WHERE user_id=$userid");
                         setcookie("auth","$auth", time()+3600);
-                        header("Location: ./profile.php?profile=$user_id");
+                        header("Location: ./profile.php?profile=$userid");
 
                     }
 
 //                    $auth=random_key();
-//                    $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$list[0]', '$auth')");
+//                    $conn->query("INSERT INTO cookies (user_id, cookie) VALUES ('$userid', '$auth')");
 //                    setcookie("auth","$auth", time()+3600);
 //                    header("Location: ./profile.php?id=$userid");
                 }
                 else{
-                    echo ("Password is wrong !");
+                    echo ("Password or Username is wrong !");
                 }
             }
             else{
