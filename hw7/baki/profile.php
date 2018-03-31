@@ -21,17 +21,26 @@
             </a>
             <a id="bar-button" href="homepage.php">
                 <?php
-                $auth = $_COOKIE['auth'];
-                $conn = new mysqli("localhost", "root", "","users");
-                $read = $conn->query("select * from cookies where cookie='".$auth."'");
+                $auth= $_COOKIE['auth'];
+                $conn = new mysqli("localhost", "root", "", "users");
+                $read = $conn->query("SELECT * FROM cookies WHERE cookie='" . $auth . "'");
                 $list = mysqli_fetch_array($read);
-                $userid = $list["user_id"];
-                $read = $conn->query("SELECT * FROM users_table WHERE id='".$userid."'");
-                $list = mysqli_fetch_array($read);
-                $username = $list[1];
-                echo "Logout-$username" ;
+
+                if(!empty($list)){
+
+                    $userid = $list["user_id"];
+                    $read = $conn->query("SELECT * FROM users_table WHERE id='" . $userid . "'");
+                    $list = mysqli_fetch_array($read);
+                    $username = $list[1];
+                    echo "Logout-$username";
+
+                }
+                else{
+                    header("Location: ./homepage.php");
+                }
                 ?>
             </a>
+
     </div>
 
     <div class="user-page">
