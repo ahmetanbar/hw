@@ -1,0 +1,76 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    background: lightgrey;
+}
+
+.banner{
+    animation-duration: 20s;
+    animation-timing-function: ease-in-out;
+    animation-name: animation;
+    font-family: "Segoe UI Light",serif;
+    background-color: black;
+    color: lightgrey;
+    width: 100%;
+    height: 100px;
+    line-height: 150px;
+    text-align: center;
+}
+
+.footer{
+    animation-duration: 20s;
+    animation-timing-function: ease-in-out;
+    animation-name: animation;
+    font-family: "Segoe UI Light",serif;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: black;
+    color: lightgrey;
+    text-align: center;
+}
+
+.vertical-menu {
+    animation-duration: 20s;
+    animation-timing-function: ease-in-out;
+    animation-name: animation;
+    margin-top: 250px;
+    width: 150px; /* Set a width if you like */
+    text-align: center;
+        /*border: solid lightgrey 1px;    */
+}
+
+@keyframes animation {
+    0%, 1% { left: -100%; opacity: 0; }
+    8.3%,25% { left:    0%; opacity: 1; }
+}
+
+.vertical-menu a {
+    font-family: "Segoe UI Light",serif;
+    background-color: black; /* Grey background color */
+    color: whitesmoke; /* Black text color */
+    display: block; /* Make the links appear below each other */
+    padding: 12px; /* Add some padding */
+    text-decoration: none; /* Remove underline from links */
+}
+
+.vertical-menu a:hover {
+    background-color: #292929;
+    font-size: 20px;
+}
+
+.vertical-menu a.active {
+    background-color: #424242;
+    font-size: 20px;
+}
+
+
+.banner-button{
+    font-family: "Segoe UI Light", sans-serif;
+    border: solid lightgrey 1px;
+    margin: 5px;
+    background: black;
+    color: lightgrey;
+    cursor: pointer;
+}
