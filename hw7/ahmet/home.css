@@ -101,9 +101,10 @@ footer {
 }
 
 .topnav a:hover {
-    background-color: #ddd;
-    color: black;
+    background-color: #282828;
 }
+
+
 
 @media screen and (max-width:600px) {
     .header {
@@ -123,6 +124,7 @@ footer {
     }
 
 }
+
 
 @font-face {
   font-family: 'Material Icons';
