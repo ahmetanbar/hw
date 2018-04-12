@@ -1,101 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
     <link rel="stylesheet" type="text/css" href="index.css">
 
+    <meta charset="UTF-8">
+    <title>Socean</title>
 </head>
 <body>
 
 
+<div class="banner-text">
+
+		<p>
+				Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed pharetra augue. 
+				Morbi porta eleifend felis, in vehicula est consequat nec. Nam scelerisque finibus efficitur. 
+				Mauris ut fermentum eros. Cras sit amet lorem lacus. Cras ullamcorper mattis cursus. 
+				Maecenas eu enim in risus cursus auctor eget id orci. Sed eget mattis nulla, at vulputate risus. 
+				Aliquam lorem neque, sagittis nec luctus non, placerat a velit.
+		</p>
+		<form action="login.html">
+			<button id="login-btn"  name="btn" type="submit"  value="btn"> LOGIN </button>
+		</form>
+
+
+		<button id="signup-btn"  name="btn" type="submit"  value="btn"> SIGNUP </button>
+
+		<div id="social">
+				<img src="facebook.png"  alt="fb"  height="30" width="30" >
+				<img src="twitter.png"   alt="tw"  height="30" width="30">
+				<img src="instagram.png" alt="ins"  height="30" width="30">
+		</div>
+
+
+</div>
+
 <div class="banner">
-    <!--<img id="banner-button" src="logo.png" alt="logo">-->
+		<button id="btn"  name="btn" type="submit"  value="btn"> HOMEPAGE </button>
+		<button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button>
+		<button id="btn"  name="btn" type="submit"  value="btn"> CONTACT </button>
 
-    <a href="http://facebook.com/bakialmaci">
-        <img   class="social" src="facebook.png" alt="facebook" >
-    </a>
-
-    <a href="http://twitter.com/baki_almaci">
-        <img   class="social" src="twitter.png" alt="Smiley face" >
-    </a>
-
-    <a href="http://linkedin.com">
-        <img   class="social" src="linkedin.png" alt="Smiley face" >
-    </a>
-
-
-    <form>
-        <button class="banner-button"  name="btn" type="submit"  value="Homepage" >HOMEPAGE </button>
-        <button class="banner-button"  name="btn" type="submit"  value="Posted"> POSTED </button>
-        <button class="banner-button"  name="btn" type="submit"  value="About"> ABOUT </button>
-        <button class="banner-button"  name="btn" type="submit"  value="Contact"> CONTACT </button>
-        <button class="banner-button"  name="btn" type="submit"  value="Login"> LOGIN </button>
-        <button class="banner-button"  name="btn" type="submit"  value="Signup"> SIGNUP </button>
-
-    </form>
-    <!--<div class="vertical-menu2">-->
-    <!--<a href="#">LOGIN</a>-->
-    <!--<a href="#">SIGNUP</a>-->
-    <!--</div>-->
 
 </div>
 
+<div class="home-page">
 
-<div class="vertical-menu">
-    <a href="#">Projects</a>
-    <a href="#">ARDUINO</a>
-    <a href="#">ARM</a>
-    <a href="#">Raspberry Pi</a>
-    <a href="#">C Language</a>
-    <a href="#">Python</a>
-    <a href="#">Java</a>
-    <a href="#">HTML</a>
-    <a href="#">CSS</a>
-    <a href="#">PHP</a>
-    <a href="#">REGEX</a>
-</div>
+    	<div class="form" >
 
+        	<div id="title">
+    		<h1>WHATS PYTHON?</h1	>
+    	</div>
 
+    	<p>
+    		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed pharetra augue. Morbi porta eleifend felis, in vehicula est consequat nec. Nam scelerisque finibus efficitur. Mauris ut fermentum eros. Cras sit amet lorem lacus. Cras ullamcorper mattis cursus. Maecenas eu enim in risus cursus auctor eget id orci. Sed eget mattis nulla, at vulputate risus. Aliquam lorem neque, sagittis nec luctus non, placerat a velit.
 
-<?php
-$i =0;
-for($i = 0;$i<=5;$i++)
-{
-?>
+			Vivamus rutrum urna ut iaculis mollis. Etiam id efficitur sem. Pellentesque eleifend, nunc quis semper blandit, felis augue tristique mauris, ut pellentesque neque risus eget dui. Curabitur aliquet nisl id lorem tempus, sit amet pellentesque sem ornare. Nullam nec tellus quis massa pellentesque porttitor non a leo. Sed hendrerit vitae enim nec lacinia. Curabitur placerat urna at auctor faucibus. Aliquam erat volutpat. Fusce eu vestibulum magna. Sed quam lectus, consectetur sit amet diam vitae, scelerisque interdum ipsum. Pellentesque tincidunt id nisi vel volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sagittis a ipsum ut faucibus. Etiam a nunc dolor. Praesent id bibendum enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
-<div class="form">
-    <img class="img" src="small.jpg" alt="Smiley face">
+			Morbi aliquet, orci sit amet dapibus porta, odio sapien aliquet mauris, vitae imperdiet velit leo ut quam. Aenean vitae mauris augue. Maecenas eget mauris luctus diam consectetur fermentum. Donec posuere cursus odio, sit amet molestie diam faucibus eu. Morbi in placerat lorem. Sed sit amet dolor nec felis vehicula maximus id et ante. In quis varius elit, a laoreet nunc.
 
-    <h1> Lorem Ipsumun Faydaları</h1>
+			Integer et purus diam. Curabitur scelerisque bibendum tortor, in mollis erat pretium ut. Curabitur porttitor ipsum et massa semper eleifend eu ullamcorper nisl. Proin eros lorem, tempus vel lectus vestibulum, dapibus pulvinar nisl. Duis tempor orci eget aliquet semper. Nullam laoreet fringilla nibh efficitur sollicitudin. Phasellus convallis purus nibh, feugiat eleifend lorem tristique eget. Phasellus mollis id justo et dapibus. Aenean ultrices facilisis neque id pharetra. Sed malesuada venenatis commodo. Quisque vitae eleifend quam, et tempus libero.
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed eu odio sit amet felis pretium accumsan at a enim. In pretium viverra orci, ac vehicula velit tristique eu. Vestibulum at mollis velit. In iaculis tincidunt mi, sit amet aliquet sapien posuere vitae. Proin mollis sem et odio consectetur tempus. Nullam eget facilisis tellus. Donec vestibulum quam at tristique dignissim. Nam ultricies tellus at eros mattis, consequat ornare turpis sodales. Praesent pulvinar egestas diam vitae tincidunt. Aliquam vehicula, arcu vel gravida porta, ex arcu interdum nisl, at aliquet turpis tortor in nulla. Vivamus maximus, mauris a tristique porttitor, erat urna feugiat urna, vel maximus sapien urna semper arcu. Vestibulum sed mauris enim.
-        Donec venenatis eget turpis sit amet posuere. Aliquam eu est sit amet sem ullamcorper faucibus. Nam lacinia egestas nisi quis faucibus. Nullam consequat metus eget justo mollis congue. Morbi finibus quis lectus sit amet lobortis. In vel felis viverra, convallis diam nec, malesuada ipsum. Morbi at euismod sapien. Pellentesque rhoncus porttitor dui a pulvinar.
-        Nullam eget turpis posuere, egestas dui eget, ultricies odio. Vestibulum ac risus est. Phasellus in risus aliquam, consectetur lorem a, commodo leo. Curabitur at semper tellus. Proin efficitur vehicula nisi, ac venenatis tortor blandit cursus. In tortor purus, vehicula id justo ac, dignissim porttitor mi. Nunc quis tellus a felis vehicula consequat. Etiam at ligula interdum, auctor enim ut, aliquet neque. Phasellus vestibulum in libero ac sagittis. Phasellus posuere luctus tempor. Vestibulum porttitor magna eu nisl fermentum laoreet. Proin egestas lectus nec ex viverra cursus.
-        Pellentesque sollicitudin leo quis hendrerit tincidunt. Quisque pharetra, lectus non cursus consequat, quam dui molestie mi, id gravida metus mauris non nulla. Nullam eu convallis tellus. Proin in quam arcu. Praesent quam lorem, imperdiet ac vestibulum quis, hendrerit at nibh. Mauris nunc dui, dignissim non justo ut, egestas porta tellus. Mauris id urna mauris. Vivamus rutrum pharetra nibh, non tempus diam consectetur eget. Etiam faucibus finibus vestibulum. Phasellus pretium convallis tortor, consequat malesuada nunc mollis non. Integer volutpat ultrices tincidunt.
-        Duis sed metus quis quam elementum iaculis. Aliquam pulvinar magna nec tellus porta iaculis. Donec tincidunt posuere cursus. Aenean a arcu maximus, luctus justo elementum, lacinia nulla. Fusce viverra felis sed lacinia consectetur. Aenean finibus ut mi euismod pharetra. Maecenas urna lacus, dignissim quis sem malesuada, egestas molestie neque. Vestibulum venenatis leo eu efficitur consequat.
-    </p>
+			Sed et consectetur nisl, a blandit velit. Nullam eu ultricies purus. Aliquam erat volutpat. Aenean commodo gravida vulputate. Nunc sagittis leo sed velit facilisis efficitur. Duis dapibus rutrum congue. Curabitur sit amet finibus urna, at finibus odio. Etiam volutpat mauris metus, id aliquam tellus elementum sit amet. Etiam et commodo nunc, a fringilla nunc. Donec bibendum viverra aliquet. Morbi suscipit nisl sit amet arcu pharetra, eget posuere dolor efficitur.
+    	</p>
 
-    <div class="information">
-        <form action="article.php">
-        <p>View:55</p>
-        <p>Topic:Programming</p>
-        <p>Date:04/08/2023</p>
-        <p>Writer:Baki Almacı</p>
-        <p>Comment:23</p>
-        <p>Like:33</p>
-            <button  name="btn" type="submit"  value="Contact" > READ MORE </button>
-        </form>
+    	<div id="info">
+    		<p>View:55</p>
+    		<p>Comment:13</p>
+    		<p>Author:bakialmaci</p>
+		</div>
+		
     </div>
+
+        	<div class="form" >
+
+        	<div id="title">
+    		<h1>TITLE</h1	>
+    	</div>
+
+    	<p>
+    		Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed pharetra augue. Morbi porta eleifend felis, in vehicula est consequat nec. Nam scelerisque finibus efficitur. Mauris ut fermentum eros. Cras sit amet lorem lacus. Cras ullamcorper mattis cursus. Maecenas eu enim in risus cursus auctor eget id orci. Sed eget mattis nulla, at vulputate risus. Aliquam lorem neque, sagittis nec luctus non, placerat a velit.
+
+			Vivamus rutrum urna ut iaculis mollis. Etiam id efficitur sem. Pellentesque eleifend, nunc quis semper blandit, felis augue tristique mauris, ut pellentesque neque risus eget dui. Curabitur aliquet nisl id lorem tempus, sit amet pellentesque sem ornare. Nullam nec tellus quis massa pellentesque porttitor non a leo. Sed hendrerit vitae enim nec lacinia. Curabitur placerat urna at auctor faucibus. Aliquam erat volutpat. Fusce eu vestibulum magna. Sed quam lectus, consectetur sit amet diam vitae, scelerisque interdum ipsum. Pellentesque tincidunt id nisi vel volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam sagittis a ipsum ut faucibus. Etiam a nunc dolor. Praesent id bibendum enim. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+
+			Morbi aliquet, orci sit amet dapibus porta, odio sapien aliquet mauris, vitae imperdiet velit leo ut quam. Aenean vitae mauris augue. Maecenas eget mauris luctus diam consectetur fermentum. Donec posuere cursus odio, sit amet molestie diam faucibus eu. Morbi in placerat lorem. Sed sit amet dolor nec felis vehicula maximus id et ante. In quis varius elit, a laoreet nunc.
+
+			Integer et purus diam. Curabitur scelerisque bibendum tortor, in mollis erat pretium ut. Curabitur porttitor ipsum et massa semper eleifend eu ullamcorper nisl. Proin eros lorem, tempus vel lectus vestibulum, dapibus pulvinar nisl. Duis tempor orci eget aliquet semper. Nullam laoreet fringilla nibh efficitur sollicitudin. Phasellus convallis purus nibh, feugiat eleifend lorem tristique eget. Phasellus mollis id justo et dapibus. Aenean ultrices facilisis neque id pharetra. Sed malesuada venenatis commodo. Quisque vitae eleifend quam, et tempus libero.
+
+			Sed et consectetur nisl, a blandit velit. Nullam eu ultricies purus. Aliquam erat volutpat. Aenean commodo gravida vulputate. Nunc sagittis leo sed velit facilisis efficitur. Duis dapibus rutrum congue. Curabitur sit amet finibus urna, at finibus odio. Etiam volutpat mauris metus, id aliquam tellus elementum sit amet. Etiam et commodo nunc, a fringilla nunc. Donec bibendum viverra aliquet. Morbi suscipit nisl sit amet arcu pharetra, eget posuere dolor efficitur.
+    	</p>
+
+    	<div id="info">
+    		<p>View:55</p>
+    		<p>Comment:13</p>
+    		<p>Author:bakialmaci</p>
+    	</div>
+    </div>
+
 </div>
-
-    <?php } ?>
-
 
 <div class="footer">
-    <p> Copyleft - Muhammed Baki Almacı Product</p>
-
-
+	powered by bakialmaci - 2018
 </div>
+
+
+
 
 </body>
 </html>
