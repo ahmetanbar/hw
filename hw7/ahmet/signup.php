@@ -9,46 +9,66 @@
 </head>
 <body>
   <?php
+      function generateRandomString($length = 52) {
+          return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+      }
+
+      function control_cookie(){
+        if(count($_COOKIE)!=0 and array_key_exists("auth",$_COOKIE)){
+          $auth= $_COOKIE['auth'];
+          $servername = "localhost";
+          $db_username = "root";
+          $db_password = "";
+          $db="hw7";
+          $conn = new mysqli($servername, $db_username, $db_password,$db);
+          $sql = "SELECT auth FROM cookie WHERE auth='$auth'";
+          $result = $conn->query($sql) or die($conn->error);
+          $row = $result->fetch_assoc();
+           if(count($row)!=0)
+           {
+             header("Location:home.php"); /* Redirect browser */
+           }
+        }
+      }
+
       function control_post(){
         if(count($_POST)!=0){
           if(array_key_exists("name",$_POST) and array_key_exists("surname",$_POST) and array_key_exists("email",$_POST) and array_key_exists("username",$_POST) and array_key_exists("psw",$_POST) and array_key_exists("gender",$_POST)){
-            $logs=array("name"=>"","surname"=>"","email"=>"","username"=>"","password"=>"","foot_note"=>"");
+            $logs=array("name"=>"","surname"=>"","email"=>"","username"=>"","password"=>"","foot_note"=>"","input_control"=>"");
+            $_SESSION['name']=$_POST['name']; $_SESSION['surname']=$_POST['surname']; $_SESSION['email']=$_POST['email']; $_SESSION['username']=$_POST['username'];
             if($_POST['name']!=NULL and $_POST['surname']!=NULL and $_POST['email']!=NULL and $_POST['username']!=NULL and $_POST['psw']!=NULL and $_POST['gender']!=NULL){
-                $varify_cont=0;
+                $verify_cont=0;
                 //name regular expression control
                 $subject = $_POST['name'];
-                $_SESSION["name"]=$subject;
                 $pattern = '/^[a-zA-Z]{3,20}$/';
                 if(preg_match($pattern,$subject)){
-                  $varify_cont+=1;
+                  $verify_cont+=1;
                 }
                 else{
                   $logs['name']="Write a real name!";
                 }
                 //surname regular expression control
                 $subject = $_POST['surname'];
-                $_SESSION["surname"]=$subject;
                 $pattern = '/^[a-zA-Z]{2,20}$/';
                 if(preg_match($pattern,$subject)){
-                  $varify_cont+=1;
+                  $verify_cont+=1;
                 }
                 else{
                   $logs['surname']="Write a real surname!";
                 }
                 //email regular expression control
-                $_SESSION["email"]=$subject;
                 if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
-                  $varify_cont+=1;
+                  $verify_cont+=1;
+                  echo(strtolower($_POST['email']));
                 }
                 else{
                   $logs['email']="Write a valid email!";
                 }
                 //username regular expression control
                 $subject = $_POST['username'];
-                $_SESSION["username"]=$subject;
                 $pattern = '/^[a-zA-Z0-9_-]{3,20}$/';
                 if(preg_match($pattern,$subject)){
-                  $varify_cont+=1;
+                  $verify_cont+=1;
                 }
                 else{
                   if(strlen($subject)>=3 and strlen($subject)<=20)
@@ -60,7 +80,7 @@
                 $subject = $_POST['psw'];
                 $pattern='/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{10,30}$/';
                 if(preg_match($pattern,$subject)){
-                  $varify_cont+=1;
+                  $verify_cont+=1;
                   $_SESSION["psw"]=$subject;
                 }
                 else{
@@ -69,6 +89,62 @@
                   else if(strlen($subject)<10 or strlen($subject)>30)
                   $logs['password']="Password must has length of 10-30!";
                 }
+                // ----------------------after right input types-----------------//
+                if($verify_cont==5){
+                  $email=strtolower($_POST['email']);
+                  $servername = "localhost";
+                  $db_username = "root";
+                  $db_password = "";
+                  $db="hw7";
+                  $conn = new mysqli($servername, $db_username, $db_password,$db);
+                  try{
+                    $conn = new mysqli($servername, $db_username, $db_password,$db);
+                    if ($conn->connect_error) {
+                      die("Connection failed: " . $conn->connect_error);
+                    }
+                  }
+                  catch(Exception $e) {
+                    //log handled
+                  }
+                  $sql = "SELECT email FROM users WHERE email='$email'";
+                  $result = $conn->query($sql) or die($conn->error);
+                  $row = $result->fetch_assoc();
+                  if(count($row)==0){
+                    $username=$_POST['username'];
+                    $sql = "SELECT username FROM users WHERE username='$username'";
+                    $result = $conn->query($sql) or die($conn->error);
+                    $row = $result->fetch_assoc();
+                    if(count($row)==0){
+                      $name=ucfirst(strtolower($_POST['name']));
+                      $surname=ucfirst(strtolower($_POST['surname']));
+                      $password=$_POST['psw'];
+                      $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                      $gender=$_POST['gender'];
+                      $sql = "INSERT INTO users (name,surname,email,password,gender,username) VALUES('$name','$surname','$email','$hashed_password','$gender','$username')";
+                      $conn->query($sql);
+                      if($conn->query($sql)==TRUE) {
+                         $sql = "SELECT id FROM users WHERE username='$username'";
+                         $result = $conn->query($sql) or die($conn->error);
+                         $row = $result->fetch_assoc();
+                         $auth=generateRandomString();
+                         $user_id=$row["id"];
+                         setcookie('auth',$auth);
+                         $sql = "INSERT INTO cookie (auth,user_id) VALUES('$auth','$user_id')";
+                         if ($conn->query($sql)==TRUE) {
+                           header("Location:home.php"); /* Redirect browser */
+                         }
+                   }
+                    }
+                    else{
+                      $logs['input_control']="This username is already used.";
+                    }
+                  }
+                  else{
+                    $logs['input_control']="This email is already registered.Want to <a href=\"https://google.com\">Login</a>?";
+                  }
+
+                }
+
             }
             else{
                 $logs['foot_note']="Complete All of Them!";
@@ -77,9 +153,10 @@
           }
         }
       }
-    //_SESSION can be move other place???
-    $_SESSION=array("name"=>"","surname"=>"","email"=>"","username"=>"","password"=>"");
-    $logs=control_post();
+      //_SESSION can be move other place???
+      control_cookie();
+      $_SESSION=array("name"=>"","surname"=>"","email"=>"","username"=>"","password"=>"");
+      $logs=control_post();
   ?>
   <div class="main">
       <div class="header">
@@ -97,6 +174,7 @@
           <h1>Join CodeNote</h1>
 
           <form action="" method="post" autocomplete="off" />
+            <?php echo ($logs['input_control']) ? '<span style="color:#c30000;">'.$logs['input_control'].'</span><br>':''; ?>
             <?php echo ($logs['foot_note']) ? '<span style="color:#c30000;">'.$logs['foot_note'].'</span><br>':''; ?>
             <?php echo ($logs['name']) ? '<span style="color:#c30000;">'.$logs['name'].'</span><br>':''; ?>
             <?php echo ($logs['surname']) ? '<span style="color:#c30000;">'.$logs['surname'].'</span><br>':''; ?>
