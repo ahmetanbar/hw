@@ -59,7 +59,6 @@
                 //email regular expression control
                 if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
                   $verify_cont+=1;
-                  echo(strtolower($_POST['email']));
                 }
                 else{
                   $logs['email']="Write a valid email!";
@@ -118,10 +117,9 @@
                       $name=ucfirst(strtolower($_POST['name']));
                       $surname=ucfirst(strtolower($_POST['surname']));
                       $password=$_POST['psw'];
-                      $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                      $hashed_password = hash('sha512',$_POST['psw']);
                       $gender=$_POST['gender'];
                       $sql = "INSERT INTO users (name,surname,email,password,gender,username) VALUES('$name','$surname','$email','$hashed_password','$gender','$username')";
-                      $conn->query($sql);
                       if($conn->query($sql)==TRUE) {
                          $sql = "SELECT id FROM users WHERE username='$username'";
                          $result = $conn->query($sql) or die($conn->error);
@@ -166,7 +164,7 @@
         <a href="./home.php">Home</a>
         <a href="#">Archive</a>
         <a href="https://google.com">About</a>
-        <a style="float:right;" href="#">Log In</a>
+        <a style="float:right;" href="login.php">Log In</a>
       </div>
       <br>
       <div class="content">
