@@ -1,10 +1,54 @@
 .banner {
     width: 100%;
     height: 400px;
-    background-image:url("banner2.jpg");
+    background-image:url("banner3.png");
     z-index: -999;
-    
 } 
+
+.menu{
+    width: 100%;
+    height: auto;
+    background-color: white;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
+
+li {
+  float: left;
+}
+
+li a {
+    margin: 5px;
+    font-size: 16px;
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 5px 20px;
+    text-decoration: none;
+}
+
+li a:hover {
+    background-color: #111;
+}
+
+input{
+    font-family: "Segoe UI Light", sans-serif;
+    outline-color: coral;
+    background: #f2f2f2;
+    color: black;
+    width: auto;
+    border: 0;
+    margin: 5px;
+    padding: 8px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
 
 #btn{
     font-family: "Segoe UI Light", sans-serif;
@@ -36,6 +80,7 @@
     width: 100px;
     box-sizing: border-box;
     position: absolute;
+    z-index: 999;
     
 
 }
@@ -67,11 +112,10 @@
 }
 
 body {
-    background: #BBDEFB  ;
+    background-image:url("wp.png");
     font-family: "Segoe UI Light", sans-serif;
     color: black;
-    text-align: center;
-    
+    text-align: center;   
 }
 
 
@@ -85,10 +129,11 @@ body {
 #title{
     float: top;
     border-style: solid;
-    border-color: rgb(0, 174, 255); 
+    border-color:  rgb(84, 62, 184); 
     border-width: 1px;
     border-radius: 5px;
     background-color: whitesmoke;
+    text-shadow: 2px 2px 5px rgb(84, 62, 184);
 }
 
 .form {
@@ -101,8 +146,6 @@ body {
     height: auto;
     padding: 40px;
     text-align: center;
-    border-style: solid;
-    border-color: rgb(0, 174, 255); 
     border-width: 1px;
     border-radius: 10px;
     margin: auto;
@@ -132,6 +175,7 @@ body {
     padding-top: 20px;
     width: 50px;
     position: absolute;
+    cursor: pointer;
 }
 
 .footer {
@@ -215,6 +259,31 @@ body {
         padding-top: 85px;
         width: auto;
         position: absolute;
+    }
+
+    li a {
+        width: 100px;
+        margin: 5px;
+        font-size: 14px;
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 5px 20px;
+        margin-left: 30%;
+        text-decoration: none;
+    }
+    
+    input{
+        font-family: "Segoe UI Light", sans-serif;
+        outline-color: coral;
+        background: #f2f2f2;
+        color: black;
+        width: auto;
+        border: 0;
+        margin: 5px;
+        padding: 8px;
+        box-sizing: border-box;
+        font-size: 14px;
     }
 
   }
