@@ -38,25 +38,26 @@
     $cookie_know=control_cookie();
 
   ?>
+  <div class="topnav">
+    <a href="home.php" style="padding-bottom: 0px; padding-top: 0px;"> <img  src='assets/image/logo.jpg' alt='photo of me' width="100" height="71" /> </a>
+    <a href="#">Home</a>
+    <a href="#">Archive</a>
+    <a href="https://google.com">About</a>
+    <?php
+    if($cookie_know['flag']){ ?>
+      <a style="float:right;" href="profile.php"><?php echo($cookie_know['name']." ".$cookie_know['surname'] ); ?> </a>
+    <?php
+    }
+    else{ ?>
+      <a style="float:right;" href="signup.php">Sign Up</a>
+      <a style="float:right;" href="login.php">Log In</a>
+    <?php } ?>
+  </div>
 
   <div class="main">
 
       <div class="header">
         <h1>Code Note</h1>
-      </div>
-      <div class="topnav">
-        <a href="#">Home</a>
-        <a href="#">Archive</a>
-        <a href="https://google.com">About</a>
-        <?php
-        if($cookie_know['flag']){ ?>
-          <a style="float:right;" href="profile.php"><?php echo($cookie_know['name']." ".$cookie_know['surname'] ); ?> </a>
-        <?php
-        }
-        else{ ?>
-          <a style="float:right;" href="signup.php">Sign Up</a>
-          <a style="float:right;" href="login.php">Log In</a>
-        <?php } ?>
       </div>
       <?php if($cookie_know['flag']){ ?>
       <div class="usernav">
@@ -76,7 +77,7 @@
               <a href="https://google.com">More▷</a></p>
             </div>
             <div class="info">
-              <i style="float:left;" class="material-icons md-18">date_range</i>
+              <i style="float:left; " class="material-icons md-18">date_range</i>
               <a style="float:left;" href="https://google.com">12.01.2017</a>
               <i style="float:left;" class="material-icons md-18" >account_balance</i>
               <a style="float:left;" href="https://google.com">Java</a>
@@ -92,9 +93,8 @@
           </div>
             <br>
           <?php } ?>
-        <br>
 
-      <footer>Copyleft &copy;</footer>
+      <footer>Copyleft <span class="copy-left">©</span></footer>
   </div>
 </body>
 </html>

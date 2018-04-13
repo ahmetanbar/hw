@@ -141,15 +141,17 @@
       $_SESSION=array("useroremail"=>"", "password"=>"");
       $logs=control_post();
   ?>
+  <div class="topnav">
+    <a href="home.php" style="padding-bottom: 0px; padding-top: 0px;"> <img  src='assets/image/logo.jpg' alt='photo of me' width="100" height="71" /> </a>
+    <a href="./home.php">Home</a>
+    <a href="#">Archive</a>
+    <a href="https://google.com">About</a>
+    <a style="float:right;" href="signup.php">Sign Up</a>
+  </div>
+
   <div class="main">
       <div class="header">
         <h1>Code Note</h1>
-      </div>
-      <div class="topnav">
-        <a href="./home.php">Home</a>
-        <a href="#">Archive</a>
-        <a href="https://google.com">About</a>
-        <a style="float:right;" href="signup.php">Sign Up</a>
       </div>
       <br>
       <div class="content">
@@ -170,7 +172,7 @@
       </div>
       <br>
       <br>
-      <footer>Copyleft &copy;</footer>
+            <footer>Copyleft <span class="copy-left">©</span></footer>
   </div>
 </body>
 </html>

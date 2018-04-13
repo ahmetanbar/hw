@@ -9,7 +9,7 @@ body {
 .content {
   border: 3px solid #333;
   border-spacing: 50px;
-    max-width: 850px;
+  max-width: 850px;
     margin: auto;
 }
 
@@ -89,7 +89,10 @@ footer {
 .topnav {
     overflow: hidden;
     background-color: #333;
+    padding-left:400px;
+    padding-right:300px;
 }
+
 
 .topnav a {
     float: left;
@@ -150,6 +153,55 @@ footer {
 
 }
 
+@media screen and (max-width:1400px) {
+    .topnav {
+      padding-left:200px;
+      padding-right:100px;
+    }
+}
+
+@media screen and (max-width:1000px) {
+    .topnav {
+      padding-left:100px;
+      padding-right:50px;
+    }
+}
+
+@media screen and (max-width:800px) {
+    .topnav {
+      padding-left:50px;
+      padding-right:25px;
+    }
+    .topnav a {
+      font-size:15px;
+      padding: 10px 3px;
+    }
+    .topnav img {
+      width: 30px;
+      height: auto;
+    }
+}
+
+@media screen and (max-width:380px) {
+    .topnav {
+      padding-left:0px;
+      padding-right:0px;
+    }
+    .topnav a {
+      font-size:15px;
+      padding: 10px 3px;
+    }
+
+}
+
+.copy-left {
+   display: inline-block;
+   text-align: right;
+   margin: 0;
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+}
 
 @font-face {
   font-family: 'Material Icons';
