@@ -13,16 +13,20 @@
           $db_password = "";
           $db="hw7";
           $conn = new mysqli($servername, $db_username, $db_password,$db);
-          $sql = "SELECT auth FROM cookie WHERE auth='$auth'";
-          $result = $conn->query($sql) or die($conn->error);
+
+          $stmt = $conn->prepare("SELECT auth FROM cookie WHERE auth=?");
+          $stmt->bind_param("s", $auth);
+          $stmt->execute();
+          $result = $stmt->get_result();
           $row = $result->fetch_assoc();
+
            if(count($row)!=0)
            {
-              $sql = "DELETE FROM cookie WHERE auth='$auth'";
-              if(mysqli_query($conn, $sql)){
-                header("Location:home.php"); /* Redirect browser */
-              }
-
+             $stmt = $conn->prepare("DELETE FROM cookie WHERE auth=?");
+             $stmt->bind_param("s",$auth);
+             $stmt->execute();
+             $stmt->close();
+             header("Location:home.php"); /* Redirect browser */
            }
         }
       }

@@ -21,9 +21,13 @@
           $db_password = "";
           $db="hw7";
           $conn = new mysqli($servername, $db_username, $db_password,$db);
-          $sql = "SELECT auth FROM cookie WHERE auth='$auth'";
-          $result = $conn->query($sql) or die($conn->error);
+
+          $stmt = $conn->prepare("SELECT auth FROM cookie WHERE auth=?");
+          $stmt->bind_param("s", $auth);
+          $stmt->execute();
+          $result = $stmt->get_result();
           $row = $result->fetch_assoc();
+
            if(count($row)!=0)
            {
              header("Location:home.php"); /* Redirect browser */
@@ -105,33 +109,47 @@
                   catch(Exception $e) {
                     //log handled
                   }
-                  $sql = "SELECT email FROM users WHERE email='$email'";
-                  $result = $conn->query($sql) or die($conn->error);
+                  $stmt = $conn->prepare("SELECT email FROM users WHERE email=?");
+                  $stmt->bind_param("s", $email);
+                  $stmt->execute();
+                  $result = $stmt->get_result();
                   $row = $result->fetch_assoc();
+
                   if(count($row)==0){
                     $username=$_POST['username'];
-                    $sql = "SELECT username FROM users WHERE username='$username'";
-                    $result = $conn->query($sql) or die($conn->error);
+
+                    $stmt = $conn->prepare("SELECT username FROM users WHERE username=?");
+                    $stmt->bind_param("s", $username);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
                     $row = $result->fetch_assoc();
+
                     if(count($row)==0){
                       $name=ucfirst(strtolower($_POST['name']));
                       $surname=ucfirst(strtolower($_POST['surname']));
                       $password=$_POST['psw'];
                       $hashed_password = hash('sha512',$_POST['psw']);
                       $gender=$_POST['gender'];
-                      $sql = "INSERT INTO users (name,surname,email,password,gender,username) VALUES('$name','$surname','$email','$hashed_password','$gender','$username')";
-                      if($conn->query($sql)==TRUE) {
-                         $sql = "SELECT id FROM users WHERE username='$username'";
-                         $result = $conn->query($sql) or die($conn->error);
-                         $row = $result->fetch_assoc();
-                         $auth=generateRandomString();
-                         $user_id=$row["id"];
-                         setcookie('auth',$auth);
-                         $sql = "INSERT INTO cookie (auth,user_id) VALUES('$auth','$user_id')";
-                         if ($conn->query($sql)==TRUE) {
-                           header("Location:home.php"); /* Redirect browser */
-                         }
-                   }
+
+                      $stmt = $conn->prepare("INSERT INTO users (name,surname,email,password,gender,username) VALUES(?,?,?,?,?,?)");
+                      $stmt->bind_param("ssssss", $name, $surname,$email,$hashed_password,$gender,$username);
+                      $stmt->execute();
+
+                      $stmt = $conn->prepare("SELECT id FROM users WHERE username=?");
+                      $stmt->bind_param("s", $username);
+                      $stmt->execute();
+                      $result = $stmt->get_result();
+                      $row = $result->fetch_assoc();
+
+                      $auth=generateRandomString();
+                      $user_id=$row["id"];
+                      setcookie('auth',$auth);
+
+                      $stmt = $conn->prepare("INSERT INTO cookie (auth,user_id) VALUES(?,?)");
+                      $stmt->bind_param("si", $auth,$user_id);
+                      $stmt->execute();
+
+                      header("Location:home.php"); /* Redirect browser */
                     }
                     else{
                       $logs['input_control']="This username is already used.";

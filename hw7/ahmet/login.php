@@ -36,11 +36,10 @@
         if(count($_POST)!=0){
           if(array_key_exists("useroremail",$_POST) and array_key_exists("psw",$_POST)){
             $logs=array("useroremail"=>"","password"=>"","foot_note"=>"","input_control"=>"");
-            $_SESSION['useroremail']=$_POST['useroremail']; $_SESSION['password']=$_POST['psw'];
+            $_SESSION['useroremail']=$_POST['useroremail'];
             if($_POST['useroremail']!=NULL and $_POST['psw']!=NULL){
                 $verify_cont=0;
-                $flag="";
-                //email and email regular expression control
+                //email and username regular expression control
                 $subject = $_POST['useroremail'];
                 if(filter_var($subject, FILTER_VALIDATE_EMAIL)){
                   $verify_cont+=1;
@@ -54,7 +53,6 @@
                     $logs['useroremail']="Wrong username or email";
                   }
                 }
-
                 //password regular expression control
                 $subject = $_POST['psw'];
                 $pattern='/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[a-zA-Z0-9]{10,30}$/';
@@ -66,13 +64,14 @@
                   if($logs['useroremail']==NULL)
                   $logs['useroremail']="Wrong password";
                 }
+
                 // ----------------------after right input types-----------------//
+                // 6 is 5+1 as email type, 8 is 5+3 as username type
                 if($verify_cont==6 or $verify_cont==8){
                   $servername = "localhost";
                   $db_username = "root";
                   $db_password = "";
                   $db="hw7";
-                  // $conn = new mysqli($servername, $db_username, $db_password,$db);
                   try{
                     $conn = new mysqli($servername, $db_username, $db_password,$db);
                     if ($conn->connect_error) {
@@ -85,34 +84,41 @@
 
                   $password=$_POST['psw'];
                   $hashed_password = hash('sha512',$_POST['psw']);
+                  //queries according to input type email or username
+                  //as stmt control only email for email is alread used, stmt_all controls email and password because of that
+                  // email is using but password is true?
                   if($verify_cont==6){
                      $email=strtolower($_POST['useroremail']);
                      $stmt = $conn->prepare("SELECT email FROM users WHERE email=?");
                      $stmt->bind_param("s", $email);
-                     $stmt->execute();
 
-
-                     $sql_all = "SELECT email,password FROM users WHERE email='$email' and password='$hashed_password'";
+                     $stmt_all = $conn->prepare("SELECT id,email,password FROM users WHERE email=? and password=?");
+                     $stmt_all->bind_param("ss", $email,$hashed_password);
                   }
                   else{
                     $username=$_POST['useroremail'];
-                    $sql = "SELECT username FROM users WHERE username='$username'";
-                    $sql_all = "SELECT id,username,password FROM users WHERE username='$username' and password='$hashed_password'";
+                    $stmt = $conn->prepare("SELECT username FROM users WHERE username=?");
+                    $stmt->bind_param("s", $username);
+
+                    $stmt_all = $conn->prepare("SELECT id,username,password FROM users WHERE username=? and password=?");
+                    $stmt_all->bind_param("ss", $username,$hashed_password);
                   }
-                  echo($verify_cont);
+                  //queris accured and be queried
+                  $stmt->execute();
                   $result = $stmt->get_result();
                   $row = $result->fetch_assoc();
                   if(count($row)!=0){
+                    $stmt_all->execute();
                     $result = $stmt_all->get_result();
                     $row = $result->fetch_assoc();
                     if(count($row)!=0){
                       $user_id=$row["id"];
                       $auth=generateRandomString();
-                      $sql = "INSERT INTO cookie (auth,user_id) VALUES('$auth','$user_id')";
+                      $stmt = $conn->prepare("INSERT INTO cookie (auth, user_id) VALUES (?, ?)");
+                      $stmt->bind_param("si", $auth, $user_id);
+                      $stmt->execute();
                       setcookie('auth',$auth);
-                      if ($conn->query($sql)==TRUE) {
-                         header("Location:home.php"); /* Redirect browser */
-                       }
+                         header("Location:home.php");
                     }
                     else{
                       $logs['input_control']="Wrong password.Try again.";
