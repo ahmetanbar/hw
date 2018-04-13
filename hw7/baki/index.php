@@ -18,28 +18,43 @@
 				Maecenas eu enim in risus cursus auctor eget id orci. Sed eget mattis nulla, at vulputate risus. 
 				Aliquam lorem neque, sagittis nec luctus non, placerat a velit.
 		</p>
+
 		<form action="login.html">
 			<button id="login-btn"  name="btn" type="submit"  value="btn"> LOGIN </button>
 		</form>
 
-
-		<button id="signup-btn"  name="btn" type="submit"  value="btn"> SIGNUP </button>
+		<form action="signup.html">
+				<button id="signup-btn"  name="btn" type="submit"  value="btn"> SIGNUP </button>
+		</form>		
 
 		<div id="social">
 				<img src="facebook.png"  alt="fb"  height="30" width="30" >
 				<img src="twitter.png"   alt="tw"  height="30" width="30">
 				<img src="instagram.png" alt="ins"  height="30" width="30">
 		</div>
-
-
 </div>
 
 <div class="banner">
 		<button id="btn"  name="btn" type="submit"  value="btn"> HOMEPAGE </button>
 		<button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button>
 		<button id="btn"  name="btn" type="submit"  value="btn"> CONTACT </button>
+</div>
 
+<div class="menu">
 
+		<ul>
+				<li><a href="index.php">ARDUINO</a></li>
+				<li><a href="index.php">ARM</a></li>
+				<li><a href="index.php">C</a></li>
+				<li><a href="index.php">JAVA</a></li>
+				<li><a href="index.php">PHP</a></li>
+				<li><a href="index.php">PYTHON</a></li>
+				<li><a href="index.php">HTML-CSS</a></li>
+				<li><a href="index.php">ALGORITHMS</a></li>
+				<li><a href="index.php">GENERAL</a></li>
+				<li><a href="index.php">PROJECTS</a></li>
+				<input name="username" type="text" placeholder="search"/>
+			  </ul>
 </div>
 
 <div class="home-page">
