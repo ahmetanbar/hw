@@ -46,8 +46,7 @@
                 $verify_cont=0;
                 //name regular expression control
                 $subject = $_POST['name'];
-                $pattern = '/^[a-zA-ZçÇğĞıIiİöÖŞşÜü]{3,20}$/';
-                echo($subject);
+                $pattern = '/^[a-zA-Z]{3,20}$/';
                 if(preg_match($pattern,$subject)){
                   $verify_cont+=1;
                 }
@@ -56,8 +55,7 @@
                 }
                 //surname regular expression control
                 $subject = $_POST['surname'];
-                $pattern = '/^[a-zA-ZçÇğĞıIiİöÖŞşÜü]{2,20}$/';
-                echo($subject);
+                $pattern = '/^[a-zA-Z]{2,20}$/';
                 if(preg_match($pattern,$subject)){
                   $verify_cont+=1;
                 }
@@ -155,7 +153,7 @@
                       $stmt->bind_param("si", $auth,$user_id);
                       $stmt->execute();
 
-                      // header("Location:home.php"); /* Redirect browser */
+                      header("Location:home.php"); /* Redirect browser */
                     }
                     else{
                       $logs['input_control']="This username is already used.";
