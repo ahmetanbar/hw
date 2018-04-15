@@ -5,10 +5,12 @@
   <link rel="stylesheet" type="text/css" href="./assets/css/signup.css">
 
   <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
   <?php
+
       function generateRandomString($length = 52) {
           return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
       }
@@ -21,7 +23,7 @@
           $db_password = "";
           $db="hw7";
           $conn = new mysqli($servername, $db_username, $db_password,$db);
-
+          mysqli_set_charset($conn, "utf8");
           $stmt = $conn->prepare("SELECT auth FROM cookie WHERE auth=?");
           $stmt->bind_param("s", $auth);
           $stmt->execute();
@@ -44,7 +46,8 @@
                 $verify_cont=0;
                 //name regular expression control
                 $subject = $_POST['name'];
-                $pattern = '/^[a-zA-Z]{3,20}$/';
+                $pattern = '/^[a-zA-ZçÇğĞıIiİöÖŞşÜü]{3,20}$/';
+                echo($subject);
                 if(preg_match($pattern,$subject)){
                   $verify_cont+=1;
                 }
@@ -53,7 +56,8 @@
                 }
                 //surname regular expression control
                 $subject = $_POST['surname'];
-                $pattern = '/^[a-zA-Z]{2,20}$/';
+                $pattern = '/^[a-zA-ZçÇğĞıIiİöÖŞşÜü]{2,20}$/';
+                echo($subject);
                 if(preg_match($pattern,$subject)){
                   $verify_cont+=1;
                 }
@@ -99,9 +103,9 @@
                   $db_username = "root";
                   $db_password = "";
                   $db="hw7";
-                  $conn = new mysqli($servername, $db_username, $db_password,$db);
                   try{
                     $conn = new mysqli($servername, $db_username, $db_password,$db);
+
                     if ($conn->connect_error) {
                       die("Connection failed: " . $conn->connect_error);
                     }
@@ -109,6 +113,8 @@
                   catch(Exception $e) {
                     //log handled
                   }
+                  mysqli_set_charset($conn,"utf8");
+                  query("SET NAMES utf8");
                   $stmt = $conn->prepare("SELECT email FROM users WHERE email=?");
                   $stmt->bind_param("s", $email);
                   $stmt->execute();
@@ -149,7 +155,7 @@
                       $stmt->bind_param("si", $auth,$user_id);
                       $stmt->execute();
 
-                      header("Location:home.php"); /* Redirect browser */
+                      // header("Location:home.php"); /* Redirect browser */
                     }
                     else{
                       $logs['input_control']="This username is already used.";
@@ -192,7 +198,7 @@
           <br>
           <h1>Join CodeNote</h1>
 
-          <form action="" method="post" autocomplete="off" />
+          <form action="" method="post" autocomplete="off" accept-charset="UTF-8" />
             <?php echo ($logs['input_control']) ? '<span style="color:#c30000;">'.$logs['input_control'].'</span><br>':''; ?>
             <?php echo ($logs['foot_note']) ? '<span style="color:#c30000;">'.$logs['foot_note'].'</span><br>':''; ?>
             <?php echo ($logs['name']) ? '<span style="color:#c30000;">'.$logs['name'].'</span><br>':''; ?>
