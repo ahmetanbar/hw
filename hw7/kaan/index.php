@@ -16,12 +16,14 @@
     {
         if(!(empty($cookie))) {
             session_start();
-            if ($_SESSION["auth"] == "$cookie") {
-                return True;
-            } else {
-                setcookie("auth", "", time() + 3600);
-                session_destroy();
-                return False;
+            if (!(empty($_SESSION["auth"]) && !(empty($cookie)))){
+                if ($_SESSION["auth"] == "$cookie") {
+                    return True;
+                } else {
+                    setcookie("auth", "", time() - 3600);
+                    session_destroy();
+                    return False;
+                }
             }
         }
     }
@@ -86,7 +88,7 @@
 
             <div class="content">
                 <div class="rightcnt">
-                    <a style="text-decoration:none;" href="<?php echo("")?>">
+                    <a style="text-decoration:none;" href="makale.php?article=<?php echo("5")?>">
                         <div style="position:relative;">
                             <img src="./assest/img/header3.jpg"/>
                             <div class="articlebtn">
