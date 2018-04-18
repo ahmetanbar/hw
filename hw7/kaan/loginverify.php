@@ -9,11 +9,12 @@
         return strtr(substr(base64_encode($bytes), 0, $str_length), '+/', "$first$second");
     }
 
-    function cookie_set()
+    function cookie_set($username)
     {
         session_start();
         $cookie=random_key();
         $_SESSION["auth"] = "$cookie";
+        $_SESSION["username"]="$username";
         setcookie("auth","$cookie", time()+3600);    
     }
 
@@ -28,7 +29,7 @@
         if(preg_match_all($r2,$pwd, $o)<2) return FALSE;
         if(preg_match_all($r3,$pwd, $o)<2) return FALSE;
         if(preg_match_all($r4,$pwd, $o)<2) return FALSE;
-        if(strlen($password)<8) return FALSE;
+        if(strlen($pwd)<8) return FALSE;
         return TRUE;
     }
 
@@ -43,59 +44,72 @@
         if(preg_match_all($r2,$pwd, $o)<2) return FALSE;
         if(preg_match_all($r3,$pwd, $o)>0) return FALSE;
         if(preg_match_all($r4,$pwd, $o)<2) return FALSE;
-        if(strlen($password)<5) return FALSE;
+        if(strlen($name)<5) return FALSE;
         return TRUE;
     }
-
-    $servername = "localhost";
-    $username = "username";
-    $password = "password";
-    $dbname = "myDB";
-    $username=$_POST["username"]
-    $password=$_POST["pwd"]
-    $cookieset=$_POST["stylgnin"]
-
-    if(!(valid_username($username)))
-    {
-        header("Location: ./login.php?check=1");
-        die();
-    }
-
-    if(!(valid_pass($password)))
-    {
-        header("Location: ./login.php?check=2");
-        die();
-    }
-    
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
-    
-    if (!$conn) 
-    {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-
-    $query="SELECT id,pwd FROM users WHERE username LIKE '" . mysqli_escape_string($username) . "'";
-    $result = mysqli_query($conn, $query);
-    
-    if(empty($result))
-    {
-        header("Location: ./login.php?check=3");
-        die();
-    }else
-    {
-        if(password_verify($password,$result[1]))
-        {
-            header("Location: ./index.php?id=$result[0]");
-            if(isset($cookieset))
-            {
-                cookie_set();
-            }
-            die();
-
-        }else
-        {
-            header("Location: ./login.php?check=4");
-            die();
+    function db_connect(){
+        $servername = "localhost";
+        $username = "username";
+        $passwd = "password";
+        $dbname = "myDB";
+        $conn = mysqli_connect($servername, $username, $passwd, $dbname);
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+        }else{
+            return $conn;
         }
     }
+
+    function login(){
+        $conn=db_connect();
+        $username=$_POST["username"];
+        $password=$_POST["pwd"];
+        $cookieset=$_POST["stylgnin"];
+        $query="SELECT id,pwd FROM users WHERE username LIKE '" . mysqli_escape_string($username) . "'";
+        $result = mysqli_query($conn, $query);
+        if(!(empty($username))){
+            if(!(empty($password))){
+                if(valid_username($username)){
+                    if(valid_pass($password)){
+                        if(empty($result))
+                        {
+                            header("Location: ./login.php?check=5");
+                            die();
+                        }else
+                        {
+                            if(password_verify($password,$result[1]))
+                            {
+                                header("Location: ./index.php?id=$result[0]");
+                                if(isset($cookieset))
+                                {
+                                    cookie_set($username);
+                                }
+                                die();
+
+                            }else
+                            {
+                                header("Location: ./login.php?check=6");
+                                die();
+                            }
+                        }
+                    }else{
+                        header("Location: ./login.php?check=4");
+                        die();
+                    }
+                }else {
+                    header("Location: ./login.php?check=3");
+                    die();
+                }
+
+            }else{
+                header("Location: ./login.php?check=2");
+                die();
+            }
+        }else{
+            header("Location: ./login.php?check=1");
+            die();
+        }
+
+    }
+    login();
 ?>

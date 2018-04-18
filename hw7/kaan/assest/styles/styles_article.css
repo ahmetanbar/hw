@@ -27,7 +27,7 @@ body{
     margin-top:0;
     height: 28%;
     border-bottom:3px solid rgb(170, 0, 9);
-    background-image: url(./header.jpg);
+    background-image: url(../img/header.jpg);
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
