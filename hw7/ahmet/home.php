@@ -8,25 +8,32 @@
 </head>
 <body>
   <?php
+    function connect_db(){
+      $servername = "localhost";
+      $db_username = "root";
+      $db_password = "";
+      $db="hw7";
+      $conn = new mysqli($servername, $db_username, $db_password,$db);
+      mysqli_set_charset($conn,"utf8");
+      return $conn;
+    }
+
     function control_cookie(){
       if(count($_COOKIE)!=0 and array_key_exists("auth",$_COOKIE)){
-        $cookie_know=array("flag"=>"FALSE","username"=>"","name"=>"","surname"=>"");
         $auth= $_COOKIE['auth'];
-        $servername = "localhost";
-        $db_username = "root";
-        $db_password = "";
-        $db="hw7";
-        $conn = new mysqli($servername, $db_username, $db_password,$db);
-        $sql = "SELECT auth,user_id FROM cookie WHERE auth='$auth'";
-        $result = $conn->query($sql) or die($conn->error);
+
+        $cookie_know=array("flag"=>"FALSE","username"=>"","name"=>"","surname"=>"");
+
+        $conn=connect_db();
+        $stmt = $conn->prepare("SELECT auth,user_id FROM cookie WHERE auth=?");
+        $stmt->bind_param("s", $auth);
+        $stmt->execute();
+        $result = $stmt->get_result();
         $row = $result->fetch_assoc();
+
          if(count($row)!=0)
          {
-           $sql = "SELECT name,surname,username FROM users WHERE id=".$row["user_id"]."";
-           $result = $conn->query($sql) or die($conn->error);
-           $row = $result->fetch_assoc();
            $cookie_know['flag']=TRUE;
-           $cookie_know['name']=$row['name']; $cookie_know['surname']=$row['surname']; $cookie_know['username']=$row['username'];
            return $cookie_know;
          }
          else{
@@ -35,6 +42,8 @@
          }
       }
     }
+
+    session_start();
     $cookie_know=control_cookie();
 
   ?>
@@ -45,7 +54,7 @@
     <a href="https://google.com">About</a>
     <?php
     if($cookie_know['flag']){ ?>
-      <a style="float:right;" href="profile.php"><?php echo($cookie_know['name']." ".$cookie_know['surname'] ); ?> </a>
+      <a style="float:right;" href="profile.php"><?php echo($_SESSION['name']." ".$_SESSION['surname']); ?> </a>
     <?php
     }
     else{ ?>
@@ -55,18 +64,18 @@
   </div>
 
   <div class="main">
-
+    <?php if($cookie_know['flag']){ ?>
+    <div class="usernav">
+        <a href="profile.php"><i><?php echo("@".$_SESSION['username']); ?></i></a>
+        <a href="logout.php"><i style="float:left;" class="material-icons md-18">exit_to_app</i></a>
+    </div>
+    <br>
+    <?php } ?>
+    <br>
       <div class="header">
         <h1>Code Note</h1>
       </div>
-      <?php if($cookie_know['flag']){ ?>
-      <div class="usernav">
-          <a href="profile.php"><i><?php echo($cookie_know['username']); ?></i></a>
-          <a href="logout.php"><i style="float:left;" class="material-icons md-18">exit_to_app</i></a>
-      </div>
-      <br>
-      <?php } ?>
-      <br>
+
         <?php $number_box=5;
         for($i=0; $i<=$number_box ;$i++) { ?>
           <div class="content">
@@ -94,7 +103,7 @@
             <br>
           <?php } ?>
 
-      <footer>Copyleft <span class="copy-left">©</span></footer>
+      <footer><a href="https://github.com/ahmetanbar"><img src='assets/image/github-logo.png' alt='photo of me' width="35" height="35" ></a><br>Copyleft<span class="copy-left">©</span></footer>
   </div>
 </body>
 </html>

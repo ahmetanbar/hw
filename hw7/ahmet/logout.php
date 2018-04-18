@@ -5,15 +5,19 @@
 </head>
 <body>
   <?php
+  function connect_db(){
+    $servername = "localhost";
+    $db_username = "root";
+    $db_password = "";
+    $db="hw7";
+    $conn = new mysqli($servername, $db_username, $db_password,$db);
+    return $conn;
+  }
+
   function delete_cookie(){
         if(count($_COOKIE)!=0 and array_key_exists("auth",$_COOKIE)){
           $auth= $_COOKIE['auth'];
-          $servername = "localhost";
-          $db_username = "root";
-          $db_password = "";
-          $db="hw7";
-          $conn = new mysqli($servername, $db_username, $db_password,$db);
-
+          $conn=connect_db();
           $stmt = $conn->prepare("SELECT auth FROM cookie WHERE auth=?");
           $stmt->bind_param("s", $auth);
           $stmt->execute();
@@ -30,7 +34,9 @@
            }
         }
       }
-      //_SESSION can be move other place???
+      session_start();
+      session_unset();
+      session_destroy();
       delete_cookie();
   ?>
 </body>
