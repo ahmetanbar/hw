@@ -1,12 +1,11 @@
 <?php
     function db_connect(){
         $servername = "localhost";
-        $usrname = "kaan_ari1_hw1";
-        $passwd = "hwworld";
-        $dbname = "";
-        $conn = mysqli_connect($servername, $usrname, $passwd, $dbname);
-        if (!($conn))
-        {
+        $usrname = "root";
+        $passwd = "";
+        $dbname="deneme";
+        $conn = mysqli_connect($servername, $usrname, $passwd,$dbname);
+        if (!$conn) {
             die("Connection failed: " . mysqli_connect_error());
         }else{
             return $conn;
@@ -16,14 +15,12 @@
     {
         if(!(empty($cookie))) {
             session_start();
-            if (!(empty($_SESSION["auth"]) && !(empty($cookie)))){
-                if ($_SESSION["auth"] == "$cookie") {
-                    return True;
-                } else {
-                    setcookie("auth", "", time() - 3600);
-                    session_destroy();
-                    return False;
-                }
+            if($_SESSION["auth"] == "$cookie"){
+                return True;
+            }else{
+                setcookie("auth", "", time() + 3600);
+                session_destroy();
+                return False;
             }
         }
     }
@@ -67,10 +64,10 @@
                     <li><a href="./archive.php">Archive</a></li>
                     <li><a href="./about.php">About</a></li>
                     <?php
-                        if((!$cookie==True)){
+                        if((cookie_control())){
                             echo'
                                 <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
-                                <li><a href="./profile.php?id='.$id.'" style="float:right;">Profile</a>
+                                <li><a href="./profile.php" style="float:right;">Profile</a>
                             
                             ';
                         }else{
@@ -99,7 +96,7 @@
                     <div>
                         <h3>BAŞLIK</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-                        <h5>Author: <span style="color:red;">Kaan ARI</span></h5>
+                        <h5>Rating: <span style="color:red;margin-right:30px;">2</span> Views: <span style="color:red;margin-right:30px;">2</span> Comments: <span style="color:red;margin-right:30px;">5</span> Author: <span style="color:red;">Kaan ARI</span></h5>
                     </div>
                 </div>
                 <hr>
@@ -115,7 +112,8 @@
                     <div>
                         <h3>DENEME</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-                        <h5>Author: <span style="color:red;">Kaan ARI</span></h5>
+                        <h5>Author: <span style="color:red;margin-right:30px;">Kaan ARI</span> Comments: <span style="color:red;margin-right:30px;">5</span> Views: <span style="color:red;margin-right:30px;">2</span> Rating: <span style="color:red;margin-right:30px;">2</span></h5>
+
                     </div>
                 </div>
                 <hr>
@@ -134,7 +132,7 @@
 
                                 
                         </p>
-                        <h5>Author: <span style="color:red;">Kaan ARI</span></h5>
+                        <h5>Rating: <span style="color:red;margin-right:30px;">2</span> Views: <span style="color:red;margin-right:30px;">2</span> Comments: <span style="color:red;margin-right:30px;">5</span> Author: <span style="color:red;">Kaan ARI</span></h5>
 
                     </div>
                 </div>
@@ -151,7 +149,7 @@
                     <div>
                         <h3>ÖZEL GÜN</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-                        <h5>Author: <span style="color:red;">Kaan ARI</span></h5>
+                        <h5>Author: <span style="color:red;margin-right:30px;">Kaan ARI</span> Comments: <span style="color:red;margin-right:30px;">5</span> Views: <span style="color:red;margin-right:30px;">2</span> Rating: <span style="color:red;margin-right:30px;">2</span></h5>
                     </div>
                 </div>
                 <hr>
@@ -167,7 +165,7 @@
                     <div>
                         <h3>DENEME UZUN SDADADADAFD FDSFSF GDSGSGSG</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-                        <h5>Author: <span style="color:red;">Kaan ARI</span></h5>
+                        <h5>Rating: <span style="color:red;margin-right:30px;">2</span> Views: <span style="color:red;margin-right:30px;">2</span> Comments: <span style="color:red;margin-right:30px;">5</span> Author: <span style="color:red;">Kaan ARI</span></h5>
 
                     </div>
                 </div>
