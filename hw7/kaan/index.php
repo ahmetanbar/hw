@@ -1,4 +1,6 @@
 <?php
+    session_start();
+
     function db_connect(){
         $servername = "localhost";
         $usrname = "root";
@@ -13,36 +15,41 @@
     }
     function cookie_control()
     {
-        if(!(empty($cookie))) {
-            session_start();
-            if($_SESSION["auth"] == "$cookie"){
+        if(!(empty($_COOKIE["auth"]))){
+            $cookie=$_COOKIE["auth"];
+            if($_SESSION["auth"] == $cookie){
                 return True;
             }else{
                 setcookie("auth", "", time() + 3600);
                 session_destroy();
                 return False;
             }
+        }else{
+            return False;
         }
+        
     }
     function last_id(){
-        global $conn;
+        $conn=db_connect();
+
         $result = mysqli_insert_id($conn);
         return $result;
     }
     function article_puller($article){
-        global $conn;
         $query="SELECT title,article,authorid,imgurl FROM articles WHERE id LIKE '" . mysqli_escape_string($article) . "'";
         $result = mysqli_query($conn, $query);
 
     }
-    $conn=db_connect();
     $last_article=last_id();
     $cookie=cookie_control();
     if($cookie==True){
-        $username=$_SESSION["username"];
-        $query="SELECT id FROM users WHERE username LIKE '" . mysqli_escape_string($username) . "'";
-        $result = mysqli_query($conn, $query);
-        $id=$result[0];
+        $conn=db_connect();
+        $stmt=$conn->prepare("SELECT id FROM users WHERE username=?");
+        $stmt->bind_param("s",$_SESSION["username"]);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $result=$query->fetch_assoc();
+        $id=$result["id"];
     }
 ?>
 <html>
@@ -67,7 +74,7 @@
                         if((cookie_control())){
                             echo'
                                 <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
-                                <li><a href="./profile.php" style="float:right;">Profile</a>
+                                <li><a href="./profile.php?id='.$id.'" style="float:right;">Profile</a>
                             
                             ';
                         }else{

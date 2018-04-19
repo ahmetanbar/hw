@@ -132,6 +132,10 @@ body{
     width: 22%;
     height: auto;
 }
+.gender{
+    font-size: 13px;
+}
+
 @media only screen and (max-width: 750px) {
     .form1 {
         float: none;
@@ -148,6 +152,9 @@ body{
     .a{
         display: block;
     
+    }
+    .gender{
+        font-size:16px;
     }
 
 }

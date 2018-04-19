@@ -1,4 +1,5 @@
 <?php
+    session_start();
     function random_key($str_length = 24)
     {
         $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -13,21 +14,31 @@
     {
         session_start();
         $cookie=random_key();
-        $_SESSION["auth"] = "$cookie";
-        $_SESSION["username"]="$username";
-        setcookie("auth","$cookie", time()+3600);    
+        $_COOKIE["auth"]=$cookie;
+        $_SESSION["auth"] = $cookie;
+        $_SESSION["username"]=$username;
+        setcookie("auth","$cookie", 0);    
     }
+    function cookie_set2($username)
+    {
+        session_start();
+        $cookie=random_key();
+        $_COOKIE["auth"]=$cookie;
+        $_SESSION["auth"] = $cookie;
+        $_SESSION["username"]=$username;
+        setcookie("auth","$cookie", time()+86400*30);    
+    }
+
 
     function valid_pass($pwd) 
     {
-        $pwd = preg_replace ("/ +/", "", $pwd); # convert all multispaces to space
         $r1='/[A-Z]/';  //Uppercase
         $r2='/[a-z]/';  //lowercase
-        $r3='/[!@#$%^&*()\-_=+{};:,<.>]/';  // whatever you mean by 'special char'
+        $r3='/[!@#$%^&()\-_=+{};:,<.>"|]/';  // whatever you mean by 'special char'
         $r4='/[0-9]/';  //numbers
         if(preg_match_all($r1,$pwd, $o)<1) return FALSE;
         if(preg_match_all($r2,$pwd, $o)<1) return FALSE;
-        if(preg_match_all($r3,$pwd, $o)<1) return FALSE;
+        if(preg_match_all($r3,$pwd, $o)>0) return FALSE;
         if(preg_match_all($r4,$pwd, $o)<1) return FALSE;
         if(strlen($pwd)<8) return FALSE;
         return TRUE;
@@ -73,11 +84,17 @@
                             $passwordstatus="Password is not correct.";
                         }else
                         {
-                            if(password_verify($password,$result[1]))
+                            if(password_verify($password,$result["pwd"]))
                             {
                                 if(isset($_POST["loginin"]))
                                 {
+                                    cookie_set2($username);
+                                    header("Location: ./index.php");
+                                    die();
+                                }else{
                                     cookie_set($username);
+                                    header("Location: ./index.php");
+                                    die();
                                 }
 
                             }else
@@ -102,16 +119,19 @@
     }
     function cookie_control()
     {
-        if(!(empty($cookie))) {
-            session_start();
-            if($_SESSION["auth"] == "$cookie"){
+        if(!(empty($_COOKIE["auth"]))){
+            $cookie=$_COOKIE["auth"];
+            if($_SESSION["auth"] == $cookie){
                 return True;
             }else{
                 setcookie("auth", "", time() + 3600);
                 session_destroy();
                 return False;
             }
+        }else{
+            return False;
         }
+        
     }
     $usernamestatus="Enter Username";
     $passwordstatus="Enter Password";
