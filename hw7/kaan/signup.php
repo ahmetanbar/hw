@@ -54,52 +54,7 @@
         }
     }
 
-    function login(){
-        global $usernamestatus,$passwordstatus;
-        $username=$_POST["username"];
-        $password=$_POST["pwd"];
-        if(!(empty($username))){
-            if(!(empty($password))){
-                if(valid_username($username)){
-                    if(valid_pass($password)){
-                        $conn=db_connect();
-                        $stmt=$conn->prepare("SELECT id,pwd FROM users WHERE username=?");
-                        $stmt->bind_param("s",$username);
-                        $stmt->execute();
-                        $query = $stmt->get_result();
-                        $result=$query->fetch_assoc();
-                        if(empty($result))
-                        {
-                            $passwordstatus="Password is not correct.";
-                        }else
-                        {
-                            if(password_verify($password,$result[1]))
-                            {
-                                if(isset($_POST["loginin"]))
-                                {
-                                    cookie_set($username);
-                                }
-
-                            }else
-                            {
-                                $passwordstatus="Password is not correct.";
-                            }
-                        }
-                    }else{
-                        $passwordstatus="Password is not valid.";
-                    }
-                }else {
-                    $usernamestatus="Username is not valid.";
-                }
-
-            }else{
-                $passwordstatus="Password can not be empty.";
-            }
-        }else{
-            $usernamestatus="Username can not be empty.";
-        }
-
-    }
+    
     function cookie_control()
     {
         if(!(empty($cookie))) {
@@ -113,8 +68,7 @@
             }
         }
     }
-    $usernamestatus="Enter Username";
-    $passwordstatus="Enter Password";
+
     if($_POST){
         login();
     }else{
@@ -131,7 +85,7 @@
     <head>
         <meta charset="utf-8">
         <title>Login - Kaan ARI</title>
-        <link rel="stylesheet" href="./assest/styles/styles_login.css">
+        <link rel="stylesheet" href="./assest/styles/styles_signup.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     
@@ -151,22 +105,53 @@
             </div>
 
             <div class="content">
-                <div class="loginform">
-                    <form style="align-item:center;" action="./login.php" method="POST">
-                        <label><b>Username</b></label>
-                        <input class="inp" <?php echo("placeholder='$usernamestatus'"); ?> type="text" name="username">
-                        <label><b>Password</b></label>
-                        <input class="inp" <?php echo("placeholder='$passwordstatus'"); ?> type="password" name="pwd">
+                <form style="" action="./login.php" method="POST">
+                <div class="form1">
+                        <label><center><b style="color:darkred;">Account Information:</b></center></label><br>
+                        <label><b>Username <span style="color:darkred;" required>(*)</span></b> </label>
+                        <input class="inp" type="text" name="username" required>
+                        <label><b>Password <span style="color:darkred;">(*)</span></b></label>
+                        <input class="inp" type="password" name="pwd">
+                        <label><b>Retype Password <span style="color:darkred;" required>(*)</span></b></label>
+                        <input class="inp" type="text" name="repwd">
+                        <label><b>E-mail <span style="color:darkred;" required>(*)</span></b></label>
+                        <input class="inp" type="email" name="mail">
                         <br>
-                        <div style="display:block;">
-                            <input style="height:15px; width:15px;" type="checkbox" name="loginin">
-                            <span style="position:static;font-size:15px;">Keep me signed in</span>
-                        </div>
                         
-                        <input class="loginbtn" type="submit" value="LOGIN">
-                    </form>
+                        
                 </div>
+                <hr class="a">
+                <div class="form1">
+                        <label><center><b style="color:darkred;">Personal Information:</b></center></label><br>
+                        <label><b>Name <span style="color:darkred;">(*)</span></b></label>
+                        <input class="inp" type="text" name="name">
+                        <label><b>Surname <span style="color:darkred;">(*)</span></b></label>
+                        <input class="inp" type="text" name="surname" required>
+                        <label><b>Birthday <span style="color:darkred;">(*)</span></b></label>
+                        <input placeholder="Enter Date of Birth" class="inp" type="text" onfocus="(this.type='date')" onblur="(this.type='text')" id="date" required>
+                        <label><b>Tel Number <span style="color:darkred;"></span></b></label>
+                        <input class="inp" type="text" name="usrtel">
+                        <label><b>Country</b></label>
+                        <input class="inp" type="text" name="username">                        
+                        <br>
+                        
+                        
+                </div>
+                <hr class="a">
+                <div class="form1">
+                        <label><center><b style="color:darkred;">Additional Information:</b></center></label><br>
+                        <label><b>Profile Photo</b></label>
+                        <center><div style="border-radius:10px;margin-top:10px;height:175px;width:150px;overflow:hidden;"><img src="./assest/img/header.jpg"></div></center><br>
+                        <center><label class="uploadbtn" for="ppimg">Browse...</label></center>
+                        <input style="z-index:-1; position:absolute; opacity:0;" type="file" name="ppimg" id="ppimg" accept=".jpg, .jpeg, .png">
+                        <input class="sgninbtn" type="submit" value="LOGIN">
+                        <br>
+                        
+                </div>
+                </form>
             </div>
+            
+
             <footer>
                 <div  class="footer">
                     <center>
