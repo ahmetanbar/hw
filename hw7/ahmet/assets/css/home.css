@@ -73,6 +73,10 @@ footer {
     text-align: center;
 }
 
+footer a,i{
+    text-align: center;
+}
+
 
 .main {
     max-width: 850px;
