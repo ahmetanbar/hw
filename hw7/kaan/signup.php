@@ -1,4 +1,5 @@
 <?php
+    session_start();
     function random_key($str_length = 24)
     {
         $chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -11,7 +12,6 @@
 
     function cookie_set($name)
     {
-        session_start();
         $cookie=random_key();
         $_COOKIE["auth"]=$cookie;
         $_SESSION["auth"] = $cookie;
@@ -241,14 +241,14 @@
                 <form style="" action="./signup.php" method="POST">
                 <div class="form1">
                         <label><center><b style="color:darkred;">Account Information:</b></center></label><br>
-                        <label><b>Username <span style="color:darkred;" required>(*)</span></b> </label>
+                        <label><b>Username <span style="color:darkred;">(*)</span></b> </label>
                         <input <?php echo("placeholder='$usernamestatus'"); ?> class="inp" type="text" name="username" required>
                         <label><b>Password <span style="color:darkred;">(*)</span></b></label>
-                        <input <?php echo("placeholder='$passwordstatus'"); ?> class="inp" type="password" name="pwd">
-                        <label><b>Retype Password <span style="color:darkred;" required>(*)</span></b></label>
-                        <input <?php echo("placeholder='$repasswordstatus'"); ?> class="inp" type="password" name="repwd">
-                        <label><b>E-mail <span style="color:darkred;" required>(*)</span></b></label>
-                        <input <?php echo("placeholder='$mailstatus'"); ?> class="inp" type="email" name="mail">
+                        <input <?php echo("placeholder='$passwordstatus'"); ?> class="inp" type="password" name="pwd" required>
+                        <label><b>Retype Password <span style="color:darkred;">(*)</span></b></label>
+                        <input <?php echo("placeholder='$repasswordstatus'"); ?> class="inp" type="password" name="repwd" required>
+                        <label><b>E-mail <span style="color:darkred;">(*)</span></b></label>
+                        <input <?php echo("placeholder='$mailstatus'"); ?> class="inp" type="email" name="mail" required>
                         <br>
                         
                         
@@ -257,14 +257,14 @@
                 <div class="form1">
                         <label><center><b style="color:darkred;">Personal Information:</b></center></label><br>
                         <label><b>Name <span style="color:darkred;">(*)</span></b></label>
-                        <input <?php echo("placeholder='$namestatus'"); ?> class="inp" type="text" name="name">
+                        <input <?php echo("placeholder='$namestatus'"); ?> class="inp" type="text" name="name" required>
                         <label><b>Surname <span style="color:darkred;">(*)</span></b></label>
                         <input <?php echo("placeholder='$surnamestatus'"); ?> class="inp" type="text" name="surname" required>
                         <label><b>Gender <span style="color:darkred;">(*)</span></b></label><br>
                         <span class="gender">
-                        <input type="radio" name="gender" value="male"> Male
-                        <input type="radio" name="gender" value="female"> Female  
-                        <input type="radio" name="gender" value="other" checked> Other
+                        <input type="radio" name="gender" value="Male"> Male
+                        <input type="radio" name="gender" value="Female"> Female  
+                        <input type="radio" name="gender" value="Other" checked> Other
                         </span>
                         <br>
                         <label><b>Birthday <span style="color:darkred;">(*)</span></b></label>
