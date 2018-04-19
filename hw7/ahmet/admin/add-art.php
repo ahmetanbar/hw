@@ -2,14 +2,20 @@
 <html>
 <head>
   <title>Code Note</title>
-  <link rel="stylesheet" type="text/css" href="./assets/css/panel.css">
+  <link rel="stylesheet" type="text/css" href="./assets/css/add-art.css">
   <link rel="stylesheet" type="text/css" href="./assets/css/sidebar.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 
+  <style type="text/css" scoped>
+  .GeneratedText {
+  font-family:'Comic Sans MS';font-size:2em;letter-spacing:0.2em;line-height:1.3em;color:#330099;background-color:#CCFFFF;padding:1.5em;
+  }
+  </style>
   <?php
+
   $admin="admin";
   function connect_db(){
     $servername = "localhost";
@@ -60,6 +66,7 @@
       }
     }
   }
+
   session_start();
   $cookie_know=control_cookie();
   if ($cookie_know['flag']==1){
@@ -78,24 +85,50 @@
 
 
   <ul>
-    <li><a class="active" href="">Home</a></li>
-    <li><a href="./add-art.php">Add article</a></li>
+    <li><a href="./panel.php">Home</a></li>
+    <li><a class="active" href="./add-art.php">Add article</a></li>
     <li><a href="./articles.php">Articles</a></li>
     <li><a href="./members.php">Members</a></li>
     <li><a href="./auth.php">Authority</a></li>
     <li><a href="../logout.php">Log Out</a></li>
   </ul>
 
-  <div style="margin-left:25%;padding:1px 16px;height:1000px;">
-
+  <div class="container">
+  <form action="/action_page.php">
+    <div class="row">
+      <div class="col-25">
+        <label for="lname">Last Name</label>
+      </div>
+      <div class="col-75">
+        <input type="text" id="lname" name="lastname" placeholder="Title">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="country">C</label>
+      </div>
+      <div class="col-75">
+        <select id="category" name="category">
+          <option value="C">C</option>
+          <option value="Java">Java</option>
+          <option value="Php">Php</option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-25">
+        <label for="subject">Subject</label>
+      </div>
+      <div class="col-75">
+        <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <input type="submit" value="Submit">
+    </div>
+  </form>
+</div>
   </div>
-
-
-
-<br>
-
-<a href="../logout.php"><i style="float:left;" class="material-icons md-18">Log Out</i></a>
-
 
 
 </body>

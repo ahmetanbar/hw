@@ -137,7 +137,7 @@
                       $result = $stmt->get_result();
                       $row = $result->fetch_assoc();
 
-                      $_SESSION['name']=$name; $_SESSION['surname']=$surname; $_SESSION['email']=$_POST['email']; $_SESSION['username']=$_POST['username'];
+                      $_SESSION['name']=$name; $_SESSION['surname']=$surname; $_SESSION['email']=$_POST['email']; $_SESSION['username']=$_POST['username']; $_SESSION['role']="";
 
                       $auth=generateRandomString();
                       $user_id=$row["id"];
@@ -212,7 +212,7 @@
       </div>
       <br>
       <br>
-            <footer>Copyleft <span class="copy-left">©</span></footer>
+            <footer><a href="https://github.com/ahmetanbar"><img src='assets/image/github-logo.png' alt='photo of me' width="35" height="35" ></a><br>Copyleft<span class="copy-left">©</span></footer>
   </div>
 </body>
 </html>

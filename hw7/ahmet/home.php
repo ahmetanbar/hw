@@ -8,6 +8,8 @@
 </head>
 <body>
   <?php
+    $admin="admin";
+
     function connect_db(){
       $servername = "localhost";
       $db_username = "root";
@@ -48,14 +50,14 @@
 
   ?>
   <div class="topnav">
-    <a href="home.php" style="padding-bottom: 0px; padding-top: 0px;"> <img  src='assets/image/logo.jpg' alt='photo of me' width="100" height="71" /> </a>
-    <a href="#">Home</a>
+    <a href="home.php" style="padding-bottom: 0px; padding-top: 0px;"> <img  src='assets/image/logo.jpg' alt='logo' width="100" height="71" /> </a>
+    <a href="">Home</a>
     <a href="#">Archive</a>
     <a href="https://google.com">About</a>
     <?php
     if($cookie_know['flag']){ ?>
       <a style="float:right;" href="profile.php"><?php echo($_SESSION['name']." ".$_SESSION['surname']); ?> </a>
-    <?php
+      <?php echo ($_SESSION['role']==$admin ? '<a style="float:right;" href="admin/panel.php"><i class="material-icons">vpn_key</i></a>':'');
     }
     else{ ?>
       <a style="float:right;" href="signup.php">Sign Up</a>
