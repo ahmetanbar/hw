@@ -9,7 +9,6 @@
 <body>
   <?php
     $admin="admin";
-
     function connect_db(){
       $servername = "localhost";
       $db_username = "root";
@@ -45,20 +44,38 @@
       }
     }
 
-    function get_article(){
+    function get_article($id){
       $conn=connect_db();
-      $sql = "SELECT * FROM articles order by id desc limit 5";
-      $result = $conn->query($sql);
+      $stmt = $conn->prepare("SELECT * FROM articles WHERE id=?");
+      $stmt->bind_param("s", $id);
+      $stmt->execute();
+      $result = $stmt->get_result();
       return $result;
     }
 
-    function limited_article($s) {
-        return preg_replace('/((\w+\W*){30}(\w+))(.*)/', '${1}', $s);
+    function get_articles($category){
+      $conn=connect_db();
+      $stmt = $conn->prepare("SELECT * FROM articles WHERE category=? order by id desc limit 6");
+      $stmt->bind_param("s", $category);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result;
+    }
+
+    function get_kind(){
+      if(count($_GET)!=0){
+        if(array_key_exists("id",$_GET)){
+          return "id";
+        }
+        else if(array_key_exists("category",$_GET)){
+          return "category";
+        }
+      }
     }
 
     session_start();
     $cookie_know=control_cookie();
-
+    $get_method=get_kind();
   ?>
   <?php include 'topnav.php';?>
 
@@ -74,16 +91,25 @@
       <div class="header">
         <h1>Code Note</h1>
       </div>
-        <?php $number_box=5;
-        $result=get_article();
-        for($i=0;$i<$number_box;$i++) {
-          $row = $result->fetch_assoc();
-          ?>
+      <?php
+      $number_box=1;
+      if($get_method=="id"){
+      $result=get_article($_GET['id']);
+    }
+      else if($get_method=="category"){
+        $result=get_articles($_GET['category']);
+        $number_box=6;
+      }
+
+      for($i=0;$i<$number_box;$i++) {
+        $row = $result->fetch_assoc();
+        ?>
+
           <div class="content">
             <div class="art_head">
               <h3><a href="./article.php?id=<?php echo($row['id']); ?>"><?php echo($row['header']); ?></a></h3>
             </div>
-            <div class="article"><p><?php echo($row['article']); ?><a href="./article.php?id=<?php echo($row['id']); ?>">More▷</a></p>
+            <div class="article"><p><?php echo($row['article']); ?></p>
             </div>
             <div class="info">
               <i style="float:left; " class="material-icons md-18">date_range</i>
@@ -101,7 +127,6 @@
           </div>
             <br>
           <?php } ?>
-
     <?php include 'footer.php';?>
   </div>
 </body>
