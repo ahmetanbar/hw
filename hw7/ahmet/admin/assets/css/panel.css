@@ -29,3 +29,15 @@ li a:hover:not(.active) {
     background-color: #555;
     color: white;
 }
+
+.content {
+  border: 3px solid #333;
+  border-spacing: 50px;
+  max-width: 850px;
+    margin: auto;
+}
+
+.main {
+    max-width: 400px;
+    margin: auto;
+}

@@ -8,7 +8,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-
   <?php
   $admin="admin";
   function connect_db(){
@@ -85,6 +84,11 @@
     <li><a href="./auth.php">Authority</a></li>
     <li><a href="../logout.php">Log Out</a></li>
   </ul>
+  <!-- <div class="main">
+  <div class="content">
+    <h1>asdassadsadsadsaddddddddddddddddddd</h1>
+  </div>
+</div> -->
 
   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
 

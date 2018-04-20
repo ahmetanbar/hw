@@ -137,11 +137,13 @@
                       $result = $stmt->get_result();
                       $row = $result->fetch_assoc();
 
-                      $_SESSION['name']=$name; $_SESSION['surname']=$surname; $_SESSION['email']=$_POST['email']; $_SESSION['username']=$_POST['username']; $_SESSION['role']="";
-
                       $auth=generateRandomString();
                       $user_id=$row["id"];
                       setcookie('auth',$auth);
+
+                      $_SESSION['name']=$name; $_SESSION['surname']=$surname; $_SESSION['email']=$_POST['email']; $_SESSION['username']=$_POST['username']; $_SESSION['role']=""; $_SESSION['id']=$row['id'];
+
+
 
                       $stmt = $conn->prepare("INSERT INTO cookie (auth,user_id) VALUES(?,?)");
                       $stmt->bind_param("si", $auth,$user_id);
@@ -164,8 +166,6 @@
           }
         }
       }
-
-      //_SESSION can be move other place???
       session_start();
       control_cookie();
       $logs=control_post();
