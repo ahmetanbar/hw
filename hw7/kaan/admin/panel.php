@@ -29,45 +29,18 @@
         }
         
     }
+    function last_id(){
+        $conn=db_connect();
 
-    function article_puller($id){
-        global $article1,$article2,$article3,$article4,$article5;
-        $conn=db_connect();
-        $y=$id-5;
-        echo($id);
-        #for($id;$id>=$y;$id--){
-        #   $stmt=$conn->prepare("SELECT * FROM articles WHERE id=?");
-         #   $stmt->bind_param("s",$id);
-          #  $stmt->execute();
-           # $query = $stmt->get_result();
-            #$result=$query->fetch_assoc();
-            #$article1=$result;
-        #}
-        
-    
+        $result = mysqli_insert_id($conn);
+        return $result;
     }
-    function last_article(){
-        $conn=db_connect();
-        $stmt=$conn->prepare("SELECT * FROM articles WHERE id=(SELECT max(id) FROM articles)");
-        $stmt->execute();
-        $query = $stmt->get_result();
-        $result=$query->fetch_assoc();
-        $last_article=$result;
-        return $last_article;
-    }
-    function writer_name($id){
-        $conn=db_connect();
-        $stmt=$conn->prepare("SELECT username FROM users WHERE id=?");
-        $stmt->bind_param("i",$id);
-        $stmt->execute();
-        $query = $stmt->get_result();
-        $result=$query->fetch_assoc();
-        return $result["username"];
-    }
-    $last_id=last_article();
-    $last_writer=writer_name($last_id["uid"]);
-    article_puller($last_id["id"]);
+    function article_puller($article){
+        $query="SELECT title,article,authorid,imgurl FROM articles WHERE id LIKE '" . mysqli_escape_string($article) . "'";
+        $result = mysqli_query($conn, $query);
 
+    }
+    $last_article=last_id();
     $cookie=cookie_control();
     if($cookie==True){
         $conn=db_connect();
@@ -119,7 +92,7 @@
 
             <div class="content">
                 <div class="rightcnt">
-                    <a style="text-decoration:none;" href="article.php?id=<?php echo($last_id["id"])?>">
+                    <a style="text-decoration:none;" href="makale.php?article=<?php echo("5")?>">
                         <div style="position:relative;">
                             <img src="./assest/img/header3.jpg"/>
                             <div class="articlebtn">
@@ -128,14 +101,14 @@
                         </div>
                     </a>
                     <div>
-                        <h3><?php echo($last_id["title"])?></h3>
-                        <p><?php echo($last_id["body"])?></p>
-                        <h5>Rating: <span style="color:red;margin-right:30px;"><?php echo($last_id["rating"])?></span> Views: <span style="color:red;margin-right:30px;"><?php echo($last_id["views"])?></span> Comments: <span style="color:red;margin-right:30px;"><?php echo($last_id["id"])?></span> Author: <span style="color:red;"><?php echo($last_writer)?></span></h5>
+                        <h3>BAŞLIK</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
+                        <h5>Rating: <span style="color:red;margin-right:30px;">2</span> Views: <span style="color:red;margin-right:30px;">2</span> Comments: <span style="color:red;margin-right:30px;">5</span> Author: <span style="color:red;">Kaan ARI</span></h5>
                     </div>
                 </div>
                 <hr>
                 <div class="leftcnt">
-                    <a style="text-decoration:none;" href="makale.php?id=1">
+                    <a style="text-decoration:none;" href="makale.php?1">
                         <div style="position:relative;">
                             <img src="./assest/img/header3.jpg"/>
                             <div class="articlebtn2">
@@ -152,7 +125,7 @@
                 </div>
                 <hr>
                 <div class="rightcnt">
-                    <a style="text-decoration:none;" href="article.php?id=1">
+                    <a style="text-decoration:none;" href="makale.php?1">
                     <div style="position:relative;">
                         <img src="./assest/img/header3.jpg"/>
                         <div class="articlebtn">
@@ -172,7 +145,7 @@
                 </div>
                 <hr>
                 <div class="leftcnt">
-                    <a style="text-decoration:none;" href="article.php?id=1">
+                    <a style="text-decoration:none;" href="makale.php?1">
                         <div style="position:relative;">
                             <img src="./assest/img/header3.jpg"/>
                             <div class="articlebtn2">
@@ -188,7 +161,7 @@
                 </div>
                 <hr>
                 <div class="rightcnt">
-                    <a style="text-decoration:none;" href="article.php?=1">
+                    <a style="text-decoration:none;" href="makale.php?1">
                         <div style="position:relative;">
                             <img src="./assest/img/header3.jpg"/>
                             <div class="articlebtn">

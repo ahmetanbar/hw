@@ -88,7 +88,7 @@ body{
 .active {
     background-color: rgb(170, 0, 9);
     color: #333;
-    pointer-events: all;
+    pointer-events: none;
 }
 
 .navbar ul li a:hover{
@@ -193,7 +193,7 @@ body{
     color:rgb(175, 171, 171);
 }
 .inp{
-    user-select: none;
+    user-select: text;
     background-color:rgba(230, 230, 230, 0.616);
     height:35px;
     width: 100%;
@@ -204,26 +204,11 @@ body{
     border-radius: 10px;
 
 }
-.inp2{
-    user-select: none;
-    background-color:rgba(167, 167, 167, 0.616);
-    height:35px;
-    width: 100%;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    text-align: center; 
-    font-size: 16px;
-    border-radius: 10px;
-    color: darkred;
-
-}
 ::-webkit-input-placeholder {
     text-align: center;
-    
  }
  
 input[type=text]:focus, input[type=password]:focus {
-    
     background-color: rgb(224, 224, 224);
     outline: none;
   }

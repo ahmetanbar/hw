@@ -85,14 +85,14 @@
             </header>
             <div class="navbar">
                 <ul>
-                    <li><a class="active" href="./index.php">Home</a></li>
+                    <li><a href="./index.php">Home</a></li>
                     <li><a href="./archive.php">Archive</a></li>
                     <li><a href="./about.php">About</a></li>
                     <?php
                         if((cookie_control())){
                             echo'
                                 <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
-                                <li><a href="./profile.php?id='.$userid.'" style="float:right;">Profile</a>
+                                <li><a class="active" href="./profile.php?id='.$userid.'" style="float:right;">Profile</a>
                             
                             ';
                         }else{

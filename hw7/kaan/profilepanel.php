@@ -80,7 +80,7 @@
         $stmt->close();
     }
     function update_userdata($id){
-        global $passwordstatus,$newpwdstatus,$usr_info;
+        global $passwordstatus,$newpwdstatus,$usr_info,$buttonstatus;
         $conn=db_connect();
         $stmt=$conn->prepare("SELECT * FROM users WHERE id=?");
         $stmt->bind_param("s",$id);
@@ -175,19 +175,12 @@
             }else{
                 $newpwd=$usr_info["pwd"];
             }
-            echo($newname);
-            echo($newpwd);
-            echo($newbdate);
-            echo($newcountry);
-            echo($newsurname);
-            echo($newgender);
-            echo($newusrtel);
-            echo($id);
             $conn=db_connect();
             $stmt = $conn->prepare("UPDATE users SET pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=? WHERE id=?");
             $stmt->bind_param("sssssssi", $newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$id);
             if ($stmt->execute()) {
-                echo("Success");
+                $buttonstatus="SUCCES";
+                $stmt->close();
             } else {
                 echo "Error: ".$stmt->error;
                 die();
@@ -196,6 +189,7 @@
             $passwordstatus="Wrong Password";
         }
     }
+    $buttonstatus="SAVE";
     $passwordstatus="Enter Password";
     $last_article=last_id();
     $cookie=cookie_control();
@@ -245,7 +239,7 @@
                         if((cookie_control())){
                             echo'
                                 <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
-                                <li><a class="active" href="./profile.php?id='.$userid.'" style="float:right;">Profile</a>
+                                <li><a href="./profile.php?id='.$userid.'" style="float:right;">Profile</a>
                             
                             ';
                         }else{
@@ -335,7 +329,7 @@
                         <center><div style="background-image:url(./assest/img/profile_default.png);border-radius:10px;margin-top:10px;height:175px;width:150px;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:cover;"></div></center><br>
                         <center><label class="uploadbtn" for="ppimg">Browse...</label></center>
                         <input style="z-index:-1; position:absolute; opacity:0;" type="file" name="ppimg" id="ppimg" accept=".jpg, .jpeg, .png">
-                        <input class="sgninbtn" type="submit" value="SAVE">
+                        <input class="sgninbtn" type="submit" value="<?php echo($buttonstatus);?>" onfocus="(this.value='SAVE')">
                         <br>
                         
                 </div>

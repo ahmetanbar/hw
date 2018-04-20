@@ -17,7 +17,7 @@
         $_COOKIE["auth"]=$cookie;
         $_SESSION["auth"] = $cookie;
         $_SESSION["username"]=$username;
-        setcookie("auth","$cookie");    
+        setcookie("auth","$cookie", 0);    
     }
     function cookie_set2($username)
     {
@@ -157,15 +157,9 @@
     
     <body>
         <div class="wrapper">
-            <header>
-                <div  class="header"></div>
-            </header>
             <div class="navbar">
                 <ul>
-                    <li><a href="./index.php">Home</a></li>
-                    <li><a href="./archive.php">Archive</a></li>
-                    <li><a href="./about.php">About</a></li>
-                    <li><a href="./signup.php" style="cursor:pointer; float: right;">Sign Up</a></li> 
+                    <li><a href="../index.php">Home</a></li>
                     <li><a class="active" href="./login.php" style="float:right;">Login</a></li>
                 </ul>
             </div>
@@ -177,12 +171,7 @@
                         <input class="inp" <?php echo("placeholder='$usernamestatus'"); ?> type="text" name="username">
                         <label><b>Password</b></label>
                         <input class="inp" <?php echo("placeholder='$passwordstatus'"); ?> type="password" name="pwd">
-                        <br>
-                        <div style="display:block;">
-                            <input style="height:15px; width:15px;" type="checkbox" name="loginin">
-                            <span style="position:static;font-size:15px;">Keep me signed in</span>
-                        </div>
-                        
+                        <br>                        
                         <input class="loginbtn" type="submit" value="LOGIN">
                     </form>
                 </div>

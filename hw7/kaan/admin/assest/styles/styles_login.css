@@ -18,9 +18,9 @@ body{
     animation-name: anim-1;
     margin: auto;
     margin-bottom: 0;
-    height: 70%;
+    height: 63.1%;
     min-width: 410px;
-    max-width: 850px;
+    max-width: 1000px;
 }
 @keyframes anim-1 {
     0%, 1% {opacity: 0; }
@@ -88,7 +88,7 @@ body{
 .active {
     background-color: rgb(170, 0, 9);
     color: #333;
-    pointer-events: all;
+    pointer-events: none;
 }
 
 .navbar ul li a:hover{
@@ -104,137 +104,70 @@ body{
 /* CONTENT PART */
 
 .content{
+    padding-top: 100px;
+    align-content: center;
     user-select: none;
     font-size: 15px;
-    margin:auto;
-    margin-top:5%;
+    display: block;
+    margin-top:4%;
     width: 100%;
-    height: auto;
-    padding-bottom: 30px;
-    min-height: 500px;
+    height: 100%;
+    min-height: 300px;
     background-color: rgba(201, 200, 200, 0.753);
     border-radius: 10px;  
 }
-.a{
-    background-color: rgb(54, 54, 54); 
-    height: 2px; 
-    border: 0.01;
-    margin-top: 30px;
-    margin-bottom: 30px;
-    display: none;
-}
-.form1{
-    float: left;
-    margin:auto;
-    padding-top: 4%;
+.loginform{
+    margin: auto;
+    padding-top: 6%;
     padding-left: 40px;
-    padding-right: 40px;
-    width: 22%;
-    height: auto;
+    width: 300;
+    height: 200;
 }
-.gender{
-    font-size: 13px;
-}
-
-@media only screen and (max-width: 750px) {
-    .form1 {
-        float: none;
-        margin: auto;
-        width: 70%;
-        text-align: center;
-    }
-    .content{
-        align-items: center;
-        align-content: center;
-        align-self: center;
-        height: auto;
-    }
-    .a{
-        display: block;
-    
-    }
-    .gender{
-        font-size:16px;
-    }
-
-}
-.sgninbtn{
+.loginbtn{
     background-color: darkred;
     border: 0px solid darkred;
     color:white;
-    width: 100%;
+    width: 250;
     height: 40;
-    margin-top: 30px;
+    margin-top: 10px;
     border-radius: 10px;
 
 
 }
-.sgninbtn:hover{
+.loginbtn:hover{
     cursor: pointer;
     background-color: rgb(177, 2, 2);
 }
-.uploadbtn{
-    background-color: #333;
-    border: 1px solid darkred;
-    color:white;
-    padding-top:10px;
-    padding-bottom: 10px;
-    padding-left: 25%;
-    padding-right: 25%;
-    width: 100%;
-    height: 40;
-    margin-top: 10px;
-    border-radius: 10px;
-
-
-}
-.uploadbtn:hover{
-    cursor: pointer;
-    color:rgb(175, 171, 171);
-}
 .inp{
-    user-select: none;
+    user-select: text;
     background-color:rgba(230, 230, 230, 0.616);
     height:35px;
-    width: 100%;
+    width: 250;
     margin-bottom: 10px;
     margin-top: 10px;
     text-align: center; 
     font-size: 16px;
     border-radius: 10px;
-
-}
-.inp2{
-    user-select: none;
-    background-color:rgba(167, 167, 167, 0.616);
-    height:35px;
-    width: 100%;
-    margin-bottom: 10px;
-    margin-top: 10px;
-    text-align: center; 
-    font-size: 16px;
-    border-radius: 10px;
-    color: darkred;
 
 }
 ::-webkit-input-placeholder {
     text-align: center;
-    
  }
  
 input[type=text]:focus, input[type=password]:focus {
-    
     background-color: rgb(224, 224, 224);
     outline: none;
   }
 /* FOOTER PART */
 
 footer{
+    position: absolute;
     user-select: none;
     align-items: center;
     bottom: 0;
     margin-top: 3%;
     width: 100%;
+    max-width: 1000;
     margin-bottom: 0;
     background-color: #333;
     border-top: 4px solid darkred;

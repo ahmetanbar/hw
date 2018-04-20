@@ -88,7 +88,7 @@ body{
 .active {
     background-color: rgb(170, 0, 9);
     color: #333;
-    pointer-events: all;
+    pointer-events: none;
 }
 
 .navbar ul li a:hover{
@@ -111,7 +111,7 @@ body{
     width: 100%;
     height: auto;
     padding-bottom: 30px;
-    min-height: 500px;
+    min-height: 390px;
     background-color: rgba(201, 200, 200, 0.753);
     border-radius: 10px;  
 }
@@ -132,6 +132,7 @@ body{
     width: 22%;
     height: auto;
 }
+
 .gender{
     font-size: 13px;
 }
@@ -159,16 +160,19 @@ body{
 
 }
 .sgninbtn{
+    position: static;
+    display: block;
+    margin:auto;
     background-color: darkred;
     border: 0px solid darkred;
+    padding-top: 5px;
     color:white;
     width: 100%;
-    height: 40;
+    height: 25;
     margin-top: 30px;
     border-radius: 10px;
-
-
 }
+
 .sgninbtn:hover{
     cursor: pointer;
     background-color: rgb(177, 2, 2);
