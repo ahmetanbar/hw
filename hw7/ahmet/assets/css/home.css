@@ -7,21 +7,23 @@ body {
 }
 
 .content {
-  border: 3px solid #333;
+  border: 1px solid #333;
   border-spacing: 50px;
   max-width: 850px;
     margin: auto;
 }
 
 .art_head{
-padding: 20px;
+padding-left: 20px;
+padding-right: 20px;
 }
 .art_head a {
 color:black;
 }
 
 .article {
-padding: 20px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .article p{
@@ -35,8 +37,7 @@ padding: 20px;
     padding: 3px 10px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
-    border-radius: 25px;
+
 }
 
 .article a:hover, a:active {
@@ -64,6 +65,7 @@ padding: 20px;
 }
 
 .info .material-icons{ font-size: 16px; }
+
 
 footer {
     padding: 1em;
