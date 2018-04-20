@@ -1,6 +1,35 @@
 <?php
     session_start();
+    function valid_pass($pwd) 
+    {
+        $r1='/[A-Z]/';  //Uppercase
+        $r2='/[a-z]/';  //lowercase
+        $r3='/[!@#$%^&()\-_=+{};:,<.>"|]/';  // whatever you mean by 'special char'
+        $r4='/[0-9]/';  //numbers
+        if(preg_match_all($r1,$pwd, $o)<1) return FALSE;
+        if(preg_match_all($r2,$pwd, $o)<1) return FALSE;
+        if(preg_match_all($r3,$pwd, $o)>0) return FALSE;
+        if(preg_match_all($r4,$pwd, $o)<1) return FALSE;
+        if(strlen($pwd)<8) return FALSE;
+        return TRUE;
+    }
 
+
+    function valid_name($name)
+    {
+        $r3='/[!@#$%^&*()\-_=+{};:,<.>]/';
+        if(preg_match_all($r3,$name, $o)>0) return FALSE;
+        if(strlen($name)<1) return FALSE;
+        return TRUE;
+    }
+    function valid_surname($name)
+    {
+        $name = preg_replace ("/ +/", "", $name);
+        $r3='/[!@#$%^&*()\-_=+{};:,<.>]/';
+        if(preg_match_all($r3,$name, $o)>0) return FALSE;
+        if(strlen($name)<1) return FALSE;
+        return TRUE;
+    }
     function db_connect(){
         $servername = "localhost";
         $usrname = "root";
@@ -48,53 +77,126 @@
         $stmt->execute();
         $query = $stmt->get_result();
         $usr_info=$query->fetch_assoc();
+        $stmt->close();
     }
     function update_userdata($id){
+        global $passwordstatus,$newpwdstatus,$usr_info;
         $conn=db_connect();
         $stmt=$conn->prepare("SELECT * FROM users WHERE id=?");
         $stmt->bind_param("s",$id);
         $stmt->execute();
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
+        $stmt->close();
         if(password_verify($_POST["pwd"],$result["pwd"])){
-            echo("SIFRE DOGRU");
-            $newpwd=$_POST["newpwd"];
-            $renewpwd=$_POST["renewpwd"];
-            $name=$_POST["usr_name"];
-            $surname=$_POST["usr_surname"];
-            $gender=$_POST["gender"];
-            $bdate=$_POST["bdate"];
-            $usrtel=$_POST["usrtel"];
-            $country=$_POST["country"];
-            if(!(empty($_POST["newpwd"]))){
-                echo("NEW PW");
-            }
-            if(!(empty($_POST["renewpwd"]))){
-                echo("NEW PW");
-            }
-            if(empty($_POST["name"])){
-                
+           
+            if(!(empty($_POST["name"]))){
+                $name=$_POST["name"];
             }else{
-                if($_POST["name"]!=$usr_info["usr_name"]){
-
-                }
+                $name=$usr_info["usr_name"];
             }
-            if(empty($_POST["surname"])){
-                
+
+            if(!(empty($_POST["surname"]))){
+                $surname=$_POST["surname"];
             }else{
-                if($_POST["name"]!=$usr_info["usr_surname"]){
+                $surname=$usr_info["usr_surname"];
+            }
+            if(!(empty($_POST["gender"]))){
+                $gender=$_POST["gender"];
+            }else{
+                $gender=$usr_info["gender"];
+            }
+            if(!(empty($_POST["bdate"]))){
+                $bdate=$_POST["bdate"];
+            }else{
+                $bdate=$usr_info["bdate"];
+            }
+            if(!(empty($_POST["usrtel"]))){
+                $usrtel=$_POST["usrtel"];
+            }else{
+                $usrtel=$usr_info["usr_phone"];
+            }
+            if(!(empty($_POST["country"]))){
+                $country=$_POST["country"];
+            }else{
+                $country=$usr_info["country"];
+            }
+            
+            if($name!=$usr_info["usr_name"] && !(empty($name)) && valid_name($name)){
+                $newname=$name;
+            }else{
+                $newname=$usr_info["usr_name"];
+            }
 
+            if($surname!=$usr_info["usr_surname"] && !(empty($surname)) && valid_name($surname)){
+                $newsurname=$surname;
+            }else{
+                $newsurname=$usr_info["usr_surname"];
+            }
+
+            if($bdate!=$usr_info["bdate"] && !(empty($bdate))){
+                $newbdate=$bdate;
+            }else{
+                $newbdate=$usr_info["bdate"];
+            }
+
+            if($gender!=$usr_info["gender"] && !(empty($gender))){
+                $newgender=$gender;
+            }else{
+                $newgender=$usr_info["gender"];
+            }
+
+            if($country!=$usr_info["country"]){
+                $newcountry=$country;
+            }else{
+                $newcountry=$usr_info["country"];
+            }
+            if($usrtel!=$usr_info["usr_phone"]){
+                $newusrtel=$usrtel;
+            }else{
+                $newusrtel=$usr_info["usr_phone"];
+            }
+
+
+            if(!(empty($_POST["newpwd"])) || !(empty($_POST["renewpwd"]))){
+                if(!(empty($_POST["newpwd"])) && !(empty($_POST["renewpwd"]))){
+                    if($_POST["newpwd"]==$_POST["renewpwd"]){
+                        if(valid_pass($_POST["newpwd"])){
+                            $newpwd=password_hash($_POST["newpwd"], PASSWORD_DEFAULT);
+                        }else{
+                            $newpwdstatus="New Password is no valid.";
+                        }
+                    }else{
+                        $newpwdstatus="Passwords are not same.";
+                    }
+                }else{
+                    $newpwdstatus="This field can not be empty.";
                 }
+            }else{
+                $newpwd=$usr_info["pwd"];
             }
-            if($_POST["gender"]!=$usr_info["gender"]){
-                echo("NEW GENDER");
+            echo($newname);
+            echo($newpwd);
+            echo($newbdate);
+            echo($newcountry);
+            echo($newsurname);
+            echo($newgender);
+            echo($newusrtel);
+            echo($id);
+            $conn=db_connect();
+            $stmt = $conn->prepare("UPDATE users SET pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=? WHERE id=?");
+            $stmt->bind_param("sssssssi", $newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$id);
+            if ($stmt->execute()) {
+                echo("Success");
+            } else {
+                echo "Error: ".$stmt->error;
+                die();
             }
-            die();
         }else{
-            echo("SIFRE YANLIS");
-            die();
+            $passwordstatus="Wrong Password";
         }
     }
+    $passwordstatus="Enter Password";
     $last_article=last_id();
     $cookie=cookie_control();
     if($cookie==True){
@@ -107,10 +209,9 @@
         $userid=$result["id"];
         $id=$_GET["id"];
         if($userid==$id){
+            getinfo($id);
             if($_POST){
                 update_userdata($userid);
-                getinfo($id);
-            }else{
                 getinfo($id);
             }
         }else{
@@ -167,7 +268,7 @@
                         <label><b>Username </b> </label>
                         <input class="inp2" type="text" name="username" value="<?php echo($usr_info["username"]);?>" disabled>
                         <label><b>Password <span style="color:darkred;">(*)</span></b></label>
-                        <input class="inp" type="password" placeholder="Enter Password" name="pwd" required>
+                        <input class="inp" type="password" placeholder="<?php echo($passwordstatus);?>" name="pwd" required>
                         <label><b>New Password </b></label>
                         <input class="inp" type="password" name="newpwd" placeholder="Enter New Password">
                         <label><b>Retype New Password </span></b></label>
