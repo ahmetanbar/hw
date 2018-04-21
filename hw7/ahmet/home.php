@@ -81,21 +81,21 @@
           ?>
           <div class="content">
             <div class="art_head">
-              <h3><a href="./article.php?id=<?php echo($row['id']); ?>"><?php echo($row['header']); ?></a></h3>
+              <h2><a href="./article.php?id=<?php echo($row['id']); ?>"><?php echo($row['header']); ?></a></h2>
             </div>
             <div class="article"><p><?php echo($row['article']); ?><a href="./article.php?id=<?php echo($row['id']); ?>">More▷</a></p>
             </div>
             <div class="info">
-              <i style="float:left; " class="material-icons md-18">date_range</i>
+              <i style="float:left; " class="material-icons md">date_range</i>
               <a style="float:left;" href="./article.php?id=<?php echo($row['id']); ?>"><?php echo(date('d-m-Y H:i', strtotime($row['date']))); ?></a>
-              <i style="float:left;" class="material-icons md-18" >account_balance</i>
+              <i style="float:left;" class="material-icons md" >account_balance</i>
               <a style="float:left;" href="./article.php?category=<?php echo($row['category']); ?>"><?php echo($row['category']); ?></a>
-              <i style="float:left;" class="material-icons md-18" >account_circle </i>
+              <i style="float:left;" class="material-icons md" >account_circle </i>
               <a style="float:left; " href="./profile.php?user=<?php echo($row['username']); ?>"><?php echo($row['author']); ?></a>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>" >Viewing:<?php echo($row['viewing']); ?></a>
-              <i style="float:right;" class="material-icons md-18">assessment</i>
+              <i style="float:right;" class="material-icons md">assessment</i>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>">Comments:<?php echo($row['comments']); ?></a>
-              <i style="float:right;" class="material-icons md-18">comment</i>
+              <i style="float:right;" class="material-icons md">comment</i>
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             </div>
           </div>
