@@ -34,7 +34,6 @@
         global $article1,$article2,$article3,$article4,$article5;
         $conn=db_connect();
         $y=$id-5;
-        echo($id);
         #for($id;$id>=$y;$id--){
         #   $stmt=$conn->prepare("SELECT * FROM articles WHERE id=?");
          #   $stmt->bind_param("s",$id);
@@ -130,7 +129,7 @@
                     <div>
                         <h3><?php echo($last_id["title"])?></h3>
                         <p><?php echo($last_id["body"])?></p>
-                        <h5>Rating: <span style="color:red;margin-right:30px;"><?php echo($last_id["rating"])?></span> Views: <span style="color:red;margin-right:30px;"><?php echo($last_id["views"])?></span> Comments: <span style="color:red;margin-right:30px;"><?php echo($last_id["id"])?></span> Author: <span style="color:red;"><?php echo($last_writer)?></span></h5>
+                        <h5>Rating: <span style="color:red;margin-right:30px;"><?php echo($last_id["rating"])?></span> Views: <span style="color:red;margin-right:30px;"><?php echo($last_id["views"])?></span> Comments: <span style="color:red;margin-right:30px;"><?php echo($last_id["comments"])?></span> Author: <span style="color:red;"><?php echo($last_writer)?></span></h5>
                     </div>
                 </div>
                 <hr>

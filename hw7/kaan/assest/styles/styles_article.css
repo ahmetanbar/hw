@@ -33,9 +33,16 @@ body{
     background-size: cover;
 
 }
+@media only screen and (max-width: 600px) {
+    .header {
+        display: none;
+    }
+    .navbar ul li a{
+        font-size: 10px;
+    }
 
+}
 /* NAVIGATION PART */
-
 .navbar {
     z-index: 99;
     position: sticky;
@@ -104,6 +111,18 @@ body{
     border-radius: 10px;    
 }
 
+.icona{
+    height: 30px;
+    width: 30px;
+    margin-left: 40px;
+}
+.iconc{
+    color:red;
+    margin-left:20px;
+    line-height: 37px;
+    vertical-align:
+ bottom;
+}
 .image{
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;

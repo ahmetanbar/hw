@@ -67,7 +67,7 @@
                 </div>
                 <div class="article">
                     <p><?php echo($article["body"])?></p>
-                    <h5 style="float:right;">Author: <span style="color:darkred;"><?php echo($writer)?></span></h5>
+                    <h5 style="float:right;">Rating: <span style="color:#333;margin-right:30px;"><?php echo($article["rating"])?></span><img class="icona" src="./assest/img/eye.png"><span style="color:darkred;margin-right:30px;margin-left:10px;"><?php echo($article["views"])?></span><img class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($article["comments"])?></span><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></h5>
                 </div>
                 <hr>
                 <div class="comment">
