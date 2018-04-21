@@ -13,7 +13,7 @@ body{
     animation-timing-function: ease-out;
     animation-name: anim-1;
     margin: auto;
-    min-width: 410px;
+    min-width: 335px; /* 410px */
     max-width: 850px;
 }
 @keyframes anim-1 {
@@ -33,15 +33,7 @@ body{
     background-size: cover;
 
 }
-@media only screen and (max-width: 600px) {
-    .header {
-        display: none;
-    }
-    .navbar ul li a{
-        font-size: 10px;
-    }
 
-}
 /* NAVIGATION PART */
 .navbar {
     z-index: 99;
@@ -116,12 +108,17 @@ body{
     width: 30px;
     margin-left: 40px;
 }
-.iconc{
-    color:red;
+.iconb{
+    color:black;
     margin-left:20px;
-    line-height: 37px;
-    vertical-align:
- bottom;
+    line-height: 30px;
+    vertical-align:bottom;
+}
+.iconc{
+    color:darkred;
+    margin-left:20px;
+    line-height: 30px;
+    vertical-align:bottom;
 }
 .image{
     border-top-left-radius: 10px;
@@ -166,12 +163,19 @@ body{
 
 .article{
     width: 80%;
-
     margin: auto;
     height: auto;
     margin-top: 40px;
     overflow: hidden;
     padding-bottom: 10px;
+}
+.infoart{
+    user-select: none;
+    margin:auto;
+    width:450px;
+}
+.author{
+    display: none;
 }
 .content hr{
     background-color: darkred; 
@@ -219,4 +223,37 @@ footer{
 
 .footer a img:hover{
     filter:brightness(150%);
+}
+@media only screen and (max-width: 600px) {
+    .header {
+        display: none;
+    }
+
+    .icona{
+        margin-left: 25px;
+    }
+    .iconc{
+        margin-left: 15px;
+    }
+    .stars2{
+        display: none;
+    }
+    .author{
+        margin:auto;
+        margin-top: -40px;
+        display:block;
+    }
+    .infoart{
+        width: 250px;
+    }
+}
+@media only screen and (max-width:450px){
+    .navbar ul li a{
+        font-size: 13px;
+    }
+}
+@media only screen and (max-width:390px){
+    .navbar ul li a{
+        font-size: 12px;
+    }
 }

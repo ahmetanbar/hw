@@ -67,8 +67,9 @@
                 </div>
                 <div class="article">
                     <p><?php echo($article["body"])?></p>
-                    <h5 style="float:right;">Rating: <span style="color:#333;margin-right:30px;"><?php echo($article["rating"])?></span><img class="icona" src="./assest/img/eye.png"><span style="color:darkred;margin-right:30px;margin-left:10px;"><?php echo($article["views"])?></span><img class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($article["comments"])?></span><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></h5>
+                    <div class="infoart"><h5><span class="iconb">Rating: </span><span class="iconc"><?php echo($article["rating"])?></span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc"><?php echo($article["views"])?></span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($article["comments"])?></span><span class="stars2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($article["uid"])?>"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></a></span></h5></div>
                 </div>
+                <center><div class="author"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($article["uid"])?>"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></h5></a></div></center>
                 <hr>
                 <div class="comment">
                     <h3 style="vertical-align:middle;color:lightgrey;" >Comments</h3>

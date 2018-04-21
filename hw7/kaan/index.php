@@ -81,7 +81,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Ana Sayfa - Kaan ARI</title>
+        <title>Homepage - Kaan ARI</title>
         <link rel="stylesheet" href="./assest/styles/styles_main.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>

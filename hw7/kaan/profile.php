@@ -90,11 +90,18 @@
                     <li><a href="./about.php">About</a></li>
                     <?php
                         if((cookie_control())){
-                            echo'
+                            if($userid==$id){
+                                echo'
                                 <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
                                 <li><a class="active" href="./profile.php?id='.$userid.'" style="float:right;">Profile</a>
+                                ';
+                            }else{
+                                echo'
+                                <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
+                                <li><a href="./profile.php?id='.$userid.'" style="float:right;">Profile</a>
+                                ';
+                            }
                             
-                            ';
                         }else{
                             echo'
                                 <li><a href="./signup.php" style="cursor:pointer; float: right;">Sign Up</a></li> 
@@ -133,7 +140,7 @@
                     <?php
                     if($userid==$id){
                         echo'
-                        <a href="./profilepanel.php?id='.$userid.'">  
+                        <a style="text-decoration:none;" href="./profilepanel.php?id='.$userid.'">  
                         <div class="sgninbtn">
                         <center><span id="btnn">EDIT</span></center>
                         </div>
