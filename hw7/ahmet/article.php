@@ -68,22 +68,10 @@
       return $result;
     }
 
-    function get_articles($category){
-      $conn=connect_db();
-      $stmt = $conn->prepare("SELECT * FROM articles WHERE category=? order by id desc limit 6");
-      $stmt->bind_param("s", $category);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      return $result;
-    }
-
     function get_kind(){
       if(count($_GET)!=0){
         if(array_key_exists("id",$_GET)){
           return "id";
-        }
-        else if(array_key_exists("category",$_GET)){
-          return "category";
         }
       }
     }
@@ -165,15 +153,6 @@
       if($get_method=="id"){
       $result=get_article($_GET['id']);
     }
-      else if($get_method=="category"){
-        $result=get_articles($_GET['category']);
-        if($result->num_rows<6){
-          $number_box=$result->num_rows;
-        }
-        else
-          $number_box=6;
-      }
-
       for($i=0;$i<$number_box;$i++) {
         $row = $result->fetch_assoc();
         ?>
@@ -192,22 +171,20 @@
               <i style="float:right;" class="material-icons md">comment</i>
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             </div>
+
+            <?php if($get_method=="id"){?>
             <div class="art_head">
               <h2><a href="./article.php?id=<?php echo($row['id']); ?>"><?php echo($row['header']); ?></a></h2>
             </div>
             <div class="article"><p><?php echo($row['article']); ?></p>
             </div>
+            <?php }?>
           </div>
             <br>
           <?php }
 
-          $number_comment=5;
           $result=get_comment();
-          if($result->num_rows<6){
-            $number_comment=$result->num_rows;
-          }
-          else
-            $number_comment=6;
+          $number_comment=$result->num_rows;
 
           for($i=0;$i<$number_comment;$i++) {
             $row = $result->fetch_assoc();
