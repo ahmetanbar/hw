@@ -30,6 +30,35 @@
         
     }
 
+    function time_elapsed_string($datetime, $full = false) {
+        $now = new DateTime;
+        $ago = new DateTime($datetime);
+        $diff = $now->diff($ago);
+    
+        $diff->w = floor($diff->d / 7);
+        $diff->d -= $diff->w * 7;
+    
+        $string = array(
+            'y' => 'year',
+            'm' => 'month',
+            'w' => 'week',
+            'd' => 'day',
+            'h' => 'hour',
+            'i' => 'minute',
+            's' => 'second',
+        );
+        foreach ($string as $k => &$v) {
+            if ($diff->$k) {
+                $v = $diff->$k . ' ' . $v . ($diff->$k > 1 ? 's' : '');
+            } else {
+                unset($string[$k]);
+            }
+        }
+    
+        if (!$full) $string = array_slice($string, 0, 1);
+        return $string ? implode(', ', $string) . ' ago' : 'just now';
+    }
+
     function article_puller($id){
         global $article1,$article2,$article3,$article4,$article5;
         $conn=db_connect();
@@ -64,26 +93,58 @@
             while($row = $result->fetch_assoc()) {
                 if($y%2 == 0){
                     echo '
+
+                    <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
+
                     <div class="rightcnt">
-                    <a style="text-decoration:none;" href="article.php?id=<?php echo($last_id["id"])?>">
+
                         <div style="position:relative;">
                             <img class="rightcntimg" src="./assest/img/header3.jpg"/>
                             <div class="articlebtn">
                                 <h3>READ MORE</h3>
+
+                            </div>
+                            <div class="articlebtnhide">                                
+                                <h5><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></h5>
                             </div>
                         </div>
-                    </a>
-                    <div>
-                        <h3><?php echo($last_id["title"])?></h3>
-                        <p><?php echo($last_id["body"])?></p>
-                        <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc"><?php echo($last_id["rating"])?></span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc"><?php echo($last_id["views"])?></span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($last_id["comments"])?></span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc"><?php echo($last_writer)?></span></a></span></h5></div>
-                        <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($last_writer)?></span></h5></a></div></center>
+                        <div>
+                            <h3 style="color:black;">'.$row["title"].'</h3>
+                            <p style="color:black;">'.$row["body"].'</p>
+                            </a>
+                            <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc">'.$row["rating"].'</span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc">'.$row["views"].'</span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc">'.$row["comments"].'</span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></a></span></h5></div>
+                            <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></h5></a></div></center>
 
-                    </div>
-                </div>
-                <hr>
-                    
+                        </div>
+                    </div>                    
                     ';
+                    if($y==4){
+                        #echo('<hr class="hr1" style="border-color:rgba(201, 200, 200, 0.753);background-color:rgba(201, 200, 200, 0.753);hight:0px;">');
+                    }else{
+                        echo('<hr class="hr1">');
+                    }
+                    $y=$y+1;
+                }else{
+                    echo '
+                    <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
+                    <div class="leftcnt">
+                        <div style="position:relative;">
+                            <img class="leftcntimg" src="./assest/img/header3.jpg"/>
+                            <div class="articlebtn2">
+                                <h3>READ MORE</h3>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 style="color:black;">'.$row["title"].'</h3>
+                            <p style="color:black;">'.$row["body"].'</p>
+                            </a>
+                            <div class="type2"><h5><span class="author1"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" alt="Author" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></a></span><img alt="Comments" class="iconaa" src="./assest/img/comment.png"><span class="iconac">'.$row["comments"].'</span><img alt="Views" class="iconaa" src="./assest/img/eye.png"><span class="iconac">'.$row["views"].'</span><span class="iconab">Rating: </span><span class="iconac">'.$row["rating"].'</span></h5></div>
+                            <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="iconaa" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></h5></a></div></center>
+                            </div>
+                    </div>
+                    <hr class="hr1">
+                    ';
+                    $y=$y+1;
                 }
                     
             }
@@ -91,8 +152,6 @@
             echo "0 results";
         }
     }
-    $last_id=last_article();
-    $last_writer=writer_name($last_id["uid"]);
     $cookie=cookie_control();
     if($cookie==True){
         $conn=db_connect();
@@ -144,42 +203,7 @@
 
             <div class="content">
 
-                <div class="rightcnt">
-                    <a style="text-decoration:none;" href="article.php?id=<?php echo($last_id["id"])?>">
-                        <div style="position:relative;">
-                            <img class="rightcntimg" src="./assest/img/header3.jpg"/>
-                            <div class="articlebtn">
-                                <h3>READ MORE</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <div>
-                        <h3><?php echo($last_id["title"])?></h3>
-                        <p><?php echo($last_id["body"])?></p>
-                        <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc"><?php echo($last_id["rating"])?></span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc"><?php echo($last_id["views"])?></span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($last_id["comments"])?></span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc"><?php echo($last_writer)?></span></a></span></h5></div>
-                        <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($last_writer)?></span></h5></a></div></center>
-
-                    </div>
-                </div>
-                <hr>
-                <div class="leftcnt">
-                    <a style="text-decoration:none;" href="makale.php?id=1">
-                        <div style="position:relative;">
-                            <img class="leftcntimg" src="./assest/img/header3.jpg"/>
-                            <div class="articlebtn2">
-                                <h3>READ MORE</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <div>
-                        <h3>DENEME</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-                        <div class="type2"><h5><span class="author1"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><img class="iconaa" alt="Author" src="./assest/img/account.png"><span class="iconac"><?php echo($last_writer)?></span></a></span><img alt="Comments" class="iconaa" src="./assest/img/comment.png"><span class="iconac"><?php echo($last_id["comments"])?></span><img alt="Views" class="iconaa" src="./assest/img/eye.png"><span class="iconac"><?php echo($last_id["views"])?></span><span class="iconab">Rating: </span><span class="iconac"><?php echo($last_id["rating"])?></span></h5></div>
-                        <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><h5><img class="iconaa" src="./assest/img/account.png"><span class="iconac"><?php echo($last_writer)?></span></h5></a></div></center>
-                    </div>
-                </div>
-                <hr>
-                
+                <?php last5();?>
             </div>
             <footer>
                 <div  class="footer">
