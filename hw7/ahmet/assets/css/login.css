@@ -111,6 +111,11 @@ footer {
 }
 
 @media screen and (max-width:800px) {
+
+  input[type=text], input[type=password] {
+      width: 180px;
+  }
+
     .topnav {
       padding-left:50px;
       padding-right:25px;

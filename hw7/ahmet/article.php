@@ -102,6 +102,7 @@
             }
             //after control input
             if($verify_cont==2){
+            $logs["value_name"]=""; $logs["value_comment"]=""; $logs["value_email"]="";
             $conn =connect_db();
 
             $email=strtolower($_POST['email']);
