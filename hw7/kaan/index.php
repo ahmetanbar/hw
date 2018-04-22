@@ -45,15 +45,6 @@
         
     
     }
-    function last_article(){
-        $conn=db_connect();
-        $stmt=$conn->prepare("SELECT * FROM articles WHERE id=(SELECT max(id) FROM articles)");
-        $stmt->execute();
-        $query = $stmt->get_result();
-        $result=$query->fetch_assoc();
-        $last_article=$result;
-        return $last_article;
-    }
     function writer_name($id){
         $conn=db_connect();
         $stmt=$conn->prepare("SELECT username FROM users WHERE id=?");
@@ -63,10 +54,45 @@
         $result=$query->fetch_assoc();
         return $result["username"];
     }
+    function last5(){
+        $conn=db_connect();
+        $sql = "SELECT * FROM articles ORDER BY id DESC LIMIT 5";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+        // output data of each row
+            $y=0;
+            while($row = $result->fetch_assoc()) {
+                if($y%2 == 0){
+                    echo '
+                    <div class="rightcnt">
+                    <a style="text-decoration:none;" href="article.php?id=<?php echo($last_id["id"])?>">
+                        <div style="position:relative;">
+                            <img class="rightcntimg" src="./assest/img/header3.jpg"/>
+                            <div class="articlebtn">
+                                <h3>READ MORE</h3>
+                            </div>
+                        </div>
+                    </a>
+                    <div>
+                        <h3><?php echo($last_id["title"])?></h3>
+                        <p><?php echo($last_id["body"])?></p>
+                        <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc"><?php echo($last_id["rating"])?></span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc"><?php echo($last_id["views"])?></span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($last_id["comments"])?></span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc"><?php echo($last_writer)?></span></a></span></h5></div>
+                        <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($last_writer)?></span></h5></a></div></center>
+
+                    </div>
+                </div>
+                <hr>
+                    
+                    ';
+                }
+                    
+            }
+        } else {
+            echo "0 results";
+        }
+    }
     $last_id=last_article();
     $last_writer=writer_name($last_id["uid"]);
-    article_puller($last_id["id"]);
-
     $cookie=cookie_control();
     if($cookie==True){
         $conn=db_connect();
@@ -117,10 +143,11 @@
 
 
             <div class="content">
+
                 <div class="rightcnt">
                     <a style="text-decoration:none;" href="article.php?id=<?php echo($last_id["id"])?>">
                         <div style="position:relative;">
-                            <img src="./assest/img/header3.jpg"/>
+                            <img class="rightcntimg" src="./assest/img/header3.jpg"/>
                             <div class="articlebtn">
                                 <h3>READ MORE</h3>
                             </div>
@@ -129,14 +156,16 @@
                     <div>
                         <h3><?php echo($last_id["title"])?></h3>
                         <p><?php echo($last_id["body"])?></p>
-                        <h5>Rating: <span style="color:red;margin-right:30px;"><?php echo($last_id["rating"])?></span> Views: <span style="color:red;margin-right:30px;"><?php echo($last_id["views"])?></span> Comments: <span style="color:red;margin-right:30px;"><?php echo($last_id["comments"])?></span> Author: <span style="color:red;"><?php echo($last_writer)?></span></h5>
+                        <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc"><?php echo($last_id["rating"])?></span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc"><?php echo($last_id["views"])?></span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($last_id["comments"])?></span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc"><?php echo($last_writer)?></span></a></span></h5></div>
+                        <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($last_writer)?></span></h5></a></div></center>
+
                     </div>
                 </div>
                 <hr>
                 <div class="leftcnt">
                     <a style="text-decoration:none;" href="makale.php?id=1">
                         <div style="position:relative;">
-                            <img src="./assest/img/header3.jpg"/>
+                            <img class="leftcntimg" src="./assest/img/header3.jpg"/>
                             <div class="articlebtn2">
                                 <h3>READ MORE</h3>
                             </div>
@@ -145,63 +174,12 @@
                     <div>
                         <h3>DENEME</h3>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-                        <h5>Author: <span style="color:red;margin-right:30px;">Kaan ARI</span> Comments: <span style="color:red;margin-right:30px;">5</span> Views: <span style="color:red;margin-right:30px;">2</span> Rating: <span style="color:red;margin-right:30px;">2</span></h5>
-
+                        <div class="type2"><h5><span class="author1"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><img class="iconaa" alt="Author" src="./assest/img/account.png"><span class="iconac"><?php echo($last_writer)?></span></a></span><img alt="Comments" class="iconaa" src="./assest/img/comment.png"><span class="iconac"><?php echo($last_id["comments"])?></span><img alt="Views" class="iconaa" src="./assest/img/eye.png"><span class="iconac"><?php echo($last_id["views"])?></span><span class="iconab">Rating: </span><span class="iconac"><?php echo($last_id["rating"])?></span></h5></div>
+                        <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($last_id["uid"])?>"><h5><img class="iconaa" src="./assest/img/account.png"><span class="iconac"><?php echo($last_writer)?></span></h5></a></div></center>
                     </div>
                 </div>
                 <hr>
-                <div class="rightcnt">
-                    <a style="text-decoration:none;" href="article.php?id=1">
-                    <div style="position:relative;">
-                        <img src="./assest/img/header3.jpg"/>
-                        <div class="articlebtn">
-                            <h3>READ MORE</h3>
-                        </div>
-                    </div>
-                    </a>
-                    <div>
-                        <h3>Code Day</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.
-
-                                
-                        </p>
-                        <h5>Rating: <span style="color:red;margin-right:30px;">2</span> Views: <span style="color:red;margin-right:30px;">2</span> Comments: <span style="color:red;margin-right:30px;">5</span> Author: <span style="color:red;">Kaan ARI</span></h5>
-
-                    </div>
-                </div>
-                <hr>
-                <div class="leftcnt">
-                    <a style="text-decoration:none;" href="article.php?id=1">
-                        <div style="position:relative;">
-                            <img src="./assest/img/header3.jpg"/>
-                            <div class="articlebtn2">
-                                <h3>READ MORE</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <div>
-                        <h3>ÖZEL GÜN</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-                        <h5>Author: <span style="color:red;margin-right:30px;">Kaan ARI</span> Comments: <span style="color:red;margin-right:30px;">5</span> Views: <span style="color:red;margin-right:30px;">2</span> Rating: <span style="color:red;margin-right:30px;">2</span></h5>
-                    </div>
-                </div>
-                <hr>
-                <div class="rightcnt">
-                    <a style="text-decoration:none;" href="article.php?=1">
-                        <div style="position:relative;">
-                            <img src="./assest/img/header3.jpg"/>
-                            <div class="articlebtn">
-                                <h3>READ MORE</h3>
-                            </div>
-                        </div>
-                    </a>
-                    <div>
-                        <h3>DENEME UZUN SDADADADAFD FDSFSF GDSGSGSG</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas sit amet pretium urna. Vivamus venenatis velit nec neque ultricies, eget elementum magna tristique. Quisque vehicula, risus eget aliquam placerat, purus leo tincidunt eros, eget luctus quam orci in velit. Praesent scelerisque tortor sed accumsan convallis.</p>
-                        <h5>Rating: <span style="color:red;margin-right:30px;">2</span> Views: <span style="color:red;margin-right:30px;">2</span> Comments: <span style="color:red;margin-right:30px;">5</span> Author: <span style="color:red;">Kaan ARI</span></h5>
-
-                    </div>
-                </div>
+                
             </div>
             <footer>
                 <div  class="footer">

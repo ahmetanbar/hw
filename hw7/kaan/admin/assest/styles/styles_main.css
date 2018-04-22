@@ -35,15 +35,7 @@ body{
 }
 
 /* NAVIGATION PART */
-@media only screen and (max-width: 600px) {
-    .header {
-        display: none;
-    }
-    .navbar ul li a{
-        font-size: 10px;
-    }
 
-}
 
 .navbar {
     z-index: 99;
@@ -271,4 +263,16 @@ footer{
 
 .footer a img:hover{
     filter:brightness(150%);
+}
+.type1{
+    display: none;
+}
+@media only screen and (max-width: 600px) {
+    .header {
+        display: none;
+    }
+    .navbar ul li a{
+        font-size: 10px;
+    }
+
 }
