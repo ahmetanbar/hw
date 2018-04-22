@@ -13,7 +13,7 @@ body{
     animation-timing-function: ease-out;
     animation-name: anim-1;
     margin: auto;
-    min-width: 410px;
+    min-width: 340px;
     max-width: 850px;
 }
 @keyframes anim-1 {
@@ -35,15 +35,6 @@ body{
 }
 
 /* NAVIGATION PART */
-@media only screen and (max-width: 600px) {
-    .header {
-        display: none;
-    }
-    .navbar ul li a{
-        font-size: 10px;
-    }
-
-}
 
 .navbar {
     z-index: 99;
@@ -117,6 +108,59 @@ body{
     border: 0.01;
 
 }
+.icona{
+    height: 30px;
+    width: 30px;
+    margin-left: 40px;
+}
+.iconb{
+    color:black;
+    margin-left:20px;
+    line-height: 30px;
+    vertical-align:bottom;
+}
+.iconc{
+    color:darkred;
+    margin-left:20px;
+    line-height: 30px;
+    vertical-align:bottom;
+}
+.iconaa{
+    height: 30px;
+    width: 30px;
+    margin-right: 20px;
+}
+.iconab{
+    color:black;
+    margin-right:20px;
+    line-height: 30px;
+    vertical-align:bottom;
+}
+.iconac{
+    color:darkred;
+    margin-right:40px;
+    line-height: 30px;
+    vertical-align:bottom;
+}
+.type1{
+    float: right;
+    margin: auto;
+    user-select: none;
+    margin-top: 20px;
+    width:auto;
+    height: 30px;
+}
+.type2{
+    float: left;
+    margin: auto;
+    user-select: none;
+    margin-top: 20px;
+    height: 30px;
+    width:auto;
+}
+.author2{
+    display: none;
+}
 .rightcnt{
     overflow: hidden;
     border-bottom: 5px solid transparent;
@@ -127,10 +171,10 @@ body{
     margin-left:50px;
     margin-right: 50px; 
     margin-bottom: 15px; 
-    max-height: 200px;
+    max-height: 250px;
     user-select: none;
 }
-.rightcnt img{
+.rightcntimg{
     pointer-events: none;
     margin-top:30px;
     height:150px; 
@@ -142,7 +186,7 @@ body{
     
 }
 
-.rightcnt:hover img{
+.rightcnt:hover .rightcntimg{
     animation-duration: 5s;
     animation-timing-function: ease-out;
     animation-name: anim-2;
@@ -183,8 +227,8 @@ body{
     float: right;
     margin-top:0;
     max-height: 20px;
-
 }
+
 .leftcnt{
     overflow: hidden;
     display: block;
@@ -194,7 +238,7 @@ body{
     user-select: none;
     margin-left:50px;
     margin-right: 50px;  
-    height:200px; 
+    height:250px; 
     }
 
 .articlebtn2{
@@ -202,10 +246,10 @@ body{
     color:rgb(107, 0, 0);
     display: none;
     position:absolute;
-    right:55px;
+    right:25px;
     top:76px;
 }
-.leftcnt img{
+.leftcntimg{
     pointer-events: none;
     margin-top:30px;
     height:150px; 
@@ -213,9 +257,8 @@ body{
     opacity: 1;
     border-radius:50%; 
     float:right;
-    margin-right: 30px;
 }
-.leftcnt:hover img{
+.leftcnt:hover .leftcntimg{
     animation-duration: 5s;
     animation-timing-function: ease-out;
     animation-name: anim-2;
@@ -271,4 +314,109 @@ footer{
 
 .footer a img:hover{
     filter:brightness(150%);
+}
+
+@media only screen and (max-width: 600px) {
+    .header {
+        display: none;
+    }
+    .rightcnt{
+        margin-left:10px;
+    }
+
+    .icona{
+        height: 20px;
+        width: 20px;
+        margin-left: 30px;
+    }
+    .iconb{
+        margin-left:30px;
+        line-height: 20px;
+    }
+    .iconc{
+        margin-left:10px;
+        line-height: 20px;
+
+    }
+    .iconaa{
+        height: 20px;
+        width: 20px;
+        margin-right: 10px;
+    }
+    .iconab{
+        margin-right:10px;
+        line-height: 20px;
+    }
+    .iconac{
+        margin-right:30px;
+        line-height: 20px;
+
+    }
+    .rightcntimg{
+        margin-right: 20px; 
+    }
+    .leftcnt{
+        margin-right: 10px;
+    }
+    .leftcntimg{
+        margin-left: 20px;
+    }
+}
+@media only screen and (max-width: 520px) {
+    .rightcntimg{
+        margin-top:70px;
+        margin-left: 0px;
+        height:100px; 
+        width:100px;
+        margin-right: 15px; 
+    }
+    .articlebtn{
+        margin-top: 24px;
+        font-size: 10px;
+        margin-left:-7px;
+    }
+    .type1{
+        float: none;
+        width: 280px;
+        margin:auto;
+        margin-top:30px;
+        margin-bottom: 10px;
+    }
+    .type2{
+        float: none;
+        width: 280px;
+        margin:auto;
+        margin-top:30px;
+        margin-bottom: 10px;
+
+    }
+    .author1{
+        display: none;
+    }
+    .author2{
+        display: block;
+        width: 150px;
+    }
+    .leftcntimg{
+        margin-top:70px;
+        margin-right: 0px;
+        height: 100px;
+        width: 100px;
+        margin-left: 15px;
+    }
+    .articlebtn2{
+        margin-top: 24px;
+        font-size: 10px;
+        margin-right: -7px;
+    }
+}
+@media only screen and (max-width:450px){
+    .navbar ul li a{
+        font-size: 13px;
+    }
+}
+@media only screen and (max-width:390px){
+    .navbar ul li a{
+        font-size: 12px;
+    }
 }
