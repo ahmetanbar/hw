@@ -104,23 +104,19 @@
                                 <h3>READ MORE</h3>
 
                             </div>
-                            <div class="articlebtnhide">                                
-                                <h5><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></h5>
-                            </div>
+                            
                         </div>
                         <div>
                             <h3 style="color:black;">'.$row["title"].'</h3>
                             <p style="color:black;">'.$row["body"].'</p>
                             </a>
-                            <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc">'.$row["rating"].'</span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc">'.$row["views"].'</span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc">'.$row["comments"].'</span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></a></span></h5></div>
-                            <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></h5></a></div></center>
+                            <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc">'.$row["rating"].'</span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc">'.$row["views"].'</span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc">'.$row["comments"].'</span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></a><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></span></h5></div>
+                            <br><div class="author2"><h5><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></h5><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></h5></a></div>
 
                         </div>
                     </div>                    
                     ';
-                    if($y==4){
-                        #echo('<hr class="hr1" style="border-color:rgba(201, 200, 200, 0.753);background-color:rgba(201, 200, 200, 0.753);hight:0px;">');
-                    }else{
+                    if(!($y==4)){
                         echo('<hr class="hr1">');
                     }
                     $y=$y+1;
@@ -138,8 +134,8 @@
                             <h3 style="color:black;">'.$row["title"].'</h3>
                             <p style="color:black;">'.$row["body"].'</p>
                             </a>
-                            <div class="type2"><h5><span class="author1"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" alt="Author" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></a></span><img alt="Comments" class="iconaa" src="./assest/img/comment.png"><span class="iconac">'.$row["comments"].'</span><img alt="Views" class="iconaa" src="./assest/img/eye.png"><span class="iconac">'.$row["views"].'</span><span class="iconab">Rating: </span><span class="iconac">'.$row["rating"].'</span></h5></div>
-                            <center><div class="author2"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="iconaa" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></h5></a></div></center>
+                            <div class="type2"><h5><span class="author1"><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" alt="Author" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></a></span><img alt="Comments" class="iconaa" src="./assest/img/comment.png"><span class="iconac">'.$row["comments"].'</span><img alt="Views" class="iconaa" src="./assest/img/eye.png"><span class="iconac">'.$row["views"].'</span><span class="iconab">Rating: </span><span class="iconac">'.$row["rating"].'</span></h5></div>
+                            <br><div class="author3"><h5><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></h5></a></div>
                             </div>
                     </div>
                     <hr class="hr1">
