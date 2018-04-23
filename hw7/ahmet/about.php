@@ -60,6 +60,8 @@
     $cookie_know=control_cookie();
 
   ?>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
   <?php include 'topnav.php';?>
 
   <div class="main">
@@ -67,6 +69,7 @@
     <div class="usernav">
         <a href="profile.php"><i><?php echo("@".$_SESSION['username']); ?></i></a>
         <a href="logout.php"><i style="float:left;" class="material-icons md-18">exit_to_app</i></a>
+
     </div>
     <br>
     <?php } ?>
@@ -74,35 +77,14 @@
       <div class="header">
         <h1>Code Note</h1>
       </div>
-        <?php $number_box=5;
-        $result=get_article();
-        for($i=0;$i<$number_box;$i++) {
-          $row = $result->fetch_assoc();
-          ?>
           <div class="content">
             <div class="art_head">
-              <h2><a href="./article.php?id=<?php echo($row['id']); ?>"><?php echo($row['header']); ?></a></h2>
+              <h2><a href="./article.php?id=<?php echo($row['id']); ?>">"Hello World!"</a></h2>
             </div>
-            <div class="article"><p><?php echo(substr($row['article'], 0, 300));?><p>...<a href="./article.php?id=<?php echo($row["id"]); ?>">More▷</a></p></p>
-            </div>
-
-            <div class="info">
-              <i style="float:left; " class="material-icons md">date_range</i>
-              <a style="float:left;" href="./article.php?id=<?php echo($row['id']); ?>"><?php echo(date('d-m-Y H:i', strtotime($row['date']))); ?></a>
-              <i style="float:left;" class="material-icons md" >account_balance</i>
-              <a style="float:left;" href="./archive.php?category=<?php echo($row['category']); ?>"><?php echo($row['category']); ?></a>
-              <i style="float:left;" class="material-icons md" >account_circle </i>
-              <a style="float:left; " href="./profile.php?user=<?php echo($row['username']); ?>"><?php echo($row['author']); ?></a>
-              <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>" >Views:<?php echo($row['viewing']); ?></a>
-              <i style="float:right;" class="material-icons md">assessment</i>
-              <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>">Comments:<?php echo($row['comments']); ?></a>
-              <i style="float:right;" class="material-icons md">comment</i>
-              <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <div class="article"><p>Hello World!These are my first sentences.I am very happy!</p>
             </div>
           </div>
             <br>
-          <?php } ?>
-
     <?php include 'footer.php';?>
   </div>
 

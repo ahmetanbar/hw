@@ -126,9 +126,13 @@
                       $password=$_POST['psw'];
                       $hashed_password = hash('sha512',$_POST['psw']);
                       $gender=$_POST['gender'];
-
-                      $stmt = $conn->prepare("INSERT INTO users (name,surname,email,password,gender,username) VALUES(?,?,?,?,?,?)");
-                      $stmt->bind_param("ssssss", $name, $surname,$email,$hashed_password,$gender,$username);
+                      $profiles=array("james","dennis","linus","morgan","rasmus");
+                      $abouts=array("I love Java!","I love C!","I love Unix!","I love C++!","I love PHP!");
+                      $random=rand(0,4);
+                      $photo=$profiles[$random];
+                      $about=$abouts[$random];
+                      $stmt = $conn->prepare("INSERT INTO users (name,surname,email,password,gender,username,photo,about) VALUES(?,?,?,?,?,?,?,?)");
+                      $stmt->bind_param("ssssssss", $name, $surname,$email,$hashed_password,$gender,$username,$photo,$about);
                       $stmt->execute();
 
                       $stmt = $conn->prepare("SELECT id FROM users WHERE username=?");
@@ -142,7 +146,7 @@
                       setcookie('auth',$auth);
 
                       $_SESSION['name']=$name; $_SESSION['surname']=$surname; $_SESSION['email']=$_POST['email']; $_SESSION['username']=$_POST['username']; $_SESSION['role']=""; $_SESSION['id']=$row['id'];
-
+                      $_SESSION['photo']=$photo; $_SESSION['about']=$about;
 
 
                       $stmt = $conn->prepare("INSERT INTO cookie (auth,user_id) VALUES(?,?)");

@@ -163,7 +163,7 @@
               <a style="float:left;" href="./archive.php?category=<?php echo($row['category']); ?>"><?php echo($row['category']); ?></a>
               <i style="float:left;" class="material-icons md" >account_circle </i>
               <a style="float:left; " href="./profile.php?user=<?php echo($row['username']); ?>"><?php echo($row['author']); ?></a>
-              <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>" >Viewing:<?php echo($row['viewing']); ?></a>
+              <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>" >Views:<?php echo($row['viewing']); ?></a>
               <i style="float:right;" class="material-icons md">assessment</i>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>">Comments:<?php echo($row['comments']); ?></a>
               <i style="float:right;" class="material-icons md">comment</i>
