@@ -99,7 +99,7 @@ body{
     user-select: none;
     font-size: 15px;
     display: block;
-    margin-top:5%;
+    margin-top:3%;
     width: 100%;
     height: auto;
     min-height: 70%;
@@ -112,7 +112,7 @@ body{
     padding-top: 6%;
     padding-left: 40px;
     width: 300;
-    height: 200;
+    height: 300;
 }
 .loginbtn{
     background-color: darkred;

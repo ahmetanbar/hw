@@ -27,7 +27,6 @@
         }else{
             return False;
         }
-        
     }
 
     function time_elapsed_string($datetime, $full = false) {
@@ -59,21 +58,6 @@
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
 
-    function article_puller($id){
-        global $article1,$article2,$article3,$article4,$article5;
-        $conn=db_connect();
-        $y=$id-5;
-        #for($id;$id>=$y;$id--){
-        #   $stmt=$conn->prepare("SELECT * FROM articles WHERE id=?");
-         #   $stmt->bind_param("s",$id);
-          #  $stmt->execute();
-           # $query = $stmt->get_result();
-            #$result=$query->fetch_assoc();
-            #$article1=$result;
-        #}
-        
-    
-    }
     function writer_name($id){
         $conn=db_connect();
         $stmt=$conn->prepare("SELECT username FROM users WHERE id=?");
@@ -181,18 +165,16 @@
                         if((cookie_control())){
                             echo'
                                 <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
-                                <li><a href="./profile.php?id='.$id.'" style="float:right;">Profile</a>
-                            
+                                <li><a href="./profile.php?id='.$id.'" style="float:right;">Profile</a></li>
                             ';
                         }else{
                             echo'
                                 <li><a href="./signup.php" style="cursor:pointer; float: right;">Sign Up</a></li> 
-                                <li><a href="./login.php" style="float:right;">Login</a>         
+                                <li><a href="./login.php" style="float:right;">Login</a></li>
                             ';
                         }
 
                     ?>
-                    </li>
                 </ul>
             </div>
 
