@@ -93,8 +93,8 @@
                     $username=$_POST['useroremail'];
                     $stmt = $conn->prepare("SELECT username FROM users WHERE username=?");
                     $stmt->bind_param("s", $username);
-                
-                    $stmt_all = $conn->prepare("SELECT id,name,surname,email,username,role FROM users WHERE username=? and password=?");
+
+                    $stmt_all = $conn->prepare("SELECT id,name,surname,email,username,role,photo,about FROM users WHERE username=? and password=?");
                     $stmt_all->bind_param("ss", $username,$hashed_password);
                   }
                   //queris accured and be queried
@@ -107,6 +107,8 @@
                     $row = $result->fetch_assoc();
                     if(count($row)!=0){
                       $_SESSION['name']=$row["name"]; $_SESSION['surname']=$row["surname"]; $_SESSION['email']=$row["email"]; $_SESSION['username']=$row["username"]; $_SESSION['role']=$row["role"]; $_SESSION['id']=$row["id"];
+                      $_SESSION['photo']=$row["photo"]; $_SESSION['about']=$row["about"];
+
                       $user_id=$row["id"];
                       $auth=generateRandomString();
                       $stmt = $conn->prepare("INSERT INTO cookie (auth, user_id) VALUES (?, ?)");
