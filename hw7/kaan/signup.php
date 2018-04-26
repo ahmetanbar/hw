@@ -134,7 +134,7 @@
                                                                         $stmt = $conn->prepare("INSERT INTO users (username, pwd, email, usr_name, usr_surname, gender, bdate, usr_phone, country) VALUES(?,?,?,?,?,?,?,?,?)");
                                                                         $stmt->bind_param("sssssssss", $username,$hashed_pwd,$mail,$name,$surname,$gender,$bdate,$usrtel,$country);
                                                                         if ($stmt->execute()) {
-                                                                            echo("Success");
+                                                                            #echo("Success");
                                                                         } else {
                                                                             echo "Error: ".$stmt->error;
                                                                             die();

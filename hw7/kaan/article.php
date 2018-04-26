@@ -66,39 +66,61 @@
             return False;
         }
     }
-
-    function comments(){
+    function comment(){
         global $id;
         $conn=db_connect();
-        $sql = "SELECT * FROM comments id=";
-        $stmt=$conn->prepare("SELECT * FROM comments WHERE id=?");
-        $stmt->bind_param("i",$_GET["id"]);
-        $stmt->execute();
+        $sql = "SELECT * FROM comments WHERE artid=".$_GET["id"]."";
+        $stmt = $conn->query($sql);
+        $comments=$stmt->num_rows;
+        $comments=$comments+1;
+        $stmt = $conn->prepare("INSERT INTO comments (artid, uid, comment, up_time) VALUES(?,?,?,NOW())");
+        $stmt->bind_param("iis", $_GET["id"],$id,$_POST["comment"]);
+        if ($stmt->execute()) {
+            #echo("Success");
+            $stmt = $conn->prepare("UPDATE articles SET comments=? WHERE id=?");
+            $stmt->bind_param("ii", $comments,$_GET["id"]);
+            $stmt->execute();
+        } else {
+            echo "Error: ".$stmt->error;
+            die();
+        }
+    }
+    function comments(){
+        global $id;
+        global $num_comments;
+        $conn=db_connect();
+        $sql = "SELECT * FROM comments WHERE artid=".$_GET["id"]."";
+        $stmt = $conn->query($sql);
+        $num_comments=$stmt->num_rows;
+        #$stmt->bind_param("i",$_GET["id"]);
         if ($stmt->num_rows > 0) {
         // output data of each row
+
             $y=0;
             while($row = $stmt->fetch_assoc()) {
                 echo'
-                    <div style="comment"></div>
-                    <div class="info"></div>
+                    <div class="allcomm">
+                    <div class="commentbox">'.$row["comment"].'</div>
+                    <div class="cominfo"><a href=".profile.php?id='.$row["uid"].'"><img class="iconaab" src="./assest/img/account.png"><h5 style="text-decoration:none;color:gray;float:right;margin-top:5px;margin-right:20px;margin-left:20px;">'.writer_name($row["uid"]).'</h5></a></div>
+                    </div>
                 ';  
             }
         } else {
             echo'<span style="color:rgba(201, 200, 200, 1);"><h5>No Comment</h5></span>';
         }
-        echo '<hr style="background-color:#333; border-color:#333;">';
+        echo '<hr style="background-color:#333; border-color:#333;margin-top:10px;display:block;">';
         if(cookie_control()==True){
             echo'
                 <div style="height:auto;">
                     <div style="padding-right:10px;height:50px;">
-                        <form action="./article.php" id="usrform">
+                        <form action="./article.php?id='.$_GET["id"].'" id="usrform" method="POST">
                         <div style="float:left;"><a style="text-decoration:none;color:black;" href="./profile.php?id='.$id.'"><img class="icona" src="./assest/img/account.png"><h5 style="float:right;margin-top:5px;margin-left:7px;">'.$_SESSION["username"].'</h5></a></div>
                         <div style="float:right;margin-right:20px;"><input class="sgninbtn" type="submit"></div>
                     </form>
                     </div>
                     
-                    <div style="height:80px;widht:300px;margin:auto;margin-top:-5px;">
-                    <textarea rows="3" cols="60" name="comment" form="usrform" class="combox">Enter Comment Here</textarea>
+                    <div style="height:80px;widht:300px;margin:auto;margin-top:-5px;width: 100%;">
+                    <textarea rows="3" cols="60" name="comment" form="usrform" class="combox" placeholder="Enter Text Here"></textarea>
                     </div>
                 </div>
             ';
@@ -137,6 +159,10 @@
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
         $id=$result["id"];
+        if($_POST){
+            comment();
+            header("Location:#");
+        }
     }
 
 ?>
