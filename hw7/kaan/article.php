@@ -68,6 +68,7 @@
     }
 
     function comments(){
+        global $id;
         $conn=db_connect();
         $sql = "SELECT * FROM comments id=";
         $stmt=$conn->prepare("SELECT * FROM comments WHERE id=?");
@@ -88,8 +89,18 @@
         echo '<hr style="background-color:#333; border-color:#333;">';
         if(cookie_control()==True){
             echo'
-
-
+                <div style="height:auto;">
+                    <div style="padding-right:10px;height:50px;">
+                        <form action="./article.php" id="usrform">
+                        <div style="float:left;"><a style="text-decoration:none;color:black;" href="./profile.php?id='.$id.'"><img class="icona" src="./assest/img/account.png"><h5 style="float:right;margin-top:5px;margin-left:7px;">'.$_SESSION["username"].'</h5></a></div>
+                        <div style="float:right;margin-right:20px;"><input class="sgninbtn" type="submit"></div>
+                    </form>
+                    </div>
+                    
+                    <div style="height:80px;widht:300px;margin:auto;margin-top:-5px;">
+                    <textarea rows="3" cols="60" name="comment" form="usrform" class="combox">Enter Comment Here</textarea>
+                    </div>
+                </div>
             ';
         }else{
             echo'<span style="margin-bottom:20px;color:rgba(201, 200, 200, 1);"><h5>Please Login to comment</h5></span>';
