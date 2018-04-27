@@ -234,13 +234,14 @@
                 <div class="image" style="position:relative;background-image:url(./assest/img/article.jpg);">
                     <h3 class="title"><?php echo($article["title"])?></h3>
                 </div>
-                <?php echo'<h5 class="time"><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($article["up_time"]).'</span></h5>';?>
-
+                <center><?php echo'<h5 class="time"><img class="icontime" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($article["up_time"]).'</span></h5>';?>
+                    </center>
                 <div class="article">
 
                     <p><?php echo($article["body"])?></p>
-                    <div class="infoart"><h5><span class="iconb">Rating: </span><span class="iconc"><?php echo($article["rating"])?></span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc"><?php echo($article["views"])?></span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($article["comments"])?></span><span class="stars2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($article["uid"])?>"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></a></span></h5></div>
                 </div>
+                <center><div class="infoart"><h5><span class="iconb">Rating: </span><span class="iconc"><?php echo($article["rating"])?></span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc"><?php echo($article["views"])?></span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($article["comments"])?></span><span class="stars2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($article["uid"])?>"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></a></span></h5></div>
+                    </center>
                 <center><div class="author"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($article["uid"])?>"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></h5></a></div></center>
                 <hr>
                 <div class="comment">

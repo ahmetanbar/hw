@@ -57,40 +57,111 @@
         if (!$full) $string = array_slice($string, 0, 1);
         return $string ? implode(', ', $string) . ' ago' : 'just now';
     }
-    function paginator(){
+    function pagenav($pages,$prevlink,$nextlink,$start,$end,$total){
+        if(!(empty($_GET["page"]))){
+            $pagenum=$_GET["page"];
+        }else{
+            $pagenum=1;
+        }
+        $lineone= '<center>
+                <div class="paging">
+                    <form action="archive.php" method="GET" style="line-height:30px;vertical-align:bottom;">
+
+                    <p>'.$prevlink.'<span class="pagetext"> Page ';
+        if($pages>1){
+            $ab="";
+            $linetwo='
+            <select class="pageselect" onchange="if (this.value) window.location.href=this.value">
+            ';
+            for($i = 1; $i <= $pages; $i++){
+                if($i==$pagenum){
+                    $aa='<option style="user-select:none;" value='.$i.' selected>'.$i.'</option>';
+                }else{
+                    $aa='<option value=./archive.php?page='.$i.'>'.$i.'</option>';
+                }
+                $ab=$ab.$aa;
+            }
+            $linethree='
+            </select>
+            ';
+            $linetwo=$linetwo.$ab.$linethree;
+        }else{
+            $linetwo="1";
+        }
+        $linelast=' of '.$pages.' pages, displaying '.$start.'-'.$end.' of '.$total.' results </span>'.$nextlink.' </p></form></div></center>';
+        echo $lineone.$linetwo.$linelast;
+
+    }
+    function paginator($pagenum){
         try{
             $conn=db_connect();
-            $total = $conn->query('SELECT COUNT(*) FROM articles')->num_rows;
-            echo($total);
-        $limit = 5;
-        $pages = ceil($total / $limit);
-        $page = min($pages, filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, array('options' => array('default'   => 1,'min_range' => 1,),)));
-        $offset = ($page - 1)  * $limit;
-        $start = $offset + 1;
-        $end = min(($offset + $limit), $total);
-        $prevlink = ($page > 1) ? '<a href="?page=1" title="First page">&laquo;</a> <a href="?page=' . ($page - 1) . '" title="Previous page">&lsaquo;</a>' : '<span class="disabled">&laquo;</span> <span class="disabled">&lsaquo;</span>';
-        $nextlink = ($page < $pages) ? '<a href="?page=' . ($page + 1) . '" title="Next page">&rsaquo;</a> <a href="?page=' . $pages . '" title="Last page">&raquo;</a>' : '<span class="disabled">&rsaquo;</span> <span class="disabled">&raquo;</span>';
-        echo '<div id="paging"><p>', $prevlink, ' Page ', $page, ' of ', $pages, ' pages, displaying ', $start, '-', $end, ' of ', $total, ' results ', $nextlink, ' </p></div>';
-        $stmt = $conn->prepare('SELECT * FROM articles ORDER BY id DESC LIMIT ?,?');
-        $stmt->bind_param("ii",$offset,$limit);
-        $stmt->execute();
-        // Do we have any results?
-        if ($stmt->num_rows > 0) {
-            // Define how we want to fetch the results
-            $stmt = $stmt->fetch_assoc();
-            $iterator = new IteratorIterator($stmt);
-
-            // Display the results
-            foreach ($iterator as $row) {
-                echo '<p>', $row['id'], '</p>';
+            $total = $conn->query('SELECT * FROM articles')->num_rows;
+            $limit = 2;
+            $pages = ceil($total / $limit);
+            #$page = min($pages, filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, array('options' => array('default'   => 1,'min_range' => 1,),)));
+            $page=$pagenum;
+            $offset = ($page - 1)  * $limit;
+            $start = $offset + 1;
+            $end = min(($offset + $limit), $total);
+            $prevlink = ($page > 1) ? '<a href="?page=1" title="First page" style="text-decoration:none;"><img class="pagenavicon" src="./assest/img/double_left.png"></a> <a href="?page=' . ($page - 1) . '" title="Previous page" style="text-decoration:none;"><img class="pagenavicon" src="./assest/img/left.png"></a>' : '<span class="disabled"><img class="pagenavicon" src="./assest/img/double_left.png"></span> <span class="disabled"><img class="pagenavicon" src="./assest/img/left.png"></span>';
+            $nextlink = ($page < $pages) ? '<a href="?page=' . ($page + 1) . '" title="Next page" style="text-decoration:none;"><img class="pagenavicon" src="./assest/img/right.png"></a> <a href="?page=' . $pages . '" title="Last page" style="text-decoration:none;"><img class="pagenavicon" src="./assest/img/double_right.png"></a>' : '<span class="disabled">&rsaquo;</span> <span class="disabled">&raquo;</span>';
+            $stmt = $conn->query('SELECT * FROM articles ORDER BY id desc LIMIT '.$limit.' OFFSET '.$offset.'');
+            if ($stmt->num_rows > 0) {
+                $iterator = new IteratorIterator($stmt);
+                $y=0;
+                foreach ($iterator as $row) {
+                    if($y%2 == 0){
+                        echo '
+                            <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
+                            <div class="rightcnt">
+                            <div style="position:relative;">
+                            <img class="rightcntimg" src="./assest/img/header3.jpg"/>
+                            <div class="articlebtn">
+                                <h3>READ MORE</h3>
+                            </div> 
+                            </div>
+                            <div>
+                            <h3 style="color:black;">'.$row["title"].'</h3>
+                            <p style="color:black;">'.$row["body"].'</p>
+                            </a>
+                            <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc">'.$row["rating"].'</span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc">'.$row["views"].'</span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc">'.$row["comments"].'</span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></a><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></span></h5></div>
+                            <br><div class="author2"><h5><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></h5><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></h5></a></div>
+                            </div>
+                            </div>
+                            <hr class="hr1">                    
+                        ';
+                        $y=$y+1;
+                    }else{
+                        echo '
+                            <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
+                            <div class="leftcnt">
+                            <div style="position:relative;">
+                            <img class="leftcntimg" src="./assest/img/header3.jpg"/>
+                            <div class="articlebtn2">
+                                <h3>READ MORE</h3>
+                            </div>
+                            </div>
+                            <div>
+                            <h3 style="color:black;">'.$row["title"].'</h3>
+                            <p style="color:black;">'.$row["body"].'</p>
+                            </a>
+                            <div class="type2"><h5><span class="author1"><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" alt="Author" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></a></span><img alt="Comments" class="iconaa" src="./assest/img/comment.png"><span class="iconac">'.$row["comments"].'</span><img alt="Views" class="iconaa" src="./assest/img/eye.png"><span class="iconac">'.$row["views"].'</span><span class="iconab">Rating: </span><span class="iconac">'.$row["rating"].'</span></h5></div>
+                            <br><div class="author3"><h5><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></h5></a></div>
+                            </div>
+                            </div>
+                            <hr class="hr1">
+                        ';
+                        $y=$y+1;
+                    }
+                }
+                pagenav($pages,$prevlink,$nextlink,$start,$end,$total);
+            } else {
+                echo '<p>No results could be displayed.</p>';
             }
-        } else {
-            echo '<p>No results could be displayed.</p>';
+        } catch (Exception $e) {
+            echo '<p>', $e->getMessage(), '</p>';
         }
-    } catch (Exception $e) {
-        echo '<p>', $e->getMessage(), '</p>';
     }
-}
 
     function writer_name($id){
         $conn=db_connect();
@@ -101,71 +172,7 @@
         $result=$query->fetch_assoc();
         return $result["username"];
     }
-    function last5(){
-        $conn=db_connect();
-        $sql = "SELECT * FROM articles ORDER BY id DESC LIMIT 5";
-        $result = $conn->query($sql);
-        if ($result->num_rows > 0) {
-        // output data of each row
-            $y=0;
-            while($row = $result->fetch_assoc()) {
-                if($y%2 == 0){
-                    echo '
-
-                    <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
-
-                    <div class="rightcnt">
-
-                        <div style="position:relative;">
-                            <img class="rightcntimg" src="./assest/img/header3.jpg"/>
-                            <div class="articlebtn">
-                                <h3>READ MORE</h3>
-
-                            </div>
-                            
-                        </div>
-                        <div>
-                            <h3 style="color:black;">'.$row["title"].'</h3>
-                            <p style="color:black;">'.$row["body"].'</p>
-                            </a>
-                            <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc">'.$row["rating"].'</span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc">'.$row["views"].'</span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc">'.$row["comments"].'</span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></a><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></span></h5></div>
-                            <br><div class="author2"><h5><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></h5><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></h5></a></div>
-
-                        </div>
-                    </div>                    
-                    ';
-                    if(!($y==4)){
-                        echo('<hr class="hr1">');
-                    }
-                    $y=$y+1;
-                }else{
-                    echo '
-                    <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
-                    <div class="leftcnt">
-                        <div style="position:relative;">
-                            <img class="leftcntimg" src="./assest/img/header3.jpg"/>
-                            <div class="articlebtn2">
-                                <h3>READ MORE</h3>
-                            </div>
-                        </div>
-                        <div>
-                            <h3 style="color:black;">'.$row["title"].'</h3>
-                            <p style="color:black;">'.$row["body"].'</p>
-                            </a>
-                            <div class="type2"><h5><span class="author1"><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" alt="Author" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></a></span><img alt="Comments" class="iconaa" src="./assest/img/comment.png"><span class="iconac">'.$row["comments"].'</span><img alt="Views" class="iconaa" src="./assest/img/eye.png"><span class="iconac">'.$row["views"].'</span><span class="iconab">Rating: </span><span class="iconac">'.$row["rating"].'</span></h5></div>
-                            <br><div class="author3"><h5><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></h5></a></div>
-                            </div>
-                    </div>
-                    <hr class="hr1">
-                    ';
-                    $y=$y+1;
-                }
-                    
-            }
-        } else {
-            echo "0 results";
-        }
-    }
+    
     $cookie=cookie_control();
     if($cookie==True){
         $conn=db_connect();
@@ -178,7 +185,10 @@
     }
     if(!($_GET)){
         $pagenum=1;
+    }else{
+        $pagenum=$_GET["page"];
     }
+
 ?>
 <html>
     <head>
@@ -195,8 +205,8 @@
             </header>
             <div class="navbar">
                 <ul>
-                    <li><a class="active" href="./index.php">Home</a></li>
-                    <li><a href="./archive.php">Archive</a></li>
+                    <li><a href="./index.php">Home</a></li>
+                    <li><a class="active" href="./archive.php">Archive</a></li>
                     <li><a href="./about.php">About</a></li>
                     <?php
                         if((cookie_control())){
@@ -217,9 +227,7 @@
 
 
             <div class="content">
-
-                <?php last5();?>
-                <?php paginator();?>
+                <?php paginator($pagenum);?>
             </div>
             <footer>
                 <div  class="footer">

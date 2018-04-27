@@ -112,13 +112,13 @@ body{
 }
 .iconb{
     color:black;
-    margin-left:20px;
+    margin-left:10px;
     line-height: 30px;
     vertical-align:bottom;
 }
 .iconc{
     color:darkred;
-    margin-left:20px;
+    margin-left:10px;
     line-height: 30px;
     vertical-align:bottom;
 }
@@ -137,12 +137,15 @@ body{
 }
 .time{
     margin: auto;
-    min-width: 100px;
-    max-width: 200px;
-    width: auto;
     margin-top:20px;
     margin-bottom: -15px;
     height: 30px;
+}
+.icontime{
+    height: 30px;
+    width: 30px;
+    margin-right: 15px;
+    margin-left:15px;
 }
 .iconab{
     color:black;
@@ -206,12 +209,14 @@ body{
     padding-bottom: 10px;
 }
 .infoart{
+    display: block;
     user-select: none;
     margin:auto;
-    width:450px;
+    height: 40px;
 }
 .author{
     display: none;
+    margin-top:10px;
 }
 .content hr{
     background-color: darkred; 
@@ -338,23 +343,40 @@ footer{
     .header {
         display: none;
     }
-
+    .iconaac{
+        line-height: 25px;
+        vertical-align:bottom;
+    }
     .icona{
         margin-left: 25px;
+        height: 20px;
+        width: 20px;
+    }
+    .iconb{
+        line-height: 20px;
     }
     .iconc{
-        margin-left: 15px;
+
+        line-height: 20px;
     }
     .stars2{
         display: none;
     }
     .author{
         margin:auto;
-        margin-top: -40px;
+        margin-top: -20px;
         display:block;
     }
     .infoart{
         width: 250px;
+    }
+    .iconaab{
+        height: 20px;
+        width: 20px;
+        margin-right: 15px;
+    }
+    .comminfo{
+        margin-top:5px;
     }
 }
 @media only screen and (max-width:450px){
