@@ -1,6 +1,28 @@
 
 <?php
     session_start();
+    function comm_control($comm){
+        global $sendbuttonstatus;
+        $r1='/[A-Z]/';  //Uppercase
+        $r2='/[a-z]/';  //lowercase
+        $r3='/[şçüğıö!@#$%^()\-_=+;:,. "]/';  // whatever you mean by 'special char'
+        $r4='/[0-9]/';  //numbers
+        $letter=preg_match_all($r1,$comm,$o)+preg_match_all($r2,$comm,$o)+preg_match_all($r3,$comm,$o)+preg_match_all($r4,$comm
+        ,$o);
+        if(!(strlen($comm)>140)){
+            if($letter==strlen($comm)){
+                $sendbuttonstatus="Sended.";
+                return TRUE;
+            }
+            else{
+                $sendbuttonstatus="Unvalid Characters in your comment.";
+                return FALSE;
+            }
+        }else{
+            $sendbuttonstatus="Your comment is longer then 140 character.";
+            return FALSE;
+        }
+    }
     function counter($views,$artcid){
         $conn=db_connect();
         $views=$views+1;
@@ -68,26 +90,31 @@
     }
     function comment(){
         global $id;
-        $conn=db_connect();
-        $sql = "SELECT * FROM comments WHERE artid=".$_GET["id"]."";
-        $stmt = $conn->query($sql);
-        $comments=$stmt->num_rows;
-        $comments=$comments+1;
-        $stmt = $conn->prepare("INSERT INTO comments (artid, uid, comment, up_time) VALUES(?,?,?,NOW())");
-        $stmt->bind_param("iis", $_GET["id"],$id,$_POST["comment"]);
-        if ($stmt->execute()) {
-            #echo("Success");
-            $stmt = $conn->prepare("UPDATE articles SET comments=? WHERE id=?");
-            $stmt->bind_param("ii", $comments,$_GET["id"]);
-            $stmt->execute();
-        } else {
-            echo "Error: ".$stmt->error;
-            die();
+        if(comm_control($_POST["comment"])){
+            $conn=db_connect();
+            $sql = "SELECT * FROM comments WHERE artid=".$_GET["id"]."";
+            $stmt = $conn->query($sql);
+            $comments=$stmt->num_rows;
+            $comments=$comments+1;
+            $stmt = $conn->prepare("INSERT INTO comments (artid, uid, comment, up_time) VALUES(?,?,?,NOW())");
+            $stmt->bind_param("iis", $_GET["id"],$id,$_POST["comment"]);
+            if ($stmt->execute()) {
+                #echo("Success");
+                $stmt = $conn->prepare("UPDATE articles SET comments=? WHERE id=?");
+                $stmt->bind_param("ii", $comments,$_GET["id"]);
+                $stmt->execute();
+            } else {
+                echo "Error: ".$stmt->error;
+                die();
+            }
+            return TRUE;
+        }else{
+            return FALSE;
         }
     }
     function comments(){
         global $id;
-        global $num_comments;
+        global $num_comments,$sendbuttonstatus;
         $conn=db_connect();
         $sql = "SELECT * FROM comments WHERE artid=".$_GET["id"]."";
         $stmt = $conn->query($sql);
@@ -101,7 +128,7 @@
                 echo'
                     <div class="allcomm">
                     <div class="commentbox">'.$row["comment"].'</div>
-                    <div class="cominfo"><a href=".profile.php?id='.$row["uid"].'"><img class="iconaab" src="./assest/img/account.png"><h5 style="text-decoration:none;color:gray;float:right;margin-top:5px;margin-right:20px;margin-left:20px;">'.writer_name($row["uid"]).'</h5></a></div>
+                    <div class="cominfo"><h5><a href=".profile.php?id='.$row["uid"].'" style="text-decoration:none;color:gray;"><img class="iconaab" src="./assest/img/account.png"><span class="iconaac">'.writer_name($row["uid"]).'</span></h5></a></div>
                     </div>
                 ';  
             }
@@ -120,7 +147,7 @@
                     </div>
                     
                     <div style="height:80px;widht:300px;margin:auto;margin-top:-5px;width: 100%;">
-                    <textarea rows="3" cols="60" name="comment" form="usrform" class="combox" placeholder="Enter Text Here"></textarea>
+                    <textarea rows="3" cols="60" name="comment" form="usrform" class="combox" placeholder="'.$sendbuttonstatus.'"></textarea>
                     </div>
                 </div>
             ';
@@ -148,6 +175,7 @@
         $result=$query->fetch_assoc();
         return $result["username"];
     }
+    $sendbuttonstatus="Enter Comment Here\n(140 Character)";
     $article=article($_GET["id"]);
     $writer=writer_name($article["uid"]);
     $cookie=cookie_control();
@@ -160,8 +188,9 @@
         $result=$query->fetch_assoc();
         $id=$result["id"];
         if($_POST){
-            comment();
-            header("Location:#");
+            if(comment()){
+                header("Location:#");
+            }
         }
     }
 
@@ -216,7 +245,7 @@
                 <hr>
                 <div class="comment">
                     <h3 style="vertical-align:middle;color:lightgrey;" >Comments</h3>
-                    <hr style="background-color:#333; border-color:#333;">
+                    <hr style="background-color:#333; border-color:#333;margin-bottom:10px;">
                     <?php comments();  ?>
 
                 </div>
