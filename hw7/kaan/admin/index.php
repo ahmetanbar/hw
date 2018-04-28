@@ -74,26 +74,31 @@
                 if(valid_username($username)){
                     if(valid_pass($password)){
                         $conn=db_connect();
+                        $stmt=$conn->prepare("SELECT uid FROM admin WHERE username=?");
+                        $stmt->bind_param("s",$username);
+                        $stmt->execute();
+                        $query = $stmt->get_result();
+                        $result2=$query->fetch_assoc();
                         $stmt=$conn->prepare("SELECT id,pwd FROM users WHERE username=?");
                         $stmt->bind_param("s",$username);
                         $stmt->execute();
                         $query = $stmt->get_result();
                         $result=$query->fetch_assoc();
-                        if(empty($result))
-                        {
-                            $passwordstatus="Password is not correct.";
-                        }else
-                        {
+                        if($result2["uid"]==$result["id"]){
+                            if(empty($result))
+                            {
+                                $passwordstatus="Password is not correct.";
+                            }else{
                             if(password_verify($password,$result["pwd"]))
                             {
                                 if(isset($_POST["loginin"]))
                                 {
                                     cookie_set2($username);
-                                    header("Location: ./index.php");
+                                    header("Location: ./panel.php");
                                     die();
                                 }else{
                                     cookie_set($username);
-                                    header("Location: ./index.php");
+                                    header("Location: ./panel.php");
                                     die();
                                 }
 
@@ -101,6 +106,7 @@
                             {
                                 $passwordstatus="Password is not correct.";
                             }
+                        }
                         }
                     }else{
                         $passwordstatus="Password is not valid.";
@@ -119,20 +125,30 @@
     }
     function cookie_control()
     {
-        if(!(empty($_COOKIE["auth"]))){
+        if(!(empty($_COOKIE["auth"]))&&!(empty($_SESSION))){
             $cookie=$_COOKIE["auth"];
-            if($_SESSION["auth"] == $cookie){
-                return True;
-            }else{
-                setcookie("auth", "", time() + 3600);
-                session_destroy();
-                return False;
-            }
+                if($_SESSION["auth"] == $cookie){
+                    $conn=db_connect();
+                    $stmt=$conn->prepare("SELECT uid FROM admin WHERE username=?");
+                    $stmt->bind_param("s",$_SESSION["username"]);
+                    $stmt->execute();
+                    $query = $stmt->get_result();
+                    $result2=$query->fetch_assoc();
+                    if(!(empty($result2))){
+                        return True;
+                    }else{
+                        return False;
+                    }
+                }else{
+                    setcookie("auth", "", time() - 3600);
+                    session_destroy();
+                    return False;
+                }
         }else{
             return False;
-        }
-        
+        } 
     }
+
     $usernamestatus="Enter Username";
     $passwordstatus="Enter Password";
     if($_POST){
@@ -142,7 +158,7 @@
         if($cookie==True){
             $username=$_SESSION["username"];
             $conn=db_connect();
-            header("Location: ./index.php");
+            header("Location: ./panel.php");
             die();
         }
     }
@@ -166,7 +182,7 @@
 
             <div class="content">
                 <div class="loginform">
-                    <form style="align-item:center;" action="./login.php" method="POST">
+                    <form style="align-item:center;" action="./index.php" method="POST">
                         <label><b>Username</b></label>
                         <input class="inp" <?php echo("placeholder='$usernamestatus'"); ?> type="text" name="username">
                         <label><b>Password</b></label>

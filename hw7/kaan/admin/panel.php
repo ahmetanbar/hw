@@ -15,19 +15,28 @@
     }
     function cookie_control()
     {
-        if(!(empty($_COOKIE["auth"]))){
+        if(!(empty($_COOKIE["auth"]))&&!(empty($_SESSION))){
             $cookie=$_COOKIE["auth"];
-            if($_SESSION["auth"] == $cookie){
-                return True;
-            }else{
-                setcookie("auth", "", time() + 3600);
-                session_destroy();
-                return False;
-            }
+                if($_SESSION["auth"] == $cookie){
+                    $conn=db_connect();
+                    $stmt=$conn->prepare("SELECT uid FROM admin WHERE username=?");
+                    $stmt->bind_param("s",$_SESSION["username"]);
+                    $stmt->execute();
+                    $query = $stmt->get_result();
+                    $result2=$query->fetch_assoc();
+                    if(!(empty($result2))){
+                        return True;
+                    }else{
+                        return False;
+                    }
+                }else{
+                    setcookie("auth", "", time() - 3600);
+                    session_destroy();
+                    return False;
+                }
         }else{
             return False;
-        }
-        
+        }   
     }
     function last_id(){
         $conn=db_connect();
@@ -42,14 +51,8 @@
     }
     $last_article=last_id();
     $cookie=cookie_control();
-    if($cookie==True){
-        $conn=db_connect();
-        $stmt=$conn->prepare("SELECT id FROM users WHERE username=?");
-        $stmt->bind_param("s",$_SESSION["username"]);
-        $stmt->execute();
-        $query = $stmt->get_result();
-        $result=$query->fetch_assoc();
-        $id=$result["id"];
+    if($cookie!=True){
+        header("Location: ./index.php");
     }
 ?>
 <html>
@@ -67,24 +70,12 @@
             </header>
             <div class="navbar">
                 <ul>
-                    <li><a class="active" href="./index.php">Home</a></li>
-                    <li><a href="./archive.php">Archive</a></li>
-                    <li><a href="./about.php">About</a></li>
-                    <?php
-                        if((cookie_control())){
-                            echo'
-                                <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
-                                <li><a href="./profile.php?id='.$id.'" style="float:right;">Profile</a>
-                            
-                            ';
-                        }else{
-                            echo'
-                                <li><a href="./signup.php" style="cursor:pointer; float: right;">Sign Up</a></li> 
-                                <li><a href="./login.php" style="float:right;">Login</a>         
-                            ';
-                        }
-
-                    ?>
+                    <li><a class="active" href="./panel.php">Home</a></li>
+                    <li><a href="./articles.php">Articles</a></li>
+                    <li><a href="./users.php">Users</a></li>
+                    <li><a href="./logout.php" style="float:right;">Logout</a>
+                    <li><a href="../index.php" style="cursor:pointer; float: right;">Web Page</a></li> 
+     
                     </li>
                 </ul>
             </div>

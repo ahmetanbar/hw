@@ -66,7 +66,7 @@
         $id=$_GET["id"];
         getinfo($id);
     }else{
-        header("Location: ./index.php");                                                                
+        header("Location: ./login.php");                                                                
         die();  
     }
 ?>
