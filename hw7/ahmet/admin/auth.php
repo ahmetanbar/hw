@@ -54,8 +54,22 @@
 
   function post_control(){
     if(count($_POST)!=0){
-      if(array_key_exists("title",$_POST) and array_key_exists("article",$_POST)){
-      $conn=connect_db();
+      if(array_key_exists("authuser",$_POST)){
+        if($_POST["authuser"]!=NULL){
+            $authuser=$_POST["authuser"];
+            $conn=connect_db();
+            $stmt = $conn->prepare("SELECT username FROM users WHERE username=?");
+            $stmt->bind_param("s", $authuser);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            if(count($row)!=0){
+              $stmt = $conn->prepare("UPDATE users SET role=? WHERE username=?");
+              $role="admin";
+              $stmt->bind_param('ss',$role,$authuser);
+              $stmt->execute();
+            }
+        }
       }
     }
   }
@@ -77,17 +91,23 @@
 
 
   <ul>
-    <li><a class="active" href="">Home</a></li>
+    <li><a href="./panel.php">Home</a></li>
     <li><a href="./add-art.php">Add article</a></li>
     <li><a href="./articles.php">Articles</a></li>
     <li><a href="./members.php">Members</a></li>
-    <li><a href="./auth.php">Authority</a></li>
+    <li><a class="active" href="./auth.php">Authority</a></li>
     <li><a href="../logout.php">Log Out</a></li>
     <li><a href="../home.php">&#8592back</a></li>
   </ul>
 
   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
-
+  <h3>Write a username</h3>
+  <form action="" method="post" autocomplete="off" />
+    <input type="text" name="authuser" placeholder="username">
+    <br>
+    <br>
+    <input type="submit" value="authorize" style="padding: 5px 30px; font-size:1.0em;">
+  </form>
   </div>
 
 

@@ -87,6 +87,7 @@
     <li><a href="./members.php">Members</a></li>
     <li><a href="./auth.php">Authority</a></li>
     <li><a href="../logout.php">Log Out</a></li>
+    <li><a href="../home.php">&#8592back</a></li>
   </ul>
 
   <div class="container">

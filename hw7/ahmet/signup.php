@@ -72,7 +72,7 @@
                 //email regular expression control
                 if(filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)){
                   $verify_cont+=1;
-                  $logs['value_email']=$subject;
+                  $logs['value_email']=$_POST['email'];
                 }
                 else{
                   $logs['email']="Write a valid email!";

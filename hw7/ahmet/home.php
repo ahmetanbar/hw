@@ -87,16 +87,16 @@
             </div>
 
             <div class="info">
-              <i style="float:left; " class="material-icons md">date_range</i>
+              <i style="float:left; " class="material-icons">date_range</i>
               <a style="float:left;" href="./article.php?id=<?php echo($row['id']); ?>"><?php echo(date('d-m-Y H:i', strtotime($row['date']))); ?></a>
-              <i style="float:left;" class="material-icons md" >account_balance</i>
+              <i style="float:left;" class="material-icons" >account_balance</i>
               <a style="float:left;" href="./archive.php?category=<?php echo($row['category']); ?>"><?php echo($row['category']); ?></a>
-              <i style="float:left;" class="material-icons md" >account_circle </i>
+              <i style="float:left;" class="material-icons" >account_circle </i>
               <a style="float:left; " href="./profile.php?user=<?php echo($row['username']); ?>"><?php echo($row['author']); ?></a>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>" >Views:<?php echo($row['viewing']); ?></a>
-              <i style="float:right;" class="material-icons md">assessment</i>
+              <i style="float:right;" class="material-icons">assessment</i>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>">Comments:<?php echo($row['comments']); ?></a>
-              <i style="float:right;" class="material-icons md">comment</i>
+              <i style="float:right;" class="material-icons">comment</i>
               <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             </div>
           </div>

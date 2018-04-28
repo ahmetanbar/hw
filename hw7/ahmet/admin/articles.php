@@ -4,6 +4,8 @@
   <title>Code Note</title>
   <link rel="stylesheet" type="text/css" href="./assets/css/panel.css">
   <link rel="stylesheet" type="text/css" href="./assets/css/sidebar.css">
+  <link rel="stylesheet" type="text/css" href="./assets/css/articles.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -16,6 +18,7 @@
     $db_password = "";
     $db="hw7";
     $conn = new mysqli($servername, $db_username, $db_password,$db);
+    mysqli_set_charset($conn,"utf8");
     return $conn;
   }
 
@@ -59,14 +62,33 @@
       }
     }
   }
+
+  function get_arthead(){
+    $conn=connect_db();
+    $sql="SELECT id,author,header,category,date FROM articles order by id desc";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    return $result;
+  }
+
+  function print_art_table(){
+    $result=get_arthead();
+    while ($row=$result->fetch_assoc()) {
+      echo("<tr>");
+      echo '<td><a href="./editarticle.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">mode_edit</i></a><a href="../article.php?id='.$row['id'].'">'.$row['header'].'</a></td>';
+      echo '<td>'.$row['author'].'</td>';
+      echo '<td>'.$row['category'].'</td>';
+      echo '<td>'.$row['date'].'</td>';
+      echo("</tr>");
+    }
+  }
+
   session_start();
   $cookie_know=control_cookie();
   if ($cookie_know['flag']==1){
     if(!admin_control($admin)){
     header("Location:../home.php"); /* Redirect browser */
-    }
-    else{
-
     }
   }
   else{
@@ -77,9 +99,9 @@
 
 
   <ul>
-    <li><a class="active" href="">Home</a></li>
+    <li><a href="./panel.php">Home</a></li>
     <li><a href="./add-art.php">Add article</a></li>
-    <li><a href="./articles.php">Articles</a></li>
+    <li><a class="active" href="./articles.php">Articles</a></li>
     <li><a href="./members.php">Members</a></li>
     <li><a href="./auth.php">Authority</a></li>
     <li><a href="../logout.php">Log Out</a></li>
@@ -88,9 +110,17 @@
 
   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
 
+    <table>
+  <tr>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Category</th>
+    <th>Time</th>
+  </tr>
+<?php print_art_table(); ?>
+</table>
+
   </div>
-
-
 
 <br>
 
