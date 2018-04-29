@@ -172,7 +172,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title><?php echo($article["title"])?> - Kaan Arı</title>
+        <title>New Article</title>
         <link rel="stylesheet" href="./assest/styles/styles_articleedit.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
@@ -208,7 +208,7 @@
                 <div class="article">
                     <p>
                         <center>
-                        <textarea name="body" form="form5" style="border-radius:10px;min-height:500px;">Enter Article Text</textarea>
+                        <textarea name="body" form="form5" style="border-radius:10px;min-height:500px;width:90%">Enter Article Text</textarea>
                         </center>
                     </p>
                     <input class="sgninbtn" type="submit" value="<?php echo($buttonstatus);?>" onfocus="(this.value='SAVE')">

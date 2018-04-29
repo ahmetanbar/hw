@@ -50,6 +50,7 @@
     if(cookie_control()){
         $url=$_SERVER["HTTP_REFERER"];
         header("Location: ".$url);
+        del();
         die();
     }else{
         header("Location: ./index.php");

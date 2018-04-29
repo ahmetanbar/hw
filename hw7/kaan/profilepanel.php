@@ -69,6 +69,26 @@
         $result = mysqli_query($conn, $query);
 
     }
+
+    function image(){
+        $target_dir = "usrimg/";
+        chmod($target_dir, 0644);
+
+        $target_file = $target_dir . basename($_FILES["ppimg"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        $check = getimagesize($_FILES["ppimg"]["tmp_name"]);
+        if($check !== false) {
+            echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1;
+        } else {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
+        print_r($_FILES);
+    }
+
     function getinfo($id){
         global $usr_info;
         $conn=db_connect();
@@ -175,6 +195,7 @@
             }else{
                 $newpwd=$usr_info["pwd"];
             }
+            image();
             $conn=db_connect();
             $stmt = $conn->prepare("UPDATE users SET pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=? WHERE id=?");
             $stmt->bind_param("sssssssi", $newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$id);
@@ -256,7 +277,7 @@
 
 
             <div class="content">
-            <form action="./profilepanel.php?id=<?php echo($userid);?>" method="POST">
+            <form action="./profilepanel.php?id=<?php echo($userid);?>" method="POST" enctype="multipart/form-data">
                 <div class="form1" style="user-select:none;">
                         <label><center><b style="color:darkred;">Account Information:</b></center></label><br>
                         <label><b>Username </b> </label>

@@ -72,6 +72,21 @@
         }
     }
 
+    function image(){
+        $target_dir = "usrimg/";
+        $target_file = $target_dir . basename($_FILES["ppimg"]["name"]);
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+        // Check if image file is a actual image or fake image
+        $check = getimagesize($_FILES["ppimg"]["tmp_name"]);
+        if($check !== false) {
+            echo "File is an image - " . $check["mime"] . ".";
+            $uploadOk = 1;
+        } else {
+            echo "File is not an image.";
+            $uploadOk = 0;
+        }
+    }
     
     function cookie_control()
     {
@@ -129,6 +144,7 @@
                                                                 $result2=$query->fetch_assoc();
                                                                 if(empty($result1)){
                                                                     if(empty($result2)){
+                                                                        image();
                                                                         $conn=db_connect();
                                                                         $hashed_pwd=password_hash($password, PASSWORD_DEFAULT);
                                                                         $stmt = $conn->prepare("INSERT INTO users (username, pwd, email, usr_name, usr_surname, gender, bdate, usr_phone, country) VALUES(?,?,?,?,?,?,?,?,?)");
@@ -238,7 +254,7 @@
             </div>
 
             <div class="content">
-                <form style="" action="./signup.php" method="POST">
+                <form style="" action="./signup.php" method="POST" enctype="multipart/form-data">
                 <div class="form1">
                         <label><center><b style="color:darkred;">Account Information:</b></center></label><br>
                         <label><b>Username <span style="color:darkred;">(*)</span></b> </label>
