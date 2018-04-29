@@ -63,26 +63,34 @@
     }
   }
 
-  function get_members(){
+  function get_comments(){
+    $delete="deleted";
     $conn=connect_db();
-    $sql="SELECT id,name,surname,username,photo,email,gender,role FROM users order by id desc";
+    $sql="SELECT id,article_id,namesurname,email,comment,datetime,status FROM comments WHERE status!=? order by id desc";
     $stmt = $conn->prepare($sql);
+    $stmt->bind_param('s',$delete);
     $stmt->execute();
     $result = $stmt->get_result();
     return $result;
   }
 
   function print_art_table(){
-    $result=get_members();
+    $result=get_comments();
     while ($row=$result->fetch_assoc()) {
       echo("<tr>");
-      echo '<td><a href="./editmember.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">mode_edit</i></a><a href="./deletecomment.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a><a href="../profile.php?id='.$row['id'].'">'.$row['name'].' '.$row['surname'].'</a></td>';
-      echo '<td>'.$row['username'].'</td>';
+      echo '<td><a href="../article.php?id='.$row['article_id'].'">'.$row['article_id'].'</a></td>';
+      echo '<td>'.$row['comment'].'</td>';
+      echo '<td>'.$row['namesurname'].'</td>';
       echo '<td>'.$row['email'].'</td>';
-      echo '<td>'.$row['photo'].'</td>';
-      echo '<td>'.$row['gender'].'</td>';
-      echo '<td>'.$row['role'].'</td>';
+      echo '<td>'.$row['datetime'].'</td>';
+      if($row['status']=="notapprove")
+        echo '<td>Not approved<a href="./editcomment.php?status=approve&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">check</i></a><a href="./editcomment.php?status=deleted&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a></td>';
+      if($row['status']=="approve")
+        echo '<td>Approved<a href="./editcomment.php?status=notapprove&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">cancel</i></a><a href="./editcomment.php?status=deleted&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a></td>';
+      if($row['status']=="deleted")
+          echo '<td>Deleted<a href="./editcomment.php?status=notapprove&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">sync</i></a></td>';
       echo("</tr>");
+
     }
   }
 
@@ -104,12 +112,12 @@
 
     <table>
   <tr>
+    <th>Article ID</th>
+    <th>Comment</th>
     <th>Name Surname</th>
-    <th>Username</th>
     <th>Email</th>
-    <th>Photo</th>
-    <th>Gender</th>
-    <th>Role</th>
+    <th>Datetime</th>
+    <th>Status</th>
   </tr>
 <?php print_art_table(); ?>
 </table>

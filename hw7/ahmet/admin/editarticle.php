@@ -4,6 +4,7 @@
   <title>Code Note</title>
   <link rel="stylesheet" type="text/css" href="./assets/css/panel.css">
   <link rel="stylesheet" type="text/css" href="./assets/css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/add-art.css">
   <link rel="stylesheet" type="text/css" href="./assets/css/articles.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="utf-8">
@@ -55,11 +56,28 @@
     }
   }
 
-  function post_control(){
-    if(count($_POST)!=0){
-      if(array_key_exists("title",$_POST) and array_key_exists("article",$_POST)){
-      $conn=connect_db();
+  function get_control(){
+    if(count($_GET)!=0){
+      if(array_key_exists("id",$_GET)){
+        if($_GET["id"]!=NULL){
+            $art_id=$_GET["id"];
+            $conn=connect_db();
+            $stmt = $conn->prepare("SELECT article,header,category FROM articles WHERE id=?");
+            $stmt->bind_param("i", $art_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            if(count($row)!=0){
+              return $row;
+            }
+            else {
+              header("Location:./articles.php"); /* Redirect browser */
+            }
+        }
       }
+    }
+    else {
+      header("Location:./articles.php"); /* Redirect browser */
     }
   }
 
@@ -76,7 +94,7 @@
     $result=get_arthead();
     while ($row=$result->fetch_assoc()) {
       echo("<tr>");
-      echo '<td><a href="./editarticle.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">mode_edit</i></a><a href="./deletearticle.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a><a href="../article.php?id='.$row['id'].'">'.$row['header'].'</a></td>';
+      echo '<td><a href="./editarticle.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">mode_edit</i></a><a href="../article.php?id='.$row['id'].'">'.$row['header'].'</a></td>';
       echo '<td>'.$row['author'].'</td>';
       echo '<td>'.$row['category'].'</td>';
       echo '<td>'.$row['date'].'</td>';
@@ -94,21 +112,50 @@
   else{
     header("Location:../home.php"); /* Redirect browser */
   }
-  post_control();
+
   ?>
   <?php include 'sidebar.php';?>
 
   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
+    <?php
+    $row=get_control();
+    $orig = "I'll \"walk\" the <b>dog</b> now";
 
-    <table>
-  <tr>
-    <th>Title</th>
-    <th>Author</th>
-    <th>Category</th>
-    <th>Time</th>
-  </tr>
-<?php print_art_table(); ?>
-</table>
+$a = htmlentities($orig);
+
+$b = html_entity_decode($a);
+$deneme=html_entity_decode(htmlentities($row['article']));
+echo $deneme; // I'll &quot;walk&quot; the &lt;b&gt;dog&lt;/b&gt; now
+
+    ?>
+    <div class="container" >
+    <form action="" method="post">
+      <div class="row">
+        <div class="col-75">
+          <input type="text" id="lname" name="title" value="<?php echo($row['header']);?>" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-75">
+          <select id="category" name="category">
+            <option <?php echo($row['category']=="C")? 'selected="selected"':''?> value="C">C</option>
+            <option <?php echo($row['category']=="Java")? 'selected="selected"':''?> value="Java">Java</option>
+            <option <?php echo($row['category']=="Php")? 'selected="selected"':''?> value="Php">Php</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-75">
+          <textarea id="subject" name="article" style="height:200px"><?php echo $deneme; ?></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-75">
+          <input type="submit" value="Submit">
+          </div>
+      </div>
+    </form>
+  </div>
 
   </div>
 

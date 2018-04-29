@@ -88,17 +88,7 @@
   }
   post_control();
   ?>
-
-
-  <ul>
-    <li><a href="./panel.php">Home</a></li>
-    <li><a href="./add-art.php">Add article</a></li>
-    <li><a href="./articles.php">Articles</a></li>
-    <li><a href="./members.php">Members</a></li>
-    <li><a class="active" href="./auth.php">Authority</a></li>
-    <li><a href="../logout.php">Log Out</a></li>
-    <li><a href="../home.php">&#8592back</a></li>
-  </ul>
+  <?php include 'sidebar.php';?>
 
   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
   <h3>Write a username</h3>

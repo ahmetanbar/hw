@@ -60,9 +60,10 @@
     }
 
     function get_comment(){
+      $status="approve";
       $conn=connect_db();
-      $stmt = $conn->prepare("SELECT * FROM comments WHERE article_id=? order by id desc limit 5");
-      $stmt->bind_param("i", $_GET['id']);
+      $stmt = $conn->prepare("SELECT * FROM comments WHERE article_id=? and status=? order by id desc");
+      $stmt->bind_param("is", $_GET['id'],$status);
       $stmt->execute();
       $result = $stmt->get_result();
       return $result;
@@ -112,13 +113,9 @@
             date_default_timezone_set("Europe/Istanbul");
             $datetime=date("y.m.d H:i");
             $user_id=0;
-            $stmt = $conn->prepare("UPDATE articles SET comments=comments+1 WHERE id=?");
-            $stmt->bind_param('i',$article_id);
-            $stmt->execute();
-
-
-            $stmt = $conn->prepare("INSERT INTO comments (user_id,article_id,namesurname,email,comment,datetime) VALUES(?,?,?,?,?,?)");
-            $stmt->bind_param("iissss", $user_id, $article_id,$namesurname,$email,$comment,$datetime);
+            $status="notapprove";
+            $stmt = $conn->prepare("INSERT INTO comments (user_id,article_id,namesurname,email,comment,datetime,status) VALUES(?,?,?,?,?,?,?)");
+            $stmt->bind_param("iisssss", $user_id, $article_id,$namesurname,$email,$comment,$datetime,$status);
             $stmt->execute();
             }
           }
