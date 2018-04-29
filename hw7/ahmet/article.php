@@ -150,6 +150,8 @@
       $number_box=1;
       if($get_method=="id"){
       $result=get_article($_GET['id']);
+      if($result->num_rows==0)
+        header("Location:./home.php");
     }
       for($i=0;$i<$number_box;$i++) {
         $row = $result->fetch_assoc();
