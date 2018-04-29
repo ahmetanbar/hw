@@ -128,7 +128,7 @@
                 echo'
                     <div class="allcomm">
                     <div class="commentbox">'.$row["comment"].'</div>
-                    <div class="cominfo"><h5><a href="./profile.php?id='.$row["uid"].'" style="text-decoration:none;color:gray;"><img class="iconaab" src="./assest/img/account.png"><span class="iconaac">'.writer_name($row["uid"]).'</span></h5></a></div>
+                    <div class="cominfo"><h5><a href=".profile.php?id='.$row["uid"].'" style="text-decoration:none;color:gray;"><img class="iconaab" src="./assest/img/account.png"><span class="iconaac">'.writer_name($row["uid"]).'</span></h5></a></div>
                     </div>
                 ';  
             }

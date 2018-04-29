@@ -1,6 +1,15 @@
 
 <?php
     session_start();
+    
+    function valid_title($name)
+    {
+        $r3='/[!@#$%^&*()\-_=+{};:,<.>]/';
+        if(preg_match_all($r3,$name, $o)>0) return FALSE;
+        if(strlen($name)<1) return FALSE;
+        if(strlen($name)>40) return FALSE;
+        return TRUE;
+    }
     function comm_control($comm){
         global $sendbuttonstatus;
         $r1='/[A-Z]/';  //Uppercase
@@ -23,13 +32,13 @@
             return FALSE;
         }
     }
-    function counter($views,$artcid){
-        $conn=db_connect();
-        $views=$views+1;
-        $stmt = $conn->prepare("UPDATE articles SET views=? WHERE id=?");
-        $stmt->bind_param("ii",$views,$artcid);
-        $stmt->execute();
-
+    function edit_art($id){
+        if(!(empty($_POST["title"]))&&!(empty($_POST["body"]))&&valid_title($_POST["title"])){
+            $conn=db_connect();
+            $stmt = $conn->prepare("UPDATE articles SET title=?, body=? WHERE id=?");
+            $stmt->bind_param("ssi",$_POST["title"],$_POST["body"],$id);
+            $stmt->execute();
+        }   
     }
     function db_connect(){
         $servername = "localhost";
@@ -75,43 +84,30 @@
     
     function cookie_control()
     {
-        if(!(empty($_COOKIE["auth"]))){
+        if(!(empty($_COOKIE["auth"]))&&!(empty($_SESSION))){
             $cookie=$_COOKIE["auth"];
-            if($_SESSION["auth"] == $cookie){
-                return True;
-            }else{
-                setcookie("auth", "", time() + 3600);
-                session_destroy();
-                return False;
-            }
+                if($_SESSION["auth"] == $cookie){
+                    $conn=db_connect();
+                    $stmt=$conn->prepare("SELECT uid FROM admin WHERE username=?");
+                    $stmt->bind_param("s",$_SESSION["username"]);
+                    $stmt->execute();
+                    $query = $stmt->get_result();
+                    $result2=$query->fetch_assoc();
+                    if(!(empty($result2))){
+                        return True;
+                    }else{
+                        return False;
+                    }
+                }else{
+                    setcookie("auth", "", time() - 3600);
+                    session_destroy();
+                    return False;
+                }
         }else{
             return False;
-        }
+        }   
     }
-    function comment(){
-        global $id;
-        if(comm_control($_POST["comment"])){
-            $conn=db_connect();
-            $sql = "SELECT * FROM comments WHERE artid=".$_GET["id"]."";
-            $stmt = $conn->query($sql);
-            $comments=$stmt->num_rows;
-            $comments=$comments+1;
-            $stmt = $conn->prepare("INSERT INTO comments (artid, uid, comment, up_time) VALUES(?,?,?,NOW())");
-            $stmt->bind_param("iis", $_GET["id"],$id,$_POST["comment"]);
-            if ($stmt->execute()) {
-                #echo("Success");
-                $stmt = $conn->prepare("UPDATE articles SET comments=? WHERE id=?");
-                $stmt->bind_param("ii", $comments,$_GET["id"]);
-                $stmt->execute();
-            } else {
-                echo "Error: ".$stmt->error;
-                die();
-            }
-            return TRUE;
-        }else{
-            return FALSE;
-        }
-    }
+
     function comments(){
         global $id;
         global $num_comments,$sendbuttonstatus;
@@ -128,31 +124,12 @@
                 echo'
                     <div class="allcomm">
                     <div class="commentbox">'.$row["comment"].'</div>
-                    <div class="cominfo"><h5><a href="./profile.php?id='.$row["uid"].'" style="text-decoration:none;color:gray;"><img class="iconaab" src="./assest/img/account.png"><span class="iconaac">'.writer_name($row["uid"]).'</span></h5></a></div>
+                    <div class="cominfo"><h5 style="float:left;height:30px;display:block;margin-left:20px;margin-bottom:5px;padding-top:5px;"><a href="./commentedit.php?id='.$row["id"].'" style="text-decoration:none;color:gray;"><img class="iconaab" src="./assest/img/edit.png"><a href="./commentdel.php?id='.$row["id"].'&artid='.$_GET["id"].'" style="text-decoration:none;color:gray;"><img alt="Delete" class="iconaab" src="./assest/img/delete-empty.png"></a></a></h5><h5 style="float:right;height:30px;display:block;margin-bottom:5px;margin-right:20px;"><a href="./useredit.php?id='.$row["uid"].'" style="text-decoration:none;color:gray;"><img class="iconaab" src="./assest/img/account-edit.png"></a><a href="./profile.php?id='.$row["uid"].'" style="text-decoration:none;color:gray;"><img class="iconaab" src="./assest/img/account.png"><span class="iconaac">'.writer_name($row["uid"]).'</span></h5></a></div>
                     </div>
                 ';  
             }
         } else {
             echo'<span style="color:rgba(201, 200, 200, 1);"><h5>No Comment</h5></span>';
-        }
-        echo '<hr style="background-color:#333; border-color:#333;margin-top:10px;display:block;">';
-        if(cookie_control()==True){
-            echo'
-                <div style="height:auto;">
-                    <div style="padding-right:10px;height:50px;">
-                        <form action="./article.php?id='.$_GET["id"].'" id="usrform" method="POST">
-                        <div style="float:left;"><a style="text-decoration:none;color:black;" href="./profile.php?id='.$id.'"><img class="icona" src="./assest/img/account.png"><h5 style="float:right;margin-top:5px;margin-left:7px;">'.$_SESSION["username"].'</h5></a></div>
-                        <div style="float:right;margin-right:20px;"><input class="sgninbtn" type="submit"></div>
-                    </form>
-                    </div>
-                    
-                    <div style="height:80px;widht:300px;margin:auto;margin-top:-5px;width: 100%;">
-                    <textarea rows="3" cols="60" name="comment" form="usrform" class="combox" placeholder="'.$sendbuttonstatus.'"></textarea>
-                    </div>
-                </div>
-            ';
-        }else{
-            echo'<span style="margin-bottom:20px;color:rgba(201, 200, 200, 1);"><h5>Please Login to comment</h5></span>';
         }
     }
 
@@ -163,7 +140,6 @@
         $stmt->execute();
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
-        counter($result["views"],$id);
         return $result;
     }
     function writer_name($id){
@@ -176,22 +152,19 @@
         return $result["username"];
     }
     $sendbuttonstatus="Enter Comment Here\n(140 Character)";
-    $article=article($_GET["id"]);
-    $writer=writer_name($article["uid"]);
+    $buttonstatus="SAVE";
     $cookie=cookie_control();
     if($cookie==True){
         $conn=db_connect();
-        $stmt=$conn->prepare("SELECT id FROM users WHERE username=?");
-        $stmt->bind_param("s",$_SESSION["username"]);
-        $stmt->execute();
-        $query = $stmt->get_result();
-        $result=$query->fetch_assoc();
-        $id=$result["id"];
+        $id=$_GET["id"];
+        $article=article($id);
+        $writer=writer_name($article["uid"]);
         if($_POST){
-            if(comment()){
-                header("Location:#");
-            }
+            edit_art($id);
+            $article=article($id);
         }
+    }else{
+        header("Location:./index.php");
     }
 
 ?>
@@ -199,8 +172,10 @@
     <head>
         <meta charset="utf-8">
         <title><?php echo($article["title"])?> - Kaan Arı</title>
-        <link rel="stylesheet" href="./assest/styles/styles_article.css">
+        <link rel="stylesheet" href="./assest/styles/styles_articleedit.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+        <script>tinymce.init({ selector:'textarea' });</script>
     </head>
     
     <body>
@@ -209,37 +184,37 @@
                 <div  class="header"></div>
             </header>
             <div class="navbar">
-                <ul>
-                    <li><a href="./index.php">Home</a></li>
-                    <li><a href="./archive.php">Archive</a></li>
-                    <li><a href="./about.php">About</a></li>
-                    <?php
-                        if((cookie_control())){
-                            echo'
-                                <li><a href="./logout.php" style="cursor:pointer; float: right;">Logout</a></li> 
-                                <li><a href="./profile.php?id='.$id.'" style="float:right;">Profile</a></li>
-                            ';
-                        }else{
-                            echo'
-                                <li><a href="./signup.php" style="cursor:pointer; float: right;">Sign Up</a></li> 
-                                <li><a href="./login.php" style="float:right;">Login</a></li>
-                            ';
-                        }
-
-                    ?>
+                    <ul>
+                    <li><a href="./panel.php">Home</a></li>
+                    <li><a href="./articles.php">Articles</a></li>
+                    <li><a href="./users.php">Users</a></li>
+                    <li><a href="./logout.php" style="float:right;">Logout</a>
+                    <li><a href="../index.php" style="cursor:pointer; float: right;">Web Page</a></li> 
+     
+                    </li>
                 </ul>
             </div>
 
             <div class="content">
+                <form action="#" method="POST" id="form5">
                 <div class="image" style="position:relative;background-image:url(./assest/img/article.jpg);">
-                    <h3 class="title"><?php echo($article["title"])?></h3>
                 </div>
-                <center><?php echo'<h5 class="time"><img class="icontime" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($article["up_time"]).'</span></h5>';?>
-                    </center>
+                <center><label class="uploadbtn" for="ppimg">Browse Article Photo...</label></center>
+                        <input style="z-index:-1; position:absolute; opacity:0;" type="file" name="ppimg" id="ppimg" accept=".jpg, .jpeg, .png">
+                <br>
+                <center><label style="color:darkred;"><b>Title</b> </label></center>
+                <center><input class="inp" type="text" name="title" value="<?php echo($article["title"])?>"></center>
+                <center><?php echo'<h5 class="time"><img class="icontime" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($article["up_time"]).'</span></h5>';?></center>
                 <div class="article">
 
-                    <p><?php echo($article["body"])?></p>
+                    <p>
+                        <center>
+                        <textarea name="body" form="form5" style="border-radius:10px;min-height:500px;"><?php echo($article["body"]);?></textarea>
+                        </center>
+                    </p>
+                    <input class="sgninbtn" type="submit" value="<?php echo($buttonstatus);?>" onfocus="(this.value='SAVE')">
                 </div>
+                </form>
                 <center><div class="infoart"><h5><span class="iconb">Rating: </span><span class="iconc"><?php echo($article["rating"])?></span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc"><?php echo($article["views"])?></span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc"><?php echo($article["comments"])?></span><span class="stars2"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($article["uid"])?>"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></a></span></h5></div>
                     </center>
                 <center><div class="author"><a style="text-decoration:none;" href="./profile.php?id=<?php echo($article["uid"])?>"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc"><?php echo($writer)?></span></h5></a></div></center>

@@ -11,7 +11,10 @@ body{
     
 }
 /* ALL OF THE CONTENTS IN THIS CSS */
-
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg th{background-color:darkred;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;border-color:black;}
+.tg .tg-amwm{font-weight:bold;text-align:center;vertical-align:top}
 .wrapper{
     animation-duration: 20s;
     animation-timing-function: ease-out;
@@ -102,12 +105,37 @@ body{
 }
 
 /* CONTENT PART */
-
+.disabled{
+    display: none;
+}
+.pagign{
+    display:block;
+    height: 60px;
+    width: 100%;
+}
+.pageselect{
+    background-color: #333;
+    color:rgba(201, 200, 200, 0.753);;
+    border-radius: 10px;
+}
+.pagenavicon{
+    vertical-align: bottom;
+    height: 30px;
+    width: 30px;
+}
+.pagetext{
+    vertical-align: bottom;
+    line-height: 30px;
+}
+.pagetext2{
+    display: block;
+    margin-bottom:50px;
+}
 .content{
     user-select: none;
     font-size: 15px;
     margin:auto;
-    margin-top:5%;
+    margin-top:2%;
     width: 100%;
     height: auto;
     padding-bottom: 30px;
@@ -115,6 +143,33 @@ body{
     background-color: rgba(201, 200, 200, 0.753);
     border-radius: 10px;  
 }
+.content2{
+    padding-top:15px;
+    user-select: none;
+    font-size: 15px;
+    margin:auto;
+    margin-top:1%;
+    width: 100%;
+    height: auto;
+    padding-bottom: 30px;
+    min-height: 150px;
+    background-color: rgba(201, 200, 200, 0.753);
+    border-radius: 10px;  
+}
+.content3{
+    padding-top:15px;
+    user-select: none;
+    font-size: 15px;
+    margin:auto;
+    margin-top:1%;
+    width: 100%;
+    height: auto;
+    padding-bottom: 30px;
+    min-height: 150px;
+    background-color: rgba(201, 200, 200, 0.753);
+    border-radius: 10px;  
+}
+
 .a{
     background-color: rgb(54, 54, 54); 
     height: 2px; 

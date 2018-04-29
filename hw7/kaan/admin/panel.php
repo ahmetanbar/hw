@@ -40,7 +40,6 @@
     }
     function last_id(){
         $conn=db_connect();
-
         $result = mysqli_insert_id($conn);
         return $result;
     }

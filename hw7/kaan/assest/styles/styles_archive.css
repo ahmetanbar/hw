@@ -334,7 +334,9 @@ body{
     position: static;
 }
 /* FOOTER PART */
-
+.navhide2{
+    display:none;
+}
 footer{
     user-select: none;
     align-items: center;
@@ -426,6 +428,12 @@ footer{
 
     .leftcntimg{
         margin-left: 20px;
+    }
+    .navhide{
+        display:none;
+    }
+    .navhide2{
+        display:block;
     }
     .author2{
         float: unset;
