@@ -52,13 +52,6 @@
     }
   }
 
-  function post_control(){
-    if(count($_POST)!=0){
-      if(array_key_exists("title",$_POST) and array_key_exists("article",$_POST)){
-      $conn=connect_db();
-      }
-    }
-  }
   session_start();
   $cookie_know=control_cookie();
   if ($cookie_know['flag']==1){
@@ -72,14 +65,14 @@
   else{
     header("Location:../home.php"); /* Redirect browser */
   }
-  post_control();
+  
   $split=explode("/",$_SERVER["REQUEST_URI"]);
   $whereami=$split[count($split)-1];
   ?>
   <?php include 'sidebar.php'; ?>
-  
-  <div style="margin-left:25%;padding:1px 16px;height:1000px;">
 
+  <div style="margin-left:25%;padding:1px 16px;height:1000px;">
+  <h3>Welcome to Panel!You will see here article numbers,comments numbers and all viewing.</h3>
   </div>
 <br>
 

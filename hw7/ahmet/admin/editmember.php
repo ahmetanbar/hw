@@ -4,6 +4,7 @@
   <title>Code Note</title>
   <link rel="stylesheet" type="text/css" href="./assets/css/panel.css">
   <link rel="stylesheet" type="text/css" href="./assets/css/sidebar.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/add-art.css">
   <link rel="stylesheet" type="text/css" href="./assets/css/articles.css">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="utf-8">
@@ -55,61 +56,53 @@
     }
   }
 
-  function get_arthead(){
-    $deleted="delete";
-    $conn=connect_db();
-    $sql="SELECT id,author,header,category,date FROM articles WHERE status!=? order by id desc";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $deleted);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    return $result;
+  function get_control(){
+    if(count($_GET)!=0){
+      if(array_key_exists("id",$_GET) and array_key_exists("status",$_GET)){
+        if($_GET["id"]!=NULL and $_GET["status"]!=NULL){
+            $member_id=$_GET["id"];
+            $conn=connect_db();
+            $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+            $stmt->bind_param("i", $member_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $row = $result->fetch_assoc();
+            if(count($row)!=0){
+              $status=$_GET["status"];
+              update_member($member_id,$status);
+            }
+            else
+              header("Location:./members.php"); /* Redirect browser */
+        }
+        else
+          header("Location:./members.php");
+      }
+      else
+        header("Location:./members.php");
+    }
+    else
+      header("Location:./members.php"); /* Redirect browser */
   }
 
-  function print_art_table(){
-    $result=get_arthead();
-    while ($row=$result->fetch_assoc()) {
-      echo("<tr>");
-      echo '<td><a href="./editarticle.php?status=edit&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">mode_edit</i></a><a href="./editarticle.php?status=delete&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a><a href="../article.php?id='.$row['id'].'">'.$row['header'].'</a></td>';
-      echo '<td>'.$row['author'].'</td>';
-      echo '<td>'.$row['category'].'</td>';
-      echo '<td>'.$row['date'].'</td>';
-      echo("</tr>");
-    }
+  function update_member($member_id,$status){
+    $conn=connect_db();
+    $stmt = $conn->prepare("UPDATE users SET status=? WHERE id=?");
+    $stmt->bind_param('si',$status,$member_id);
+    $stmt->execute();
+
+    header("Location:./members.php");
   }
 
   session_start();
   $cookie_know=control_cookie();
   if ($cookie_know['flag']==1){
-    if(!admin_control($admin)){
-    header("Location:../home.php"); /* Redirect browser */
-    }
+    if(!admin_control($admin))
+      header("Location:../home.php"); /* Redirect browser */
   }
-  else{
+  else
     header("Location:../home.php"); /* Redirect browser */
-  }
+  get_control();
   ?>
-  <?php include 'sidebar.php';?>
-
-  <div style="margin-left:25%;padding:1px 16px;height:1000px;">
-
-    <table>
-  <tr>
-    <th>Title</th>
-    <th>Author</th>
-    <th>Category</th>
-    <th>Time</th>
-  </tr>
-<?php print_art_table(); ?>
-</table>
-
-  </div>
-
-<br>
-
-<a href="../logout.php"><i style="float:left;" class="material-icons md-18">Log Out</i></a>
-
-
 
 </body>
 </html>

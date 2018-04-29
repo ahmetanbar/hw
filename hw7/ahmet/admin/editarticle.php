@@ -58,8 +58,8 @@
 
   function get_control(){
     if(count($_GET)!=0){
-      if(array_key_exists("id",$_GET)){
-        if($_GET["id"]!=NULL){
+      if(array_key_exists("id",$_GET) and array_key_exists("status",$_GET)){
+        if($_GET["id"]!=NULL and $_GET["status"]!=NULL){
             $art_id=$_GET["id"];
             $conn=connect_db();
             $stmt = $conn->prepare("SELECT article,header,category FROM articles WHERE id=?");
@@ -68,38 +68,34 @@
             $result = $stmt->get_result();
             $row = $result->fetch_assoc();
             if(count($row)!=0){
-              return $row;
+              $status=$_GET["status"];
+              if($status=="delete"){
+                update_art($art_id,$status);
+              }
+              if($status=="edit"){
+                return $row;
+              }
             }
-            else {
+            else
               header("Location:./articles.php"); /* Redirect browser */
-            }
         }
+        else
+          header("Location:./articles.php");
       }
+      else
+        header("Location:./articles.php");
     }
-    else {
+    else
       header("Location:./articles.php"); /* Redirect browser */
-    }
   }
 
-  function get_arthead(){
+  function update_art($art_id,$status){
     $conn=connect_db();
-    $sql="SELECT id,author,header,category,date FROM articles order by id desc";
-    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare("UPDATE articles SET status=? WHERE id=?");
+    $stmt->bind_param('si',$status,$art_id);
     $stmt->execute();
-    $result = $stmt->get_result();
-    return $result;
-  }
 
-  function print_art_table(){
-    $result=get_arthead();
-    while ($row=$result->fetch_assoc()) {
-      echo("<tr>");
-      echo '<td><a href="./editarticle.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">mode_edit</i></a><a href="../article.php?id='.$row['id'].'">'.$row['header'].'</a></td>';
-      echo '<td>'.$row['author'].'</td>';
-      echo '<td>'.$row['category'].'</td>';
-      echo '<td>'.$row['date'].'</td>';
-      echo("</tr>");
-    }
+    header("Location:./articles.php");
   }
 
   session_start();
@@ -113,20 +109,13 @@
     header("Location:../home.php"); /* Redirect browser */
   }
 
+
   ?>
   <?php include 'sidebar.php';?>
 
   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
     <?php
     $row=get_control();
-    $orig = "I'll \"walk\" the <b>dog</b> now";
-
-$a = htmlentities($orig);
-
-$b = html_entity_decode($a);
-$deneme=html_entity_decode(htmlentities($row['article']));
-echo $deneme; // I'll &quot;walk&quot; the &lt;b&gt;dog&lt;/b&gt; now
-
     ?>
     <div class="container" >
     <form action="" method="post">

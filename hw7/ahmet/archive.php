@@ -46,19 +46,22 @@
       }
     }
 
+
     function get_article($page,$category){
+      $deleted="delete";
       $conn=connect_db();
       $start_article=($page-1)*5;
-      $sql="SELECT * FROM articles ";
+      $sql="SELECT * FROM articles WHERE status!=? ";
       if($category!=NULL){
-        $sql=$sql."WHERE category=? ";
+        $sql=$sql." and category=? ";
       }
       $sql=$sql."order by id desc limit ?,5";
       $stmt = $conn->prepare($sql);
       if($category!=NULL){
-        $stmt->bind_param("si",$category,$start_article);
+        $stmt->bind_param("ssi",$deleted,$category,$start_article);
       }
-      else{$stmt->bind_param("i",$start_article);}
+      else
+        $stmt->bind_param("si",$deleted,$start_article);
       $stmt->execute();
       $result = $stmt->get_result();
       return $result;
@@ -81,15 +84,17 @@
     }
 
     function number_page($category){
+      $deleted="delete";
       $conn=connect_db();
-      $sql="SELECT COUNT(*) FROM articles";
+      $sql="SELECT COUNT(*) FROM articles WHERE status!=?";
       if($category!=NULL){
-        $sql=$sql." WHERE category=?";
+        $sql=$sql." and category=?";
       }
       $stmt = $conn->prepare($sql);
-      if($category!=NULL){
-        $stmt->bind_param("s",$category);
-      }
+      if($category!=NULL)
+        $stmt->bind_param("ss",$deleted,$category);
+      else
+        $stmt->bind_param("s",$deleted);
       $stmt->execute();
       $result = $stmt->get_result();
       $row = $result->fetch_assoc();

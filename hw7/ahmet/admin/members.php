@@ -55,28 +55,22 @@
     }
   }
 
-  function post_control(){
-    if(count($_POST)!=0){
-      if(array_key_exists("title",$_POST) and array_key_exists("article",$_POST)){
-      $conn=connect_db();
-      }
-    }
-  }
-
   function get_members(){
+    $status="delete";
     $conn=connect_db();
-    $sql="SELECT id,name,surname,username,photo,email,gender,role FROM users order by id desc";
+    $sql="SELECT id,name,surname,username,photo,email,gender,role FROM users WHERE status!=? order by id desc";
     $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $status);
     $stmt->execute();
     $result = $stmt->get_result();
     return $result;
   }
 
-  function print_art_table(){
+  function print_member_table(){
     $result=get_members();
     while ($row=$result->fetch_assoc()) {
       echo("<tr>");
-      echo '<td><a href="./editmember.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">mode_edit</i></a><a href="./deletecomment.php?id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a><a href="../profile.php?id='.$row['id'].'">'.$row['name'].' '.$row['surname'].'</a></td>';
+      echo '<td><a href="./editmember.php?status=delete&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a><a href="../profile.php?id='.$row['id'].'">'.$row['name'].' '.$row['surname'].'</a></td>';
       echo '<td>'.$row['username'].'</td>';
       echo '<td>'.$row['email'].'</td>';
       echo '<td>'.$row['photo'].'</td>';
@@ -96,7 +90,7 @@
   else{
     header("Location:../home.php"); /* Redirect browser */
   }
-  post_control();
+  
   ?>
   <?php include 'sidebar.php';?>
 
@@ -111,7 +105,7 @@
     <th>Gender</th>
     <th>Role</th>
   </tr>
-<?php print_art_table(); ?>
+<?php print_member_table(); ?>
 </table>
 
   </div>

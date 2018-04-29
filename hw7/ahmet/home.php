@@ -47,8 +47,12 @@
 
     function get_article(){
       $conn=connect_db();
-      $sql = "SELECT * FROM articles order by id desc limit 5";
-      $result = $conn->query($sql);
+      $deleted="delete";
+      $stmt = $conn->prepare("SELECT * FROM articles WHERE status!=? order by id desc limit 5");
+      $stmt->bind_param("s", $deleted);
+      $stmt->execute();
+      $result = $stmt->get_result();
+
       return $result;
     }
 

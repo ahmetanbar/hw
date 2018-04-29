@@ -55,14 +55,6 @@
     }
   }
 
-  function post_control(){
-    if(count($_POST)!=0){
-      if(array_key_exists("title",$_POST) and array_key_exists("article",$_POST)){
-      $conn=connect_db();
-      }
-    }
-  }
-
   function get_comments(){
     $delete="deleted";
     $conn=connect_db();
@@ -74,7 +66,7 @@
     return $result;
   }
 
-  function print_art_table(){
+  function print_comment_table(){
     $result=get_comments();
     while ($row=$result->fetch_assoc()) {
       echo("<tr>");
@@ -104,7 +96,7 @@
   else{
     header("Location:../home.php"); /* Redirect browser */
   }
-  post_control();
+  
   ?>
   <?php include 'sidebar.php';?>
 
@@ -119,7 +111,7 @@
     <th>Datetime</th>
     <th>Status</th>
   </tr>
-<?php print_art_table(); ?>
+<?php print_comment_table(); ?>
 </table>
 
   </div>
