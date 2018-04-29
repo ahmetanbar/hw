@@ -5,12 +5,12 @@
         global $sendbuttonstatus;
         $r1='/[A-Z]/';  //Uppercase
         $r2='/[a-z]/';  //lowercase
-        $r3='/[şçüğıö!@#$%^()\-_=+;:,. "]/';  // whatever you mean by 'special char'
+        $r3='/[$|&"]/';  // whatever you mean by 'special char'
         $r4='/[0-9]/';  //numbers
         $letter=preg_match_all($r1,$comm,$o)+preg_match_all($r2,$comm,$o)+preg_match_all($r3,$comm,$o)+preg_match_all($r4,$comm
         ,$o);
         if(!(strlen($comm)>140)){
-            if($letter==strlen($comm)){
+            if(!(preg_match_all($r3,$comm,$o)>0)){
                 $sendbuttonstatus="Sended.";
                 return TRUE;
             }
