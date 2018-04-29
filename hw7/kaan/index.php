@@ -75,10 +75,11 @@
         // output data of each row
             $y=0;
             while($row = $result->fetch_assoc()) {
+                $body=strip_tags($row["body"]);
                 if($y%2 == 0){
                     echo '
 
-                    <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
+                    <a style="color:black;text-decoration:none;" href="article.php?id='.$row["id"].'">
 
                     <div class="rightcnt">
 
@@ -92,10 +93,10 @@
                         </div>
                         <div>
                             <h3 style="color:black;">'.$row["title"].'</h3>
-                            <p style="color:black;">'.$row["body"].'</p>
+                            <p class="par" style="color:black;">'.$body.'</p>
                             </a>
                             <div class="type1"><h5><span class="iconb">Rating: </span><span class="iconc">'.$row["rating"].'</span><img alt="Views" class="icona" src="./assest/img/eye.png"><span class="iconc">'.$row["views"].'</span><img alt="Comments" class="icona" src="./assest/img/comment.png"><span class="iconc">'.$row["comments"].'</span><span class="author1"><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="icona" alt="Author" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></a><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></span></h5></div>
-                            <br><div class="author2"><h5><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></h5><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></h5></a></div>
+                            <br><div class="author2"><h5 style="font-style:normal;"><img class="icona" src="./assest/img/clock.png"><span class="iconc">'.time_elapsed_string($row["up_time"]).'</span></h5><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><h5><img class="icona" src="./assest/img/account.png"><span class="iconc">'.writer_name($row["uid"]).'</span></h5></a></div>
 
                         </div>
                     </div>                    
@@ -106,7 +107,7 @@
                     $y=$y+1;
                 }else{
                     echo '
-                    <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
+                    <a style="color:black;text-decoration:none;" href="article.php?id='.$row["id"].'">
                     <div class="leftcnt">
                         <div style="position:relative;">
                             <img class="leftcntimg" src="./assest/img/header3.jpg"/>
@@ -116,10 +117,10 @@
                         </div>
                         <div>
                             <h3 style="color:black;">'.$row["title"].'</h3>
-                            <p style="color:black;">'.$row["body"].'</p>
+                            <p class="par" style="color:black;">'.$body.'</p>
                             </a>
                             <div class="type2"><h5><span class="author1"><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" alt="Author" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></a></span><img alt="Comments" class="iconaa" src="./assest/img/comment.png"><span class="iconac">'.$row["comments"].'</span><img alt="Views" class="iconaa" src="./assest/img/eye.png"><span class="iconac">'.$row["views"].'</span><span class="iconab">Rating: </span><span class="iconac">'.$row["rating"].'</span></h5></div>
-                            <br><div class="author3"><h5><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></h5></a></div>
+                            <br><div class="author3"><h5 style="font-style:normal;"><img class="iconaa" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($row["up_time"]).'</span><a style="text-decoration:none;" href="./profile.php?id='.$row["uid"].'"><img class="iconaa" src="./assest/img/account.png"><span class="iconac">'.writer_name($row["uid"]).'</span></h5></a></div>
                             </div>
                     </div>
                     <hr class="hr1">
