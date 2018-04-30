@@ -148,32 +148,34 @@
                       </tr>
                     ';
                     foreach ($iterator as $row) {
-                        if($id==$row["id"]){
-                            echo'
-                        <tr>
-                            <td ><center>'.$row["id"].'</center></td>
-                            <td ><center>'.$row["username"].'</center></td>
-                            <td><center>'.$row["usr_name"].'</center></td>
-                            <td><center>'.$row["usr_surname"].'</center></td>
-                            <td><center>'.$row["email"].'</center></td>
-                            <td><center>5</center></td>
-                            <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
-                            <td><center> - </center></td>
-                        </tr>
-                        ';
-                        }else{
-                            echo'
-                        <tr>
-                            <td ><center>'.$row["id"].'</center></td>
-                            <td ><center>'.$row["username"].'</center></td>
-                            <td><center>'.$row["usr_name"].'</center></td>
-                            <td><center>'.$row["usr_surname"].'</center></td>
-                            <td><center>'.$row["email"].'</center></td>
-                            <td><center>5</center></td>
-                            <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
-                            <td><center><a href="userdel.php?id='.$row["id"].'"><img class="icona" src="./assest/img/delete.png"></a></center></td>
-                        </tr>
-                        ';
+                        if(!(strstr($row["username"],"BANNED"))){
+                            if($id==$row["id"]){
+                                echo'
+                            <tr>
+                                <td ><center>'.$row["id"].'</center></td>
+                                <td ><center>'.$row["username"].'</center></td>
+                                <td><center>'.$row["usr_name"].'</center></td>
+                                <td><center>'.$row["usr_surname"].'</center></td>
+                                <td><center>'.$row["email"].'</center></td>
+                                <td><center>5</center></td>
+                                <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
+                                <td><center> - </center></td>
+                            </tr>
+                            ';
+                            }else{
+                                echo'
+                            <tr>
+                                <td ><center>'.$row["id"].'</center></td>
+                                <td ><center>'.$row["username"].'</center></td>
+                                <td><center>'.$row["usr_name"].'</center></td>
+                                <td><center>'.$row["usr_surname"].'</center></td>
+                                <td><center>'.$row["email"].'</center></td>
+                                <td><center>5</center></td>
+                                <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
+                                <td><center><a href="userdel.php?id='.$row["id"].'"><img class="icona" src="./assest/img/delete.png"></a></center></td>
+                            </tr>
+                            ';
+                            }
                         }
                     }
                     echo'</table></center>';

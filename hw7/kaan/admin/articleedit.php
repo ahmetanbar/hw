@@ -184,14 +184,12 @@
                 <div  class="header"></div>
             </header>
             <div class="navbar">
-                    <ul>
+                <ul>
                     <li><a href="./panel.php">Home</a></li>
                     <li><a href="./articles.php">Articles</a></li>
                     <li><a href="./users.php">Users</a></li>
                     <li><a href="./logout.php" style="float:right;">Logout</a>
                     <li><a href="../index.php" style="cursor:pointer; float: right;">Web Page</a></li> 
-     
-                    </li>
                 </ul>
             </div>
 
