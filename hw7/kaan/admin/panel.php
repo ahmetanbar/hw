@@ -142,7 +142,7 @@
     }
     function last5user(){
         $conn=db_connect();
-        $sql = "SELECT * FROM users ORDER BY id DESC LIMIT 5";
+        $sql = "SELECT * FROM users WHERE deleted_at IS NULL ORDER BY id DESC LIMIT 5";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {
         // output data of each row
@@ -171,7 +171,7 @@
                     if(writer_name($row["id"])==$_SESSION["username"]){
                         echo '
                         <tr>
-                        <td class="tg-mxle">-</td>
+                        <td class="tg-mxle"><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></td>
                         <td class="tg-mxle">-</td>
                         <td class="tg-mxle">'.writer_name($row["id"]).'</td>
                         </tr>
@@ -188,7 +188,6 @@
                     
                     $y=$y+1;
                 }
-                    
             }
         } else {
             echo "0 results";
@@ -213,6 +212,9 @@
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
         $id=$result["id"];
+    }else{
+        header("Location: ./index.php");
+        die();
     }
 ?>
 <html>

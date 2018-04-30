@@ -109,7 +109,7 @@
         try{
             global $id;
             $conn=db_connect();
-            $total = $conn->query('SELECT * FROM users')->num_rows;
+            $total = $conn->query('SELECT * FROM users WHERE deleted_at')->num_rows;
             $limit = 10;
             $pages = ceil($total / $limit);
             #$page = min($pages, filter_input(INPUT_GET, 'page', FILTER_VALIDATE_INT, array('options' => array('default'   => 1,'min_range' => 1,),)));
@@ -125,57 +125,72 @@
                 if ($stmt->num_rows > 0) {
                     $iterator = new IteratorIterator($stmt);
                     $y=0;
-                    echo'<center><table class="tg" style="undefined;table-layout: fixed; width: 722px">
-                    <colgroup>
-                    <col style="width: 30px">
-                    <col style="width: 100px">
-                    <col style="width: 80px">
-                    <col style="width: 86px">
-                    <col style="width: 161px">
-                    <col style="width: 70px">
-                    <col style="width: 40px">
-                    <col style="width: 45px">
-                    </colgroup>
-                      <tr>
-                        <th class="tg-amwm">ID</th>
-                        <th class="tg-amwm">Username</th>
-                        <th class="tg-amwm">Name</th>
-                        <th class="tg-amwm">Surname</th>
-                        <th class="tg-amwm">E-mail</th>
-                        <th class="tg-amwm">Comments</th>
-                        <th class="tg-amwm">Edit</th>
-                        <th class="tg-amwm">Delete</th>
-                      </tr>
+                    echo'
+                    <center>
+                        <table class="tg" style="undefined;table-layout: fixed; width: 722px">
+                            <colgroup>
+                            <col style="width: 30px">
+                            <col style="width: 100px">
+                            <col style="width: 80px">
+                            <col style="width: 86px">
+                            <col style="width: 161px">
+                            <col style="width: 70px">
+                            <col style="width: 40px">
+                            <col style="width: 45px">
+                            </colgroup>
+                            <tr>
+                                <th class="tg-amwm">ID</th>
+                                <th class="tg-amwm">Username</th>
+                                <th class="tg-amwm">Name</th>
+                                <th class="tg-amwm">Surname</th>
+                                <th class="tg-amwm">E-mail</th>
+                                <th class="tg-amwm">Comments</th>
+                                <th class="tg-amwm">Edit</th>
+                                <th class="tg-amwm">Delete</th>
+                            </tr>
                     ';
                     foreach ($iterator as $row) {
-                        if(!(strstr($row["username"],"BANNED"))){
+                        if(is_null($row["deleted_at"])){
                             if($id==$row["id"]){
                                 echo'
-                            <tr>
-                                <td ><center>'.$row["id"].'</center></td>
-                                <td ><center>'.$row["username"].'</center></td>
-                                <td><center>'.$row["usr_name"].'</center></td>
-                                <td><center>'.$row["usr_surname"].'</center></td>
-                                <td><center>'.$row["email"].'</center></td>
-                                <td><center>5</center></td>
-                                <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
-                                <td><center> - </center></td>
-                            </tr>
-                            ';
+                                    <tr>
+                                        <td ><center>'.$row["id"].'</center></td>
+                                        <td ><center>'.$row["username"].'</center></td>
+                                        <td><center>'.$row["usr_name"].'</center></td>
+                                        <td><center>'.$row["usr_surname"].'</center></td>
+                                        <td><center>'.$row["email"].'</center></td>
+                                        <td><center>5</center></td>
+                                        <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
+                                        <td><center> - </center></td>
+                                    </tr>
+                                ';
                             }else{
                                 echo'
-                            <tr>
-                                <td ><center>'.$row["id"].'</center></td>
-                                <td ><center>'.$row["username"].'</center></td>
-                                <td><center>'.$row["usr_name"].'</center></td>
-                                <td><center>'.$row["usr_surname"].'</center></td>
-                                <td><center>'.$row["email"].'</center></td>
-                                <td><center>5</center></td>
-                                <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
-                                <td><center><a href="userdel.php?id='.$row["id"].'"><img class="icona" src="./assest/img/delete.png"></a></center></td>
-                            </tr>
-                            ';
+                                    <tr>
+                                        <td ><center>'.$row["id"].'</center></td>
+                                        <td ><center>'.$row["username"].'</center></td>
+                                        <td><center>'.$row["usr_name"].'</center></td>
+                                        <td><center>'.$row["usr_surname"].'</center></td>
+                                        <td><center>'.$row["email"].'</center></td>
+                                        <td><center>5</center></td>
+                                        <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
+                                        <td><center><a href="userdel.php?id='.$row["id"].'"><img class="icona" src="./assest/img/delete.png"></a></center></td>
+                                    </tr>
+                                ';
                             }
+                        }else{
+                            echo'
+                                <tr>
+                                    <td><center>'.$row["id"].'</center></td>
+                                    <td><center><span style="color:red;"><del>'.$row["username"].'</del></span></center></td>
+                                    <td><center>'.$row["usr_name"].'</center></td>
+                                    <td><center>'.$row["usr_surname"].'</center></td>
+                                    <td><center>'.$row["email"].'</center></td>
+                                    <td><center>5</center></td>
+                                    <td><center><a href="useredit.php?id='.$row["id"].'"><img class="icona" src="./assest/img/edit.png"></a></center></td>
+                                    <td><center><a href="userundel.php?id='.$row["id"].'"><img class="icona" src="./assest/img/restore.png"></a></center></td>
+                                </tr>
+                            ';
                         }
                     }
                     echo'</table></center>';
@@ -210,6 +225,8 @@
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
         $id=$result["id"];
+    }else{
+        header("Location: ./index.php");
     }
     if(!(empty($_GET["page"]))){
         $pagenum=$_GET["page"];
@@ -223,7 +240,7 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Articles - ADMIN PANEL</title>
+        <title>Users - ADMIN PANEL</title>
         <link rel="stylesheet" href="./assest/styles/styles_article.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>

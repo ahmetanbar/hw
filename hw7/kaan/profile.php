@@ -48,7 +48,7 @@
         $stmt->execute();
         $query = $stmt->get_result();
         $usr_info=$query->fetch_assoc();
-        if(empty($usr_info)){
+        if(empty($usr_info) || !(is_null($usr_info["deleted_at"]))){
             header("Location: ./index.php");                                                                
             die();
         }
@@ -57,13 +57,20 @@
     $cookie=cookie_control();
     if($cookie==True){
         $conn=db_connect();
-        $stmt=$conn->prepare("SELECT id FROM users WHERE username=?");
+        $stmt=$conn->prepare("SELECT id,deleted_at FROM users WHERE username=?");
         $stmt->bind_param("s",$_SESSION["username"]);
         $stmt->execute();
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
         $userid=$result["id"];
         $id=$_GET["id"];
+        if(!(is_null($result["deleted_at"]))){
+            setcookie("auth", "", time() - 3600);
+            session_unset();
+            session_destroy();
+            header("Location: ./index.php");
+            die();
+        }
         getinfo($id);
     }else{
         header("Location: ./login.php");                                                                

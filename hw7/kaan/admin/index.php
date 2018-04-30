@@ -74,17 +74,12 @@
                 if(valid_username($username)){
                     if(valid_pass($password)){
                         $conn=db_connect();
-                        $stmt=$conn->prepare("SELECT uid FROM admin WHERE username=?");
-                        $stmt->bind_param("s",$username);
-                        $stmt->execute();
-                        $query = $stmt->get_result();
-                        $result2=$query->fetch_assoc();
-                        $stmt=$conn->prepare("SELECT id,pwd FROM users WHERE username=?");
+                        $stmt=$conn->prepare("SELECT id,pwd,admin FROM users WHERE username=?");
                         $stmt->bind_param("s",$username);
                         $stmt->execute();
                         $query = $stmt->get_result();
                         $result=$query->fetch_assoc();
-                        if($result2["uid"]==$result["id"]){
+                        if($result["admin"]==1){
                             if(empty($result))
                             {
                                 $passwordstatus="Password is not correct.";
@@ -129,12 +124,12 @@
             $cookie=$_COOKIE["auth"];
                 if($_SESSION["auth"] == $cookie){
                     $conn=db_connect();
-                    $stmt=$conn->prepare("SELECT uid FROM admin WHERE username=?");
+                    $stmt=$conn->prepare("SELECT admin FROM users WHERE username=?");
                     $stmt->bind_param("s",$_SESSION["username"]);
                     $stmt->execute();
                     $query = $stmt->get_result();
                     $result2=$query->fetch_assoc();
-                    if(!(empty($result2))){
+                    if($result2["admin"]==1){
                         return True;
                     }else{
                         return False;

@@ -141,22 +141,25 @@
             echo'<span style="color:rgba(201, 200, 200, 1);"><h5>No Comment</h5></span>';
         }
     }
-    function arttitle($id){
+    function arttitle(){
+        global $artid;
         $conn=db_connect();
         $stmt=$conn->prepare("SELECT title FROM articles WHERE id=?");
-        $stmt->bind_param("i",$id);
+        $stmt->bind_param("i",$artid);
         $stmt->execute();
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
         return $result["title"];
     }
     function comment($id){
+        global $artid;
         $conn=db_connect();
         $stmt=$conn->prepare("SELECT * FROM comments WHERE id=?");
         $stmt->bind_param("i",$id);
         $stmt->execute();
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
+        $artid=$result["artid"];
         return $result;
     }
     function writer_name($id){
@@ -215,7 +218,7 @@
             <div class="content" style="padding-top:30px;">
                 <form action="#" method="POST" id="form5">
                 <center><label style="color:darkred;"><b>This Comment is in This Article</b> </label></center>
-                <center><input class="inp2" type="text" value="<?php echo(arttitle(["artid"]));?>"required></center>
+                <center><input class="inp2" type="text" value="<?php echo(arttitle());?>"required></center>
                 <center><?php echo'<h5 class="time"><img class="icontime" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($comment["up_time"]).'</span></h5>';?></center>
                 <div class="article">
 

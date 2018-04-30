@@ -78,23 +78,37 @@
     }
     function comment_num(){
             $conn=db_connect();
-            $stmt = $conn->query("SELECT * FROM comments WHERE artid=".$_GET["artid"]."");
+            $stmt = $conn->query("SELECT * FROM comments WHERE artid=".artid()."");
             $comment=$stmt->num_rows;
             $stmt = $conn->prepare("UPDATE articles SET comments=? WHERE id=?");
-            $stmt->bind_param("ii",$comment,$_GET["artid"]);
+            $stmt->bind_param("ii",$comment,artid());
             $stmt->execute();
+    }
+    function artid(){
+        $conn=db_connect();
+        $stmt=$conn->prepare("SELECT * FROM comments WHERE id=?");
+        $stmt->bind_param("i",$_GET["id"]);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $result=$query->fetch_assoc();
+        return $result["artid"];;
     }
 
     if(cookie_control()){
-        $url="./articleedit.php?id={$_GET["artid"]}";
+        if(isset($_GET["artid"])){
+            $url="./articleedit.php?id={$_GET["artid"]}";
+            $_SESSION["url"]=$url;
+        }else{
+            $_SESSION["url"]=$_SERVER["HTTP_REFERER"];
+        }
         if(isset($_POST["del"])){
             if($_POST["del"]=="YES"){
                 del();
                 comment_num();
-                header("Location: ".$url);
+                header("Location: ".$_SESSION["url"]);
                 die();
             }else if($_POST["del"]=="NO"){
-                header("Location: ".$url);
+                header("Location: ".$_SESSION["url"]);
                 die();
             }
         }

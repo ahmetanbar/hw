@@ -79,18 +79,10 @@
         return $result;
     }
     function changeall(){
-        $newusername="<del><span style='color:red;'>".writer_name($_GET["id"])." [BANNED]</span></del>";
-        $newmail="";
-        $newpwd="123456";
-        $newname="";
-        $newsurname="";
-        $newgender="";
-        $newbdate="";
-        $newusrtel="";
-        $newcountry="";
+
         $conn=db_connect();
-        $stmt = $conn->prepare("UPDATE users SET username=?, email=?, pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=? WHERE id=?");
-        $stmt->bind_param("sssssssssi",$newusername,$newmail,$newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$_GET["id"]);
+        $stmt = $conn->prepare("UPDATE users SET deleted_at=NOW() WHERE id=?");
+        $stmt->bind_param("i",$_GET["id"]);
         $stmt->execute();
     }
     function del(){
