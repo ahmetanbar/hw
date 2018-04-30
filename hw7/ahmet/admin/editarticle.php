@@ -23,8 +23,8 @@
     return $conn;
   }
 
-  function admin_control($admin){
-    if($_SESSION['role']==$admin){
+  function admin_control(){
+    if($_SESSION['role']=="admin"){
       return TRUE;
     }
     else{return FALSE;}
@@ -101,9 +101,11 @@
   session_start();
   $cookie_know=control_cookie();
   if ($cookie_know['flag']==1){
-    if(!admin_control($admin)){
+    if(!admin_control()){
     header("Location:../home.php"); /* Redirect browser */
     }
+    else
+      $row=get_control();
   }
   else{
     header("Location:../home.php"); /* Redirect browser */
@@ -115,7 +117,6 @@
 
   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
     <?php
-    $row=get_control();
     ?>
     <div class="container" >
     <form action="" method="post">

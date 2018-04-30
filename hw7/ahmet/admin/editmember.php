@@ -98,10 +98,12 @@
   if ($cookie_know['flag']==1){
     if(!admin_control($admin))
       header("Location:../home.php"); /* Redirect browser */
+    else
+      get_control();
   }
   else
     header("Location:../home.php"); /* Redirect browser */
-  get_control();
+
   ?>
 
 </body>
