@@ -168,12 +168,16 @@
     }
     function writer_name($id){
         $conn=db_connect();
-        $stmt=$conn->prepare("SELECT username FROM users WHERE id=?");
+        $stmt=$conn->prepare("SELECT username,deleted_at FROM users WHERE id=?");
         $stmt->bind_param("i",$id);
         $stmt->execute();
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
-        return $result["username"];
+        if(is_null($result["deleted_at"])){
+            return $result["username"];
+        }else{
+            return "<del style='color:red;'><span style='color:red;vertical-align:bottom;line-height:30px;'>".$result["username"]."</span></del>";
+        }
     }
     $sendbuttonstatus="Enter Comment Here\n(140 Character)";
     $article=article($_GET["id"]);
@@ -181,12 +185,19 @@
     $cookie=cookie_control();
     if($cookie==True){
         $conn=db_connect();
-        $stmt=$conn->prepare("SELECT id FROM users WHERE username=?");
+        $stmt=$conn->prepare("SELECT id,deleted_at FROM users WHERE username=?");
         $stmt->bind_param("s",$_SESSION["username"]);
         $stmt->execute();
         $query = $stmt->get_result();
         $result=$query->fetch_assoc();
         $id=$result["id"];
+        if(!(is_null($result["deleted_at"]))){
+            setcookie("auth", "", time() - 3600);
+            session_unset();
+            session_destroy();
+            header("Location: ./index.php");
+            die();
+        }
         if($_POST){
             if(comment()){
                 header("Location:#");

@@ -74,34 +74,38 @@
                 if(valid_username($username)){
                     if(valid_pass($password)){
                         $conn=db_connect();
-                        $stmt=$conn->prepare("SELECT id,pwd FROM users WHERE username=?");
+                        $stmt=$conn->prepare("SELECT id,pwd,deleted_at FROM users WHERE username=?");
                         $stmt->bind_param("s",$username);
                         $stmt->execute();
                         $query = $stmt->get_result();
                         $result=$query->fetch_assoc();
                         if(empty($result))
-                        {
-                            $passwordstatus="Password is not correct.";
-                        }else
-                        {
-                            if(password_verify($password,$result["pwd"]))
-                            {
-                                if(isset($_POST["loginin"]))
-                                {
-                                    cookie_set2($username);
-                                    header("Location: ./index.php");
-                                    die();
-                                }else{
-                                    cookie_set($username);
-                                    header("Location: ./index.php");
-                                    die();
-                                }
-
-                            }else
                             {
                                 $passwordstatus="Password is not correct.";
+                            }else
+                            {
+                                if(password_verify($password,$result["pwd"]))
+                                {
+                                    if(is_null($result["deleted_at"])){
+                                        if(isset($_POST["loginin"]))
+                                        {
+                                            cookie_set2($username);
+                                            header("Location: ./index.php");
+                                            die();
+                                        }else{
+                                            cookie_set($username);
+                                            header("Location: ./index.php");
+                                            die();
+                                        }
+                                    }else{
+                                        $usernamestatus="Your account is banned";
+                                    }
+                                }else
+                                {
+                                    $passwordstatus="Password is not correct.";
+                                }
                             }
-                        }
+                        
                     }else{
                         $passwordstatus="Password is not valid.";
                     }
