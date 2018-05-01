@@ -242,7 +242,7 @@
             </div>
 
             <div class="content">
-                <div class="image" style="position:relative;background-image:url(./assest/img/article.jpg);">
+                <div class="image" style="position:relative;background-image:url(<?php echo($article["img"]) ?>);">
                     <h3 class="title"><?php echo($article["title"])?></h3>
                 </div>
                 <center><?php echo'<h5 class="time"><img class="icontime" src="./assest/img/clock.png"><span class="iconac">'.time_elapsed_string($article["up_time"]).'</span></h5>';?>

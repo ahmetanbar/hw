@@ -143,7 +143,7 @@
                 </div>
                 <hr class="a">
                 <div class="form1">
-                    <center><div style="background-image:url(./assest/img/profile_default.png);border-radius:10px;margin-top:10px;height:175px;width:150px;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:cover;"></div></center><br>
+                    <center><div style="background-image:url(<?php echo($usr_info["pimg"]) ?>);border-radius:10px;margin-top:10px;height:175px;width:150px;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:cover;"></div></center><br>
                     <?php
                     if($userid==$id){
                         echo'

@@ -96,8 +96,29 @@
         $usr_info=$query->fetch_assoc();
         $stmt->close();
     }
+    function image(){
+        global $id;
+        global $ppimg;
+        if ($_FILES['ppimg']['size'] != 0 && $_FILES['ppimg']['error'] == 0){
+            $tmp_name=$_FILES['ppimg']["tmp_name"];
+            $info = getimagesize($tmp_name);
+            $extension = image_type_to_extension($info[2]);;
+            $name=$id.$extension;
+            $uploads_dir="./usrimg";
+            if($info != false) {
+                if(move_uploaded_file($tmp_name,".$uploads_dir/$name")){
+                    $ppimg="$uploads_dir/$name";
+                    return True;
+                }else{
+                    return False;
+                }
+            } else {
+                return False;
+            }
+        }
+    }
     function update_userdata($id){
-        global $passwordstatus,$newpwdstatus,$usr_info,$buttonstatus;
+        global $passwordstatus,$newpwdstatus,$usr_info,$buttonstatus,$ppimg;
         $conn=db_connect();
         $stmt=$conn->prepare("SELECT * FROM users WHERE id=?");
         $stmt->bind_param("s",$id);
@@ -201,8 +222,16 @@
                 $newpwd=$usr_info["pwd"];
             }
             $conn=db_connect();
-            $stmt = $conn->prepare("UPDATE users SET username=?, email=?, pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=? WHERE id=?");
-            $stmt->bind_param("sssssssssi",$newusername,$newmail,$newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$id);
+            if(image()){
+                $newppimg=$ppimg;
+                $stmt = $conn->prepare("UPDATE users SET username=?, email=?, pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=?, pimg=? WHERE id=?");
+            $stmt->bind_param("ssssssssssi",$newusername,$newmail,$newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$newppimg,$id);
+            }else{
+                $stmt = $conn->prepare("UPDATE users SET username=?, email=?, pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=? WHERE id=?");
+                $stmt->bind_param("sssssssssi",$newusername,$newmail,$newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$id);
+            }
+            
+            
             if ($stmt->execute()) {
                 $buttonstatus="SUCCES";
                 $stmt->close();
@@ -484,7 +513,7 @@
 
 
             <div class="content">
-            <form action="./useredit.php?id=<?php echo($id);?>" method="POST">
+            <form action="./useredit.php?id=<?php echo($id);?>" method="POST"  enctype="multipart/form-data">
                 <div class="form1" style="user-select:none;">
                         <label><center><b style="color:darkred;">Account Information:</b></center></label><br>
                         <label><b>Username </b> </label>
@@ -552,7 +581,7 @@
                 <div class="form1">
                         <label><center><b style="color:darkred;">Additional Information:</b></center></label><br>
                         <label><b>Profile Photo</b></label>
-                        <center><div style="background-image:url(./assest/img/profile_default.png);border-radius:10px;margin-top:10px;height:175px;width:150px;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:cover;"></div></center><br>
+                        <center><div style="background-image:url(.<?php echo($usr_info["pimg"]) ?>);border-radius:10px;margin-top:10px;height:175px;width:150px;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:cover;"></div></center><br>
                         <center><label class="uploadbtn" for="ppimg">Browse...</label></center>
                         <input style="z-index:-1; position:absolute; opacity:0;" type="file" name="ppimg" id="ppimg" accept=".jpg, .jpeg, .png">
                         <input class="sgninbtn" type="submit" value="<?php echo($buttonstatus);?>" onfocus="(this.value='SAVE')">

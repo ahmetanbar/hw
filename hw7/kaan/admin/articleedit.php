@@ -32,11 +32,41 @@
             return FALSE;
         }
     }
+    function image(){
+        global $id;
+        global $ppimg;
+        if ($_FILES['ppimg']['size'] != 0 && $_FILES['ppimg']['error'] == 0){
+            $tmp_name=$_FILES['ppimg']["tmp_name"];
+            $info = getimagesize($tmp_name);
+            $extension = image_type_to_extension($info[2]);;
+            $name=$id.$extension;
+            $uploads_dir="./artimg";
+            if($info != false) {
+                if(move_uploaded_file($tmp_name,".$uploads_dir/$name")){
+                    $ppimg="$uploads_dir/$name";
+                    return True;
+                }else{
+                    return False;
+                }
+            } else {
+                return False;
+            }
+        }
+    }
+    
     function edit_art($id){
+        global $ppimg;
         if(!(empty($_POST["title"]))&&!(empty($_POST["body"]))&&valid_title($_POST["title"])){
             $conn=db_connect();
-            $stmt = $conn->prepare("UPDATE articles SET title=?, body=? WHERE id=?");
-            $stmt->bind_param("ssi",$_POST["title"],$_POST["body"],$id);
+            if(image()){
+                $newppimg=$ppimg;
+                $stmt = $conn->prepare("UPDATE articles SET title=?, body=?, img=? WHERE id=?");
+                $stmt->bind_param("sssi",$_POST["title"],$_POST["body"],$newppimg,$id);
+            }else{
+                $stmt = $conn->prepare("UPDATE articles SET title=?, body=? WHERE id=?");
+                $stmt->bind_param("ssi",$_POST["title"],$_POST["body"],$id);
+            }
+            
             $stmt->execute();
         }   
     }
@@ -194,8 +224,8 @@
             </div>
 
             <div class="content">
-                <form action="#" method="POST" id="form5">
-                <div class="image" style="position:relative;background-image:url(./assest/img/article.jpg);">
+                <form action="#" method="POST" id="form5" enctype="multipart/form-data">
+                <div class="image" style="position:relative;background-image:url(.<?php echo($article["img"]) ?>);">
                 </div>
                 <center><label class="uploadbtn" for="ppimg">Browse Article Photo...</label></center>
                         <input style="z-index:-1; position:absolute; opacity:0;" type="file" name="ppimg" id="ppimg" accept=".jpg, .jpeg, .png">

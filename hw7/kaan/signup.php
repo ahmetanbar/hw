@@ -73,19 +73,27 @@
     }
 
     function image(){
-        $target_dir = "usrimg/";
-        $target_file = $target_dir . basename($_FILES["ppimg"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-        // Check if image file is a actual image or fake image
-        $check = getimagesize($_FILES["ppimg"]["tmp_name"]);
-        if($check !== false) {
-            echo "File is an image - " . $check["mime"] . ".";
-            $uploadOk = 1;
-        } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
+        global $userid;
+        global $ppimg;
+        if ($_FILES['ppimg']['size'] != 0 && $_FILES['ppimg']['error'] == 0){
+            $tmp_name=$_FILES['ppimg']["tmp_name"];
+            $info = getimagesize($tmp_name);
+            $extension = image_type_to_extension($info[2]);;
+            $name=$userid.$extension;
+            $uploads_dir="usrimg";
+            if($info != false) {
+                if(move_uploaded_file($tmp_name,"$uploads_dir/$name")){
+                    $ppimg="./$uploads_dir/$name";
+                    return True;
+                }else{
+                    return False;
+                }
+            } else {
+                return False;
+            }
         }
+        
+
     }
     
     function cookie_control()
@@ -104,7 +112,7 @@
         }
     }
     function signin(){
-        global $usernamestatus,$passwordstatus,$repasswordstatus,$mailstatus,$namestatus,$surnamestatus,$bdatestatus,$genderstatus;
+        global $usernamestatus,$passwordstatus,$repasswordstatus,$mailstatus,$namestatus,$surnamestatus,$bdatestatus,$genderstatus,$ppimg;
         $username=$_POST["username"];
         $password=$_POST["pwd"];
         $repassword=$_POST["repwd"];
@@ -144,11 +152,15 @@
                                                                 $result2=$query->fetch_assoc();
                                                                 if(empty($result1)){
                                                                     if(empty($result2)){
-                                                                        image();
+                                                                        if(image()){
+                                                                            $newppimg=$ppimg;
+                                                                        }else{
+                                                                            $newppimg="./assest/img/profile_default.png";
+                                                                        }
                                                                         $conn=db_connect();
                                                                         $hashed_pwd=password_hash($password, PASSWORD_DEFAULT);
-                                                                        $stmt = $conn->prepare("INSERT INTO users (username, pwd, email, usr_name, usr_surname, gender, bdate, usr_phone, country) VALUES(?,?,?,?,?,?,?,?,?)");
-                                                                        $stmt->bind_param("sssssssss", $username,$hashed_pwd,$mail,$name,$surname,$gender,$bdate,$usrtel,$country);
+                                                                        $stmt = $conn->prepare("INSERT INTO users (username, pwd, email, usr_name, usr_surname, gender, bdate, usr_phone, country, pimg) VALUES(?,?,?,?,?,?,?,?,?,?)");
+                                                                        $stmt->bind_param("ssssssssss", $username,$hashed_pwd,$mail,$name,$surname,$gender,$bdate,$usrtel,$country,$newppimg);
                                                                         if ($stmt->execute()) {
                                                                             #echo("Success");
                                                                         } else {

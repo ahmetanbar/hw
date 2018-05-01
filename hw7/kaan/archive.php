@@ -119,7 +119,7 @@
                                 <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
                                 <div class="rightcnt">
                                 <div style="position:relative;">
-                                <img class="rightcntimg" src="./assest/img/header3.jpg"/>
+                                <img class="rightcntimg" src="'.$row["img"].'"/>
                                 <div class="articlebtn">
                                     <h3>READ MORE</h3>
                                 </div> 
@@ -140,7 +140,7 @@
                                 <a style="text-decoration:none;" href="article.php?id='.$row["id"].'">
                                 <div class="leftcnt">
                                 <div style="position:relative;">
-                                <img class="leftcntimg" src="./assest/img/header3.jpg"/>
+                                <img class="leftcntimg" src="'.$row["img"].'"/>
                                 <div class="articlebtn2">
                                     <h3>READ MORE</h3>
                                 </div>

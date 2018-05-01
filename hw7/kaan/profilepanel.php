@@ -71,22 +71,25 @@
     }
 
     function image(){
-        $target_dir = "usrimg/";
-        chmod($target_dir, 0644);
-
-        $target_file = $target_dir . basename($_FILES["ppimg"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-        // Check if image file is a actual image or fake image
-        $check = getimagesize($_FILES["ppimg"]["tmp_name"]);
-        if($check !== false) {
-            echo "File is an image - " . $check["mime"] . ".";
-            $uploadOk = 1;
-        } else {
-            echo "File is not an image.";
-            $uploadOk = 0;
+        global $userid;
+        global $ppimg;
+        if ($_FILES['ppimg']['size'] != 0 && $_FILES['ppimg']['error'] == 0){
+            $tmp_name=$_FILES['ppimg']["tmp_name"];
+            $info = getimagesize($tmp_name);
+            $extension = image_type_to_extension($info[2]);;
+            $name=$userid.$extension;
+            $uploads_dir="usrimg";
+            if($info != false) {
+                if(move_uploaded_file($tmp_name,"$uploads_dir/$name")){
+                    $ppimg="./$uploads_dir/$name";
+                    return True;
+                }else{
+                    return False;
+                }
+            } else {
+                return False;
+            }
         }
-        print_r($_FILES);
     }
 
     function getinfo($id){
@@ -100,7 +103,7 @@
         $stmt->close();
     }
     function update_userdata($id){
-        global $passwordstatus,$newpwdstatus,$usr_info,$buttonstatus;
+        global $ppimg,$passwordstatus,$newpwdstatus,$usr_info,$buttonstatus;
         $conn=db_connect();
         $stmt=$conn->prepare("SELECT * FROM users WHERE id=?");
         $stmt->bind_param("s",$id);
@@ -195,10 +198,16 @@
             }else{
                 $newpwd=$usr_info["pwd"];
             }
-            image();
             $conn=db_connect();
-            $stmt = $conn->prepare("UPDATE users SET pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=? WHERE id=?");
-            $stmt->bind_param("sssssssi", $newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$id);
+            if(image()){
+                $newppimg=$ppimg;
+                $stmt = $conn->prepare("UPDATE users SET pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=?, pimg=? WHERE id=?");
+                $stmt->bind_param("ssssssssi", $newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$ppimg,$id);
+            }else{
+                $stmt = $conn->prepare("UPDATE users SET pwd=?, usr_name=?, usr_surname=?, gender=?, bdate=?, usr_phone=?, country=? WHERE id=?");
+                $stmt->bind_param("sssssssi", $newpwd,$newname,$newsurname,$newgender,$newbdate,$newusrtel,$newcountry,$id);
+            }
+            
             if ($stmt->execute()) {
                 $buttonstatus="SUCCES";
                 $stmt->close();
@@ -354,7 +363,7 @@
                 <div class="form1">
                         <label><center><b style="color:darkred;">Additional Information:</b></center></label><br>
                         <label><b>Profile Photo</b></label>
-                        <center><div style="background-image:url(./assest/img/profile_default.png);border-radius:10px;margin-top:10px;height:175px;width:150px;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:cover;"></div></center><br>
+                        <center><div style="background-image:url(<?php echo($usr_info["pimg"])?>);border-radius:10px;margin-top:10px;height:175px;width:150px;overflow:hidden;background-position:center;background-repeat:no-repeat;background-size:cover;"></div></center><br>
                         <center><label class="uploadbtn" for="ppimg">Browse...</label></center>
                         <input style="z-index:-1; position:absolute; opacity:0;" type="file" name="ppimg" id="ppimg" accept=".jpg, .jpeg, .png">
                         <input class="sgninbtn" type="submit" value="<?php echo($buttonstatus);?>" onfocus="(this.value='SAVE')">
