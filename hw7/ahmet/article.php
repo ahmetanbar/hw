@@ -47,12 +47,11 @@
 
     function get_article($id){
       $conn=connect_db();
-
       $stmt = $conn->prepare("UPDATE articles SET viewing=viewing+1 WHERE id=?");
       $stmt->bind_param('i',$id);
       $stmt->execute();
 
-      $stmt = $conn->prepare("SELECT * FROM articles WHERE id=?");
+      $stmt = $conn->prepare("SELECT articles.* , user.name ,user.surname FROM articles INNER JOIN users user ON articles.author_id = user.id WHERE articles.id=?");
       $stmt->bind_param("i", $id);
       $stmt->execute();
       $result = $stmt->get_result();
@@ -148,7 +147,7 @@
               <i style="float:left;" class="material-icons md" >account_balance</i>
               <a style="float:left;" href="./archive.php?category=<?php echo($row['category']); ?>"><?php echo($row['category']); ?></a>
               <i style="float:left;" class="material-icons md" >account_circle </i>
-              <a style="float:left; " href="./profile.php?user=<?php echo($row['username']); ?>"><?php echo($row['author']); ?></a>
+              <a style="float:left; " href="./profile.php?id=<?php echo($row['author_id']); ?>"><?php echo($row['name'].' '.$row['surname']); ?></a>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>" >Views:<?php echo($row['viewing']); ?></a>
               <i style="float:right;" class="material-icons md">assessment</i>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>">Comments:<?php echo($row['comments']); ?></a>
@@ -160,7 +159,7 @@
             <div class="art_head">
               <h2><a href="./article.php?id=<?php echo($row['id']); ?>"><?php echo($row['header']); ?></a></h2>
             </div>
-            <div class="article"><p><?php echo($row['article']); ?></p>
+            <div class="article"><p><?php echo(htmlspecialchars_decode($row['article']));?></p>
             </div>
             <?php }?>
           </div>

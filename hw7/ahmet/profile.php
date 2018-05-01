@@ -5,6 +5,7 @@
   <link rel="stylesheet" type="text/css" href="./assets/css/profile.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
   <?php
@@ -57,7 +58,7 @@
               $row = $result->fetch_assoc();
 
               if(count($row)!=0){
-                  $user_info=array("name"=>$row["name"],"surname"=>$row["surname"],"username"=>$row["username"],"about"=>$row["about"],"photo"=>$row["photo"]);
+                  $user_info=array("name"=>$row["name"],"surname"=>$row["surname"],"username"=>$row["username"],"about"=>$row["about"],"photo"=>$row["photo"],"id"=>$row["id"]);
                   return $user_info;
               }
               else
@@ -73,22 +74,44 @@
     }
 
     function my_profile(){
-      $user_info=array("name"=>$_SESSION["name"],"surname"=>$_SESSION["surname"],"username"=>$_SESSION["username"],"about"=>$_SESSION["about"],"photo"=>$_SESSION["photo"]);
+      $user_info=array("name"=>$_SESSION["name"],"surname"=>$_SESSION["surname"],"username"=>$_SESSION["username"],"about"=>$_SESSION["about"],"photo"=>$_SESSION["photo"],"id"=>$_SESSION["id"],"know"=>"own");
       return $user_info;
     }
 
 
+
+    function get_articles($id){
+      $conn=connect_db();
+      $stmt = $conn->prepare("SELECT id,header FROM articles WHERE author_id=? order by id desc limit 5");
+      $stmt->bind_param('i',$id);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result;
+    }
+
+    function get_comments($id){
+      $conn=connect_db();
+      $status_app="approve";
+      $stmt = $conn->prepare("SELECT comment,article_id FROM comments WHERE user_id=? and status=? order by id desc limit 5");
+      $stmt->bind_param("is", $id,$status_app);
+      $stmt->execute();
+      $result = $stmt->get_result();
+      return $result;
+    }
+
     session_start();
     $cookie_know=control_cookie();
-    $user_info=get_control();
     $split=explode("/",$_SERVER["REQUEST_URI"]);
     $whereami=$split[count($split)-1];
     if(!$cookie_know['flag'] and $whereami=="profile.php"){
       header("Location:./home.php");
     }
+    else
+      $user_info=get_control();
+
 
   ?>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
   <?php include 'topnav.php';?>
   <div class="main">
     <?php if($cookie_know['flag']){ ?>
@@ -105,28 +128,45 @@
 
       <div class="row">
         <div class="column1">
-          <?php $img_source="./assets/image/profiles/";
+          <?php
+           echo(array_key_exists("know",$user_info)) ? '<a href="editprofile.php"><i style="float:left;" class="material-icons md-18">edit</i></a>':"";
+
+          $img_source="./assets/image/profiles/";
           $img_source=$img_source.$user_info['photo'].".jpg";
           echo("<img src=".$img_source." ");
            ?>
           alt="profile" height="220" width="220">
-          <h2 style="padding-top:0px;"><?php echo $user_info['name']." ".$user_info['surname']; ?></h2>
+          <h2 style="padding-top:0px;"><?php echo $user_info['name']." ".$user_info['surname'];?></h2>
           <h3 style="padding-top:0px;">@<?php echo $user_info['username']; ?></h3>
           <h5 style="padding-top:0px;"><?php echo $user_info['about']; ?></h5>
           </div>
         <div class="column2">
-          <h1>Activities</h1>
+          <h1>Articles</h1>
           <ul>
-            <li>CoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffeeCoffee</li>
-            <li>Nanana</li>
-            <li>Nanana</li>
+            <?php
+              $result=get_articles($user_info['id']);
+              if($result->num_rows==0)
+                echo "<li>Can't find any articles.</li>";
+              while ($row=$result->fetch_assoc()) {
+                echo '<li><a href="./article.php?id='.$row['id'].'">'.$row['header'].'</a></li>';
+              }
+             ?>
           </ul>
           </div>
+          <div class="column2">
+            <h1>Comments</h1>
+            <ul>
+              <?php
+                $result=get_comments($user_info['id']);
+                if($result->num_rows==0)
+                  echo "<li>Can't find any comment.</li>";
+                while ($row=$result->fetch_assoc()) {
+                  echo '<li><a href="./article.php?id='.$row['article_id'].'">'.$row['comment'].'</a></li>';
+                }
+               ?>
+            </ul>
+            </div>
       </div>
-
-
-
-
 
     <?php include 'footer.php';?>
   </div>

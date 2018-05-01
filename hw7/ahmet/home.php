@@ -48,11 +48,10 @@
     function get_article(){
       $conn=connect_db();
       $deleted="delete";
-      $stmt = $conn->prepare("SELECT * FROM articles WHERE status!=? order by id desc limit 5");
+      $stmt = $conn->prepare("SELECT articles.* , user.name ,user.surname FROM articles INNER JOIN users user ON articles.author_id = user.id WHERE articles.status!=? order by id desc limit 5");
       $stmt->bind_param("s", $deleted);
       $stmt->execute();
       $result = $stmt->get_result();
-
       return $result;
     }
 
@@ -87,7 +86,8 @@
             <div class="art_head">
               <h2><a href="./article.php?id=<?php echo($row['id']); ?>"><?php echo($row['header']); ?></a></h2>
             </div>
-            <div class="article"><p><?php echo(substr($row['article'], 0, 300));?><p>...<a href="./article.php?id=<?php echo($row["id"]); ?>">More▷</a></p></p>
+
+            <div class="article" style="height: 250px; overflow: hidden;" ><p><?php echo(htmlspecialchars_decode($row['article']));?></p>
             </div>
 
             <div class="info">
@@ -96,7 +96,7 @@
               <i style="float:left;" class="material-icons" >account_balance</i>
               <a style="float:left;" href="./archive.php?category=<?php echo($row['category']); ?>"><?php echo($row['category']); ?></a>
               <i style="float:left;" class="material-icons" >account_circle </i>
-              <a style="float:left; " href="./profile.php?user=<?php echo($row['username']); ?>"><?php echo($row['author']); ?></a>
+              <a style="float:left; " href="./profile.php?id=<?php echo($row['author_id']); ?>"><?php echo($row['name'].' '.$row['surname']); ?></a>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>" >Views:<?php echo($row['viewing']); ?></a>
               <i style="float:right;" class="material-icons">assessment</i>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>">Comments:<?php echo($row['comments']); ?></a>

@@ -6,7 +6,9 @@
   <?php
   if($cookie_know['flag']){ ?>
     <a style="float:right;" href="profile.php"><?php echo($_SESSION['name']." ".$_SESSION['surname']); ?> </a>
-    <?php echo ($_SESSION['role']==$admin ? '<a style="float:right;" href="admin/panel.php"><i class="material-icons">vpn_key</i></a>':'');
+    <a style="float:right; background-color:#813322;" href="editarticle.php">Write</a>
+
+    <?php echo ($_SESSION['role']=="admin" ? '<a style="float:right;" href="admin/panel.php"><i class="material-icons">vpn_key</i></a>':'');
   }
   else{ ?>
     <a style="float:right;" href="signup.php">Sign Up</a>

@@ -3,8 +3,8 @@
 <head>
   <title>Code Note</title>
   <link rel="stylesheet" type="text/css" href="./assets/css/home.css">
-  <!-- <link rel="stylesheet" type="text/css" href="./assets/css/article.css"> -->
   <link rel="stylesheet" type="text/css" href="./assets/css/pagination.css">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -51,7 +51,7 @@
       $deleted="delete";
       $conn=connect_db();
       $start_article=($page-1)*5;
-      $sql="SELECT * FROM articles WHERE status!=? ";
+      $sql="SELECT articles.* , user.name ,user.surname FROM articles INNER JOIN users user ON articles.author_id = user.id WHERE articles.status!=? ";
       if($category!=NULL){
         $sql=$sql." and category=? ";
       }
@@ -159,7 +159,7 @@
             <div class="art_head">
               <h2><a href="./article.php?id=<?php echo($row['id']); ?>"><?php echo($row['header']); ?></a></h2>
             </div>
-            <div class="article"><p><?php echo(substr($row['article'], 0, 300));?><p>...<a href="./article.php?id=<?php echo($row["id"]); ?>">More▷</a></p></p>
+            <div class="article" style="height: 250px; overflow: hidden;" ><p><?php echo(htmlspecialchars_decode($row['article']));?></p>
             </div>
             <div class="info">
               <i style="float:left; " class="material-icons md">date_range</i>
@@ -167,12 +167,11 @@
               <i style="float:left;" class="material-icons md" >account_balance</i>
               <a style="float:left;" href="./archive.php?category=<?php echo($row['category']); ?>"><?php echo($row['category']); ?></a>
               <i style="float:left;" class="material-icons md" >account_circle </i>
-              <a style="float:left; " href="./profile.php?user=<?php echo($row['username']); ?>"><?php echo($row['author']); ?></a>
+              <a style="float:left; " href="./profile.php?id=<?php echo($row['author_id']); ?>"><?php echo($row['name'].' '.$row['surname']); ?></a>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>" >Views:<?php echo($row['viewing']); ?></a>
               <i style="float:right;" class="material-icons md">assessment</i>
               <a style="float:right;" href="./article.php?id=<?php echo($row['id']); ?>">Comments:<?php echo($row['comments']); ?></a>
               <i style="float:right;" class="material-icons md">comment</i>
-              <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
             </div>
           </div>
             <br>
