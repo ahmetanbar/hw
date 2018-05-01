@@ -58,8 +58,7 @@
   function get_comments(){
     $delete="deleted";
     $conn=connect_db();
-    $sql="SELECT id,article_id,namesurname,email,comment,datetime,status FROM comments WHERE status!=? order by id desc";
-    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare("SELECT comments.* , user.name,user.surname FROM comments INNER JOIN users user ON comments.user_id = user.id WHERE comments.status!=? order by id desc");
     $stmt->bind_param('s',$delete);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -71,9 +70,8 @@
     while ($row=$result->fetch_assoc()) {
       echo("<tr>");
       echo '<td><a href="../article.php?id='.$row['article_id'].'">'.$row['article_id'].'</a></td>';
+      echo '<td><a href="../profile.php?id='.$row['user_id'].'">'.$row['name'].' '.$row['surname'].'</td>';
       echo '<td>'.$row['comment'].'</td>';
-      echo '<td>'.$row['namesurname'].'</td>';
-      echo '<td>'.$row['email'].'</td>';
       echo '<td>'.$row['datetime'].'</td>';
       if($row['status']=="notapprove")
         echo '<td>Not approved<a href="./editcomment.php?status=approve&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">check</i></a><a href="./editcomment.php?status=deleted&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a></td>';
@@ -96,7 +94,7 @@
   else{
     header("Location:../home.php"); /* Redirect browser */
   }
-  
+
   ?>
   <?php include 'sidebar.php';?>
 
@@ -105,9 +103,8 @@
     <table>
   <tr>
     <th>Article ID</th>
+    <th>User ID</th>
     <th>Comment</th>
-    <th>Name Surname</th>
-    <th>Email</th>
     <th>Datetime</th>
     <th>Status</th>
   </tr>
