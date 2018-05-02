@@ -51,7 +51,7 @@
           if($_GET["id"]!=NULL){
               $profile_id=$_GET["id"];
               $conn=connect_db();
-              $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+              $stmt = $conn->prepare("SELECT * FROM users WHERE id=? and status!='delete'");
               $stmt->bind_param("i", $profile_id);
               $stmt->execute();
               $result = $stmt->get_result();
@@ -81,9 +81,10 @@
 
 
     function get_articles($id){
+      $status="delete";
       $conn=connect_db();
-      $stmt = $conn->prepare("SELECT id,header FROM articles WHERE author_id=? order by id desc limit 5");
-      $stmt->bind_param('i',$id);
+      $stmt = $conn->prepare("SELECT id,header FROM articles WHERE author_id=? and status!=? order by id desc limit 5");
+      $stmt->bind_param('is',$id,$status);
       $stmt->execute();
       $result = $stmt->get_result();
       return $result;
@@ -92,8 +93,9 @@
     function get_comments($id){
       $conn=connect_db();
       $status_app="approve";
-      $stmt = $conn->prepare("SELECT comment,article_id FROM comments WHERE user_id=? and status=? order by id desc limit 5");
-      $stmt->bind_param("is", $id,$status_app);
+      $artstatus="delete";
+      $stmt = $conn->prepare("SELECT comments.* FROM comments INNER JOIN articles articles ON comments.article_id = articles.id WHERE  articles.status!=? and comments.user_id=? and comments.status=? order by id desc limit 5");
+      $stmt->bind_param("sis",$artstatus, $id,$status_app);
       $stmt->execute();
       $result = $stmt->get_result();
       return $result;

@@ -58,8 +58,7 @@
   function get_arthead(){
     $deleted="delete";
     $conn=connect_db();
-    $sql="SELECT id,author,header,category,date FROM articles WHERE status!=? order by id desc";
-    $stmt = $conn->prepare($sql);
+    $stmt = $conn->prepare("SELECT articles.* , user.name,user.surname FROM articles INNER JOIN users user ON articles.author_id = user.id WHERE articles.status!=? order by id desc");
     $stmt->bind_param("s", $deleted);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -71,7 +70,7 @@
     while ($row=$result->fetch_assoc()) {
       echo("<tr>");
       echo '<td><a href="./editarticle.php?status=edit&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">mode_edit</i></a><a href="./editarticle.php?status=delete&id='.$row['id'].'"><i class="material-icons" style:"font-size: 16px;">delete</i></a><a href="../article.php?id='.$row['id'].'">'.$row['header'].'</a></td>';
-      echo '<td>'.$row['author'].'</td>';
+      echo '<td><a href="../profile.php?id='.$row['author_id'].'">'.$row['name'].' '.$row['surname'].'</a></td>';
       echo '<td>'.$row['category'].'</td>';
       echo '<td>'.$row['date'].'</td>';
       echo("</tr>");

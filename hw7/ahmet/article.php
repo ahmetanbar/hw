@@ -50,9 +50,9 @@
       $stmt = $conn->prepare("UPDATE articles SET viewing=viewing+1 WHERE id=?");
       $stmt->bind_param('i',$id);
       $stmt->execute();
-
-      $stmt = $conn->prepare("SELECT articles.* , user.name ,user.surname FROM articles INNER JOIN users user ON articles.author_id = user.id WHERE articles.id=?");
-      $stmt->bind_param("i", $id);
+      $status_art="delete";
+      $stmt = $conn->prepare("SELECT articles.* , user.name ,user.surname FROM articles INNER JOIN users user ON articles.author_id = user.id WHERE articles.id=? and articles.status!=?");
+      $stmt->bind_param("is", $id,$status_art);
       $stmt->execute();
       $result = $stmt->get_result();
       return $result;
@@ -194,7 +194,7 @@
                 <textarea id="comment" name="comment" placeholder="Write your comment.." style="height:200px"><?php echo ($logs['value_comment']) ? $logs['value_comment'] : '' ;?></textarea>
 
 
-                <?php echo($cookie_know['flag']) ? '<input type="submit" value="Send">':'<span style="color:#c30000; text-align:auto; ">For comment you should <a color:red href="profile.php">Log In</a></span>'; ?>
+                <?php echo($cookie_know['flag']) ? '<input type="submit" value="Send">':'<span style="color:#c30000; text-align:auto; ">For comment you should <a color:red href="login.php">Log In</a></span>'; ?>
 
               </form>
             </div>

@@ -6,6 +6,8 @@
   <link rel="stylesheet" type="text/css" href="./assets/css/sidebar.css">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'textarea' });</script>
 </head>
 <body>
   <?php
@@ -56,12 +58,12 @@
       if(array_key_exists("title",$_POST) and array_key_exists("article",$_POST)){
       $conn=connect_db();
 
-      $article=nl2br($_POST['article']);
+      $article=htmlspecialchars($_POST['article']);
       date_default_timezone_set("Europe/Istanbul");
       $date=date("y.m.d H:i");
       $namesurname=$_SESSION['name']." ".$_SESSION['surname'];
-      $stmt = $conn->prepare("INSERT INTO articles (author_id, username, author, header, article, date, category) VALUES (?, ?, ?, ?, ?, ?, ?)");
-      $stmt->bind_param("sssssss",$_SESSION['id'], $_SESSION['username'],$namesurname,$_POST['title'], $article ,$date,$_POST['category']);
+      $stmt = $conn->prepare("INSERT INTO articles (author_id, header, article, date, category) VALUES (?, ?, ?, ?, ?)");
+      $stmt->bind_param("sssss",$_SESSION['id'],$_POST['title'], $article ,$date,$_POST['category']);
       $stmt->execute();
       }
     }
@@ -81,40 +83,29 @@
   post_control();
   ?>
   <?php include 'sidebar.php'; ?>
-
-  <div class="container" >
-  <form action="" method="post">
-    <div class="row">
-      <div class="col-25">
+  <div style="margin-left:25%;padding:1px 16px;height:1000px;">
+    <div class="container" >
+    <form action="" method="post">
+      <div class="row">
+          <input type="text" id="title" name="title" placeholder="Title">
       </div>
-      <div class="col-75">
-        <input type="text" id="lname" name="title" placeholder="Title">
+      <br>
+      <div class="row">
+          <select id="category" name="category">
+            <option value="C">C</option>
+            <option value="Java">Java</option>
+            <option value="Php">Php</option>
+          </select>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-25">
+      <br>
+      <div class="row">
+          <textarea id="subject" name="article" placeholder="Write something.." style="height:200px"></textarea>
       </div>
-      <div class="col-75">
-        <select id="category" name="category">
-          <option value="C">C</option>
-          <option value="Java">Java</option>
-          <option value="Php">Php</option>
-        </select>
+      <div class="row">
+        <input type="submit" value="Submit">
       </div>
-    </div>
-    <div class="row">
-      <div class="col-25">
-        <label for="subject">Subject</label>
-      </div>
-      <div class="col-75">
-        <textarea id="subject" name="article" placeholder="Write something.." style="height:200px"></textarea>
-      </div>
-    </div>
-    <div class="row">
-      <input type="submit" value="Submit">
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
   </div>
 
 

@@ -46,6 +46,8 @@
            return $cookie_know;
          }
       }
+      else
+        header("Location:home.php");
     }
 
     function get_article(){

@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>Code Note</title>
+  <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
+  <script>tinymce.init({ selector:'textarea' });</script>
   <link rel="stylesheet" type="text/css" href="./assets/css/panel.css">
   <link rel="stylesheet" type="text/css" href="./assets/css/sidebar.css">
     <link rel="stylesheet" type="text/css" href="./assets/css/add-art.css">
@@ -62,7 +64,7 @@
         if($_GET["id"]!=NULL and $_GET["status"]!=NULL){
             $art_id=$_GET["id"];
             $conn=connect_db();
-            $stmt = $conn->prepare("SELECT article,header,category FROM articles WHERE id=?");
+            $stmt = $conn->prepare("SELECT id,article,header,category FROM articles WHERE id=?");
             $stmt->bind_param("i", $art_id);
             $stmt->execute();
             $result = $stmt->get_result();
@@ -89,6 +91,24 @@
       header("Location:./articles.php"); /* Redirect browser */
   }
 
+  function post_control($id){
+    if(count($_POST)!=0){
+      if(array_key_exists("article",$_POST) and array_key_exists("category",$_POST) and array_key_exists("title",$_POST)){
+        if($_POST["article"]!=NULL and $_POST["category"]!=NULL and $_POST["title"]!=NULL){
+          $conn=connect_db();
+          $article=htmlspecialchars($_POST['article']);
+          $stmt = $conn->prepare("UPDATE articles SET article=? , header=? , category=? WHERE id=?");
+          $stmt->bind_param('sssi',$_POST["article"],$_POST["title"],$_POST["category"],$id);
+          $stmt->execute();
+          header("Refresh:0");
+        }
+        else
+          echo("hi");
+      }
+      else
+        header("Location:./articles.php");
+    }
+  }
   function update_art($art_id,$status){
     $conn=connect_db();
     $stmt = $conn->prepare("UPDATE articles SET status=? WHERE id=?");
@@ -106,6 +126,7 @@
     }
     else
       $row=get_control();
+      post_control($row['id']);
   }
   else{
     header("Location:../home.php"); /* Redirect browser */
@@ -116,33 +137,25 @@
   <?php include 'sidebar.php';?>
 
   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
-    <?php
-    ?>
     <div class="container" >
     <form action="" method="post">
       <div class="row">
-        <div class="col-75">
-          <input type="text" id="lname" name="title" value="<?php echo($row['header']);?>" >
-        </div>
+          <input type="text" id="title" name="title" placeholder="Title" value="<?php echo($row['header']);?>" >
       </div>
+      <br>
       <div class="row">
-        <div class="col-75">
           <select id="category" name="category">
             <option <?php echo($row['category']=="C")? 'selected="selected"':''?> value="C">C</option>
             <option <?php echo($row['category']=="Java")? 'selected="selected"':''?> value="Java">Java</option>
             <option <?php echo($row['category']=="Php")? 'selected="selected"':''?> value="Php">Php</option>
           </select>
-        </div>
+      </div>
+      <br>
+      <div class="row">
+          <textarea id="subject" name="article" placeholder="Write something.." style="height:200px"><?php echo(htmlspecialchars_decode($row['article']));?></textarea>
       </div>
       <div class="row">
-        <div class="col-75">
-          <textarea id="subject" name="article" style="height:200px"><?php echo $deneme; ?></textarea>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-75">
-          <input type="submit" value="Submit">
-          </div>
+        <input type="submit" value="Submit">
       </div>
     </form>
   </div>

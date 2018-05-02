@@ -36,10 +36,12 @@
           $result = $stmt->get_result();
           $row = $result->fetch_assoc();
            if(count($row)!=0)
-           {
              session_control();
-           }
+           else
+            header("Location:home.php");
         }
+        else
+          header("Location:home.php");
       }
 
       function session_control(){
