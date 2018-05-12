@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
+Route::get('/', 'HomeController@cookie_control');
+Route::get('login', 'HomeController@login_control');
+Route::post('login', 'HomeController@post_control');
+
+Route::get('welcome', function () {
     return view('welcome');
 });
