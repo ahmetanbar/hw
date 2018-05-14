@@ -54,6 +54,12 @@
     text-decoration: none;
 }
 
+.form p {
+    margin: 15px 0 0;
+    color: #9b9b9b;
+    font-size: 18px;
+}
+
 .container {
     position: relative;
     z-index: 1;

@@ -5,5 +5,4 @@ $notif = [
     "username_exist" => "Username exist, please try another one.",
     "fill_blanks" => "Please fill in the blanks correctly."
 ];
-
  ?>
