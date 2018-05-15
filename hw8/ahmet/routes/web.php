@@ -11,10 +11,19 @@
 |
 */
 
-Route::get('/', 'HomeController@cookie_control');
-Route::get('login', 'HomeController@login_control');
-Route::post('login', 'HomeController@post_control');
-
-Route::get('welcome', function () {
-    return view('welcome');
+Route::get('/', function () {
+    $articles=\App\article::take(5)->get();
+    return view('home')->with('articles',$articles);
 });
+
+//Route::get('/deneme', 'HomeController@get_article');
+
+
+Route::get('/deneme/{cate}/{id}','HomeController@get_deneme_isim');
+
+Route::get('/deneme/{isim}','HomeController@get_deneme_isim');
+
+
+Route::post('/addarticle','Homecontroller@post_article');
+Route::get('/addarticle','Homecontroller@get_article');
+
