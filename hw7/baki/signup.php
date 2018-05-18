@@ -1,20 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="ASSESTS/signup.css">
-    <title>Page Title</title>
+    <link rel="stylesheet" type="text/css" href="signup.css">
+
+    <meta charset="UTF-8">
+    <title>Socean</title>
 </head>
 <body>
-
-<div class="login-page">
-    <div class="form">
-        <form class="register-form" method="post">
-            <input type="text" placeholder="username" name="username"/>
-            <input type="password" placeholder="password" name="password"/>
-            <input type="text" placeholder="email address" name="email"/>
-            <button type="submit"> Create Now !</button>
-            <p class="message">Already registered? <a href="login.php">Sign In</a></p>
+<h1>Sign up to Socean</h1>
+    <div class="form" >
+        <form method="post">
+            <input  id="register-input" name="username" type="text" placeholder="username"/>
+            <input  id="register-input" name="email" type="text" placeholder="email"/>
+            <input  id="register-input" name="password" type="password" placeholder="password"/>
+            <button id="register-btn"  name="btn" type="submit"  value="register-btn-v"> CREATE NOW! </button>
         </form>
+
         <p>
             <?php
             session_start();
@@ -89,7 +90,7 @@
                         $_SESSION["username"] = $username;
                         $conn = connection();
                         $conn->query("INSERT INTO users (username, passcode,email) VALUES ('$username', '$password','$email')");
-                        header("Location: profile.php");
+                        header("Location: index.php");
                         die();
                     }
                     else echo notification("2");
@@ -127,7 +128,13 @@
             }
             ?>
         </p>
+
+
     </div>
+
+<div class="footer">
+		Copyright © 2018 Designed Baki Almacı
 </div>
+
 </body>
 </html>
