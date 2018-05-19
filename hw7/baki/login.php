@@ -1,20 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="ASSESTS/login.css">
-    <title>Page Title</title>
+    <link rel="stylesheet" type="text/css" href="login.css">
+
+    <meta charset="UTF-8">
+    <title>Socean</title>
 </head>
 <body>
 
-<div class="login-page">
-    <div class="form">
-        <form class="login-form" method="post">
-            <input type="text" placeholder="username" name="username"/>
-            <input type="password" placeholder="password" name="password"/>
-            <button type="submit">login</button>
-            <p class="message">Not registered? <a href="signup.php">Create an account</a></p>
-        </form>
+
+
+<div class="form" >
+    <form method="post">
+        <input  id="login-input" name="username" type="text"     placeholder="username"/>
+        <input  id="login-input" name="password" type="password" placeholder="password"/>
+        <button id="login-btn"   name="btn" type="submit" >LOGIN </button>
+    </form>
+
     <p>
+
         <?php
         session_start();
         function notification($notif){
@@ -111,8 +115,11 @@
             }
         }
         ?>
+
     </p>
-    </div>
+
 </div>
+
+
 </body>
 </html>

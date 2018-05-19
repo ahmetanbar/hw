@@ -7,14 +7,6 @@
     <title>Socean</title>
 </head>
 <body>
-<div class="banner">
-    <div style="float: left;margin-left: -1%;margin-top: -90px"><img src="logo.png" alt="Mountain View" height="300" width="400"> </div>
-     <a href="index.php" style="text-decoration: none"> HOMEPAGE</a>
-     <a href="posted.php" style="text-decoration: none"> POSTED</a>
-     <a href="contact.php" style="text-decoration: none"> CONTACT</a>
-    <a href="login.php" style="text-decoration: none"> LOGIN</a>
-     <a href="signup.php" style="text-decoration: none"> SIGNUP</a>
-</div>
 
 <?php
 function connection(){
@@ -32,55 +24,110 @@ function connection(){
     }
 }
 ?>
+<div class="banner-text">
+
+		<p>
+				WE'VE KNEW YOU WOULD COME HERE
+		</p>
+
+		<form action="login.php">
+			<button id="login-btn"  name="btn" type="submit"  value="btn"> LOGIN </button>
+		</form>
+
+		<form action="signup.php">
+				<button id="signup-btn"  name="btn" type="submit"  value="btn"> SIGNUP </button>
+		</form>		
+
+		<div id="social">
+				<a href="http://facebook.com/bakialmaci">
+					<img src="ASSESTS/facebook.png"  alt="fb"  height="40" width="40" >
+				</a>
+
+				<a href="http://twitter.com/baki_almaci">
+					<img src="ASSESTS/twitter.png"   alt="tw"  height="40" width="40">
+				</a>
+
+				<a href="http://instagram.com/bakialmaci">
+					<img src="ASSESTS/instagram.png" alt="ins"  height="40" width="40">
+				</a>
+
+				<a href="http://github.com/bakialmaci">
+					<img src="ASSESTS/gh.png" alt="gh"  height="40" width="40">
+				</a>
+		</div>
+</div>
+
+<div class="banner">
+		<a href="index.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> HOMEPAGE </button> </a>
+		<a href="posted.php" style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button> </button> </a>
+		<a href="contact.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> CONTACT </button> </a>
+		
+	</div>
+
+<div class="menu">
+		<ul>
+				<li><a href="arduino.php">ARDUINO</a></li>
+				<li><a href="arm.php">ARM</a></li>
+				<li><a href="c.php">C</a></li>
+				<li><a href="java.php">JAVA</a></li>
+				<li><a href="php.php">PHP</a></li>
+				<li><a href="python.php">PYTHON</a></li>
+				<li><a href="html-css.php">HTML-CSS</a></li>
+				<li><a href="algorithms.php">ALGORITHMS</a></li>
+				<li><a href="general.php">GENERAL</a></li>
+				<li><a href="projects.php">PROJECTS</a></li>
+			  </ul>
+</div>
 
 <div class="home-page">
     <?php
-            $id = 1;
-            for($id = 1;$id<=5;$id++){
-            $conn=connection();
-            $read = $conn->query("SELECT * FROM articles WHERE id='".$id."'");
-            $list = mysqli_fetch_array($read);
-            if($list[0]){
-                $username = $list[1];
-                $date = $list[2];
-                $topic = $list[3];
-                $article = $list[4];
-                $title = $list[5];
-            }
-            else{
-                break;
-            }
-?>
-    <div class="form" >
+    $id = 1;
+    for($id = 1;$id<=5;$id++){
+    $conn=connection();
+    $read = $conn->query("SELECT * FROM articles WHERE id='".$id."'");
+    $list = mysqli_fetch_array($read);
+    if($list[0]){
+        $username = $list[1];
+        $date = $list[2];
+        $topic = $list[3];
+        $article = $list[4];
+        $title = $list[5];
+    }
+    else{
+        break;
+    }
+    ?>
+    	<div class="form" >
 
-        <div id="title">
-            <h1><?php echo $title?></h1	>
-        </div>
+        	<div id="title">
+				<h1><?php echo $title?></h1>
+				<p>Author:<?php echo $username?></p>
+    		</div>
 
-        <p>
-             <?php echo $article?>
+    	<p>
+            <?php echo $article?>
         </p>
+		
+			<li class="more">
+				<a id="more2" href="article.php">READ MORE</a>
+				
+			</li>
 
-        <div id="info">
-            <p>Date:<?php echo $date?></p>
-            <p>View: UNSET </p>
-            <p>Comment: UNSET</p>
-            <p>Author:<?php echo $username?></p>
-        </div>
-
-    </div>
+			<div id="info">
+				<p>View:<?php echo "UNSET";?></p>
+				<p>Comment:<?php echo "UNSET";?></p>
+				<p>Date:<?php echo $date?></p>
+			</div>
+		
+		</div>
 
     <?php } ?>
-
 
 </div>
 
 <div class="footer">
-    powered by bakialmaci - 2018
+		Copyright © 2018 Designed Baki Almacı
 </div>
-
-
-
 
 </body>
 </html>

@@ -2,12 +2,6 @@
 <head>
 </head>
 <body>
-
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="image">
-    <button type="submit" name="upload">UPLOAD IMAGE</button>
-</form>
-
 <?php
 session_start();
 /* ------------------------------------DATABASE CONNECTION----------------------------*/
@@ -47,40 +41,6 @@ else{
     echo "Please Login. </br> <b>Redirecting...</b>";
     header( "refresh:3;url=login.php" );
 }
-
-$uzanti=array('image/jpeg','image/jpg','image/png','image/x-png','image/gif');
-## Aynı Dizinde Bulunan Resimler Klasörüne Kaydet
-$dizin="resimler";
-if(in_array(strtolower($_FILES['resim']['type']),$uzanti)){
-    move_uploaded_file($_FILES['resim']['tmp_name'],"./$dizin/{$_FILES['resim']['name']}");
-## Veritabanına Bağlanalım ##
-    $baglan=   mysqli_connect("localhost","root","") or die ('Sunucuya Bağlanamadım.');
-    $asd=      mysqli_select_db("mertk",$baglan) or die ('Veritabanı Bağlanamadık !');
-## Dosya İsmimizi Veritabanına Yazdıralım. ##
-    mysqli_query("SET NAMES utf8");
-    mysqli_query("SET CHARACTER SET utf8");
-    mysqli_query("SET COLLATION_CONNECTION = 'utf8_general_ci'");
-## Türkçe Karakter Hatası
-    $db=$_FILES['resim']['name'];
-## Resmimizin Adını Alalım
-    $ekle=mysqli_query("INSERT INTO users (image) VALUES ('".$db."')") or die (mysqli_error());
-# Blog Tablosu -> Resim Sütununa Ekleyelim.
-    echo "Başarılı !";
-}else{
-    echo "Başarısız !";
-}
-
-
-//if(isset($_POST['upload'])) {
-//    $target = "ASSESTS/".basename($_FILES['image']['name']);
-//    $image = $_FILES["image"]["name"];
-//    $conn->query("INSERT INTO users (image) VALUES ('$image')");
-//    if (move_uploaded_file($_FILES['image']['tmp_name'], $target)) {
-//        echo  "image uploaded";
-//    } else {
-//        echo  "image cant uploaded.";
-//    }
-//}
 ?>
 
 <a href="logout.php" style="color: red"><i><b>LOGOUT</b></i></a>

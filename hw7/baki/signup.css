@@ -1,0 +1,84 @@
+.form {
+    background-image:url("ASSESTS/wp.png");
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%; 
+    margin-left: -150px;
+    margin-top: -150px;    
+}
+
+@keyframes anim-1 {
+    0%, 1% { left: -100%; opacity: 0; }
+    8.3%,25% { left: 40%; opacity: 0.9; }
+}
+
+h1{
+    color: black;
+    text-align: center;
+    font-family: "Segoe UI Light", sans-serif;
+    width: 300px;
+    height: 300px;
+    position: absolute;
+    left: 50%;
+    top: 50%; 
+    margin-left: -150px;
+    margin-top: -200px;  
+    font-size: 20px;
+}
+
+
+
+#register-input{
+    text-align: center;
+    border-radius: 5px;
+    font-family: "Segoe UI Light", sans-serif;
+    outline-color: green;
+    background: #f2f2f2;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 10px;
+    box-sizing: border-box;
+    font-size: 16px;
+    box-shadow: 0px 0px 5px rgb(0, 0, 0);
+
+}
+
+#register-btn {
+    border-radius: 50px;
+    font-family: "Segoe UI Light", sans-serif;
+    background: green;
+    width: 100%;
+    border: 0;
+    margin: 0 0 15px;
+    padding: 10px;
+    color: white    ;
+    font-size: 14px;
+    cursor: pointer;
+    opacity: 0.8;
+    box-shadow: 0px 0px 5px rgb(0, 0, 0);
+    
+}
+
+
+body {
+    background-image:url("ASSESTS/wp.png");
+    font-family: "Segoe UI Light", sans-serif;
+    color: #FFFFFF;
+
+}
+
+.footer {
+    font-family: "Segoe UI Light", sans-serif;
+    color: white;
+    padding: 10px;
+    bottom: 0;
+    left: 0;
+    width: 99%;
+    background-color: rgb(128, 128, 128);
+    text-align: center;
+    position: fixed;
+    box-shadow: 0px 0px 10px rgb(0, 0, 0);
+}
