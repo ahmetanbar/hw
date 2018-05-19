@@ -12,18 +12,6 @@
 */
 
 Route::get('/', function () {
-    $articles=\App\article::take(5)->get();
-    return view('home')->with('articles',$articles);
+    return view('home2');
 });
-
-//Route::get('/deneme', 'HomeController@get_article');
-
-
-Route::get('/deneme/{cate}/{id}','HomeController@get_deneme_isim');
-
-Route::get('/deneme/{isim}','HomeController@get_deneme_isim');
-
-
-Route::post('/addarticle','Homecontroller@post_article');
-Route::get('/addarticle','Homecontroller@get_article');
 
