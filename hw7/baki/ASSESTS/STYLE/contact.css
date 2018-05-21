@@ -1,5 +1,5 @@
 .form {
-    background-image:url("wp.png");
+    background-image:url("MEDIA/wp.png");
     width: 300px;
     height: 300px;
     position: absolute;
@@ -76,7 +76,7 @@ h1{
 }
 
 body {
-    background-image:url("wp.png");
+    background-image:url("MEDIA/wp.png");
     font-family: "Segoe UI Light", sans-serif;
     color: #FFFFFF;
     text-align: center;
@@ -92,4 +92,4 @@ body {
     background-color: rgb(128, 128, 128);
     text-align: center;
     position: fixed;
-    box-shadow: 0px 0px 10px rgb(0, 0, 0);
+    box-shadow: 0px 0px 10px rgb(0, 0, 0);}
