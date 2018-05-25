@@ -10,8 +10,31 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('home2');
+use Illuminate\Support\Facades\Auth;
+Route::get('', function () {
+    return view('welcome');
+});
+Route::match(['get','post'], 'login', function (){
+    return "DENEME 1 ";
 });
 
+
+
+
+
+
+
+Route::prefix('admin')->group(function () {
+    Route::get('/', function () {
+        return "ADMIN PANEL";
+    });
+    if (Auth::check()) {
+        // The user is logged in...
+    }
+    Route::get('users', function () {
+        return "USERS PANEL";
+    });
+    Route::get('articles', function () {
+        return "ARTICLES PANEL";
+    });
+});
