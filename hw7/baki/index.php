@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="ASSESTS/STYLE/index.css">
 
     <meta charset="UTF-8">
     <title>Socean</title>
@@ -40,19 +40,19 @@ function connection(){
 
 		<div id="social">
 				<a href="http://facebook.com/bakialmaci">
-					<img src="ASSESTS/facebook.png"  alt="fb"  height="40" width="40" >
+					<img src="ASSESTS/STYLE/MEDIA/facebook.png" alt="fb" height="40" width="40" >
 				</a>
 
 				<a href="http://twitter.com/baki_almaci">
-					<img src="ASSESTS/twitter.png"   alt="tw"  height="40" width="40">
+					<img src="ASSESTS/STYLE/MEDIA/twitter.png" alt="tw" height="40" width="40">
 				</a>
 
 				<a href="http://instagram.com/bakialmaci">
-					<img src="ASSESTS/instagram.png" alt="ins"  height="40" width="40">
+					<img src="ASSESTS/STYLE/MEDIA/instagram.png" alt="ins" height="40" width="40">
 				</a>
 
 				<a href="http://github.com/bakialmaci">
-					<img src="ASSESTS/gh.png" alt="gh"  height="40" width="40">
+					<img src="ASSESTS/STYLE/MEDIA/gh.png" alt="gh" height="40" width="40">
 				</a>
 		</div>
 </div>
@@ -66,16 +66,16 @@ function connection(){
 
 <div class="menu">
 		<ul>
-				<li><a href="arduino.php">ARDUINO</a></li>
-				<li><a href="arm.php">ARM</a></li>
-				<li><a href="c.php">C</a></li>
-				<li><a href="java.php">JAVA</a></li>
-				<li><a href="php.php">PHP</a></li>
-				<li><a href="python.php">PYTHON</a></li>
-				<li><a href="html-css.php">HTML-CSS</a></li>
-				<li><a href="algorithms.php">ALGORITHMS</a></li>
-				<li><a href="general.php">GENERAL</a></li>
-				<li><a href="projects.php">PROJECTS</a></li>
+				<li><a href="PAGES/arduino.php">ARDUINO</a></li>
+				<li><a href="PAGES/arm.php">ARM</a></li>
+				<li><a href="PAGES/c.php">C</a></li>
+				<li><a href="PAGES/java.php">JAVA</a></li>
+				<li><a href="PAGES/php.php">PHP</a></li>
+				<li><a href="PAGES/python.php">PYTHON</a></li>
+				<li><a href="PAGES/html-css.php">HTML-CSS</a></li>
+				<li><a href="PAGES/algorithms.php">ALGORITHMS</a></li>
+				<li><a href="PAGES/general.php">GENERAL</a></li>
+				<li><a href="PAGES/projects.php">PROJECTS</a></li>
 			  </ul>
 </div>
 
@@ -84,14 +84,18 @@ function connection(){
     $id = 1;
     for($id = 1;$id<=5;$id++){
     $conn=connection();
-    $read = $conn->query("SELECT * FROM articles WHERE id='".$id."'");
-    $list = mysqli_fetch_array($read);
-    if($list[0]){
-        $username = $list[1];
-        $date = $list[2];
-        $topic = $list[3];
-        $article = $list[4];
-        $title = $list[5];
+    $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
+    $stmt->bind_param("s",$id);
+    $stmt->execute();
+    $query = $stmt->get_result();
+    $list=$query->fetch_assoc();
+
+    if($list){
+        $username = $list["username"];
+        $date = $list["date"];
+        $topic = $list["topic"];
+        $article = $list["article"];
+        $title = $list["title"];
     }
     else{
         break;

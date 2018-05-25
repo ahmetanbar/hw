@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="contact.css">
+    <link rel="stylesheet" type="text/css" href="ASSESTS/STYLE/contact.css">
 
     <meta charset="UTF-8">
     <title>Socean</title>

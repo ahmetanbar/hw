@@ -27,7 +27,7 @@ function delete_cookie(){
             $stmt->bind_param("s",$auth);
             $stmt->execute();
             $stmt->close();
-            header("Location:login.php"); /* Redirect browser */
+            header("Location:index.php"); /* Redirect browser */
         }
     }
 }

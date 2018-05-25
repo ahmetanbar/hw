@@ -1,12 +1,17 @@
 .form {
-    background-image:url("ASSESTS/wp.png");
+    background-image:url("MEDIA/wp.png");
     width: 300px;
     height: 300px;
     position: absolute;
     left: 50%;
     top: 50%; 
     margin-left: -150px;
-    margin-top: -150px;
+    margin-top: -150px;    
+}
+
+@keyframes anim-1 {
+    0%, 1% { left: -100%; opacity: 0; }
+    8.3%,25% { left: 40%; opacity: 0.9; }
 }
 
 h1{
@@ -23,10 +28,13 @@ h1{
     font-size: 20px;
 }
 
-#login-input{
+
+
+#register-input{
+    text-align: center;
     border-radius: 5px;
     font-family: "Segoe UI Light", sans-serif;
-    outline-color: forestgreen;
+    outline-color: green;
     background: #f2f2f2;
     width: 100%;
     border: 0;
@@ -34,31 +42,32 @@ h1{
     padding: 10px;
     box-sizing: border-box;
     font-size: 16px;
-    text-align: center;
     box-shadow: 0px 0px 5px rgb(0, 0, 0);
 
 }
 
-#login-btn {
+#register-btn {
     border-radius: 50px;
     font-family: "Segoe UI Light", sans-serif;
-    outline-color: forestgreen;
-    background: forestgreen;
+    background: green;
     width: 100%;
     border: 0;
     margin: 0 0 15px;
     padding: 10px;
-    color: #FFFFFF;
+    color: white    ;
     font-size: 14px;
     cursor: pointer;
+    opacity: 0.8;
     box-shadow: 0px 0px 5px rgb(0, 0, 0);
+    
 }
 
+
 body {
-    background-image:url("ASSESTS/wp.png");
+    background-image:url("MEDIA/wp.png");
     font-family: "Segoe UI Light", sans-serif;
-    color: #000000;
-    text-align: center;
+    color: #FFFFFF;
+
 }
 
 .footer {

@@ -1,28 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="article.css">
+    <link rel="stylesheet" type="text/css" href="ASSESTS/STYLE/article.css">
 
     <meta charset="UTF-8">
     <title>Socean</title>
 </head>
 <body>
-
+<?php
+session_start();
+/* ------------------------------------DATABASE CONNECTION----------------------------*/
+function connection(){
+    $server_name = "localhost";
+    $username = "root";
+    $password = "";
+    $db_name="blog";
+    $conn = mysqli_connect($server_name, $username, $password,$db_name);
+    mysqli_set_charset($conn,"utf8");
+    if (!$conn) {
+        die("Connection failed: " . mysqli_connect_error());
+    }
+    else{
+        return $conn;
+    }
+}
+/* --------------------------------------------------------------------------------------*/
+if(isset($_SESSION["username"])){
+    $username = $_SESSION["username"];
+}
+else{
+    $username="";
+}
+?>
 
 <div class="menu">
 		<ul>
-                <li><a href="index.php" style="color: cornflowerblue">HOMEPAGE</a></li>
-				<li><a href="arduino.php">ARDUINO</a></li>
-				<li><a href="arm.php">ARM</a></li>
-				<li><a href="c.php">C</a></li>
-				<li><a href="java.php">JAVA</a></li>
-				<li><a href="php.php">PHP</a></li>
-				<li><a href="python.php">PYTHON</a></li>
-				<li><a href="html-css.php">HTML-CSS</a></li>
-				<li><a href="algorithms.php">ALGORITHMS</a></li>
-				<li><a href="general.php">GENERAL</a></li>
-				<li><a href="projects.php">PROJECTS</a></li>
-				
+            <?php echo($_SESSION) ? '<li><a href="profile.php" style="color: cornflowerblue">HOMEPAGE</a></li>':'<li><a href="index.php" style="color: cornflowerblue">HOMEPAGE</a></li>'; ?>
+            <li><a href="PAGES/arduino.php">ARDUINO</a></li>
+            <li><a href="PAGES/arm.php">ARM</a></li>
+            <li><a href="PAGES/c.php">C</a></li>
+            <li><a href="PAGES/java.php">JAVA</a></li>
+            <li><a href="PAGES/php.php">PHP</a></li>
+            <li><a href="PAGES/python.php">PYTHON</a></li>
+            <li><a href="PAGES/html-css.php">HTML-CSS</a></li>
+            <li><a href="PAGES/algorithms.php">ALGORITHMS</a></li>
+            <li><a href="PAGES/general.php">GENERAL</a></li>
+            <li><a href="PAGES/projects.php">PROJECTS</a></li>
 			  </ul>
 </div>
 
@@ -50,9 +73,6 @@
 				
             </div>
 
-                    
-
-                  
         </div>
 
         <div id="comments">
@@ -63,16 +83,29 @@
 
         <div id="comment">
                 <form method="post">
-
-                        <input  id="contact-input" name="name" type="text"     placeholder="Username"/>
-                        <textarea id="msg-input" placeholder="Write here..."></textarea>
-                        <button id="contact-btn"   name="send" type="submit" value="send" >SEND</button>
-            
-                    </form>
+                    <input    id="contact-input" name="title" type="text"     placeholder="Title"/>
+                    <?php echo($_SESSION) ? '<textarea id="msg-input"     name="comment"  placeholder="Write here..."></textarea>':'<textarea id="msg-input"     name="msg"  placeholder="Write here..." disabled></textarea>'; ?>
+                    <?php echo($_SESSION) ? '<button   id="contact-btn"   name="send" type="submit" value="send" >SEND</button>':'<button   id="contact-btn"   name="send" type="submit" value="send" disabled  style="background: whitesmoke;color: darkgray">SEND</button>'; ?>
+                </form>
             </div>
 
-     
-		
+    <?php
+    if($_SESSION){
+        $title = $_POST["title"];
+        $comment = $_POST["comment"];
+        $username = $_SESSION["username"];
+        $conn = connection();
+        $conn->query("INSERT INTO comments (user_id, article_id,comment,title) VALUES ('$user_id', '$article_id','$comment','$title')");
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
+        $stmt->bind_param("s",$id);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
+    }
+    ?>
+
+
+
 </div>
 
 <div class="footer">
