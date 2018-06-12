@@ -13,17 +13,12 @@ class CreateArticleTable extends Migration
      */
     public function up()
     {
-        Schema::create('articles', function (Blueprint $table) {
+        Schema::create('category', function (Blueprint $table) {
             $table->increments('id');
-            $table->unsignedInteger('uid');
-            $table->unsignedInteger('category');
-            $table->string('title', 40);
-            $table->string('body');
-            $table->string('artimg', 100)->nullable();
-            $table->unsignedInteger('views')->default(0);
-            $table->unsignedInteger('comments')->default(0);
-            $table->unsignedInteger('vote_num')->default(0);
-            $table->unsignedInteger('voit_point')->default(0);
+            $table->string('name', 40);
+            $table->string('info',40);
+            $table->string('catimg', 100)->nullable();
+            $table->unsignedInteger('articles_num')->default(0);
             $table->timestamp('created_at');
             $table->timestamp('updated_at')->useCurrent();
             $table->timestamp('deleted_at')-nullable();
@@ -37,6 +32,6 @@ class CreateArticleTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('articles');
+        Schema::dropIfExists('category');
     }
 }
