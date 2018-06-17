@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="ASSESTS/STYLE/profile.css">
+    <link rel="stylesheet" type="text/css" href="ASSESTS/STYLE/profilepage.css">
 
     <meta charset="UTF-8">
     <title>Socean</title>
@@ -18,20 +18,20 @@ function connection(){
     $conn = mysqli_connect($server_name, $username, $password,$db_name);
     mysqli_set_charset($conn,"utf8");
     if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+        die("Connection failed: " . mysqli_connect_error());
     }
     else{
-    return $conn;
+        return $conn;
     }
 }
 /* --------------------------------------------------------------------------------------*/
 if(isset($_SESSION["username"])){
-$username = $_SESSION["username"];
+    $username = $_SESSION["username"];
 }
 else{
     $username="";
-echo "Please Login. </br> <b>Redirecting...</b>";
-header( "refresh:0;url=index.php" );
+    echo "Please Login. </br> <b>Redirecting...</b>";
+    header( "refresh:0;url=index.php" );
 }
 ?>
 
@@ -87,11 +87,11 @@ header( "refresh:0;url=index.php" );
         <li><a href="PAGES/algorithms.php">ALGORITHMS</a></li>
         <li><a href="PAGES/general.php">GENERAL</a></li>
         <li><a href="PAGES/projects.php">PROJECTS</a></li>
-<!--        <li><a href="profile.php" style="color: #a6e1ec;font-family: -apple-system,sans-serif">--><?php //echo $username ?><!--</a></li>-->
+        <!--        <li><a href="profile.php" style="color: #a6e1ec;font-family: -apple-system,sans-serif">--><?php //echo $username ?><!--</a></li>-->
         <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn" style="color: #a6e1ec"><?php echo $username ?></a>
             <div class="dropdown-content">
-                <a href="profilepage.php">Profile</a>
+                <a href="profile.php">Profile</a>
                 <a href="settings.php">Settings</a>
                 <a href="logout.php" style="color: red">Logout</a>
             </div>
@@ -100,52 +100,67 @@ header( "refresh:0;url=index.php" );
 </div>
 
 <div class="home-page">
-    <?php
-    $id = 1;
-    for($id = 1;$id<=5;$id++){
-        $conn=connection();
-        $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
-        $stmt->bind_param("s",$id);
-        $stmt->execute();
-        $query = $stmt->get_result();
-        $list=$query->fetch_assoc();
+<?php
+    $conn=connection();
+    $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s",$username);
+    $stmt->execute();
+    $query = $stmt->get_result();
+    $list=$query->fetch_assoc();
+    $name = $list["name"];
+    $surname = $list["surname"];
+    $email = $list["email"];
+    $tel = $list["tel"];
+    $age = $list["age"];
+    $sex = $list["sex"];
 
-        if($list){
-            $username = $list["username"];
-            $date = $list["date"];
-            $topic = $list["topic"];
-            $article = $list["article"];
-            $title = $list["title"];
-        }
-        else{
-            break;
-        }
-        ?>
+    //-----get history-----
+
+    $stmt= $conn->prepare("SELECT * FROM articles WHERE username=?");
+    $stmt->bind_param("s",$username);
+    $stmt->execute();
+    $query = $stmt->get_result();
+    $list=$query->fetch_assoc();
+    $articles_Number = mysqli_num_rows($query);
+
+    $stmt1= $conn->prepare("SELECT $username FROM articles ORDER BY DATE DESC LIMIT 1");
+    $stmt1->bind_param("s",$username);
+    $stmt1->execute();
+    $query1 = $stmt1->get_result();
+    $list1=$query1->fetch_assoc();
+    $articles_Number = mysqli_num_rows($query);
+
+    $result = $conn->query($sql);
+    echo $result[0];
+
+    ?>
+
         <div class="form" >
 
-            <div id="title">
-                <h1><?php echo $title?></h1>
-                <p>Author:<?php echo $username?></p>
+            <div class="information">
+                <h1> User General</h1>
+                <p>Name: <?php echo $name; ?></p>
+                <p>Surname: <?php echo $surname; ?> </p>
+                <p>Username: <?php echo $username; ?> </p>
+                <p>Email: <?php echo $email; ?></p>
+                <p>Age: <?php echo $age; ?></p>
+                <p>Sex: <?php echo $sex; ?></p>
             </div>
 
-            <p>
-                <?php echo $article?>
-            </p>
+            <div class="userhistory">
+                <h1> User History</h1>
+                <p>Articles Number: <?php echo $articles_Number; ?></p>
+                <p>Comments Number: <?php echo $surname; ?> </p>
+                <p>Get Comments Number: <?php echo $username; ?> </p>
+                <p>Last Article: <?php echo $result[0]; ?></p>
+                <p>Last Comment: <?php echo $age; ?></p>
+                <p>Last Get Comment: <?php echo $sex; ?></p>
 
-            <li class="more">
-                <a id="more2" href="article.php">READ MORE</a>
-
-            </li>
-
-            <div id="info">
-                <p>View:<?php echo "UNSET";?></p>
-                <p>Comment:<?php echo "UNSET";?></p>
-                <p>Date:<?php echo $date?></p>
             </div>
+
 
         </div>
 
-    <?php } ?>
 
 </div>
 

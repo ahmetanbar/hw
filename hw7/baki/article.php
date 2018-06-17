@@ -41,7 +41,7 @@ else{
             <li><a href="PAGES/c.php">C</a></li>
             <li><a href="PAGES/java.php">JAVA</a></li>
             <li><a href="PAGES/php.php">PHP</a></li>
-            <li><a href="PAGES/python.php">PYTHON</a></li>
+            <li><a href="PAGES/article.php">PYTHON</a></li>
             <li><a href="PAGES/html-css.php">HTML-CSS</a></li>
             <li><a href="PAGES/algorithms.php">ALGORITHMS</a></li>
             <li><a href="PAGES/general.php">GENERAL</a></li>
@@ -85,12 +85,12 @@ else{
                 <form method="post">
                     <input    id="contact-input" name="title" type="text"     placeholder="Title"/>
                     <?php echo($_SESSION) ? '<textarea id="msg-input"     name="comment"  placeholder="Write here..."></textarea>':'<textarea id="msg-input"     name="msg"  placeholder="Write here..." disabled></textarea>'; ?>
-                    <?php echo($_SESSION) ? '<button   id="contact-btn"   name="send" type="submit" value="send" >SEND</button>':'<button   id="contact-btn"   name="send" type="submit" value="send" disabled  style="background: whitesmoke;color: darkgray">SEND</button>'; ?>
+                    <?php echo($_SESSION) ? '<button   id="contact-btn"   name="send" type="submit" value="send" >SEND</button>':'<button   id="contact-btn"   name="send" type="submit" value="send" disabled  style="background: whitesmoke;color: darkgray">LOGIN TO SEND</button>'; ?>
                 </form>
             </div>
 
     <?php
-    if($_SESSION){
+    if($_POST){
         $title = $_POST["title"];
         $comment = $_POST["comment"];
         $username = $_SESSION["username"];

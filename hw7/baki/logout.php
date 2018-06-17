@@ -28,6 +28,7 @@ function delete_cookie(){
             $stmt->execute();
             $stmt->close();
             header("Location:index.php"); /* Redirect browser */
+            die();
         }
     }
 }
@@ -35,4 +36,6 @@ session_start();
 session_unset();
 session_destroy();
 delete_cookie();
+header("Location:index.php"); /* Redirect browser */
+die();
 ?>

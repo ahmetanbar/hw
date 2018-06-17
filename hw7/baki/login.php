@@ -7,14 +7,13 @@
     <title>Socean</title>
 </head>
 <body>
-
-
-
+<h1 style="font-family: -apple-system,sans-serif">Turn back to <a href="index.php" style="color: #a94442">Socean</a></h1>
 <div class="form" >
     <form method="post">
         <input  id="login-input" name="username" type="text"     placeholder="username"/>
         <input  id="login-input" name="password" type="password" placeholder="password"/>
         <button id="login-btn"   name="btn" type="submit" >LOGIN </button>
+        <a>Haven't you any account? </a><a href="signup.php" style="color: #1f648b;font-family: -apple-system,sans-serif;text-decoration: none">Signup</a>
     </form>
 
     <p>
@@ -73,10 +72,13 @@
             return 1;
         }
         /* -----------------------------------------LOGIN------------------------------------------*/
-        if($_POST){login();}
+        if($_POST)
+            login();
+
         function login(){
             $username = $_POST["username"];
             $password = $_POST["password"];
+
             if ($username && $password && username_check($username) && !password_check($password)){
                 $conn = connection();
                 $stmt= $conn->prepare("SELECT * FROM users WHERE username=? and passcode=?");
@@ -87,6 +89,10 @@
                 if ($data) {
                     cookie_control();
                     $_SESSION["username"] = $username;
+                    $_SESSION["password"] = $password;
+//                    $_SESSION["tel"] = $tel;
+//                    $_SESSION["age"] = $age;
+//                    $_SESSION["sex"] = $sex;
                     header("Location: profile.php");
                     die();
                 }
@@ -119,7 +125,9 @@
     </p>
 
 </div>
-
+<div class="footer">
+    Copyright © 2018 Designed by Baki Almacı
+</div>
 
 </body>
 </html>

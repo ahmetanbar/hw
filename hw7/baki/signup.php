@@ -7,13 +7,14 @@
     <title>Socean</title>
 </head>
 <body>
-<h1>Sign up to Socean</h1>
+<h1>Turn back to <a href="index.php" style="color: #a94442">Socean</a></h1>
     <div class="form" >
         <form method="post">
             <input  id="register-input" name="username" type="text" placeholder="username"/>
             <input  id="register-input" name="email" type="text" placeholder="email"/>
             <input  id="register-input" name="password" type="password" placeholder="password"/>
             <button id="register-btn"  name="btn" type="submit"  value="register-btn-v"> CREATE NOW! </button>
+            <a style="color: black">Have you an account? </a><a href="login.php" style="color: #1f648b;font-family: -apple-system,sans-serif;text-decoration: none">Login</a>
         </form>
 
         <p>
@@ -133,7 +134,7 @@
     </div>
 
 <div class="footer">
-		Copyright © 2018 Designed Baki Almacı
+		Copyright © 2018 Designed by Baki Almacı
 </div>
 
 </body>

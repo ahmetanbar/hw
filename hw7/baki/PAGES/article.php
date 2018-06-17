@@ -10,6 +10,8 @@
 
 <?php
 function connection(){
+    $category = $_GET["category"];
+    header("Location: ./article.php?$category");
     $server_name = "localhost";
     $username = "root";
     $password = "";
@@ -64,7 +66,7 @@ function connection(){
 
 </div>
 
-<div class="menu">
+<!--<div class="menu">
     <ul>
         <li><a href="../index.php">HOMEPAGE</a></li>
         <li><a href="../PAGES/arduino.php">ARDUINO</a></li>
@@ -72,22 +74,21 @@ function connection(){
         <li><a href="../PAGES/c.php">C</a></li>
         <li><a href="../PAGES/java.php">JAVA</a></li>
         <li><a href="../PAGES/php.php">PHP</a></li>
-        <li><a href="../PAGES/python.php">PYTHON</a></li>
+        <li><a href="article.php">PYTHON</a></li>
         <li><a href="../PAGES/html-css.php">HTML-CSS</a></li>
         <li><a href="../PAGES/algorithms.php">ALGORITHMS</a></li>
         <li><a href="../PAGES/general.php">GENERAL</a></li>
         <li><a href="../PAGES/projects.php">PROJECTS</a></li>
     </ul>
-</div>
+</div>-->
 
 <div class="home-page">
     <?php
     $id = 1;
-    $chapter = "java";
     for($id = 1;$id<=5;$id++){
         $conn=connection();
         $stmt= $conn->prepare("SELECT * FROM articles WHERE id=? and topic=?");
-        $stmt->bind_param("is",$id,$chapter);
+        $stmt->bind_param("is",$id,$category);
         $stmt->execute();
         $query = $stmt->get_result();
         $list=$query->fetch_assoc();

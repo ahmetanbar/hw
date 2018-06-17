@@ -66,16 +66,16 @@ function connection(){
 
 <div class="menu">
 		<ul>
-				<li><a href="PAGES/arduino.php">ARDUINO</a></li>
-				<li><a href="PAGES/arm.php">ARM</a></li>
-				<li><a href="PAGES/c.php">C</a></li>
-				<li><a href="PAGES/java.php">JAVA</a></li>
-				<li><a href="PAGES/php.php">PHP</a></li>
-				<li><a href="PAGES/python.php">PYTHON</a></li>
-				<li><a href="PAGES/html-css.php">HTML-CSS</a></li>
-				<li><a href="PAGES/algorithms.php">ALGORITHMS</a></li>
-				<li><a href="PAGES/general.php">GENERAL</a></li>
-				<li><a href="PAGES/projects.php">PROJECTS</a></li>
+				<li><a href="article.php?arduino">ARDUINO</a></li>
+				<li><a href="article.php?category=arm">ARM</a></li>
+				<li><a href="article.php?category=c">C</a></li>
+				<li><a href="article.php?category=java">JAVA</a></li>
+				<li><a href="article.php?category=php">PHP</a></li>
+				<li><a href="article.php?category=python">PYTHON</a></li>
+				<li><a href="article.php?category=html-css">HTML-CSS</a></li>
+				<li><a href="article.php?category=algorithms">ALGORITHMS</a></li>
+				<li><a href="article.php?category=general">GENERAL</a></li>
+				<li><a href="article.php?category=projects">PROJECTS</a></li>
 			  </ul>
 </div>
 

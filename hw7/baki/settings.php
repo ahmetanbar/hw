@@ -18,20 +18,20 @@ function connection(){
     $conn = mysqli_connect($server_name, $username, $password,$db_name);
     mysqli_set_charset($conn,"utf8");
     if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+        die("Connection failed: " . mysqli_connect_error());
     }
     else{
-    return $conn;
+        return $conn;
     }
 }
 /* --------------------------------------------------------------------------------------*/
 if(isset($_SESSION["username"])){
-$username = $_SESSION["username"];
+    $username = $_SESSION["username"];
 }
 else{
     $username="";
-echo "Please Login. </br> <b>Redirecting...</b>";
-header( "refresh:0;url=index.php" );
+    echo "Please Login. </br> <b>Redirecting...</b>";
+    header( "refresh:0;url=index.php" );
 }
 ?>
 
@@ -87,11 +87,11 @@ header( "refresh:0;url=index.php" );
         <li><a href="PAGES/algorithms.php">ALGORITHMS</a></li>
         <li><a href="PAGES/general.php">GENERAL</a></li>
         <li><a href="PAGES/projects.php">PROJECTS</a></li>
-<!--        <li><a href="profile.php" style="color: #a6e1ec;font-family: -apple-system,sans-serif">--><?php //echo $username ?><!--</a></li>-->
+        <!--        <li><a href="profile.php" style="color: #a6e1ec;font-family: -apple-system,sans-serif">--><?php //echo $username ?><!--</a></li>-->
         <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn" style="color: #a6e1ec"><?php echo $username ?></a>
             <div class="dropdown-content">
-                <a href="profilepage.php">Profile</a>
+                <a href="profile.php">Profile</a>
                 <a href="settings.php">Settings</a>
                 <a href="logout.php" style="color: red">Logout</a>
             </div>
@@ -99,55 +99,17 @@ header( "refresh:0;url=index.php" );
     </ul>
 </div>
 
-<div class="home-page">
-    <?php
-    $id = 1;
-    for($id = 1;$id<=5;$id++){
-        $conn=connection();
-        $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
-        $stmt->bind_param("s",$id);
-        $stmt->execute();
-        $query = $stmt->get_result();
-        $list=$query->fetch_assoc();
-
-        if($list){
-            $username = $list["username"];
-            $date = $list["date"];
-            $topic = $list["topic"];
-            $article = $list["article"];
-            $title = $list["title"];
-        }
-        else{
-            break;
-        }
-        ?>
         <div class="form" >
-
-            <div id="title">
-                <h1><?php echo $title?></h1>
-                <p>Author:<?php echo $username?></p>
-            </div>
-
-            <p>
-                <?php echo $article?>
-            </p>
-
-            <li class="more">
-                <a id="more2" href="article.php">READ MORE</a>
-
-            </li>
-
-            <div id="info">
-                <p>View:<?php echo "UNSET";?></p>
-                <p>Comment:<?php echo "UNSET";?></p>
-                <p>Date:<?php echo $date?></p>
-            </div>
+            <form method="post">
+                <input  id="register-input" name="username" type="text" placeholder="username"/>
+                <input  id="register-input" name="email" type="text" placeholder="email"/>
+                <input  id="register-input" name="password" type="password" placeholder="password"/>
+                <button id="register-btn"  name="btn" type="submit"  value="register-btn-v"> CREATE NOW! </button>
+                <a style="color: black">Have you an account? </a><a href="login.php" style="color: #1f648b;font-family: -apple-system,sans-serif;text-decoration: none">Login</a>
+            </form>
 
         </div>
 
-    <?php } ?>
-
-</div>
 
 <div class="footer">
     Copyright © 2018 Designed Baki Almacı

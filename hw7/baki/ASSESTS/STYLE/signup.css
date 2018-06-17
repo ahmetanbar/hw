@@ -6,7 +6,8 @@
     left: 50%;
     top: 50%; 
     margin-left: -150px;
-    margin-top: -150px;    
+    margin-top: -150px;
+    text-align: center;
 }
 
 @keyframes anim-1 {
@@ -17,7 +18,7 @@
 h1{
     color: black;
     text-align: center;
-    font-family: "Segoe UI Light", sans-serif;
+    font-family:-apple-system,sans-serif;
     width: 300px;
     height: 300px;
     position: absolute;
@@ -66,8 +67,13 @@ h1{
 body {
     background-image:url("MEDIA/wp.png");
     font-family: "Segoe UI Light", sans-serif;
-    color: #FFFFFF;
+    color: black;
+}
 
+body p{
+    color: purple;
+    font-family: -apple-system,sans-serif;
+    font-size: 18px;
 }
 
 .footer {
