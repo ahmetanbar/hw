@@ -207,9 +207,7 @@
 
               if($verify_cont==2){
                 $pass_control=password_control($_POST['psw1']);
-                echo($pass_control);
                 if($pass_control){
-                  echo("hello5");
                   pass_change($_POST['psw2']);
                   header("Location:profile.php");
                 }

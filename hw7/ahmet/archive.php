@@ -52,16 +52,17 @@
       $conn=connect_db();
       $start_article=($page-1)*5;
       $sql="SELECT articles.* , user.name ,user.surname FROM articles INNER JOIN users user ON articles.author_id = user.id WHERE articles.status!=? ";
-      if($category!=NULL){
-        $sql=$sql." and category=? ";
-      }
+
+      if($category!=NULL) $sql=$sql." and category=? ";
+
       $sql=$sql."order by id desc limit ?,5";
       $stmt = $conn->prepare($sql);
-      if($category!=NULL){
+
+      if($category!=NULL)
         $stmt->bind_param("ssi",$deleted,$category,$start_article);
-      }
       else
         $stmt->bind_param("si",$deleted,$start_article);
+
       $stmt->execute();
       $result = $stmt->get_result();
       return $result;

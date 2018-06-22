@@ -24,7 +24,7 @@
       if(count($_COOKIE)!=0 and array_key_exists("auth",$_COOKIE)){
         $auth= $_COOKIE['auth'];
 
-        $cookie_know=array("flag"=>"FALSE","username"=>"","name"=>"","surname"=>"");
+        $cookie_know=array("flag"=>"FALSE");
 
         $conn=connect_db();
         $stmt = $conn->prepare("SELECT auth,user_id FROM cookie WHERE auth=?");
@@ -53,10 +53,6 @@
       $stmt->execute();
       $result = $stmt->get_result();
       return $result;
-    }
-
-    function limited_article($s) {
-        return preg_replace('/((\w+\W*){30}(\w+))(.*)/', '${1}', $s);
     }
 
     session_start();

@@ -57,10 +57,6 @@
       return $result;
     }
 
-    function limited_article($s) {
-        return preg_replace('/((\w+\W*){30}(\w+))(.*)/', '${1}', $s);
-    }
-
     function post_control(){
 
       if(count($_POST)!=0){

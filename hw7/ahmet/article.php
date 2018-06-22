@@ -75,16 +75,13 @@
         }
       }
     }
+
     function comment_post(){
       if(count($_POST)!=0){
         if(array_key_exists("comment",$_POST)){
           $logs=array("value_comment"=>"","foot_note"=>"");
           if( $_POST['comment']!=NULL){
             $verify_cont=0;
-            // $logs['value_comment']=$_POST['comment'];
-
-            $logs["value_comment"]="";
-
             $conn =connect_db();
 
             $comment=nl2br($_POST['comment']);
@@ -104,10 +101,12 @@
         }
       }
     }
+
     session_start();
 
     $cookie_know=control_cookie();
     $get_method=get_kind();
+
     $logs=comment_post();
 
 
@@ -199,9 +198,6 @@
               </form>
             </div>
       <?php
-      }
-      else{
-
       } ?>
     <?php include 'footer.php';?>
   </div>

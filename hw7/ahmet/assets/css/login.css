@@ -138,6 +138,8 @@ footer {
   -o-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
 
+}
+
 @media screen and (max-width:400px) {
     .topnav {
       padding-left:0px;
