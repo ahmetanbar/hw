@@ -14,13 +14,17 @@
 //Route::get('/', function () {
 //    return view('pages.index');
 //});
-Route::resource('/','ArticleController');
+Route::get('/','ArticleController@deneme');
 
 Auth::routes();
+
+Route::get('/archieve/category/{category}','ArticleController@deneme');
+
+Route::resource('archieve','ArticleController');
 
 Route::get('/about', function () {
     return view('pages.about');
 });
-Route::get('/home', 'HomeController@index')->name('home');
 
+Route::get('/home', 'HomeController@index')->name('home');
 

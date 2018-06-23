@@ -13,6 +13,13 @@ class ArticleController extends Controller
      */
     public function index()
     {
+        $articles= articles::orderBy('created_at','desc')->paginate(6);
+//        $articles= articles::orderBy('id','desc')->take($art_num)->get();
+        return view('pages.index')->with('articles',$articles);
+    }
+
+    public function deneme()
+    {
         $art_num=5;
         $articles= articles::orderBy('id','desc')->take($art_num)->get();
         return view('pages.index')->with('articles',$articles);
@@ -47,7 +54,8 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        //
+        $article=articles::find($id);
+        return view('pages.show')->with('article',$article);
     }
 
     /**
