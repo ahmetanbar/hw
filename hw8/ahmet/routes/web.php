@@ -14,7 +14,7 @@
 //Route::get('/', function () {
 //    return view('pages.index');
 //});
-Route::get('/','ArticleController@deneme');
+Route::get('/','ArticleController@home');
 
 Auth::routes();
 

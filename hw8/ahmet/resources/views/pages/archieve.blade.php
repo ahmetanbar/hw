@@ -17,6 +17,9 @@
             </div>
 
         @endforeach
+
+        {{$articles->links()}}
+
     @else
         <p>No posts found</p>
     @endif

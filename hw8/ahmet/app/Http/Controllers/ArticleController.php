@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\articles;
+use App\deneme;
+use DB;
+
 class ArticleController extends Controller
 {
     /**
@@ -13,17 +16,32 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        $articles= articles::orderBy('created_at','desc')->paginate(6);
-//        $articles= articles::orderBy('id','desc')->take($art_num)->get();
+        $articles=DB::table('articles')
+            ->orderBy('articles.created_at','desc')
+            ->join('users','articles.author_id','=','users.id')
+            ->paginate(6);
+
+        return view('pages.archieve')->with('articles',$articles);
+    }
+
+    //        $articles= articles::orderBy('created_at','desc')->paginate(6);
+    //        $articles= articles::orderBy('id','desc')->take($art_num)->get();
+
+    public function home()
+    {
+        $art_num=5;
+        $articles=DB::table('articles')
+            ->orderBy('articles.id','asc')
+            ->join('users','articles.author_id','=','users.id')
+            ->take($art_num)
+            ->get();
         return view('pages.index')->with('articles',$articles);
     }
 
-    public function deneme()
-    {
-        $art_num=5;
-        $articles= articles::orderBy('id','desc')->take($art_num)->get();
-        return view('pages.index')->with('articles',$articles);
-    }
+    //        $users = DB::table('articles')->get();
+    //        return $users;
+    ////        $articles= articles::orderBy('id','desc')->take($art_num)->get();
+    //        return $articles[0]['id'];
 
     /**
      * Show the form for creating a new resource.

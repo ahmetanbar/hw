@@ -1,0 +1,1 @@
+<footer class="text-center"><a href="https://github.com/ahmetanbar"><img src='https://assets-cdn.github.com/images/modules/logos_page/GitHub-Mark.png' alt='photo of me' width="35" height="35" ></a><br>Copyleft<span class="copy-left">©</span></footer>
