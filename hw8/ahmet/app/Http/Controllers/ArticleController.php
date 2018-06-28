@@ -17,10 +17,10 @@ class ArticleController extends Controller
     public function index()
     {
         $articles=DB::table('articles')
-            ->orderBy('articles.created_at','desc')
+            ->orderBy('articles.id','desc')
             ->join('users','articles.author_id','=','users.id')
+            ->select('users.name', 'users.surname', 'articles.*')
             ->paginate(6);
-
         return view('pages.archieve')->with('articles',$articles);
     }
 
@@ -31,8 +31,9 @@ class ArticleController extends Controller
     {
         $art_num=5;
         $articles=DB::table('articles')
-            ->orderBy('articles.id','asc')
+            ->orderBy('articles.id','desc')
             ->join('users','articles.author_id','=','users.id')
+            ->select('users.name', 'users.surname', 'articles.*')
             ->take($art_num)
             ->get();
         return view('pages.index')->with('articles',$articles);
@@ -72,7 +73,22 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
-        $article=articles::find($id);
+        $article=DB::table('articles')
+            ->join('users','articles.author_id','=','users.id')
+            ->select('users.name', 'users.surname', 'articles.*')
+            ->where('articles.id', $id)
+            ->get();
+        //            ->join('users','articles.author_id','=','users.id')
+////            ->select('users.name', 'users.surname', 'articles.*')
+//            ->get();
+//        ->where('id', $id)->get();
+//        return $article;
+
+//        ->join('users','articles.author_id','=','users.id')
+//        ->select('users.name', 'users.surname', 'articles.*')
+//        ->take($art_num)
+//        ->get();
+
         return view('pages.show')->with('article',$article);
     }
 

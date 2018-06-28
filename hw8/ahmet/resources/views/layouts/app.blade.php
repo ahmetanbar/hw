@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +17,7 @@
 </head>
 <body>
 @include('inc.navbar')
-    <div id="app">
+    <div class="mx-auto" style=" max-width: 850px; margin: auto;" id="app">
         @yield('content')
     </div>
 
