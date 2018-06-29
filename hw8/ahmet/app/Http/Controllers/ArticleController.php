@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\articles;
 use App\deneme;
+use App\Comment;
 use DB;
+
 
 class ArticleController extends Controller
 {
@@ -51,7 +53,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.crecomm');
     }
 
     /**
@@ -62,7 +64,18 @@ class ArticleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'comment'=>'required'
+        ]);
+
+        $comment=new Comment;
+        $comment->comment = $request->input('comment');
+        $comment->save();
+
+        return redirect('./show')->with('success','Post Created');
+
+
+        return 123;
     }
 
     /**
@@ -100,7 +113,7 @@ class ArticleController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -112,7 +125,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -123,6 +136,6 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }

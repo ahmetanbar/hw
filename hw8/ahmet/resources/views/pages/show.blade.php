@@ -30,6 +30,31 @@
             <div>
                 {{$article->article}}
             </div>
+
+            <br>
+
+            {!! Form::open(['action' => 'ArticleController@store','method'=>'POST']) !!}
+                <div class="form-group">
+                    {{Form::textarea('comment','',['class'=>'form-control','placeholder'=>'Write your comment..'])}}
+                </div>
+
+                {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
+            {!! Form::close() !!}
+
+            {{--<form method="post" autocomplete="off" accept-charset="UTF-8" action="">--}}
+                {{--<div class="form-group">--}}
+                    {{--<textarea class="form-control" rows="5" id="comment" placeholder="Write your comment.."></textarea>--}}
+                {{--</div>--}}
+
+                {{--@guest--}}
+                    {{--<span style="color:#c30000; text-align:auto; ">For comment you should <a color:red href="login.php">Log In</a></span>--}}
+                {{--@else--}}
+                    {{--<button type="submit" class="btn btn-primary">Send</button>--}}
+                {{--@endguest--}}
+
+            {{--</form>--}}
+
+
             <hr>
             <small>Written on {{$article->created_at}}</small>
         @endforeach
