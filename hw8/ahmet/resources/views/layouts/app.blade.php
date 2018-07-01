@@ -18,8 +18,8 @@
 <body>
 @include('inc.navbar')
     <div class="mx-auto" style=" max-width: 850px; margin: auto;" id="app">
-        @include('inc.messages')
         @yield('content')
+
     </div>
 
     <!-- Scripts -->

@@ -31,15 +31,27 @@
                 {{$article->article}}
             </div>
 
+            <small>Written on {{$article->created_at}}</small>
+
             <br>
+            <br>
+            @include('inc.messages')
+
 
             {!! Form::open(['action' => 'ArticleController@store','method'=>'POST']) !!}
                 <div class="form-group">
                     {{Form::textarea('comment','',['class'=>'form-control','placeholder'=>'Write your comment..'])}}
                 </div>
+                @guest
+                    <span style="color:#c30000;">For comment you should <a color:red href="login.php">Log In</a></span>
+                @else
+                    {{Form::hidden('art_id', $article->id)}}
 
-                {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
+                    {{Form::submit('Submit', ['class'=>'btn btn-primary'])}}
+                @endguest
             {!! Form::close() !!}
+
+
 
             {{--<form method="post" autocomplete="off" accept-charset="UTF-8" action="">--}}
                 {{--<div class="form-group">--}}
@@ -56,7 +68,7 @@
 
 
             <hr>
-            <small>Written on {{$article->created_at}}</small>
+
         @endforeach
     @else
         <p>No article found</p>

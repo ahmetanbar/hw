@@ -7,7 +7,9 @@ use App\articles;
 use App\deneme;
 use App\Comment;
 use DB;
+use Auth;
 
+use Illuminate\Support\Facades\Input;
 
 class ArticleController extends Controller
 {
@@ -53,7 +55,7 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        return view('pages.crecomm');
+
     }
 
     /**
@@ -70,12 +72,12 @@ class ArticleController extends Controller
 
         $comment=new Comment;
         $comment->comment = $request->input('comment');
+        $comment->user_id=Auth::id();
+        $comment->article_id=$request->input('art_id');
+        $comment->status=0;
         $comment->save();
 
-        return redirect('./show')->with('success','Post Created');
-
-
-        return 123;
+        return redirect()->route('archieve.show', ['id' => $request->input('art_id')])->with('success','Comment Created');
     }
 
     /**
@@ -101,7 +103,6 @@ class ArticleController extends Controller
 //        ->select('users.name', 'users.surname', 'articles.*')
 //        ->take($art_num)
 //        ->get();
-
         return view('pages.show')->with('article',$article);
     }
 
