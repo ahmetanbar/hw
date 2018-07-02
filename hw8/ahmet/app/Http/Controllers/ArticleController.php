@@ -93,17 +93,16 @@ class ArticleController extends Controller
             ->select('users.name', 'users.surname', 'articles.*')
             ->where('articles.id', $id)
             ->get();
-        //            ->join('users','articles.author_id','=','users.id')
-////            ->select('users.name', 'users.surname', 'articles.*')
-//            ->get();
-//        ->where('id', $id)->get();
-//        return $article;
 
-//        ->join('users','articles.author_id','=','users.id')
-//        ->select('users.name', 'users.surname', 'articles.*')
-//        ->take($art_num)
-//        ->get();
-        return view('pages.show')->with('article',$article);
+        $comments=DB::table('comments')
+            ->join('users','comments.user_id','=','users.id')
+            ->select('users.name', 'users.surname','users.id', 'comments.*')
+            ->where('comments.article_id', $id)
+            ->get();
+
+        $artcomment = array_merge($article->toArray(), $comments->toArray());
+
+        return view('pages.show')->with('artcomment',$artcomment);
     }
 
     /**
