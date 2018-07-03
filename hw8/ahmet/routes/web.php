@@ -18,8 +18,9 @@
 
 Auth::routes();
 
-Route::get('/archieve/category/{category}','ArticleController@deneme');
+Route::resource('profile','ProfilesController');
 
+Route::get('/archieve/category/{category}','ArticleController@categorize')->name('categorize');
 Route::get('/','ArticleController@home')->name('home');
 Route::resource('archieve','ArticleController');
 

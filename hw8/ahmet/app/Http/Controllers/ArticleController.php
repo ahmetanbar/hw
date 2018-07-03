@@ -43,6 +43,26 @@ class ArticleController extends Controller
         return view('pages.index')->with('articles',$articles);
     }
 
+    public function categorize($category)
+    {
+        $articles=DB::table('articles')
+            ->orderBy('articles.id','desc')
+            ->join('users','articles.author_id','=','users.id')
+            ->select('users.name', 'users.surname', 'articles.*')
+            ->where('articles.category', $category)
+            ->paginate(6);
+        return view('pages.archieve')->with('articles',$articles);
+
+
+//        $article=DB::table('articles')
+//            ->join('users','articles.author_id','=','users.id')
+//            ->select('users.name', 'users.surname', 'articles.*')
+//            ->where('articles.id', $id)
+//            ->get()
+//
+//        return 123;
+    }
+
     //        $users = DB::table('articles')->get();
     //        return $users;
     ////        $articles= articles::orderBy('id','desc')->take($art_num)->get();
