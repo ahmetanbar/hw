@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 
-@section('content')
-    
+@section('profile')
+
     <div class="container">
     <div class="row user-menu-container ">
         <div class="container">
             <div class="row coralbg white">
-                <div class="col-md-6 no-pad">
+                <div class="col-md-8 no-pad">
                     <div class="user-pad">
                         <h3>{{$data['profile']->name}}  {{$data['profile']->surname}}</h3>
                         <h4 class="white"><i class="fa fa-check-circle-o"></i><h3>@ {{$data['profile']->username}}</h3></h4>
@@ -28,15 +28,15 @@
             <div class="row overview">
                 <div class="col-md-4 user-pad text-center">
                     <h3>Point</h3>
-                    <h4>2,784</h4>
+                    <h4>0</h4>
                 </div>
                 <div class="col-md-4 user-pad text-center">
                     <h3>Articles</h3>
-                    <h4>456</h4>
+                    <h4>{{count($data['articles'])}}</h4>
                 </div>
                 <div class="col-md-4 user-pad text-center">
                     <h3>Comments</h3>
-                    <h4>4,901</h4>
+                    <h4>{{count($data['comments'])}}</h4>
                 </div>
             </div>
 
@@ -44,18 +44,20 @@
 
             <div class="row overview">
                 <div class="btn-group-vertical square">
-                    <a href="#" class="btn btn-block btn-default">
-                        <i class="fa fa-bell-o fa-3x">Hesadasdsa</i>
-                    </a>
-                    <a href="#" class="btn btn-block btn-default">
-                        <i class="fa fa-bell-o fa-3x"></i>
-                    </a>
-                    <a href="#" class="btn btn-block btn-default">
-                        <i class="fa fa-bell-o fa-3x"></i>
-                    </a>
-                    <a href="#" class="btn btn-block btn-default">
-                        <i class="fa fa-bell-o fa-3x"></i>
-                    </a>
+                    <div class="text-center" style="background:rgba(75,63,65,0.72);">
+                             <h4>Last articles</h4>
+                    </div>
+                    @foreach($data['articles'] as $title)
+                        <a href="{{route('archieve.show',['id'=>$title->id])}}" class="btn btn-block btn-default">
+                            <h3 class="fa fa-bell-o fa-3x">{{$title->header}}</h3>
+                        </a>
+                    @endforeach
+
+                    @if(!count($data['articles']))
+                        <a href="#" class="btn btn-block btn-default">
+                            <h3 class="fa fa-bell-o fa-3x">Not found article</h3>
+                        </a>
+                    @endif
                 </div>
             </div>
 
@@ -63,18 +65,22 @@
 
             <div class="row overview">
                 <div class="btn-group-vertical square">
-                    <a href="#" class="btn btn-block btn-default">
-                        <i class="fa fa-bell-o fa-3x"></i>
-                    </a>
-                    <a href="#" class="btn btn-block btn-default">
-                        <i class="fa fa-bell-o fa-3x"></i>
-                    </a>
-                    <a href="#" class="btn btn-block btn-default">
-                        <i class="fa fa-bell-o fa-3x"></i>
-                    </a>
-                    <a href="#" class="btn btn-block btn-default">
-                        <i class="fa fa-bell-o fa-3x"></i>
-                    </a>
+                    <div class="text-center" style="background:rgba(75,63,65,0.72);">
+                        <h4>Last comments</h4>
+                    </div>
+                    @foreach($data['comments'] as $comment)
+                        <a href="{{route('archieve.show',['id'=>$comment->article_id])}}" class="btn btn-block btn-default">
+                            <h3 class="fa fa-bell-o fa-3x">"{{$comment->comment}}" on <i>{{$comment->header}}</i> </h3>
+                            <h3 class="fa fa-bell-o fa-3x"></h3>
+                        </a>
+                    @endforeach
+
+                    @if(!count($data['comments']))
+                        <a href="#" class="btn btn-block btn-default">
+                            <h3 class="fa fa-bell-o fa-3x">Not found comment</h3>
+                        </a>
+                    @endif
+
                 </div>
             </div>
         </div>

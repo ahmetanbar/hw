@@ -52,29 +52,19 @@ class ProfilesController extends Controller
             ->where('users.username', $username)
             ->first();
 
-//            ->join('users','articles.author_id','=','users.id')
-//            ->select('users.name', 'users.surname', 'articles.*')
-//            ->where('articles.id', $id)
-//            ->get();
-
-//        foreach ($profile as $user) {
-//            echo $user->name;
-//        }
-
-//        return $profile[1];
-//        return $profile->id;
         if(!count($profile)){
-            return "Not found user";
+            return abort(404);
         }
 
         $comments=DB::table('comments')
+            ->join('articles','comments.article_id','=','articles.id')
+            ->select('articles.header', 'comments.*')
             ->where('comments.user_id', $profile->id)
-            ->take(5)
+            ->take($comment_number)
             ->get();
-
         $articles=DB::table('articles')
             ->where('articles.author_id', $profile->id)
-            ->take(5)
+            ->take($comment_number)
             ->get();
 
         $data = [

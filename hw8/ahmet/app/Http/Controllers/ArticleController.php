@@ -23,7 +23,7 @@ class ArticleController extends Controller
         $articles=DB::table('articles')
             ->orderBy('articles.id','desc')
             ->join('users','articles.author_id','=','users.id')
-            ->select('users.name', 'users.surname', 'articles.*')
+            ->select('users.name', 'users.surname', 'users.username', 'articles.*')
             ->paginate(6);
         return view('pages.archieve')->with('articles',$articles);
     }
@@ -37,7 +37,7 @@ class ArticleController extends Controller
         $articles=DB::table('articles')
             ->orderBy('articles.id','desc')
             ->join('users','articles.author_id','=','users.id')
-            ->select('users.name', 'users.surname', 'articles.*')
+            ->select('users.name', 'users.surname', 'users.username', 'articles.*')
             ->take($art_num)
             ->get();
         return view('pages.index')->with('articles',$articles);
@@ -48,7 +48,7 @@ class ArticleController extends Controller
         $articles=DB::table('articles')
             ->orderBy('articles.id','desc')
             ->join('users','articles.author_id','=','users.id')
-            ->select('users.name', 'users.surname', 'articles.*')
+            ->select('users.name', 'users.surname', 'users.username', 'articles.*')
             ->where('articles.category', $category)
             ->paginate(6);
         return view('pages.archieve')->with('articles',$articles);
