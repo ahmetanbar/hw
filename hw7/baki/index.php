@@ -9,6 +9,7 @@
 <body>
 
 <?php
+session_start();
 function connection(){
     $server_name = "localhost";
     $username = "root";
@@ -29,14 +30,15 @@ function connection(){
 		<p>
 				WE'VE KNEW YOU WOULD COME HERE
 		</p>
-
-		<form action="login.php">
+    <?php echo($_SESSION) ? '':'<form action="login.php">
 			<button id="login-btn"  name="btn" type="submit"  value="btn"> LOGIN </button>
 		</form>
-
-		<form action="signup.php">
+		
+				<form action="signup.php">
 				<button id="signup-btn"  name="btn" type="submit"  value="btn"> SIGNUP </button>
-		</form>		
+		</form>	'; ?>
+
+
 
 		<div id="social">
 				<a href="http://facebook.com/bakialmaci">
@@ -76,11 +78,24 @@ function connection(){
 				<li><a href="article.php?category=algorithms">ALGORITHMS</a></li>
 				<li><a href="article.php?category=general">GENERAL</a></li>
 				<li><a href="article.php?category=projects">PROJECTS</a></li>
+            <?php if($_SESSION){ ?>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn" style="color: #a6e1ec"><?php echo $_SESSION["username"]?> </a>
+                <div class="dropdown-content">
+                    <a href="profilepage.php">Profile</a>
+                    <a href="settings.php">Settings</a>
+                    <a href="logout.php" style="color: red">Logout</a>
+                </div>
+            </li>
+            <?php } ?>
 			  </ul>
 </div>
 
 <div class="home-page">
     <?php
+//    if (isset($_SESSION["username"])){
+//        header( "refresh:0;url=profile.php" );
+//    }
     $id = 1;
     for($id = 1;$id<=5;$id++){
     $conn=connection();
@@ -91,6 +106,7 @@ function connection(){
     $list=$query->fetch_assoc();
 
     if($list){
+        $article_id = $list["id"];
         $username = $list["username"];
         $date = $list["date"];
         $topic = $list["topic"];
@@ -111,11 +127,11 @@ function connection(){
     	<p>
             <?php echo $article?>
         </p>
-		
-			<li class="more">
-				<a id="more2" href="article.php">READ MORE</a>
-				
-			</li>
+
+
+            <form class="more" action="article.php" method="get" style="max-width: 100px;margin: auto;color: white;background-color: #4d4d4d;border: 0">
+                <button id="more2" name="more" value="<?php echo $article_id; ?>" style="max-width: 100px;margin: auto;background-color: #4d4d4d;border: 0 solid;color:white">READ MORE</button>
+            </form>
 
 			<div id="info">
 				<p>View:<?php echo "UNSET";?></p>

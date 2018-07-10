@@ -1,3 +1,18 @@
+.card {
+    padding: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    max-width: 300px;
+    margin: auto;
+    text-align: center;
+    font-family: arial,sans-serif;
+    margin-left: 5px;
+}
+
+.title {
+    color: #7a48b3;
+    font-size: 18px;
+}
+
 .banner {
     width: 100%;
     height: 400px;
@@ -176,7 +191,8 @@ body {
 
 
 .home-page {
-    width: 70%;
+    width: 80%;
+    height: auto;
     margin: auto;
 }
 
@@ -201,7 +217,7 @@ h1{
     border-radius: 5px;
     background: white;
     max-width:800px;
-    height: 500px;
+    height: auto;
     padding: 40px;
     text-align: center;
     margin: auto;
@@ -212,30 +228,28 @@ h1{
 
 
 .information {
-    border-radius: 5px;
     background: white;
     max-width:300px;
     height: auto;
-    padding: 40px;
+    padding: 0px;
     text-align: left;
-    box-shadow: 0px 1px 3px rgb(0, 0, 0);
     font-size: 18px;
     float: left;
     margin-left: 10%;
 }
 
-.userhistory {
-    border-radius: 5px;
-    background: white;
-    max-width:300px;
-    height: auto;
-    padding: 40px;
-    text-align: left;
-    box-shadow: 0px 1px 3px rgb(0, 0, 0);
-    font-size: 18px;
-    float: left;
-    margin-left: 5%;
-}
+/*.userhistory {*/
+    /*border-radius: 5px;*/
+    /*background: white;*/
+    /*max-width:300px;*/
+    /*height: auto;*/
+    /*padding: 40px;*/
+    /*text-align: left;*/
+    /*box-shadow: 0px 1px 3px rgb(0, 0, 0);*/
+    /*font-size: 18px;*/
+    /*float: left;*/
+    /*margin-left: 5%;*/
+/*}*/
 
 .more{
     border-radius: 5px;

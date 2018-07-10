@@ -91,7 +91,7 @@ else{
         <li class="dropdown">
             <a href="javascript:void(0)" class="dropbtn" style="color: #a6e1ec"><?php echo $username ?></a>
             <div class="dropdown-content">
-                <a href="profile.php">Profile</a>
+                <a href="profilepage.php">Profile</a>
                 <a href="settings.php">Settings</a>
                 <a href="logout.php" style="color: red">Logout</a>
             </div>
@@ -123,40 +123,27 @@ else{
     $list=$query->fetch_assoc();
     $articles_Number = mysqli_num_rows($query);
 
-    $stmt1= $conn->prepare("SELECT $username FROM articles ORDER BY DATE DESC LIMIT 1");
-    $stmt1->bind_param("s",$username);
-    $stmt1->execute();
-    $query1 = $stmt1->get_result();
-    $list1=$query1->fetch_assoc();
-    $articles_Number = mysqli_num_rows($query);
-
-    $result = $conn->query($sql);
-    echo $result[0];
 
     ?>
 
         <div class="form" >
 
-            <div class="information">
-                <h1> User General</h1>
-                <p>Name: <?php echo $name; ?></p>
-                <p>Surname: <?php echo $surname; ?> </p>
-                <p>Username: <?php echo $username; ?> </p>
-                <p>Email: <?php echo $email; ?></p>
-                <p>Age: <?php echo $age; ?></p>
-                <p>Sex: <?php echo $sex; ?></p>
+            <div class="card">
+                <img src="./ASSESTS/STYLE/MEDIA/pp.jpeg" alt="John" style="width:100%">
+                <p style="color:green;font-size: 19px">Muhammed Baki Almacı</p>
+                <p class="title" style="font-size: 16px">Electrical and Electronics Engineering</p>
+                <p style="color: #a94442;font-size: 16px">Hacettepe University</p>
             </div>
-
-            <div class="userhistory">
-                <h1> User History</h1>
-                <p>Articles Number: <?php echo $articles_Number; ?></p>
-                <p>Comments Number: <?php echo $surname; ?> </p>
-                <p>Get Comments Number: <?php echo $username; ?> </p>
-                <p>Last Article: <?php echo $result[0]; ?></p>
-                <p>Last Comment: <?php echo $age; ?></p>
-                <p>Last Get Comment: <?php echo $sex; ?></p>
-
-            </div>
+<!--            <div class="userhistory">-->
+<!--                <h1> User History</h1>-->
+<!--                <p>Articles Number: --><?php //echo $articles_Number; ?><!--</p>-->
+<!--                <p>Comments Number: --><?php //echo $surname; ?><!-- </p>-->
+<!--                <p>Get Comments Number: --><?php //echo $username; ?><!-- </p>-->
+<!--                <p>Last Article: --><?php //echo $result[0]; ?><!--</p>-->
+<!--                <p>Last Comment: --><?php //echo $age; ?><!--</p>-->
+<!--                <p>Last Get Comment: --><?php //echo $sex; ?><!--</p>-->
+<!---->
+<!--            </div>-->
 
 
         </div>

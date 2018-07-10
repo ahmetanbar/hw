@@ -93,7 +93,7 @@
 //                    $_SESSION["tel"] = $tel;
 //                    $_SESSION["age"] = $age;
 //                    $_SESSION["sex"] = $sex;
-                    header("Location: profile.php");
+                    header("Location: index.php");
                     die();
                 }
                 else echo notification("1");
