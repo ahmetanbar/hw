@@ -80,11 +80,11 @@ function connection(){
 				<li><a href="article.php?category=projects">PROJECTS</a></li>
             <?php if($_SESSION){ ?>
             <li class="dropdown">
-                <a href="javascript:void(0)" class="dropbtn" style="color: #a6e1ec"><?php echo $_SESSION["username"]?> </a>
+                <a href="javascript:void(0)" class="dropbtn" style="color: #ff5351;font-family: 'Raleway', sans-serif"><?php echo $_SESSION["username"]?> </a>
                 <div class="dropdown-content">
                     <a href="profilepage.php">Profile</a>
                     <a href="settings.php">Settings</a>
-                    <a href="logout.php" style="color: red">Logout</a>
+                    <a href="logout.php" style="color: #f3f3f3">Logout</a>
                 </div>
             </li>
             <?php } ?>
@@ -93,9 +93,6 @@ function connection(){
 
 <div class="home-page">
     <?php
-//    if (isset($_SESSION["username"])){
-//        header( "refresh:0;url=profile.php" );
-//    }
     $id = 1;
     for($id = 1;$id<=5;$id++){
     $conn=connection();
@@ -116,6 +113,7 @@ function connection(){
     else{
         break;
     }
+
     ?>
     	<div class="form" >
 
@@ -129,19 +127,40 @@ function connection(){
         </p>
 
 
-            <form class="more" action="article.php" method="get" style="max-width: 100px;margin: auto;color: white;background-color: #4d4d4d;border: 0">
-                <button id="more2" name="more" value="<?php echo $article_id; ?>" style="max-width: 100px;margin: auto;background-color: #4d4d4d;border: 0 solid;color:white">READ MORE</button>
+            <form class="more" action="article.php" method="get" style="max-width: 100px;margin: auto;color: white;background-color: #ff5351 ;border: none;">
+                <button  name="more" value="<?php echo $article_id; ?>" style="max-width: 100px;margin: auto;background-color: #ff5351;border: 0 solid;color:white">READ MORE</button>
             </form>
 
 			<div id="info">
-				<p>View:<?php echo "UNSET";?></p>
-				<p>Comment:<?php echo "UNSET";?></p>
+				<p>View:<?php echo get_views_number($id);?></p>
+				<p>Comment:<?php echo get_comments_number($id)?></p>
 				<p>Date:<?php echo $date?></p>
 			</div>
 		
 		</div>
 
     <?php } ?>
+
+    <?php
+    function get_comments_number($id){
+        $conn=connection();
+        $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id='".$id."'");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $num_rows = mysqli_num_rows($query);
+        return $num_rows;
+    }
+
+    function get_views_number($id){
+        $conn=connection();
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$id."'");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
+        $views = $list["views"];
+        return $views;
+    }
+    ?>
 
 </div>
 

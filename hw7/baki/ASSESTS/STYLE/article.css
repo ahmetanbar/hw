@@ -13,7 +13,8 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color:#303030;
+    background-image: url("MEDIA/menu2.jpg");
+    /*background-color:#303030;*/
     box-shadow: 0px 0px 20px rgb(0, 0, 0);
 }
 
@@ -33,7 +34,8 @@ li a {
 
 li a:hover {
     border-radius: 10px;
-    background-color: rgb(70, 70, 70);
+    color: #9fcdff;
+    /*background-color: rgb(70, 70, 70);*/
 }
 
 li a, .dropbtn {
@@ -45,7 +47,8 @@ li a, .dropbtn {
 }
 
 li a:hover, .dropdown:hover .dropbtn {
-    background-color: rgb(70, 70, 70)
+    color: #9fcdff;
+    /*background-color: rgb(70, 70, 70)*/
 }
 
 li.dropdown {
@@ -153,11 +156,10 @@ h1{
     animation-duration: 20s;
     animation-timing-function: ease-in-out;
     animation-name: anim-1;
-    background: white;
+    background: #fff2f6;
     max-width:70%;
     height: auto;
-    padding: 40px;
-    padding-bottom: 120px;
+    padding: 10px 10px 10px;
     text-align: center;
     margin: auto;
     margin-top: 50px;
@@ -171,12 +173,11 @@ h1{
     outline-color: forestgreen;
     width: auto;
     border: 0;
-    margin: 0 0 5px;
+    margin: 0 0 2px;
     padding: 3px;
     box-sizing: border-box;
     font-size: 14px;
     text-align: left;
-    float: left;
 
 }
 
@@ -253,12 +254,13 @@ h1{
     border-radius: 5px;
     font-family: "Segoe UI Light", sans-serif;
     outline-color: forestgreen;
-    background: forestgreen;
+    color: whitesmoke;
+    background-image: url("MEDIA/menu.jpg");
+    /*background: forestgreen;*/
     width: auto;
     border: 0;
     margin: 0 0 15px;
     padding: 10px;
-    color: #FFFFFF;
     font-size: 14px;
     cursor: pointer;
     float: right;

@@ -29,8 +29,6 @@ h1{
     font-size: 20px;
 }
 
-
-
 #register-input{
     text-align: center;
     border-radius: 5px;
@@ -50,7 +48,8 @@ h1{
 #register-btn {
     border-radius: 50px;
     font-family: "Segoe UI Light", sans-serif;
-    background: green;
+    background-image: url("MEDIA/menu2.jpg");
+    /*background: green;*/
     width: 100%;
     border: 0;
     margin: 0 0 15px;
@@ -60,7 +59,6 @@ h1{
     cursor: pointer;
     opacity: 0.8;
     box-shadow: 0px 0px 5px rgb(0, 0, 0);
-    
 }
 
 

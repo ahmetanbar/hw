@@ -8,6 +8,7 @@
 </head>
 <body>
 <?php
+global $view;
 session_start();
 /* ------------------------------------DATABASE CONNECTION----------------------------*/
 function connection(){
@@ -35,7 +36,7 @@ else{
 
 <div class="menu">
 		<ul>
-            <li><a href="index.php" style="color: cornflowerblue">HOMEPAGE</a></li>
+            <li><a href="index.php" style="color: white;font-family: Tahoma,serif">HOMEPAGE</a></li>
             <li><a href="PAGES/arduino.php">ARDUINO</a></li>
             <li><a href="PAGES/arm.php">ARM</a></li>
             <li><a href="PAGES/c.php">C</a></li>
@@ -64,7 +65,7 @@ else{
     $topic = $list["topic"];
     $article = $list["article"];
     $title = $list["title"];
-
+    get_view($article_id);
     ?>
 
     	<div class="form" >
@@ -79,8 +80,8 @@ else{
         </p>
 
 			<div id="info">
-				<p>View:55</p>
-				<p>Comment:13</p>
+				<p>View:<?php echo get_views_number($article_id); ?></p>
+				<p>Comment:<?php echo get_comments_number($article_id); ?></p>
 				<p>Date:04/08/2018</p>
 				
             </div>
@@ -112,18 +113,18 @@ else{
 
                     ?>
                 <div id="comments">
-                <h2 style="font-family: 'Segoe UI Black',serif;color: #7a48b3"><?php echo $username;?>:</h2>
-                    <h3 style="color: #1f648b;font-size: 16px"> <?php echo $title; ?></h3  >
-                <p><?php echo $comments;?>:</p>
+                    <h2 style="font-family: 'Segoe UI Light',serif;color: #ff5351"><a style="color: #000000;font-family: 'Segoe UI Light',sans-serif;float: left">Writer:</a><?php echo $username;?>:</h2>
+                    <h2 style="color: #2b92a7;font-size: 16px;font-family: 'Segoe UI Light',sans-serif;"><a style="color: black">Title:</a> <?php echo $title; ?></h2  >
+                    <h2 style="color: #a94442"> <a style="color: black;font-size: 18px;">Comment:</a> <br> <?php echo $comments;?>:</h2>
             </div>
         <?php } ?>
 
 
         <div id="comment">
                 <form method="post">
-                    <input    id="contact-input" name="title" type="text"     placeholder="Title"/>
+                    <?php echo($_SESSION) ? '<input    id="contact-input" name="title" type="text"     placeholder="Title"/>':'<input    id="contact-input" name="title" type="text"     placeholder="Title" disabled/>'; ?>
                     <?php echo($_SESSION) ? '<textarea id="msg-input"     name="comment"  placeholder="Write here..."></textarea>':'<textarea id="msg-input"     name="msg"  placeholder="Write here..." disabled></textarea>'; ?>
-                    <?php echo($_SESSION) ? '<button   id="contact-btn"   name="send" type="submit" value="send"  >SEND</button>':'<button   id="contact-btn"   name="send" type="submit" value="send" disabled  style="background: whitesmoke;color: darkgray">LOGIN TO SEND</button>'; ?>
+                    <?php echo($_SESSION) ? '<button   id="contact-btn"   name="send" type="submit" value="send"  >SEND</button>':'<button id="contact-btn"  style="background: #a94442;color: white" disabled><a href="login.php" style="text-decoration: none;color: white">LOGIN TO SEND</a></button>'; ?>
                 </form>
 
     <?php
@@ -137,6 +138,8 @@ else{
         $conn->query("INSERT INTO comments (user_id, article_id,comments,title,username) VALUES ('$user_id', '$article_id','$comment','$title','$username')");
         $stmt->execute();
         $query = $stmt->get_result();
+        header("Location: article.php?more=$article_id");
+        die();
     }
     function get_user_id(){
         $username = $_SESSION["username"];
@@ -158,6 +161,45 @@ else{
 //        echo $userid;
 //        return $userid;
 //    }
+
+    function count_view($view,$article_id){
+        $view = $view + 1;
+        $conn=connection();
+        $stmt = $conn->prepare("UPDATE articles SET views=? WHERE id=?");
+        $stmt->bind_param('ii',$view,$article_id);
+        $stmt->execute();
+        return $view;
+    }
+
+    function get_view($article_id){
+        $conn=connection();
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$article_id."'");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
+        $view = $list["views"];
+        $view = count_view($view,$article_id);
+        return $view;
+    }
+
+    function get_views_number($id){
+        $conn=connection();
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$id."'");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
+        $views = $list["views"];
+        return $views;
+    }
+
+    function get_comments_number($id){
+        $conn=connection();
+        $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id='".$id."'");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $num_rows = mysqli_num_rows($query);
+        return $num_rows;
+    }
 
     ?>
 
