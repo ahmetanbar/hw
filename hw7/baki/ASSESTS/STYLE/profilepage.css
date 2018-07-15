@@ -16,7 +16,7 @@
 .banner {
     width: 100%;
     height: 400px;
-    background-image:url('MEDIA/banner3.jpg');
+    background-image:url('MEDIA/banner5.jpg');
     z-index: -999;
 }
 
@@ -35,7 +35,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color:#303030;
+    background-color:#122130;
     box-shadow: 0px 0px 20px rgb(0, 0, 0);
 }
 
@@ -55,7 +55,7 @@ li a {
 
 li a:hover {
     border-radius: 10px;
-    background-color: rgb(70, 70, 70);
+    background-color: #142d3e;
 }
 
 li a, .dropbtn {
@@ -67,7 +67,8 @@ li a, .dropbtn {
 }
 
 li a:hover, .dropdown:hover .dropbtn {
-    background-color: rgb(70, 70, 70)
+    background-color: #142d3e;
+    color: #c7254e;
 }
 
 li.dropdown {
@@ -75,23 +76,24 @@ li.dropdown {
 }
 
 .dropdown-content {
+    color: #c7254e;
     display: none;
     position: absolute;
-    background-color: #f9f9f9;
+    background-color: #122130;
     min-width: 160px;
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
     z-index: 1;
 }
 
 .dropdown-content a {
-    color: black;
+    color: #c7254e;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
     text-align: left;
 }
 
-.dropdown-content a:hover {background-color: #f1f1f1}
+.dropdown-content a:hover {background-color: #142d3e}
 
 .dropdown:hover .dropdown-content {
     display: block;

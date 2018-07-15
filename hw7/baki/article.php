@@ -80,10 +80,14 @@ else{
         </p>
 
 			<div id="info">
-				<p>View:<?php echo get_views_number($article_id); ?></p>
-				<p>Comment:<?php echo get_comments_number($article_id); ?></p>
-				<p>Date:04/08/2018</p>
-				
+				<p style="background-color: #c5f8ff;border-radius: 10px">View:<?php echo get_views_number($article_id); ?></p>
+				<p style="background-color: #f0e8ff;border-radius: 10px">Comment:<?php echo get_comments_number($article_id); ?></p>
+				<p style="background-color: #fff2f6;border-radius: 10px">Date:04/08/2018</p>
+                <form method="post">
+                    <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px">Like:<?php echo get_like_number($article_id) ?></button>
+                    <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px">Dislike:<?php echo get_dislike_number($article_id) ?></button>
+                </form>
+
             </div>
 
         </div>
@@ -128,7 +132,7 @@ else{
                 </form>
 
     <?php
-    if($_POST){
+    function do_comment(){
         $user_id = get_user_id();
         $article_id = $_GET["more"];
         $title = $_POST["title"];
@@ -136,11 +140,12 @@ else{
         $username = $_SESSION["username"];
         $conn = connection();
         $conn->query("INSERT INTO comments (user_id, article_id,comments,title,username) VALUES ('$user_id', '$article_id','$comment','$title','$username')");
-        $stmt->execute();
-        $query = $stmt->get_result();
-        header("Location: article.php?more=$article_id");
-        die();
     }
+
+    if(isset($_POST["more"])){
+        comment();
+    }
+
     function get_user_id(){
         $username = $_SESSION["username"];
         $userid = null;
@@ -200,9 +205,57 @@ else{
         $num_rows = mysqli_num_rows($query);
         return $num_rows;
     }
+    if (isset($_POST['like'])) {
+        do_like(get_like_number($article_id),$article_id);
+    }
+
+      function do_like($like,$article_id) {
+          $like++;
+          $conn=connection();
+          $stmt = $conn->prepare("UPDATE articles SET likes=? WHERE id=?");
+          $stmt->bind_param('ii',$like,$article_id);
+          $stmt->execute();
+      }
+
+      function get_like_number($id){
+          $conn=connection();
+          $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$id."'");
+          $stmt->execute();
+          $query = $stmt->get_result();
+          $list=$query->fetch_assoc();
+          $likes = $list["likes"];
+          return $likes;
+      }
+
+    if (isset($_POST['dislike'])) {
+        do_dislike(get_dislike_number($article_id),$article_id);
+    }
+
+    function do_dislike($dislike,$article_id) {
+        $dislike++;
+        $conn=connection();
+        $stmt = $conn->prepare("UPDATE articles SET dislikes=? WHERE id=?");
+        $stmt->bind_param('ii',$dislike,$article_id);
+        $stmt->execute();
+    }
+
+    function get_dislike_number($id){
+        $conn=connection();
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$id."'");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
+        $dislikes = $list["dislikes"];
+        return $dislikes;
+    }
 
     ?>
 
+            <script>
+                if ( window.history.replaceState ) {
+                    window.history.replaceState( null, null, window.location.href );
+                }
+            </script>
 
 
 </div>

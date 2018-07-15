@@ -2,29 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d087f4c6-14e0-414f-9df7-20d5a5ca0b22" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilepage.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/settings.css" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/hw7/baki/profilepage.php" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/hw7/baki/settings.php" />
       <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Muhamemd_Baki.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/Muhamemd_Baki.xml" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/article.css" afterPath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/article.css" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/signup.css" afterPath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/signup.css" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/algorithms.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/arduino.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/arm.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/c.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/general.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/html-css.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/java.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/php.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/projects.php" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/PAGES/python.php" afterPath="$PROJECT_DIR$/hw7/baki/PAGES/article.php" />
+      <change beforePath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/index.css" afterPath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/index.css" />
+      <change beforePath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilepage.css" afterPath="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilepage.css" />
       <change beforePath="$PROJECT_DIR$/hw7/baki/article.php" afterPath="$PROJECT_DIR$/hw7/baki/article.php" />
       <change beforePath="$PROJECT_DIR$/hw7/baki/index.php" afterPath="$PROJECT_DIR$/hw7/baki/index.php" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/login.php" afterPath="$PROJECT_DIR$/hw7/baki/login.php" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/logout.php" afterPath="$PROJECT_DIR$/hw7/baki/logout.php" />
-      <change beforePath="$PROJECT_DIR$/hw7/baki/profile.php" afterPath="$PROJECT_DIR$/hw7/baki/profile.php" />
+      <change beforePath="$PROJECT_DIR$/hw7/baki/profilepage.php" afterPath="$PROJECT_DIR$/hw7/baki/profilepage.php" />
       <change beforePath="$PROJECT_DIR$/hw7/baki/signup.php" afterPath="$PROJECT_DIR$/hw7/baki/signup.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,135 +19,86 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="index.php" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/hw7/baki/index.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="155">
+              <caret line="110" column="55" lean-forward="false" selection-start-line="110" selection-start-column="50" selection-end-line="110" selection-end-column="55" />
+              <folding>
+                <marker date="1531536277980" expanded="true" signature="698:790" ph="..." />
+                <marker date="1531536277980" expanded="true" signature="824:919" ph="..." />
+                <marker date="1531536277980" expanded="true" signature="4020:4049" ph="SELECT * FRO... articles" />
+                <marker date="1531536277980" expanded="true" signature="4020:4053" ph="SELECT * FRO... articles" />
+                <marker date="1531536277980" expanded="true" signature="6153:6202" ph="SELECT * FRO... comments" />
+                <marker date="1531536277980" expanded="true" signature="6195:6202" ph="SELECT * FRO... articles" />
+                <marker date="1531536277980" expanded="true" signature="6199:6202" ph="SELECT * FRO... articles" />
+                <marker date="1531536277980" expanded="true" signature="6443:6484" ph="SELECT * FRO... comments" />
+                <marker date="1531536277980" expanded="true" signature="6871:6909" ph="UPDATE articles... " />
+                <marker date="1531536277980" expanded="true" signature="7091:7132" ph="SELECT * FRO... articles" />
+                <marker date="1531536277980" expanded="true" signature="7536:7577" ph="UPDATE articles... " />
+                <marker date="1531536277980" expanded="true" signature="7781:7822" ph="SELECT * FRO... articles" />
+                <marker date="1531536277980" expanded="true" signature="8276:8357" ph="INSERT INTO articles... " />
+                <marker date="1531536277980" expanded="true" signature="8276:8403" ph="INSERT INTO articles... " />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="index.css" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/index.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="8029">
+              <caret line="259" column="17" lean-forward="false" selection-start-line="259" selection-start-column="17" selection-end-line="259" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="article.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/PAGES/article.php">
+        <entry file="file://$PROJECT_DIR$/hw7/baki/article.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="13" column="48" lean-forward="false" selection-start-line="13" selection-start-column="48" selection-end-line="13" selection-end-column="48" />
+            <state relative-caret-position="6696">
+              <caret line="216" column="27" lean-forward="false" selection-start-line="216" selection-start-column="27" selection-end-line="216" selection-end-column="27" />
               <folding>
-                <marker date="1528464991979" expanded="true" signature="2914:2959" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="1715:1747" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="1715:1762" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="1715:1763" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="1715:1764" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="1715:1765" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="1715:1766" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="3242:3310" ph="prepare(&quot;SEL... " />
+                <marker date="1531442898902" expanded="true" signature="3251:3273" ph="SELECT * FRO... comments" />
+                <marker date="1531442898902" expanded="true" signature="3251:3292" ph="SELECT * FRO... comments" />
+                <marker date="1531442898902" expanded="true" signature="3251:3308" ph="SELECT * FRO... comments" />
+                <marker date="1531442898902" expanded="true" signature="5314:5346" ph="..." />
+                <marker date="1531442898902" expanded="true" signature="5384:5418" ph="..." />
+                <marker date="1531442898902" expanded="true" signature="5752:5885" ph="INSERT INTO comments... " />
+                <marker date="1531442898902" expanded="true" signature="6108:6158" ph="SELECT * FRO... users" />
+                <marker date="1531442898902" expanded="true" signature="6737:6775" ph="UPDATE articles... " />
+                <marker date="1531442898902" expanded="true" signature="6980:7029" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="7337:7378" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="7644:7693" ph="SELECT * FRO... comments" />
+                <marker date="1531442898902" expanded="true" signature="8064:8102" ph="UPDATE articles... " />
+                <marker date="1531442898902" expanded="true" signature="8296:8337" ph="SELECT * FRO... articles" />
+                <marker date="1531442898902" expanded="true" signature="8753:8794" ph="UPDATE articles... " />
+                <marker date="1531442898902" expanded="true" signature="8982:9023" ph="SELECT * FRO... articles" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="homepage.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/OLD/homepage.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="849">
-              <caret line="156" column="24" lean-forward="false" selection-start-line="156" selection-start-column="24" selection-end-line="156" selection-end-column="68" />
-              <folding>
-                <marker date="1526205791922" expanded="true" signature="3120:3182" ph="SELECT id FR... users_table" />
-                <marker date="1526205791922" expanded="true" signature="3830:3928" ph="INSERT INTO users_table... " />
-                <marker date="1526205791922" expanded="true" signature="4335:4397" ph="SELECT * FRO... users_table" />
-                <marker date="1526205791922" expanded="true" signature="4618:4667" ph="select * fro... cookies" />
-                <marker date="1526205791922" expanded="true" signature="4848:4913" ph="INSERT INTO cookies... " />
-                <marker date="1526205791922" expanded="true" signature="5161:5207" ph="UPDATE cookies... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="signup.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/signup.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="8" column="23" lean-forward="false" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="settings.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/settings.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="849">
-              <caret line="101" column="27" lean-forward="false" selection-start-line="101" selection-start-column="27" selection-end-line="101" selection-end-column="27" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="login.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/login.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="401">
-              <caret line="87" column="44" lean-forward="false" selection-start-line="87" selection-start-column="44" selection-end-line="87" selection-end-column="44" />
-              <folding>
-                <marker date="1529196789483" expanded="true" signature="3572:3623" ph="SELECT * FRO... users" />
-                <marker date="1529196789483" expanded="true" signature="4616:4666" ph="SELECT * FRO... users" />
-                <marker date="1529196789483" expanded="true" signature="4784:4830" ph="SELECT * FRO... auth" />
-                <marker date="1529196789483" expanded="true" signature="5023:5085" ph="INSERT INTO auth... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="logout.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/logout.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="541">
-              <caret line="29" column="23" lean-forward="false" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
-              <folding>
-                <marker date="1529195920396" expanded="true" signature="537:570" ph="SELECT * FRO... auth" />
-                <marker date="1529195920396" expanded="true" signature="771:802" ph="DELETE FROM auth... " />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="profile.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="108" column="25" lean-forward="true" selection-start-line="108" selection-start-column="25" selection-end-line="108" selection-end-column="25" />
-              <folding>
-                <marker date="1529196960568" expanded="true" signature="3626:3659" ph="SELECT * FRO... articles" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="profilepage.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/profilepage.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="485">
-              <caret line="128" column="25" lean-forward="true" selection-start-line="128" selection-start-column="25" selection-end-line="128" selection-end-column="25" />
-              <folding>
-                <marker date="1529201513986" expanded="true" signature="3598:3634" ph="SELECT * FRO... users" />
-                <marker date="1529201513986" expanded="true" signature="3986:4025" ph="SELECT * FRO... articles" />
-                <marker date="1529201513986" expanded="true" signature="4233:4290" ph="SELECT ${$us... articles" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="index.php" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/kaan/index.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="63" column="35" lean-forward="true" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
-              <folding>
-                <marker date="1526917363348" expanded="true" signature="1710:1747" ph="SELECT usern... users" />
-                <marker date="1526917363348" expanded="true" signature="1998:2045" ph="SELECT * FRO... articles" />
-                <marker date="1526917363348" expanded="true" signature="6565:6613" ph="SELECT id,de... users" />
-                <marker date="1526917363348" expanded="false" signature="7857:7886" ph="..." />
-                <marker date="1526917363348" expanded="false" signature="7983:7995" ph="..." />
-                <marker date="1526917363348" expanded="false" signature="8176:8205" ph="..." />
-                <marker date="1526917363348" expanded="false" signature="8290:8302" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="profilepage.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilepage.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="112">
-              <caret line="202" column="20" lean-forward="true" selection-start-line="202" selection-start-column="20" selection-end-line="202" selection-end-column="20" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -179,6 +115,8 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>sess</find>
+      <find>profile.php</find>
+      <find>foo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -196,22 +134,25 @@
         <option value="$PROJECT_DIR$/hw7/baki/signup.css" />
         <option value="$PROJECT_DIR$/hw7/baki/notifications.php" />
         <option value="$PROJECT_DIR$/hw7/baki/prof" />
-        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profile.css" />
-        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/article.css" />
-        <option value="$PROJECT_DIR$/hw7/baki/article.php" />
         <option value="$PROJECT_DIR$/hw7/baki/PAGES/php.php" />
-        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/signup.css" />
-        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/index.css" />
-        <option value="$PROJECT_DIR$/hw7/baki/signup.php" />
         <option value="$PROJECT_DIR$/hw7/baki/settings.php" />
         <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/settings.css" />
         <option value="$PROJECT_DIR$/hw7/baki/PAGES/article.php" />
-        <option value="$PROJECT_DIR$/hw7/baki/index.php" />
         <option value="$PROJECT_DIR$/hw7/baki/logout.php" />
-        <option value="$PROJECT_DIR$/hw7/baki/login.php" />
+        <option value="$PROJECT_DIR$/hw7/baki/pcard.php" />
+        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilecard.css" />
+        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profile.css" />
         <option value="$PROJECT_DIR$/hw7/baki/profile.php" />
+        <option value="$PROJECT_DIR$/hw7/baki/login.php" />
+        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/login.css" />
+        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/signup.css" />
+        <option value="$PROJECT_DIR$/hw7/baki/signup.php" />
+        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/article.css" />
         <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilepage.css" />
         <option value="$PROJECT_DIR$/hw7/baki/profilepage.php" />
+        <option value="$PROJECT_DIR$/hw7/baki/article.php" />
+        <option value="$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/index.css" />
+        <option value="$PROJECT_DIR$/hw7/baki/index.php" />
       </list>
     </option>
   </component>
@@ -222,10 +163,11 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="PhpWorkspaceProjectConfiguration" backward_compatibility_performed="true" interpreter_name="PHP" />
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-7" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="635" />
+    <option name="y" value="-20" />
     <option name="width" value="974" />
-    <option name="height" value="1057" />
+    <option name="height" value="1047" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -284,12 +226,6 @@
               <item name="hw" type="b2602c69:ProjectViewProjectNode" />
               <item name="hw" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="hw7" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="ahmet" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="hw" type="b2602c69:ProjectViewProjectNode" />
-              <item name="hw" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="hw7" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="baki" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
             <path>
@@ -312,7 +248,9 @@
               <item name="hw" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="hw7" type="2a2b976b:PhpTreeStructureProvider$1" />
               <item name="baki" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="PAGES" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="ASSESTS" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="STYLE" type="2a2b976b:PhpTreeStructureProvider$1" />
+              <item name="MEDIA" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
           </expand>
           <select />
@@ -327,11 +265,15 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\PHP\hw\hw7\baki\ASSESTS" />
       <recent name="C:\Users\Muhamemd Baki\Desktop\hw" />
+    </key>
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\PHP\hw\hw7\baki\ASSESTS\STYLE\MEDIA" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -347,6 +289,7 @@
     </option>
   </component>
   <component name="RunManager">
+    <configuration name="index.php" type="JavascriptDebugType" factoryName="JavaScript Debug" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/hw/hw7/baki/index.php" />
     <configuration name="&lt;template&gt;" type="Applet" default="true" selected="false">
       <option name="MAIN_CLASS_NAME" />
       <option name="HTML_FILE_NAME" />
@@ -416,6 +359,11 @@
     <configuration name="&lt;template&gt;" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" default="true" selected="false">
       <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m -ea" />
     </configuration>
+    <recent_temporary>
+      <list size="1">
+        <item index="0" class="java.lang.String" itemvalue="JavaScript Debug.index.php" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
@@ -443,7 +391,18 @@
       <workItem from="1527747690863" duration="5000" />
       <workItem from="1528462347587" duration="2653000" />
       <workItem from="1529024794254" duration="152000" />
-      <workItem from="1529193259863" duration="7671000" />
+      <workItem from="1529193259863" duration="8876000" />
+      <workItem from="1529374735340" duration="217000" />
+      <workItem from="1530246354206" duration="1576000" />
+      <workItem from="1530305607896" duration="4356000" />
+      <workItem from="1530843301892" duration="12801000" />
+      <workItem from="1531184723440" duration="8250000" />
+      <workItem from="1531279969858" duration="3352000" />
+      <workItem from="1531348241036" duration="241000" />
+      <workItem from="1531365807728" duration="8215000" />
+      <workItem from="1531413021727" duration="15519000" />
+      <workItem from="1531535420774" duration="1441000" />
+      <workItem from="1531536918056" duration="5000" />
     </task>
     <task id="LOCAL-00001" summary="HW-CPU Re-added.">
       <created>1519502441222</created>
@@ -456,16 +415,14 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35307000" />
+    <option name="totallyTimeSpent" value="92485000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1066" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21302083" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3582395" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23987207" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
@@ -482,6 +439,7 @@
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -491,6 +449,36 @@
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="PHP-CGI Server" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23987207" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3582395" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
+      <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -509,31 +497,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/hw7/baki/article.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2436">
-          <caret line="87" column="264" lean-forward="false" selection-start-line="87" selection-start-column="264" selection-end-line="87" selection-end-column="264" />
-          <folding>
-            <marker date="1528462548884" expanded="true" signature="947:968" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="1021:1042" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="4263:4301" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="4568:4679" ph="INSERT INTO comments... " />
-            <marker date="1528462548884" expanded="true" signature="4714:4747" ph="SELECT * FRO... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/logout.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="11" column="9" lean-forward="true" selection-start-line="11" selection-start-column="9" selection-end-line="11" selection-end-column="9" />
-          <folding>
-            <marker date="1529195920396" expanded="true" signature="537:570" ph="SELECT * FRO... auth" />
-            <marker date="1529195920396" expanded="true" signature="771:802" ph="DELETE FROM auth... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/article.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7168">
@@ -545,33 +508,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1904">
           <caret line="68" column="64" lean-forward="true" selection-start-line="68" selection-start-column="64" selection-end-line="68" selection-end-column="64" />
-          <folding>
-            <marker date="1529195041644" expanded="true" signature="2680:2713" ph="SELECT * FRO... articles" />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2968">
-          <caret line="106" column="0" lean-forward="false" selection-start-line="106" selection-start-column="0" selection-end-line="110" selection-end-column="36" />
-          <folding>
-            <marker date="1529196960568" expanded="true" signature="3626:3659" ph="SELECT * FRO... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php" />
     <entry file="file://$PROJECT_DIR$/hw7/baki/signup.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2324">
           <caret line="83" column="0" lean-forward="false" selection-start-line="83" selection-start-column="0" selection-end-line="85" selection-end-column="44" />
-          <folding>
-            <marker date="1527275518063" expanded="true" signature="4554:4641" ph="INSERT INTO users... " />
-            <marker date="1527275518063" expanded="true" signature="5133:5169" ph="SELECT * FRO... users" />
-            <marker date="1527275518063" expanded="true" signature="5669:5719" ph="SELECT * FRO... users" />
-            <marker date="1527275518063" expanded="true" signature="5849:5895" ph="SELECT * FRO... auth" />
-            <marker date="1527275518063" expanded="true" signature="6108:6170" ph="INSERT INTO auth... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -579,9 +523,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2044">
           <caret line="73" column="45" lean-forward="false" selection-start-line="73" selection-start-column="45" selection-end-line="73" selection-end-column="45" />
-          <folding>
-            <marker date="1529195041644" expanded="true" signature="2680:2713" ph="SELECT * FRO... articles" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -590,11 +531,28 @@
         <state relative-caret-position="2716">
           <caret line="97" column="37" lean-forward="false" selection-start-line="97" selection-start-column="37" selection-end-line="97" selection-end-column="37" />
           <folding>
-            <marker date="1528462548884" expanded="true" signature="947:968" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="1021:1042" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="4263:4301" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="4568:4679" ph="INSERT INTO comments... " />
-            <marker date="1528462548884" expanded="true" signature="4714:4747" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1747" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1762" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1763" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1764" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1765" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1766" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="3242:3310" ph="prepare(&quot;SEL... " />
+            <marker date="1531442898902" expanded="true" signature="3251:3273" ph="SELECT * FRO... comments" />
+            <marker date="1531442898902" expanded="true" signature="3251:3292" ph="SELECT * FRO... comments" />
+            <marker date="1531442898902" expanded="true" signature="3251:3308" ph="SELECT * FRO... comments" />
+            <marker date="1531442898902" expanded="true" signature="5314:5346" ph="..." />
+            <marker date="1531442898902" expanded="true" signature="5384:5418" ph="..." />
+            <marker date="1531442898902" expanded="true" signature="5752:5885" ph="INSERT INTO comments... " />
+            <marker date="1531442898902" expanded="true" signature="6108:6158" ph="SELECT * FRO... users" />
+            <marker date="1531442898902" expanded="true" signature="6737:6775" ph="UPDATE articles... " />
+            <marker date="1531442898902" expanded="true" signature="6980:7029" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="7337:7378" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="7644:7693" ph="SELECT * FRO... comments" />
+            <marker date="1531442898902" expanded="true" signature="8064:8102" ph="UPDATE articles... " />
+            <marker date="1531442898902" expanded="true" signature="8296:8337" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="8753:8794" ph="UPDATE articles... " />
+            <marker date="1531442898902" expanded="true" signature="8982:9023" ph="SELECT * FRO... articles" />
           </folding>
         </state>
       </provider>
@@ -603,12 +561,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3024">
           <caret line="108" column="16" lean-forward="false" selection-start-line="108" selection-start-column="16" selection-end-line="108" selection-end-column="36" />
-          <folding>
-            <marker date="1529196789483" expanded="true" signature="3572:3623" ph="SELECT * FRO... users" />
-            <marker date="1529196789483" expanded="true" signature="4616:4666" ph="SELECT * FRO... users" />
-            <marker date="1529196789483" expanded="true" signature="4784:4830" ph="SELECT * FRO... auth" />
-            <marker date="1529196789483" expanded="true" signature="5023:5085" ph="INSERT INTO auth... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -616,10 +568,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="15" column="25" lean-forward="true" selection-start-line="15" selection-start-column="25" selection-end-line="15" selection-end-column="25" />
-          <folding>
-            <marker date="1529195920396" expanded="true" signature="537:570" ph="SELECT * FRO... auth" />
-            <marker date="1529195920396" expanded="true" signature="771:802" ph="DELETE FROM auth... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -627,30 +575,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="4" column="36" lean-forward="false" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1344">
-          <caret line="48" column="7" lean-forward="true" selection-start-line="48" selection-start-column="7" selection-end-line="48" selection-end-column="7" />
-          <folding>
-            <marker date="1529196960568" expanded="true" signature="3626:3659" ph="SELECT * FRO... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php" />
     <entry file="file://$PROJECT_DIR$/hw7/baki/login.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2576">
           <caret line="92" column="9" lean-forward="true" selection-start-line="92" selection-start-column="9" selection-end-line="92" selection-end-column="9" />
-          <folding>
-            <marker date="1529196789483" expanded="true" signature="3572:3623" ph="SELECT * FRO... users" />
-            <marker date="1529196789483" expanded="true" signature="4616:4666" ph="SELECT * FRO... users" />
-            <marker date="1529196789483" expanded="true" signature="4784:4830" ph="SELECT * FRO... auth" />
-            <marker date="1529196789483" expanded="true" signature="5023:5085" ph="INSERT INTO auth... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -658,10 +590,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="812">
           <caret line="29" column="64" lean-forward="false" selection-start-line="29" selection-start-column="64" selection-end-line="29" selection-end-column="64" />
-          <folding>
-            <marker date="1529195920396" expanded="true" signature="537:570" ph="SELECT * FRO... auth" />
-            <marker date="1529195920396" expanded="true" signature="771:802" ph="DELETE FROM auth... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -669,30 +597,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="4" column="36" lean-forward="false" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="168">
-          <caret line="6" column="35" lean-forward="false" selection-start-line="6" selection-start-column="35" selection-end-line="6" selection-end-column="35" />
-          <folding>
-            <marker date="1529196960568" expanded="true" signature="3626:3659" ph="SELECT * FRO... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php" />
     <entry file="file://$PROJECT_DIR$/hw7/baki/login.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2408">
           <caret line="86" column="26" lean-forward="false" selection-start-line="86" selection-start-column="26" selection-end-line="86" selection-end-column="26" />
-          <folding>
-            <marker date="1529196789483" expanded="true" signature="3572:3623" ph="SELECT * FRO... users" />
-            <marker date="1529196789483" expanded="true" signature="4616:4666" ph="SELECT * FRO... users" />
-            <marker date="1529196789483" expanded="true" signature="4784:4830" ph="SELECT * FRO... auth" />
-            <marker date="1529196789483" expanded="true" signature="5023:5085" ph="INSERT INTO auth... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -700,28 +612,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="4" column="36" lean-forward="false" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1232">
-          <caret line="44" column="64" lean-forward="false" selection-start-line="44" selection-start-column="64" selection-end-line="44" selection-end-column="64" />
-          <folding>
-            <marker date="1529196960568" expanded="true" signature="3626:3659" ph="SELECT * FRO... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php" />
     <entry file="file://$PROJECT_DIR$/hw7/baki/logout.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="812">
           <caret line="29" column="64" lean-forward="false" selection-start-line="29" selection-start-column="64" selection-end-line="29" selection-end-column="64" />
-          <folding>
-            <marker date="1529195920396" expanded="true" signature="537:570" ph="SELECT * FRO... auth" />
-            <marker date="1529195920396" expanded="true" signature="771:802" ph="DELETE FROM auth... " />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -731,7 +629,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="4" column="36" lean-forward="false" selection-start-line="4" selection-start-column="36" selection-end-line="4" selection-end-column="36" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -744,47 +641,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/article.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2660">
-          <caret line="95" column="42" lean-forward="false" selection-start-line="95" selection-start-column="42" selection-end-line="95" selection-end-column="42" />
-          <folding>
-            <marker date="1528462548884" expanded="true" signature="947:968" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="1021:1042" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="4263:4301" ph="..." />
-            <marker date="1528462548884" expanded="true" signature="4568:4679" ph="INSERT INTO comments... " />
-            <marker date="1528462548884" expanded="true" signature="4714:4747" ph="SELECT * FRO... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hw7/baki/PAGES/php.php" />
-    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/article.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="840">
-          <caret line="256" column="16" lean-forward="false" selection-start-line="256" selection-start-column="16" selection-end-line="256" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/login.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/index.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="49" column="21" lean-forward="false" selection-start-line="49" selection-start-column="19" selection-end-line="49" selection-end-column="21" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/settings.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5488">
           <caret line="196" column="1" lean-forward="false" selection-start-line="196" selection-start-column="1" selection-end-line="196" selection-end-column="1" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -806,7 +667,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -814,74 +674,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-364">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1526917363190" expanded="true" signature="413:463" ph="select title... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/signup.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="6" column="25" lean-forward="false" selection-start-line="6" selection-start-column="25" selection-end-line="6" selection-end-column="25" />
-          <folding>
-            <marker date="1527275518063" expanded="true" signature="4554:4641" ph="INSERT INTO users... " />
-            <marker date="1527275518063" expanded="true" signature="5133:5169" ph="SELECT * FRO... users" />
-            <marker date="1527275518063" expanded="true" signature="5669:5719" ph="SELECT * FRO... users" />
-            <marker date="1527275518063" expanded="true" signature="5849:5895" ph="SELECT * FRO... auth" />
-            <marker date="1527275518063" expanded="true" signature="6108:6170" ph="INSERT INTO auth... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/index.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1904">
-          <caret line="68" column="41" lean-forward="false" selection-start-line="68" selection-start-column="41" selection-end-line="68" selection-end-column="41" />
-          <folding>
-            <marker date="1529195041644" expanded="true" signature="2680:2713" ph="SELECT * FRO... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/PAGES/article.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="13" column="48" lean-forward="false" selection-start-line="13" selection-start-column="48" selection-end-line="13" selection-end-column="48" />
-          <folding>
-            <marker date="1528464991979" expanded="true" signature="2914:2959" ph="SELECT * FRO... articles" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hw7/baki/OLD/homepage.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="849">
+        <state relative-caret-position="4368">
           <caret line="156" column="24" lean-forward="false" selection-start-line="156" selection-start-column="24" selection-end-line="156" selection-end-column="68" />
-          <folding>
-            <marker date="1526205791922" expanded="true" signature="3120:3182" ph="SELECT id FR... users_table" />
-            <marker date="1526205791922" expanded="true" signature="3830:3928" ph="INSERT INTO users_table... " />
-            <marker date="1526205791922" expanded="true" signature="4335:4397" ph="SELECT * FRO... users_table" />
-            <marker date="1526205791922" expanded="true" signature="4618:4667" ph="select * fro... cookies" />
-            <marker date="1526205791922" expanded="true" signature="4848:4913" ph="INSERT INTO cookies... " />
-            <marker date="1526205791922" expanded="true" signature="5161:5207" ph="UPDATE cookies... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/signup.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="8" column="23" lean-forward="false" selection-start-line="8" selection-start-column="23" selection-end-line="8" selection-end-column="23" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hw7/baki/settings.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="849">
+        <state relative-caret-position="2828">
           <caret line="101" column="27" lean-forward="false" selection-start-line="101" selection-start-column="27" selection-end-line="101" selection-end-column="27" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -889,18 +695,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1932">
           <caret line="10" column="28" lean-forward="true" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
-          <folding>
-            <marker date="1526917363207" expanded="true" signature="954:990" ph="SELECT auth cookie" />
-            <marker date="1526917363207" expanded="true" signature="3486:3523" ph="SELECT email... users" />
-            <marker date="1526917363207" expanded="true" signature="3630:3707" ph="SELECT id,na... users" />
-            <marker date="1526917363207" expanded="true" signature="3927:3970" ph="SELECT usern... users" />
-            <marker date="1526917363207" expanded="true" signature="4078:4175" ph="SELECT id,na... users" />
-            <marker date="1526917363207" expanded="true" signature="5144:5192" ph="INSERT INTO cookie... " />
-            <marker date="1526917363207" expanded="true" signature="6640:6654" ph="..." />
-            <marker date="1526917363207" expanded="true" signature="6762:6776" ph="..." />
-            <marker date="1526917363207" expanded="true" signature="6882:6896" ph="..." />
-            <marker date="1526917363207" expanded="true" signature="7175:7189" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -908,86 +702,141 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1708">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <marker date="1526917363348" expanded="true" signature="2587:2639" ph="SELECT id,pw... users" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hw7/baki/logout.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="541">
+        <state relative-caret-position="812">
           <caret line="29" column="23" lean-forward="false" selection-start-line="29" selection-start-column="23" selection-end-line="29" selection-end-column="23" />
-          <folding>
-            <marker date="1529195920396" expanded="true" signature="537:570" ph="SELECT * FRO... auth" />
-            <marker date="1529195920396" expanded="true" signature="771:802" ph="DELETE FROM auth... " />
-          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/login.php">
+    <entry file="file://$PROJECT_DIR$/hw7/baki/PAGES/article.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="401">
-          <caret line="87" column="44" lean-forward="false" selection-start-line="87" selection-start-column="44" selection-end-line="87" selection-end-column="44" />
-          <folding>
-            <marker date="1529196789483" expanded="true" signature="3572:3623" ph="SELECT * FRO... users" />
-            <marker date="1529196789483" expanded="true" signature="4616:4666" ph="SELECT * FRO... users" />
-            <marker date="1529196789483" expanded="true" signature="4784:4830" ph="SELECT * FRO... auth" />
-            <marker date="1529196789483" expanded="true" signature="5023:5085" ph="INSERT INTO auth... " />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profile.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="68" column="1" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="336" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="108" column="25" lean-forward="true" selection-start-line="108" selection-start-column="25" selection-end-line="108" selection-end-column="25" />
-          <folding>
-            <marker date="1529196960568" expanded="true" signature="3626:3659" ph="SELECT * FRO... articles" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilepage.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="112">
-          <caret line="202" column="20" lean-forward="true" selection-start-line="202" selection-start-column="20" selection-end-line="202" selection-end-column="20" />
-          <folding />
+        <state relative-caret-position="28">
+          <caret line="13" column="48" lean-forward="false" selection-start-line="13" selection-start-column="48" selection-end-line="13" selection-end-column="48" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hw7/kaan/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="63" column="35" lean-forward="true" selection-start-line="63" selection-start-column="35" selection-end-line="63" selection-end-column="35" />
-          <folding>
-            <marker date="1526917363348" expanded="true" signature="1710:1747" ph="SELECT usern... users" />
-            <marker date="1526917363348" expanded="true" signature="1998:2045" ph="SELECT * FRO... articles" />
-            <marker date="1526917363348" expanded="true" signature="6565:6613" ph="SELECT id,de... users" />
-            <marker date="1526917363348" expanded="false" signature="7857:7886" ph="..." />
-            <marker date="1526917363348" expanded="false" signature="7983:7995" ph="..." />
-            <marker date="1526917363348" expanded="false" signature="8176:8205" ph="..." />
-            <marker date="1526917363348" expanded="false" signature="8290:8302" ph="..." />
-          </folding>
+        <state relative-caret-position="140">
+          <caret line="71" column="59" lean-forward="false" selection-start-line="71" selection-start-column="59" selection-end-line="71" selection-end-column="59" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/pcard.php" />
+    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilecard.css" />
+    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profile.css" />
+    <entry file="file://$PROJECT_DIR$/hw7/baki/profile.php" />
+    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/article.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="152" column="0" lean-forward="true" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/signup.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="22" column="18" lean-forward="false" selection-start-line="22" selection-start-column="18" selection-end-line="22" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/profilepage.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="88" column="9" lean-forward="false" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/hw7/baki/profilepage.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="485">
-          <caret line="128" column="25" lean-forward="true" selection-start-line="128" selection-start-column="25" selection-end-line="128" selection-end-column="25" />
+        <state relative-caret-position="279">
+          <caret line="132" column="93" lean-forward="false" selection-start-line="132" selection-start-column="93" selection-end-line="132" selection-end-column="93" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/login.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="856">
+          <caret line="44" column="4" lean-forward="false" selection-start-line="44" selection-start-column="0" selection-end-line="45" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/login.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="372">
+          <caret line="12" column="49" lean-forward="false" selection-start-line="12" selection-start-column="49" selection-end-line="12" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/signup.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="92" column="51" lean-forward="true" selection-start-line="92" selection-start-column="0" selection-end-line="93" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/article.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="6696">
+          <caret line="216" column="27" lean-forward="false" selection-start-line="216" selection-start-column="27" selection-end-line="216" selection-end-column="27" />
           <folding>
-            <marker date="1529201513986" expanded="true" signature="3598:3634" ph="SELECT * FRO... users" />
-            <marker date="1529201513986" expanded="true" signature="3986:4025" ph="SELECT * FRO... articles" />
-            <marker date="1529201513986" expanded="true" signature="4233:4290" ph="SELECT ${$us... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1747" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1762" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1763" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1764" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1765" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="1715:1766" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="3242:3310" ph="prepare(&quot;SEL... " />
+            <marker date="1531442898902" expanded="true" signature="3251:3273" ph="SELECT * FRO... comments" />
+            <marker date="1531442898902" expanded="true" signature="3251:3292" ph="SELECT * FRO... comments" />
+            <marker date="1531442898902" expanded="true" signature="3251:3308" ph="SELECT * FRO... comments" />
+            <marker date="1531442898902" expanded="true" signature="5314:5346" ph="..." />
+            <marker date="1531442898902" expanded="true" signature="5384:5418" ph="..." />
+            <marker date="1531442898902" expanded="true" signature="5752:5885" ph="INSERT INTO comments... " />
+            <marker date="1531442898902" expanded="true" signature="6108:6158" ph="SELECT * FRO... users" />
+            <marker date="1531442898902" expanded="true" signature="6737:6775" ph="UPDATE articles... " />
+            <marker date="1531442898902" expanded="true" signature="6980:7029" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="7337:7378" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="7644:7693" ph="SELECT * FRO... comments" />
+            <marker date="1531442898902" expanded="true" signature="8064:8102" ph="UPDATE articles... " />
+            <marker date="1531442898902" expanded="true" signature="8296:8337" ph="SELECT * FRO... articles" />
+            <marker date="1531442898902" expanded="true" signature="8753:8794" ph="UPDATE articles... " />
+            <marker date="1531442898902" expanded="true" signature="8982:9023" ph="SELECT * FRO... articles" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/ASSESTS/STYLE/index.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8029">
+          <caret line="259" column="17" lean-forward="false" selection-start-line="259" selection-start-column="17" selection-end-line="259" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw7/baki/index.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="155">
+          <caret line="110" column="55" lean-forward="false" selection-start-line="110" selection-start-column="50" selection-end-line="110" selection-end-column="55" />
+          <folding>
+            <marker date="1531536277980" expanded="true" signature="698:790" ph="..." />
+            <marker date="1531536277980" expanded="true" signature="824:919" ph="..." />
+            <marker date="1531536277980" expanded="true" signature="4020:4049" ph="SELECT * FRO... articles" />
+            <marker date="1531536277980" expanded="true" signature="4020:4053" ph="SELECT * FRO... articles" />
+            <marker date="1531536277980" expanded="true" signature="6153:6202" ph="SELECT * FRO... comments" />
+            <marker date="1531536277980" expanded="true" signature="6195:6202" ph="SELECT * FRO... articles" />
+            <marker date="1531536277980" expanded="true" signature="6199:6202" ph="SELECT * FRO... articles" />
+            <marker date="1531536277980" expanded="true" signature="6443:6484" ph="SELECT * FRO... comments" />
+            <marker date="1531536277980" expanded="true" signature="6871:6909" ph="UPDATE articles... " />
+            <marker date="1531536277980" expanded="true" signature="7091:7132" ph="SELECT * FRO... articles" />
+            <marker date="1531536277980" expanded="true" signature="7536:7577" ph="UPDATE articles... " />
+            <marker date="1531536277980" expanded="true" signature="7781:7822" ph="SELECT * FRO... articles" />
+            <marker date="1531536277980" expanded="true" signature="8276:8357" ph="INSERT INTO articles... " />
+            <marker date="1531536277980" expanded="true" signature="8276:8403" ph="INSERT INTO articles... " />
           </folding>
         </state>
       </provider>

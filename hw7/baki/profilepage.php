@@ -113,6 +113,7 @@ else{
     $tel = $list["tel"];
     $age = $list["age"];
     $sex = $list["sex"];
+    $work = $list["work"];
 
     //-----get history-----
 
@@ -129,10 +130,10 @@ else{
         <div class="form" >
 
             <div class="card">
-                <img src="./ASSESTS/STYLE/MEDIA/pp.jpeg" alt="John" style="width:100%">
-                <p style="color:green;font-size: 19px">Muhammed Baki Almacı</p>
-                <p class="title" style="font-size: 16px">Electrical and Electronics Engineering</p>
-                <p style="color: #a94442;font-size: 16px">Hacettepe University</p>
+                <img src="./ASSESTS/STYLE/MEDIA/pp.jpeg"  style="max-width:200px;max-height:200px">
+                <p style="color:green;font-size: 19px">Username:<?php echo $_SESSION["username"] ?></p>
+                <p class="title" style="font-size: 16px">Full Name: <?php echo $name.$surname; ?> </p>
+                <p style="color: #a94442;font-size: 16px"><?php echo $work; ?></p>
             </div>
 <!--            <div class="userhistory">-->
 <!--                <h1> User History</h1>-->

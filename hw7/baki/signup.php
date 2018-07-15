@@ -91,7 +91,7 @@
                         $_SESSION["username"] = $username;
                         $conn = connection();
                         $conn->query("INSERT INTO users (username, passcode,email) VALUES ('$username', '$password','$email')");
-                        header("Location: profile.php");
+                        header("Location: index.php");
                         die();
                     }
                     else echo notification("2");
