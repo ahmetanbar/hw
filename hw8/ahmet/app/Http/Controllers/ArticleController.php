@@ -8,6 +8,7 @@ use App\deneme;
 use App\Comment;
 use DB;
 use Auth;
+use App\Post;
 
 use Illuminate\Support\Facades\Input;
 
@@ -90,7 +91,7 @@ class ArticleController extends Controller
             'comment'=>'required'
         ]);
 
-        $comment=new Comment;
+        $comment=new Comment;   
         $comment->comment = $request->input('comment');
         $comment->user_id=Auth::id();
         $comment->article_id=$request->input('art_id');
@@ -108,15 +109,17 @@ class ArticleController extends Controller
      */
     public function show($id)
     {
+        DB::update('update articles set viewing=viewing+1 where id = ?', [$id]);
+
         $article=DB::table('articles')
             ->join('users','articles.author_id','=','users.id')
-            ->select('users.name', 'users.surname', 'articles.*')
+            ->select('users.name', 'users.surname', 'users.username','articles.*')
             ->where('articles.id', $id)
             ->get();
 
         $comments=DB::table('comments')
             ->join('users','comments.user_id','=','users.id')
-            ->select('users.name', 'users.surname','users.id', 'comments.*')
+            ->select('users.name', 'users.surname','users.username', 'comments.*')
             ->where('comments.article_id', $id)
             ->get();
 

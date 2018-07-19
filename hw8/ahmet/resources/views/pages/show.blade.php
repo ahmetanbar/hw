@@ -16,7 +16,7 @@
                     <i class="material-icons" >account_balance</i>
                     <a class="nav-link" href="{{route('categorize',['category' => $article->category]) }}">{{$article->category}}</a>
                     <i class="material-icons" >account_circle </i>
-                    <a class="nav-link" href="profile/{{$article->author_id}}">{{$article->name}} {{$article->surname}}</a>
+                    <a class="nav-link" href="{{route('profile.show',['id' => $article->username])}}">{{$article->name}} {{$article->surname}}</a>
                 </nav>
 
                 <nav class="nav navbar-nav navbar-right">
@@ -54,7 +54,7 @@
 
                 <hr>
             @else
-                <p>{{$article->name }} {{$article->surname }} -> {{$article->comment }} -- {{date('Y-m-d H:i', strtotime($article->created_at))}}</p>
+                <p><a href="{{route('profile.show',['id' => $article->username])}}">{{$article->name }} {{$article->surname }}</a> -> {{$article->comment }} -- {{date('Y-m-d H:i', strtotime($article->created_at))}}</p>
             @endif
 
         @endforeach

@@ -78,6 +78,10 @@ class ComposerStaticInitbc2efc897fa4b815ecceeca4a18f11c4
             'League\\Flysystem\\' => 17,
             'Laravel\\Tinker\\' => 15,
         ),
+        'J' => 
+        array (
+            'Jaybizzle\\CrawlerDetect\\' => 24,
+        ),
         'I' => 
         array (
             'Illuminate\\' => 11,
@@ -100,6 +104,7 @@ class ComposerStaticInitbc2efc897fa4b815ecceeca4a18f11c4
         ),
         'C' => 
         array (
+            'CyrildeWit\\EloquentViewable\\' => 28,
             'Cron\\' => 5,
             'Collective\\Html\\' => 16,
         ),
@@ -232,6 +237,10 @@ class ComposerStaticInitbc2efc897fa4b815ecceeca4a18f11c4
         array (
             0 => __DIR__ . '/..' . '/laravel/tinker/src',
         ),
+        'Jaybizzle\\CrawlerDetect\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src',
+        ),
         'Illuminate\\' => 
         array (
             0 => __DIR__ . '/..' . '/laravel/framework/src/Illuminate',
@@ -263,6 +272,10 @@ class ComposerStaticInitbc2efc897fa4b815ecceeca4a18f11c4
         'DeepCopy\\' => 
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
+        ),
+        'CyrildeWit\\EloquentViewable\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src',
         ),
         'Cron\\' => 
         array (
@@ -330,9 +343,9 @@ class ComposerStaticInitbc2efc897fa4b815ecceeca4a18f11c4
         'App\\Http\\Controllers\\Auth\\LoginController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/LoginController.php',
         'App\\Http\\Controllers\\Auth\\RegisterController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/RegisterController.php',
         'App\\Http\\Controllers\\Auth\\ResetPasswordController' => __DIR__ . '/../..' . '/app/Http/Controllers/Auth/ResetPasswordController.php',
-        'App\\Http\\Controllers\\CommentController' => __DIR__ . '/../..' . '/app/Http/Controllers/CommentController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Controllers\\HomeController' => __DIR__ . '/../..' . '/app/Http/Controllers/HomeController.php',
+        'App\\Http\\Controllers\\ProfilesController' => __DIR__ . '/../..' . '/app/Http/Controllers/ProfilesController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
         'App\\Http\\Middleware\\RedirectIfAuthenticated' => __DIR__ . '/../..' . '/app/Http/Middleware/RedirectIfAuthenticated.php',
@@ -372,6 +385,21 @@ class ComposerStaticInitbc2efc897fa4b815ecceeca4a18f11c4
         'Cron\\MinutesField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/MinutesField.php',
         'Cron\\MonthField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/MonthField.php',
         'Cron\\YearField' => __DIR__ . '/..' . '/mtdowling/cron-expression/src/Cron/YearField.php',
+        'CyrildeWit\\EloquentViewable\\Contracts\\CrawlerDetector' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Contracts/CrawlerDetector.php',
+        'CyrildeWit\\EloquentViewable\\Contracts\\View' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Contracts/View.php',
+        'CyrildeWit\\EloquentViewable\\Contracts\\Viewable' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Contracts/Viewable.php',
+        'CyrildeWit\\EloquentViewable\\Contracts\\ViewableService' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Contracts/ViewableService.php',
+        'CyrildeWit\\EloquentViewable\\CrawlerDetectAdapter' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/CrawlerDetectAdapter.php',
+        'CyrildeWit\\EloquentViewable\\EloquentViewableServiceProvider' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/EloquentViewableServiceProvider.php',
+        'CyrildeWit\\EloquentViewable\\Exceptions\\InvalidPeriod' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Exceptions/InvalidPeriod.php',
+        'CyrildeWit\\EloquentViewable\\Jobs\\ProcessView' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Jobs/ProcessView.php',
+        'CyrildeWit\\EloquentViewable\\Support\\IpAddress' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Support/IpAddress.php',
+        'CyrildeWit\\EloquentViewable\\Support\\Period' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Support/Period.php',
+        'CyrildeWit\\EloquentViewable\\View' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/View.php',
+        'CyrildeWit\\EloquentViewable\\ViewTracker' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/ViewTracker.php',
+        'CyrildeWit\\EloquentViewable\\Viewable' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/Viewable.php',
+        'CyrildeWit\\EloquentViewable\\ViewableObserver' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/ViewableObserver.php',
+        'CyrildeWit\\EloquentViewable\\ViewableService' => __DIR__ . '/..' . '/cyrildewit/eloquent-viewable/src/ViewableService.php',
         'DatabaseSeeder' => __DIR__ . '/../..' . '/database/seeds/DatabaseSeeder.php',
         'DeepCopy\\DeepCopy' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/DeepCopy.php',
         'DeepCopy\\Exception\\CloneException' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/Exception/CloneException.php',
@@ -1755,6 +1783,11 @@ class ComposerStaticInitbc2efc897fa4b815ecceeca4a18f11c4
         'JakubOnderka\\PhpConsoleColor\\ConsoleColor' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/ConsoleColor.php',
         'JakubOnderka\\PhpConsoleColor\\InvalidStyleException' => __DIR__ . '/..' . '/jakub-onderka/php-console-color/src/JakubOnderka/PhpConsoleColor/InvalidStyleException.php',
         'JakubOnderka\\PhpConsoleHighlighter\\Highlighter' => __DIR__ . '/..' . '/jakub-onderka/php-console-highlighter/src/JakubOnderka/PhpConsoleHighlighter/Highlighter.php',
+        'Jaybizzle\\CrawlerDetect\\CrawlerDetect' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/CrawlerDetect.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\AbstractProvider' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/AbstractProvider.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Crawlers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Crawlers.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Exclusions' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Exclusions.php',
+        'Jaybizzle\\CrawlerDetect\\Fixtures\\Headers' => __DIR__ . '/..' . '/jaybizzle/crawler-detect/src/Fixtures/Headers.php',
         'JsonSerializable' => __DIR__ . '/..' . '/nesbot/carbon/src/JsonSerializable.php',
         'Laravel\\Tinker\\ClassAliasAutoloader' => __DIR__ . '/..' . '/laravel/tinker/src/ClassAliasAutoloader.php',
         'Laravel\\Tinker\\Console\\TinkerCommand' => __DIR__ . '/..' . '/laravel/tinker/src/Console/TinkerCommand.php',
