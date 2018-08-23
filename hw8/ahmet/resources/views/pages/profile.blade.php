@@ -48,7 +48,7 @@
                              <h4>Last articles</h4>
                     </div>
                     @foreach($data['articles'] as $title)
-                        <a href="{{route('archieve.show',['id'=>$title->id])}}" class="btn btn-block btn-default">
+                        <a href="{{route('archieve_show',['id'=>$title->id])}}" class="btn btn-block btn-default">
                             <h3 class="fa fa-bell-o fa-3x">{{$title->header}}</h3>
                         </a>
                     @endforeach
@@ -69,7 +69,7 @@
                         <h4>Last comments</h4>
                     </div>
                     @foreach($data['comments'] as $comment)
-                        <a href="{{route('archieve.show',['id'=>$comment->article_id])}}" class="btn btn-block btn-default">
+                        <a href="{{route('archieve_show',['id'=>$comment->article_id])}}" class="btn btn-block btn-default">
                             <h3 class="fa fa-bell-o fa-3x">"{{$comment->comment}}" on <i>{{$comment->header}}</i> </h3>
                             <h3 class="fa fa-bell-o fa-3x"></h3>
                         </a>

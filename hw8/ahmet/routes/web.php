@@ -1,36 +1,18 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-//Route::get('/', function () {
-//    return view('pages.index');
-//});
-//Route::get('/','ArticleController@home');
-
 Auth::routes();
 
-Route::resource('profile','ProfilesController');
+Route::get('/profile','ProfilesController@index');
+Route::get('/profile/{username}','ProfilesController@show')->name('profile_show');
 
-Route::get('/archieve/category/{category}','ArticleController@categorize')->name('categorize');
+Route::get('/archieve','ArticleController@index')->name('archieve_index');
 Route::get('/','ArticleController@home')->name('home');
-Route::resource('archieve','ArticleController');
+Route::get('/archieve/category/{category}','ArticleController@categorize')->name('categorize');
+Route::get('/archieve/{id}','ArticleController@show')->name('archieve_show');
+Route::post('/archieve','ArticleController@store');
 
-//Route::resource('photos', 'PhotoController')->names([
-//    'create' => 'photos.build'
-//]);
 
 Route::get('/about', function () {
     return view('pages.about');
 })->name('about');
-
-//Route::get('/home', 'HomeController@index')->name('home');
 

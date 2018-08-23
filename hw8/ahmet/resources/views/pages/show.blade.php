@@ -8,22 +8,24 @@
 
     @if(count($artcomment)>0)
         @foreach($artcomment as $article)
+            <?php gettype($article) ?>
             <?php $index= array_search($article, $artcomment); ?>
             @if(!$index)
                 <nav class="nav navbar-nav">
                     <i class="material-icons  md-30">date_range</i>
-                    <a class="nav-link" href="{{route('archieve.show',['id'=>$article->id])}}">{{date('Y-m-d H:i', strtotime($article->created_at))}}</a>
+                    <?php echo(gettype($article)); ?>
+                    <i class="nav-link" >{{date('Y-m-d H:i', strtotime($article->created_at))}}</i>
                     <i class="material-icons" >account_balance</i>
                     <a class="nav-link" href="{{route('categorize',['category' => $article->category]) }}">{{$article->category}}</a>
                     <i class="material-icons" >account_circle </i>
-                    <a class="nav-link" href="{{route('profile.show',['id' => $article->username])}}">{{$article->name}} {{$article->surname}}</a>
+                    <a class="nav-link" href="{{route('profile_show',['id' => $article->username])}}">{{$article->name}} {{$article->surname}}</a>
                 </nav>
 
                 <nav class="nav navbar-nav navbar-right">
                     <i class="material-icons">comment</i>
-                    <a class="nav-link" href="{{route('archieve.show',['id'=>$article->id])}}">Comments: {{$article->comments}}</a>
+                    <i class="nav-link">Comments: {{$article->comments}}</i>
                     <i class="material-icons">assessment</i>
-                    <a class="nav-link" href="{{route('archieve.show',['id'=>$article->id])}}">Views: {{$article->viewing}}</a>
+                    <i class="nav-link">Views: {{$article->viewing}}</i>
                 </nav>
                 <br>
                 <h1>{{$article->header}}</h1>
@@ -54,7 +56,7 @@
 
                 <hr>
             @else
-                <p><a href="{{route('profile.show',['id' => $article->username])}}">{{$article->name }} {{$article->surname }}</a> -> {{$article->comment }} -- {{date('Y-m-d H:i', strtotime($article->created_at))}}</p>
+                <p><a href="{{route('profile_show',['id' => $article->username])}}">{{$article->name }} {{$article->surname }}</a> -> {{$article->comment }} -- {{date('Y-m-d H:i', strtotime($article->created_at))}}</p>
             @endif
 
         @endforeach
