@@ -17,16 +17,16 @@ class ProfilesController extends Controller
     {
         $comment_number=5;
 
-        $profile= User::where('users.username', $username)
+        $profile= User::where('username', $username)
             ->first();
 
         if(!count($profile)){
             return abort(404);
         }
 
-        $comments=Comment::join('articles','comments.article_id','=','articles.id')
+        $comments=Comment::join('articles','article_id','=','articles.id')
             ->select('articles.header', 'comments.*')
-            ->where('comments.user_id', $profile->id)
+            ->where('user_id', $profile->id)
             ->take($comment_number)
             ->get();
         $articles=articles::where('articles.author_id', $profile->id)
@@ -39,6 +39,6 @@ class ProfilesController extends Controller
             'comments' => $comments
         ];
 
-        return view('pages.profile')->with('data',$data);
+        return view('pages.profile',['data'=>$data]);
     }
 }
