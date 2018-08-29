@@ -63,7 +63,7 @@ class ArticleController extends Controller
         $comment->status=0;
         $comment->save();
 
-        DB::update('update articles set comments=comments +1 where id = ?', [$request->input('art_id')]);
+        DB::update('update articles set comment_num=comment_num +1 where id = ?', [$request->input('art_id')]);
 
         return redirect()->route('archieve_show', ['id' => $request->input('art_id')])->with('success','Comment Created');
     }

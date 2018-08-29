@@ -10,8 +10,8 @@
                 <div class="row coralbg white">
                     <div class="col-md-8 no-pad">
                         <div class="user-pad">
-                            <h3>{{$data['profile']->name}}  {{$data['profile']->surname}}</h3>
-                            <h4 class="white"><i class="fa fa-check-circle-o"></i><h3>@ {{$data['profile']->username}}</h3></h4>
+                            <h3>{{$user_info->name}}  {{$user_info->surname}}</h3>
+                            <h4 class="white"><i class="fa fa-check-circle-o"></i><h3>@ {{$user_info->username}}</h3></h4>
                             @guest
 
                             @else
@@ -28,28 +28,28 @@
                     </div>
                     <div class="col-md-4 user-pad text-center">
                         <h3>Articles</h3>
-                        <h4>{{count($data['articles'])}}</h4>
+                        <h4>{{count($user_info->article)}}</h4>
                     </div>
                     <div class="col-md-4 user-pad text-center">
                         <h3>Comments</h3>
-                        <h4>{{count($data['comments'])}}</h4>
+                        <h4>{{count($user_info->comments)}}</h4>
                     </div>
                 </div>
 
-                {{--last 4 articles--}}
+                {{--last 5 articles--}}
 
                 <div class="row overview">
                     <div class="btn-group-vertical square">
                         <div class="text-center" style="background:rgba(75,63,65,0.72);">
                                  <h4>Last articles</h4>
                         </div>
-                        @foreach($data['articles'] as $title)
+                        @foreach($user_info->article as $title)
                             <a href="{{route('archieve_show',['id'=>$title->id])}}" class="btn btn-block btn-default">
                                 <h3 class="fa fa-bell-o fa-3x">{{$title->header}}</h3>
                             </a>
                         @endforeach
 
-                        @if(!count($data['articles']))
+                        @if(!count($user_info->article))
                             <a href="#" class="btn btn-block btn-default">
                                 <h3 class="fa fa-bell-o fa-3x">Not found article</h3>
                             </a>
@@ -57,21 +57,22 @@
                     </div>
                 </div>
 
-                {{--last 4 comments--}}
+                {{--last 5 comments--}}
 
                 <div class="row overview">
                     <div class="btn-group-vertical square">
                         <div class="text-center" style="background:rgba(75,63,65,0.72);">
                             <h4>Last comments</h4>
                         </div>
-                        @foreach($data['comments'] as $comment)
+
+                        @foreach($user_info->comment as $comment)
                             <a href="{{route('archieve_show',['id'=>$comment->article_id])}}" class="btn btn-block btn-default">
                                 <h3 class="fa fa-bell-o fa-3x">"{{$comment->comment}}" on <i>{{$comment->header}}</i> </h3>
                                 <h3 class="fa fa-bell-o fa-3x"></h3>
                             </a>
                         @endforeach
 
-                        @if(!count($data['comments']))
+                        @if(!count($user_info->comment))
                             <a href="#" class="btn btn-block btn-default">
                                 <h3 class="fa fa-bell-o fa-3x">Not found comment</h3>
                             </a>

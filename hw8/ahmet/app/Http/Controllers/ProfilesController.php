@@ -1,21 +1,24 @@
 <?php
 
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers;
+use Session;
 use DB;
 use App\User;
-use App\Comment;
-use App\articles;
+use Auth;
+
 class ProfilesController extends Controller
 {
     public function index()
-    {
-       //Will add directing to user's profile
+    {   if(Auth::user())
+            return $this->show(Auth::user()->username);
+        else
+            return redirect()->route('home');
     }
 
     public function show($username)
     {
-        $comment_number=5;
+        $content_num=5;
 
         $profile= User::where('username', $username)
             ->first();
@@ -24,21 +27,10 @@ class ProfilesController extends Controller
             return abort(404);
         }
 
-        $comments=Comment::join('articles','article_id','=','articles.id')
-            ->select('articles.header', 'comments.*')
-            ->where('user_id', $profile->id)
-            ->take($comment_number)
-            ->get();
-        $articles=articles::where('articles.author_id', $profile->id)
-            ->take($comment_number)
-            ->get();
+        $user_info=User::find($profile->id);
+        $user_info->comment=$user_info->comment->take($content_num);
+        $user_info->article=$user_info->article->take($content_num);
 
-        $data = [
-            'profile'  => $profile,
-            'articles'   => $articles,
-            'comments' => $comments
-        ];
-
-        return view('pages.profile',['data'=>$data]);
+        return view('pages.profile',['user_info'=>$user_info]);
     }
 }

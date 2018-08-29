@@ -13,4 +13,9 @@ class Comment extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function comment()
+    {
+        return $this->belongsTo('App\User');
+    }
 }
