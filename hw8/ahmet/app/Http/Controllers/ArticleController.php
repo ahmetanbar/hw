@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
-use App\articles;
+use App\Article;
 use App\Comment;
 use DB;
 use Auth;
@@ -16,7 +17,7 @@ class ArticleController extends Controller
     public function index()
     {
         $pag_num=6;
-        $articles=articles::orderBy('id','desc')
+        $articles=Article::orderBy('id','desc')
             ->join('users','author_id','=','users.id')
             ->select('users.name', 'users.surname', 'users.username', 'articles.*')
             ->paginate($pag_num);
@@ -26,7 +27,7 @@ class ArticleController extends Controller
     public function home()
     {
         $art_num=5;
-        $articles=articles::orderBy('id','desc')
+        $articles=Article::orderBy('id','desc')
             ->join('users','author_id','=','users.id')
             ->select('users.name', 'users.surname', 'users.username', 'articles.*')
             ->take($art_num)
@@ -36,11 +37,16 @@ class ArticleController extends Controller
 
     public function categorize($category)
     {
-        $articles=articles::orderBy('id','desc')
+        $articles=Article::orderBy('id','desc')
             ->join('users','author_id','=','users.id')
             ->select('users.name', 'users.surname', 'users.username', 'articles.*')
             ->where('category', $category)
             ->paginate(6);
+
+        $articles=Article::orderBy('id','desc')
+            ->where('category', $category)
+            ->paginate(6);
+
         return view('pages.archieve',['articles'=>$articles]);
     }
 
@@ -57,26 +63,18 @@ class ArticleController extends Controller
         $comment->status=0;
         $comment->save();
 
+        DB::update('update articles set comments=comments +1 where id = ?', [$request->input('art_id')]);
+
         return redirect()->route('archieve_show', ['id' => $request->input('art_id')])->with('success','Comment Created');
     }
 
     public function show($id)
     {
-        DB::update('update articles set viewing=viewing+1 where id = ?', [$id]);
+        DB::update('update articles set view_num=view_num+1 where id = ?', [$id]);
 
-        $article=articles::join('users','author_id','=','users.id')
-            ->select('users.name', 'users.surname', 'users.username','articles.*')
-            ->where('articles.id', $id)
-            ->get();
+        $article = Article::find($id);
 
-        $comments=Comment::join('users','user_id','=','users.id')
-            ->select('users.name', 'users.surname','users.username', 'comments.*')
-            ->where('article_id', $id)
-            ->get();
-
-        $artcomment = array_merge($article->toArray(), $comments->toArray());
-
-        return view('pages.show',['artcomment'=>$artcomment]);
+        return view('pages.show',['article'=>$article]);
     }
 
 }

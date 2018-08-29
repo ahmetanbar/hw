@@ -16,9 +16,9 @@
 
                 <nav class="nav navbar-nav navbar-right">
                     <i class="material-icons">comment</i>
-                    <i class="nav-link">Comments: {{$article->comments}}</i>
+                    <i class="nav-link">Comments: {{$article->comment_num}}</i>
                     <i class="material-icons">assessment</i>
-                    <i class="nav-link">Views: {{$article->viewing}}</i>
+                    <i class="nav-link">Views: {{$article->view_num}}</i>
                 </nav>
                 <br>
             </div>
