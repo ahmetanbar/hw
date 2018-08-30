@@ -20,14 +20,13 @@ class ProfilesController extends Controller
     {
         $content_num=5;
 
-        $profile= User::where('username', $username)
+        $user_info= User::where('username', $username)
             ->first();
 
-        if(!count($profile)){
+        if(!count($user_info)){
             return abort(404);
         }
 
-        $user_info=User::find($profile->id);
         $user_info->comment=$user_info->comment->take($content_num);
         $user_info->article=$user_info->article->take($content_num);
 

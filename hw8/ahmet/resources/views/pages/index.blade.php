@@ -13,7 +13,7 @@
                     <i class="material-icons" >account_balance</i>
                     <a class="nav-link" href="{{route('categorize',['category' => $article->category]) }}">{{$article->category}}</a>
                     <i class="material-icons" >account_circle </i>
-                    <a class="nav-link" href="{{route('profile_show',['id' => $article->username]) }}">{{$article->name}} {{$article->surname}}</a>
+                    <a class="nav-link" href="{{route('profile_show',['id' => $article->user->username]) }}">{{$article->user->name}} {{$article->user->surname}}</a>
                 </nav>
 
                 <nav class="nav navbar-nav navbar-right">
