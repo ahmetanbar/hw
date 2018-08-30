@@ -17,6 +17,11 @@
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+    <style type="text/css">
+        body { background: whitesmoke !important; } /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+    </style>
+
 </head>
 
 <body>

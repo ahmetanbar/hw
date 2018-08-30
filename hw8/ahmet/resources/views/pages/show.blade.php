@@ -39,7 +39,7 @@
                 @guest
                     <span style="color:#c30000;">For comment you should <a color:red href="{{route('login')}}">Log In</a></span>
                 @else
-                    {!! Form::open(['action' => 'ArticleController@store','method'=>'POST']) !!}
+                    {!! Form::open(['action' => 'CommentController@store','method'=>'POST']) !!}
                     <div class="form-group">
                         {{Form::textarea('comment','',['class'=>'form-control','placeholder'=>'Write your comment..'])}}
                     </div>

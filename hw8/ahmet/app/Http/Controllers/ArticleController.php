@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Article;
 use App\Comment;
-use DB;
 use Auth;
 
 class ArticleController extends Controller
@@ -44,21 +43,22 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'comment'=>'required'
+            'title'=>'required',
+            'category'=>'required',
+            'body'=>'required'
         ]);
 
-        $comment=new Comment;   
-        $comment->comment = $request->input('comment');
-        $comment->user_id=Auth::id();
-        $comment->article_id=$request->input('art_id');
-        $comment->status=0;
-        $comment->save();
+        $Article=new Article;
+        $Article->author_id=Auth::id();
+        $Article->header = $request->input('title');
+        $Article->article = $request->input('body');
+        $Article->category = $request->input('category');
+        $Article->status=0;
+        $Article->view_num=0;
+        $Article->comment_num=0;
+        $Article->save();
 
-        $article = Article::find($request->input('art_id'));
-        $article->comment_num = $article->comment_num + 1;
-        $article->save();
-
-        return redirect()->route('archieve_show', ['id' => $request->input('art_id')])->with('success','Comment Created');
+        return redirect()->route('archieve_show', ['id' =>  $Article->id]);
     }
 
     public function show($id)
