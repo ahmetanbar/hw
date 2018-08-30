@@ -43,8 +43,8 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'title'=>'required',
-            'category'=>'required',
+            'title'=>'required|max:250',
+            'category'=>'required|max:30',
             'body'=>'required'
         ]);
 
@@ -53,9 +53,6 @@ class ArticleController extends Controller
         $Article->header = $request->input('title');
         $Article->article = $request->input('body');
         $Article->category = $request->input('category');
-        $Article->status=0;
-        $Article->view_num=0;
-        $Article->comment_num=0;
         $Article->save();
 
         return redirect()->route('archieve_show', ['id' =>  $Article->id]);

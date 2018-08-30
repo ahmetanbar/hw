@@ -18,17 +18,12 @@ class ProfilesController extends Controller
 
     public function show($username)
     {
-        $content_num=5;
-
         $user_info= User::where('username', $username)
             ->first();
 
         if(!count($user_info)){
             return abort(404);
         }
-
-        $user_info->comment=$user_info->comment->take($content_num);
-        $user_info->article=$user_info->article->take($content_num);
 
         return view('pages.profile',['user_info'=>$user_info]);
     }

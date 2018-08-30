@@ -16,12 +16,12 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('author_id');
-            $table->string('header');
+            $table->string('header',250);
             $table->mediumText('article');
-            $table->string('category');
-            $table->integer('viewing');
-            $table->integer('comments');
-            $table->integer('status');
+            $table->string('category',30);
+            $table->integer('view_num')->default(0);
+            $table->integer('comment_num')->default(0);
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

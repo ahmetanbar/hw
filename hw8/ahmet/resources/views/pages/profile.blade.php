@@ -36,6 +36,7 @@
                     </div>
                 </div>
 
+                <?php $content_num=5 ?>
                 {{--last 5 articles--}}
 
                 <div class="row overview">
@@ -43,9 +44,9 @@
                         <div class="text-center" style="background:rgba(75,63,65,0.72);">
                                  <h4>Last articles</h4>
                         </div>
-                        @foreach($user_info->article as $title)
-                            <a href="{{route('archieve_show',['id'=>$title->id])}}" class="btn btn-block btn-default">
-                                <h3 class="fa fa-bell-o fa-3x">{{$title->header}}</h3>
+                        @foreach($user_info->article->take($content_num) as $title)
+                            <a href="{{route('archieve_show',['id'=>$title->id])}}" class="btn btn-default">
+                                <h3>{{$title->header}}</h3>
                             </a>
                         @endforeach
 
@@ -65,7 +66,7 @@
                             <h4>Last comments</h4>
                         </div>
 
-                        @foreach($user_info->comment as $comment)
+                        @foreach($user_info->comment->take($content_num) as $comment)
                             <a href="{{route('archieve_show',['id'=>$comment->article_id])}}" class="btn btn-block btn-default">
                                 <h3 class="fa fa-bell-o fa-3x">"{{$comment->comment}}" on <i>{{$comment->header}}</i> </h3>
                                 <h3 class="fa fa-bell-o fa-3x"></h3>
@@ -84,7 +85,6 @@
 
         </div>
     </div>
-
     <br>
 
 @endsection

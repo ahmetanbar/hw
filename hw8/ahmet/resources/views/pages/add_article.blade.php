@@ -33,7 +33,7 @@
         {{ Form::label('body', "Body:") }}
         {{ Form::textarea('body', null, array('class' => 'form-control')) }}
 
-        {{ Form::submit('Share Post', array('class' => 'btn btn-success btn-lg btn-block', 'style' => 'margin-top: 20px;')) }}
+        {{ Form::submit('Share Post', array('class' => 'btn btn-success btn-lg', 'style' => 'margin-top: 20px;')) }}
         {!! Form::close() !!}
     </div>
 

@@ -25,7 +25,7 @@
             <h1>{{$article->header}}</h1>
 
             <div>
-                {{$article->article}}
+                {!!  $article->article!!}
             </div>
 
             <small>Written on {{$article->created_at}}</small>
