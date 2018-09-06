@@ -16,7 +16,8 @@
     <script type="text/javascript" src="{!! asset('js/profile.js') !!}"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 
     <style type="text/css">
         body { background: whitesmoke !important; } /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */

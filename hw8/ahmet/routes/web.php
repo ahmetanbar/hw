@@ -20,3 +20,6 @@ Route::get('/about', function () {
     return view('pages.about');
 })->name('about');
 
+Route::get('/changePassword','HomeController@showChangePasswordForm')->name('get_changePass');
+Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
+

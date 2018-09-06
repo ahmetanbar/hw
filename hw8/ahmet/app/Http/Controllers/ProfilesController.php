@@ -10,7 +10,7 @@ use Auth;
 class ProfilesController extends Controller
 {
     public function index()
-    {   if(Auth::user())
+    {     if(Auth::user())
             return $this->show(Auth::user()->username);
         else
             return redirect()->route('home');

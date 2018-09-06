@@ -37,6 +37,21 @@
 
                         <ul class="dropdown-menu">
                             <li>
+                                <a href="{{ route('profile_show',Auth::user()->username) }}">
+                                    Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('get_changePass') }}">
+                                    Update Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('get_changePass') }}">
+                                    Change Password
+                                </a>
+                            </li>
+                            <li>
                                 <a href="{{ route('logout') }}"
                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
     <a href="./" class="btn btn-default">Go Back</a>
     <br>
     <br>
@@ -62,5 +61,4 @@
     @else
         <p>No article found</p>
     @endif
-
 @endsection
