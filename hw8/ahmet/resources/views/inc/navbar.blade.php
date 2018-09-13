@@ -42,7 +42,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('get_changePass') }}">
+                                <a href="{{ route('get_changePro') }}">
                                     Update Profile
                                 </a>
                             </li>

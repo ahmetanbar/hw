@@ -2,6 +2,13 @@
 
 Auth::routes();
 
+
+Route::get('/changePassword','HomeController@showChangePasswordForm')->name('get_changePass');
+Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
+
+Route::get('/update','HomeController@showChangeProfileForm')->name('get_changePro');
+Route::post('/update','HomeController@changeProfile')->name('changeProfile');
+
 Route::get('/profile','ProfilesController@index');
 Route::get('/profile/{username}','ProfilesController@show')->name('profile_show');
 
@@ -11,15 +18,17 @@ Route::get('/archieve/category/{category}','ArticleController@categorize')->name
 Route::get('/archieve/{id}','ArticleController@show')->name('archieve_show');
 Route::post('/archieve','CommentController@store')->name('comment_store');
 
+Route::get('/about', function () {
+    return view('pages.about');
+})->name('about');
+
 Route::get('/article/add',function () {
     return view('pages.add_article');
 })->name('add_article');
 Route::post('/article/add','ArticleController@store')->name('article_store');
 
-Route::get('/about', function () {
-    return view('pages.about');
-})->name('about');
 
-Route::get('/changePassword','HomeController@showChangePasswordForm')->name('get_changePass');
-Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
+
+
+
 
