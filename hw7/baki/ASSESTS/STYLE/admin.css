@@ -1,0 +1,30 @@
+.grid-container {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-gap: 1px 1px;
+    grid-template-areas: "left right";
+}
+
+.left {
+    grid-area: left;
+    text-align: center;
+    background-color: whitesmoke;
+    border-radius: 5px;
+}
+
+.right {
+    grid-area: right;
+    text-align: center;
+    background-color: darkgrey;
+    border-radius: 5px;
+}
+
+.footer{
+    padding: 10px;
+    bottom: 0;
+    left: 10%;
+    right: 10%;
+    text-align: center;
+}

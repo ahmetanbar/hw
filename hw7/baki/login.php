@@ -77,7 +77,7 @@
 
         function login(){
             $username = $_POST["username"];
-            $password = $_POST["password"];
+            $password = sha1($_POST["password"]);
 
             if ($username && $password && username_check($username) && !password_check($password)){
                 $conn = connection();

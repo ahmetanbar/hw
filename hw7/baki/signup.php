@@ -90,6 +90,7 @@
                         cookie_control();
                         $_SESSION["username"] = $username;
                         $conn = connection();
+                        $password = sha1($password);
                         $conn->query("INSERT INTO users (username, passcode,email) VALUES ('$username', '$password','$email')");
                         header("Location: index.php");
                         die();

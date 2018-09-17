@@ -2,12 +2,33 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="ASSESTS/STYLE/index.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <meta charset="UTF-8">
     <title>Socean</title>
 </head>
+<?php
+//function get_client_ip() {
+//    $ipaddress = '';
+//    if (getenv('HTTP_CLIENT_IP'))
+//        $ipaddress = getenv('HTTP_CLIENT_IP');
+//    else if(getenv('HTTP_X_FORWARDED_FOR'))
+//        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
+//    else if(getenv('HTTP_X_FORWARDED'))
+//        $ipaddress = getenv('HTTP_X_FORWARDED');
+//    else if(getenv('HTTP_FORWARDED_FOR'))
+//        $ipaddress = getenv('HTTP_FORWARDED_FOR');
+//    else if(getenv('HTTP_FORWARDED'))
+//        $ipaddress = getenv('HTTP_FORWARDED');
+//    else if(getenv('REMOTE_ADDR'))
+//        $ipaddress = getenv('REMOTE_ADDR');
+//    else
+//        $ipaddress = 'UNKNOWN';
+//    return $ipaddress;
+//}
+//echo get_client_ip();
+//?>
 <body>
-
 <?php
 session_start();
 function connection(){
@@ -25,6 +46,40 @@ function connection(){
     }
 }
 ?>
+
+<?php
+
+    if (isset($_POST['share']) and check_share()) {
+        $share_username = $_SESSION["username"];
+        $share_title = $_POST["title"];
+        $share_article = $_POST["article"];
+        $share_topic = $_POST["topic"];
+        $conn = connection();
+        $conn->query("INSERT INTO articles (username, title,article,topic) VALUES ('$share_username', '$share_title','$share_article','$share_topic')");
+    }
+
+    function get_articles_number(){
+        $conn = connection();
+        $stmt= $conn->prepare("SELECT * FROM articles");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $number_articles = mysqli_num_rows($query);
+        return $number_articles;
+    }
+
+    function get_page_numbers(){
+        $page_numbers = null;
+        if(get_articles_number() <= 5){
+            $page_numbers = 1;
+        }
+        else{
+            $page_numbers = intval(get_articles_number()/5+1);
+        }
+        return $page_numbers;
+    }
+
+?>
+
 <div class="banner-text">
 
 		<p>
@@ -61,23 +116,23 @@ function connection(){
 
 <div class="banner">
 		<a href="index.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> HOMEPAGE </button> </a>
-		<a href="posted.php" style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button> </button> </a>
+		<a href="index.php?posted=<?php echo $_SESSION["username"] ?>"style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button> </button> </a>
 		<a href="contact.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> CONTACT </button> </a>
 		
 	</div>
 
 <div class="menu">
 		<ul>
-				<li><a href="article.php?arduino">ARDUINO</a></li>
-				<li><a href="article.php?category=arm">ARM</a></li>
-				<li><a href="article.php?category=c">C</a></li>
-				<li><a href="article.php?category=java">JAVA</a></li>
-				<li><a href="article.php?category=php">PHP</a></li>
-				<li><a href="article.php?category=python">PYTHON</a></li>
-				<li><a href="article.php?category=html-css">HTML-CSS</a></li>
-				<li><a href="article.php?category=algorithms">ALGORITHMS</a></li>
-				<li><a href="article.php?category=general">GENERAL</a></li>
-				<li><a href="article.php?category=projects">PROJECTS</a></li>
+				<li><a href="index.php?category=arduino">ARDUINO</a></li>
+				<li><a href="index.php?category=arm">ARM</a></li>
+				<li><a href="index.php?category=c">C</a></li>
+				<li><a href="index.php?category=java">JAVA</a></li>
+				<li><a href="index.php?category=php">PHP</a></li>
+				<li><a href="index.php?category=python">PYTHON</a></li>
+				<li><a href="index.php?category=html-css">HTML-CSS</a></li>
+				<li><a href="index.php?category=algorithms">ALGORITHMS</a></li>
+				<li><a href="index.php?category=general">GENERAL</a></li>
+				<li><a href="index.php?category=projects">PROJECTS</a></li>
             <?php if($_SESSION){ ?>
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn" style="color: #ff5351;font-family: 'Raleway', sans-serif"><?php echo $_SESSION["username"]?> </a>
@@ -103,17 +158,42 @@ if($_SESSION){ ?>
     </div>
 <?php } ?>
 
-
     <?php
-    $id = 1;
-    for($id = 1;$id<=5;$id++){
-    $conn=connection();
-    $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
-    $stmt->bind_param("s",$id);
-    $stmt->execute();
-    $query = $stmt->get_result();
-    $list=$query->fetch_assoc();
+    if(!isset($_GET["page"])){
+        $first = 0;
+        $second = 5;
+    }
+    else{
+        $first = ($_GET["page"]-1)*5;
+        $second = $_GET["page"]*5;
+    }
 
+    function custom_echo($x, $length)
+    {
+        if(strlen($x)<=$length)
+        {
+            echo $x;
+        }
+        else
+        {
+            $y=substr($x,0,$length) . '...';
+            echo $y;
+        }
+    }
+
+    $conn = connection();
+    if(isset($_GET["category"])){
+        $stmt ="SELECT * FROM articles WHERE topic= '".$_GET["category"]."' ORDER BY id DESC";
+    }
+    else if(isset($_GET["posted"])){
+        $stmt ="SELECT * FROM articles WHERE username= '".$_GET["posted"]."' ORDER BY id DESC";
+    }
+    else{
+        $stmt ="SELECT * FROM articles ORDER BY id DESC LIMIT $first,$second";
+    }
+
+    $result = $conn->query($stmt);
+    while($list = $result->fetch_assoc()) {
     if($list){
         $article_id = $list["id"];
         $username = $list["username"];
@@ -125,7 +205,6 @@ if($_SESSION){ ?>
     else{
         break;
     }
-
     ?>
     	<div class="form" >
 
@@ -135,21 +214,26 @@ if($_SESSION){ ?>
     		</div>
 
     	<p>
-            <?php echo $article?>
+
+
+            <?php
+            custom_echo($article, 512);
+
+            ?>
         </p>
 
 
             <form class="more" action="article.php" method="get" style="max-width: 100px;margin: auto;color: white;background-color: #1f4965 ;border: none;border-radius: 10px">
-                <button  name="more" value="<?php echo $article_id; ?>" style="margin: auto;background-color: #1f4965;border: 0 solid;color:white;font-family: 'Segoe UI Light',sans-serif;font-size: 18px;border-radius: 10px">READ MORE</button>
+                <button  name="more" value="<?php echo $article_id; ?>" style="margin: auto;background-color: #1f4965;border: 0 solid;color:white;font-family: 'Segoe UI Light',sans-serif;font-size: 18px;border-radius: 10px;">READ MORE</button>
             </form>
 
 			<div id="info">
-                <p style="background-color: #c5f8ff;border-radius: 10px">View:<?php echo get_views_number($article_id); ?></p>
-                <p style="background-color: #f0e8ff;border-radius: 10px">Comment:<?php echo get_comments_number($article_id); ?></p>
-                <p style="background-color: #fff2f6;border-radius: 10px">Date:04/08/2018</p>
+                <p style="background-color: #c5f8ff;border-radius: 10px"><i class="material-icons" style="font-size: 16px;color: black">visibility</i>:<?php echo get_views_number($article_id); ?></p>
+                <p style="background-color: #f0e8ff;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">comment</i>:<?php echo get_comments_number($article_id); ?></p>
+                <p style="background-color: #fff2f6;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">reply</i>:<?php echo $date ?></p>
                 <form method="post">
-                    <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px">Like:<?php echo get_like_number($article_id) ?></button>
-                    <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px">Dislike:<?php echo get_dislike_number($article_id) ?></button>
+                    <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px" disabled><i class="material-icons" style="font-size: 14px">thumb_up</i>:<?php echo get_like_number($article_id) ?></button>
+                    <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px" disabled><i class="material-icons" style="font-size: 14px">thumb_down</i>:<?php echo get_dislike_number($article_id) ?></button>
                 </form>
 			</div>
 		
@@ -224,15 +308,6 @@ if($_SESSION){ ?>
         return $dislikes;
     }
 
-    if (isset($_POST['share']) and check_share()) {
-        $share_username = $_SESSION["username"];
-        $share_title = $_POST["title"];
-        $share_article = $_POST["article"];
-        $share_topic = $_POST["topic"];
-        $conn = connection();
-        $conn->query("INSERT INTO articles (username, title,article,topic) VALUES ('$share_username', '$share_title','$share_article','$share_topic')");
-    }
-
     function check_share(){
         $share_title = $_POST["title"];
         $share_article = $_POST["article"];
@@ -251,6 +326,19 @@ if($_SESSION){ ?>
             }
         </script>
 
+</div>
+
+<div>
+    <?php
+        $counter = 0;
+        while ($counter < get_page_numbers()){
+            $counter++;
+            ?>
+            <a href="index.php?page=<?php echo $counter ?> "><?php echo $counter ?></a>
+
+    <?php
+    }
+    ?>
 </div>
 
 <div class="footer">

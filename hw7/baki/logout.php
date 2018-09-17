@@ -13,29 +13,10 @@ function connection(){
         return $conn;
     }
 }
-function delete_cookie(){
-    if($_COOKIE and array_key_exists("auth",$_COOKIE)){
-        $auth= $_COOKIE['auth'];
-        $conn=connection();
-        $stmt = $conn->prepare("SELECT * FROM auth WHERE cookie=?");
-        $stmt->bind_param("s", $auth);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $row = $result->fetch_assoc();
-        if($row){
-            $stmt = $conn->prepare("DELETE FROM auth WHERE cookie=?");
-            $stmt->bind_param("s",$auth);
-            $stmt->execute();
-            $stmt->close();
-            header("Location:index.php"); /* Redirect browser */
-            die();
-        }
-    }
-}
+
 session_start();
 session_unset();
 session_destroy();
-delete_cookie();
 header("Location:index.php"); /* Redirect browser */
 die();
 ?>

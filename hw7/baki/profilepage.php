@@ -116,7 +116,6 @@ else{
     $work = $list["work"];
 
     //-----get history-----
-
     $stmt= $conn->prepare("SELECT * FROM articles WHERE username=?");
     $stmt->bind_param("s",$username);
     $stmt->execute();
@@ -124,7 +123,32 @@ else{
     $list=$query->fetch_assoc();
     $articles_Number = mysqli_num_rows($query);
 
+    function get_post_num($username){
+        $conn = connection();
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE username='".$username."'");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $number = mysqli_num_rows($query);
+        return $number;
+    }
 
+    function get_last_post($username){
+        $conn = connection();
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE username='".$username."' ORDER BY id DESC LIMIT 1");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
+        return $list["title"];
+    }
+
+    function get_last_comment($username){
+        $conn = connection();
+        $stmt= $conn->prepare("SELECT * FROM comments WHERE username='".$username."' ORDER BY id DESC LIMIT 1");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
+        return $list["title"];
+    }
     ?>
 
         <div class="form" >
@@ -132,26 +156,15 @@ else{
             <div class="card">
                 <img src="./ASSESTS/STYLE/MEDIA/pp.jpeg"  style="max-width:200px;max-height:200px">
                 <p style="color:green;font-size: 19px">Username:<?php echo $_SESSION["username"] ?></p>
-                <p class="title" style="font-size: 16px">Full Name: <?php echo $name.$surname; ?> </p>
-                <p style="color: #a94442;font-size: 16px"><?php echo $work; ?></p>
+                <p style="color:green;font-size: 19px">Name:<?php echo $name ?></p>
+                <p style="color:green;font-size: 19px">Surname:<?php echo $surname ?></p>
+                <p style="color:green;font-size: 19px">Email:<?php echo $email ?></p>
+                <p style="color:#d84500;font-size: 19px">Post Number:<?php echo get_post_num($_SESSION["username"]) ?></p>
+                <p style="color:#d84500;font-size: 19px">Last Post:<?php echo get_last_post($_SESSION["username"]) ?></p>
+                <p style="color:#d84500;font-size: 19px">Last Comment:<?php echo get_last_comment($_SESSION["username"]) ?></p>
             </div>
-<!--            <div class="userhistory">-->
-<!--                <h1> User History</h1>-->
-<!--                <p>Articles Number: --><?php //echo $articles_Number; ?><!--</p>-->
-<!--                <p>Comments Number: --><?php //echo $surname; ?><!-- </p>-->
-<!--                <p>Get Comments Number: --><?php //echo $username; ?><!-- </p>-->
-<!--                <p>Last Article: --><?php //echo $result[0]; ?><!--</p>-->
-<!--                <p>Last Comment: --><?php //echo $age; ?><!--</p>-->
-<!--                <p>Last Get Comment: --><?php //echo $sex; ?><!--</p>-->
-<!---->
-<!--            </div>-->
-
-
         </div>
-
-
 </div>
-
 <div class="footer">
     Copyright © 2018 Designed Baki Almacı
 </div>

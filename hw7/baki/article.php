@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="ASSESTS/STYLE/article.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <title>Socean</title>
 </head>
@@ -32,6 +34,45 @@ if(isset($_SESSION["username"])){
 else{
     $username="";
 }
+?>
+
+<?php
+
+
+function do_comment(){
+    $user_id = get_user_id();
+    $article_id = $_GET["more"];
+    $title = $_POST["title"];
+    $comment = $_POST["comment"];
+    $username = $_SESSION["username"];
+    $conn = connection();
+    $conn->query("INSERT INTO comments (user_id, article_id,comments,title,username) VALUES ('$user_id', '$article_id','$comment','$title','$username')");
+}
+
+if(isset($_POST["send"])){
+    do_comment();
+}
+
+    function get_articles_number(){
+        $conn = connection();
+        $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id='".$_GET["more"]."'");
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $number_articles = mysqli_num_rows($query);
+        return $number_articles;
+    }
+
+    function get_page_numbers(){
+        $page_numbers = null;
+        if(get_articles_number() <= 5){
+            $page_numbers = 1;
+        }
+        else{
+            $page_numbers = intval(get_articles_number()%5+1);
+        }
+        return $page_numbers;
+    }
+
 ?>
 
 <div class="menu">
@@ -76,16 +117,24 @@ else{
     		</div>
 
     	<p>
-        <?php echo $article; ?>
+        <?php echo $article;
+        if (isset($_POST['like'])) {
+            do_like(get_like_number($article_id),$article_id);
+        }
+
+        if (isset($_POST['dislike'])) {
+            do_dislike(get_dislike_number($article_id),$article_id);
+        }
+        ?>
         </p>
 
 			<div id="info">
-				<p style="background-color: #c5f8ff;border-radius: 10px">View:<?php echo get_views_number($article_id); ?></p>
-				<p style="background-color: #f0e8ff;border-radius: 10px">Comment:<?php echo get_comments_number($article_id); ?></p>
-				<p style="background-color: #fff2f6;border-radius: 10px">Date:04/08/2018</p>
+                <p style="background-color: #c5f8ff;border-radius: 10px"><i class="material-icons" style="font-size: 16px;color: black">visibility</i>:<?php echo get_views_number($article_id); ?></p>
+				<p style="background-color: #f0e8ff;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">comment</i>:<?php echo get_comments_number($article_id); ?></p>
+				<p style="background-color: #fff2f6;border-radius: 10px"><span class="glyphicon glyphicon-calendar"></span>:04/08/2018</p>
                 <form method="post">
-                    <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px">Like:<?php echo get_like_number($article_id) ?></button>
-                    <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px">Dislike:<?php echo get_dislike_number($article_id) ?></button>
+                    <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 18px;border-radius: 10px"><i class="material-icons" style="font-size: 14px">thumb_up</i>:<?php echo get_like_number($article_id) ?></button>
+                    <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 18px;border-radius: 10px"><i class="material-icons" style="font-size: 14px">thumb_down</i>:<?php echo get_dislike_number($article_id) ?></button>
                 </form>
 
             </div>
@@ -93,35 +142,25 @@ else{
         </div>
 
             <?php
-            $conn=connection();
-            $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id='".$article_id."'");
-            $stmt->execute();
-            $query = $stmt->get_result();
-            $rows = array(); ?>
-
-        <?php
-        $counter = 0;
-                while($row = mysqli_fetch_array($query)) {
-                    array_push($rows, $row);
+            $conn = connection();
+            $stmt ="SELECT * FROM comments WHERE article_id='".$_GET["more"]."'ORDER BY id DESC";
+            $result = $conn->query($stmt);
+            while($list = $result->fetch_assoc()) {
+                if($list){
+                    $username = $list["username"];
+                    $title = $list["title"];
+                    $comments = $list["comments"];
                 }
-           ?>
-                    <?php
-                    while ($rows){
-                        if(!isset($rows[$counter])){
-                            break;
-                        }
-                        $username = json_encode($rows[$counter]["username"]);
-                        $title = json_encode($rows[$counter]["title"]);
-                        $comments =  json_encode($rows[$counter]["comments"]);
-                        $counter++;
-
-                    ?>
+                else{
+                    break;
+                }
+                ?>
                 <div id="comments">
                     <h2 style="font-family: 'Segoe UI Light',serif;color: #ff5351"><a style="color: #000000;font-family: 'Segoe UI Light',sans-serif;float: left">Writer:</a><?php echo $username;?>:</h2>
                     <h2 style="color: #2b92a7;font-size: 16px;font-family: 'Segoe UI Light',sans-serif;"><a style="color: black">Title:</a> <?php echo $title; ?></h2  >
                     <h2 style="color: #a94442"> <a style="color: black;font-size: 18px;">Comment:</a> <br> <?php echo $comments;?>:</h2>
             </div>
-        <?php } ?>
+        <?php }        ?>
 
 
         <div id="comment">
@@ -132,19 +171,7 @@ else{
                 </form>
 
     <?php
-    function do_comment(){
-        $user_id = get_user_id();
-        $article_id = $_GET["more"];
-        $title = $_POST["title"];
-        $comment = $_POST["comment"];
-        $username = $_SESSION["username"];
-        $conn = connection();
-        $conn->query("INSERT INTO comments (user_id, article_id,comments,title,username) VALUES ('$user_id', '$article_id','$comment','$title','$username')");
-    }
 
-    if(isset($_POST["more"])){
-        comment();
-    }
 
     function get_user_id(){
         $username = $_SESSION["username"];
@@ -153,7 +180,6 @@ else{
         $read = $conn->query("SELECT * FROM users WHERE username='".$username."'");
         $list = mysqli_fetch_array($read);
         $userid = $list[0];
-        //echo $userid;
         return $userid;
     }
 
@@ -205,9 +231,6 @@ else{
         $num_rows = mysqli_num_rows($query);
         return $num_rows;
     }
-    if (isset($_POST['like'])) {
-        do_like(get_like_number($article_id),$article_id);
-    }
 
       function do_like($like,$article_id) {
           $like++;
@@ -215,6 +238,7 @@ else{
           $stmt = $conn->prepare("UPDATE articles SET likes=? WHERE id=?");
           $stmt->bind_param('ii',$like,$article_id);
           $stmt->execute();
+
       }
 
       function get_like_number($id){
@@ -227,9 +251,6 @@ else{
           return $likes;
       }
 
-    if (isset($_POST['dislike'])) {
-        do_dislike(get_dislike_number($article_id),$article_id);
-    }
 
     function do_dislike($dislike,$article_id) {
         $dislike++;
