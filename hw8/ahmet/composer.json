@@ -6,6 +6,8 @@
     "type": "project",
     "require": {
         "php": ">=7.0.0",
+        "backpack/crud": "^3.4",
+        "barryvdh/laravel-elfinder": "^0.4.1",
         "cyrildewit/eloquent-viewable": "^2.1",
         "fideloper/proxy": "~3.3",
         "laravel/framework": "5.5.*",
@@ -13,8 +15,10 @@
         "laravelcollective/html": "^5.4.0"
     },
     "require-dev": {
+        "backpack/generators": "^1.2",
         "filp/whoops": "~2.0",
         "fzaninotto/faker": "~1.4",
+        "laracasts/generators": "dev-master",
         "mockery/mockery": "~1.0",
         "phpunit/phpunit": "~6.0",
         "symfony/thanks": "^1.0"
