@@ -37,4 +37,6 @@ Route::prefix('admin')->group(function () {
     Route::get('articles', function () {
         return "ARTICLES PANEL";
     });
+    Route::get('harvard', gunction() {
+        return "HARVARD COMMIT :D";
 });
