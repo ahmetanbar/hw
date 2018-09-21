@@ -45,6 +45,37 @@ function connection(){
         return $conn;
     }
 }
+
+function user_check(){
+    $conn=connection();
+    $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s",$_SESSION["username"]);
+    $stmt->execute();
+    $query = $stmt->get_result();
+    $list=$query->fetch_assoc();
+    if($list){
+        return 1;
+    }
+    else
+        return 0;
+}
+
+function admin_check(){
+    $conn=connection();
+    $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s",$_SESSION["username"]);
+    $stmt->execute();
+    $query = $stmt->get_result();
+    $list=$query->fetch_assoc();
+    if($list["state"] == 1){
+        return 1;
+    }
+    else
+        return 0;
+}
+
+
+
 ?>
 
 <?php
@@ -85,7 +116,7 @@ function connection(){
 		<p>
 				WE'VE KNEW YOU WOULD COME HERE
 		</p>
-    <?php echo($_SESSION) ? '':'<form action="login.php">
+    <?php echo($_SESSION and user_check()==1) ? '':'<form action="login.php">
 			<button id="login-btn"  name="btn" type="submit"  value="btn"> LOGIN </button>
 		</form>
 		
@@ -116,7 +147,7 @@ function connection(){
 
 <div class="banner">
 		<a href="index.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> HOMEPAGE </button> </a>
-		<a href="index.php?posted=<?php echo $_SESSION["username"] ?>"style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button> </button> </a>
+		<a href="index.php?posted=<?php echo $_SESSION["username"]?>"style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button></a>
 		<a href="contact.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> CONTACT </button> </a>
 		
 	</div>
@@ -133,12 +164,15 @@ function connection(){
 				<li><a href="index.php?category=algorithms">ALGORITHMS</a></li>
 				<li><a href="index.php?category=general">GENERAL</a></li>
 				<li><a href="index.php?category=projects">PROJECTS</a></li>
-            <?php if($_SESSION){ ?>
+            <?php if($_SESSION and user_check()==1){ ?>
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn" style="color: #ff5351;font-family: 'Raleway', sans-serif"><?php echo $_SESSION["username"]?> </a>
                 <div class="dropdown-content">
                     <a href="profilepage.php">Profile</a>
-                    <a href="settings.php">Settings</a>
+                    <?php
+                    if(admin_check() == 1) {?>
+                        <a href="admin.php">Admin</a>
+                    <?php }?>
                     <a href="logout.php" style="color: #f3f3f3">Logout</a>
                 </div>
             </li>
@@ -152,8 +186,8 @@ if($_SESSION){ ?>
         <form method="post">
             Topic<input type="text" name="topic" style="width: 100%;background-color: #fff7cd">
             Title<input type="text" name="title" style="width: 100%;background-color: #fff7cd">
-            Article<textarea type="text" name="article" style="max-width: 100%;width: 100%;min-width: 100%;max-height: 200px;height: 100px;background-color: #d8ece7"></textarea><br>
-            <button name="share" type="submit" value="share" style="border-style: solid;width:150px;font-size: 16px;background-color: #005cbf;color: whitesmoke;border-width: 0;border-radius: 5px;padding: 10px">Share</button>
+            Article<textarea type="text" name="article" style="max-width: 100%;width: 100%;min-width: 100%;max-height: 200px;height: 100px;background-color: white"></textarea><br>
+            <button name="share" type="submit" value="share" style="border-style: solid;width:150px;font-size: 16px;background-color: gray;color: whitesmoke;border-width: 0;border-radius: 5px;padding: 10px">Share</button>
         </form>
     </div>
 <?php } ?>
@@ -214,23 +248,18 @@ if($_SESSION){ ?>
     		</div>
 
     	<p>
-
-
             <?php
             custom_echo($article, 512);
-
             ?>
         </p>
-
-
             <form class="more" action="article.php" method="get" style="max-width: 100px;margin: auto;color: white;background-color: #1f4965 ;border: none;border-radius: 10px">
-                <button  name="more" value="<?php echo $article_id; ?>" style="margin: auto;background-color: #1f4965;border: 0 solid;color:white;font-family: 'Segoe UI Light',sans-serif;font-size: 18px;border-radius: 10px;">READ MORE</button>
+                <button  name="more" value="<?php echo $article_id; ?>" style="margin: auto;background-color: deepskyblue;border: 3px solid;color:white;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px;padding: 5px">READ MORE</button>
             </form>
 
 			<div id="info">
-                <p style="background-color: #c5f8ff;border-radius: 10px"><i class="material-icons" style="font-size: 16px;color: black">visibility</i>:<?php echo get_views_number($article_id); ?></p>
-                <p style="background-color: #f0e8ff;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">comment</i>:<?php echo get_comments_number($article_id); ?></p>
-                <p style="background-color: #fff2f6;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">reply</i>:<?php echo $date ?></p>
+                <p style="background-color: whitesmoke;border-radius: 10px"><i class="material-icons" style="font-size: 16px;color: black">visibility</i>:<?php echo get_views_number($article_id); ?></p>
+                <p style="background-color: whitesmoke;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">comment</i>:<?php echo get_comments_number($article_id); ?></p>
+                <p style="background-color: whitesmoke;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">reply</i>:<?php echo $date ?></p>
                 <form method="post">
                     <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px" disabled><i class="material-icons" style="font-size: 14px">thumb_up</i>:<?php echo get_like_number($article_id) ?></button>
                     <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px" disabled><i class="material-icons" style="font-size: 14px">thumb_down</i>:<?php echo get_dislike_number($article_id) ?></button>

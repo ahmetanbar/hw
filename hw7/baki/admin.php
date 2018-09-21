@@ -7,116 +7,168 @@
 </head>
 <body>
 <?php
-function connection(){
-    $server_name = "localhost";
-    $username = "root";
-    $password = "";
-    $db_name="blog";
-    $conn = mysqli_connect($server_name, $username, $password,$db_name);
-    mysqli_set_charset($conn,"utf8");
-    if (!$conn) {
-        die("Connection failed: " . mysqli_connect_error());
-    }
-    else{
-        return $conn;
-    }
-}
-if(isset($_GET["delete_userid"])){
-    $id = ($_GET["delete_userid"]);
-    $conn=connection();
-    $stmt= $conn->prepare("DELETE FROM users WHERE id='".$id."'");
-    $stmt->execute();
-    header("Location:admin.php");
-    die();
-}
-
-if(isset($_GET["set_userid"])){
-    $id = ($_GET["set_userid"]);    
-    $conn=connection();
-    $stmt= $conn->prepare("UPDATE users SET username=?, email=?, firstname=?, surname=? WHERE id=?");
-    $stmt->bind_param('ssssi', $_POST["username"], $_POST["email"], $_POST["firstname"],$_POST["surname"],$id);
-    $stmt->execute();
-    header("Location:admin.php");
-    die();
-}
-
-?>
-
-<div class="grid-container">
-    <div class="left">
-        <h1>USERLIST</h1>
-        <?php
-        $conn = connection();
-        $stmt ="SELECT * FROM users ORDER BY id DESC";
-        $result = $conn->query($stmt);
-        while($list = $result->fetch_assoc()) {
-        if($list){
-            $userid = $list["id"];
-            $username = $list["username"];
-            $email = $list["email"];
-            $name = $list["firstname"];
-            $surname = $list["surname"];
-            $tel = $list["tel"];
-            $age = $list["age"];
-            $sex = $list["sex"];
-            $work = $list["work"];
-
+session_start();
+    function connection()
+    {
+        $server_name = "localhost";
+        $username = "root";
+        $password = "";
+        $db_name = "blog";
+        $conn = mysqli_connect($server_name, $username, $password, $db_name);
+        mysqli_set_charset($conn, "utf8");
+        if (!$conn) {
+            die("Connection failed: " . mysqli_connect_error());
+        } else {
+            return $conn;
         }
-        else{
-            break;
+    }
+
+    $conn=connection();
+    $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s",$_SESSION["username"]);
+    $stmt->execute();
+    $query = $stmt->get_result();
+    $list=$query->fetch_assoc();
+    if($list["state"] == 1) {
+
+        if (isset($_POST["delete_userid"])) {
+            $id = ($_POST["delete_userid"]);
+            $conn = connection();
+            $stmt = $conn->prepare("DELETE FROM users WHERE id='" . $id . "'");
+            $stmt->execute();
+            header("Refresh:0");
+            die();
         }
+
+        if (isset($_POST["set_userid"])) {
+            $id = $_POST["set_userid"];
+            $conn = connection();
+            $stmt = $conn->prepare("UPDATE users SET username=?, email=?, firstname=?, surname=?, tel=?, age=?, state=? WHERE id=?");
+            $stmt->bind_param('ssssssss', $_POST["username"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["tel"], $_POST["age"],$_POST["state"], $id);
+            $stmt->execute();
+            header("Refresh:0");
+            die();
+        }
+
+        if (isset($_POST["delete_article_id"])) {
+            $id = ($_POST["delete_article_id"]);
+            $conn = connection();
+            $stmt = $conn->prepare("DELETE FROM articles WHERE id='" . $id . "'");
+            $stmt->execute();
+            header("Refresh:0");
+            die();
+        }
+//
+//        $username = $list["username"];
+//        $date = $list["date"];
+//        $topic = $list["topic"];
+//        $title = $list["title"];
+//        $article = $list["article"];
+
+        if (isset($_POST["set_article_id"])) {
+            $id = $_POST["set_article_id"];
+            $conn = connection();
+            $stmt = $conn->prepare("UPDATE articles SET username=?, date=?, topic=?, title=?, article=? WHERE id=?");
+            $stmt->bind_param('ssssss', $_POST["username"], $_POST["date"], $_POST["topic"], $_POST["title"], $_POST["article"], $id);
+            $stmt->execute();
+            header("Refresh:0");
+            die();
+        }
+
         ?>
-        <div style="border: 1px solid crimson;margin: 10px;padding: 5px">
-            <form method="post">
-                <input name="username" placeholder=<?php echo $username?>><br>
-                <input name="email" placeholder=<?php echo $email?>><br>
-                <input name="firstname" placeholder=<?php echo $name?>><br>
-                <input name="surname" placeholder=<?php echo $surname?>><br>
-                <a href="admin.php?delete_userid=<?php echo $userid; ?>">Delete</a>
-                <a href="admin.php?set_userid=<?php echo $userid; ?>">Set</a>
-            </form>
-
-
+        <div class="banner">
+            <a id="block2" href="index.php"><--Go Back SOCEAN</a>
+            <h2 id="block1">MANAGEMENT PANEL</h2>
         </div>
-        <?php } ?>
-    </div>
-    <div class="right">
-        <h1>POSTS</h1>
-        <?php
-        $conn = connection();
-        $stmt ="SELECT * FROM articles ORDER BY id DESC";
-        $result = $conn->query($stmt);
 
-        while($list = $result->fetch_assoc()) {
-            if($list){
-                $username = $list["username"];
-                $date = $list["date"];
-                $topic = $list["topic"];
-                $title = $list["title"];
-            }
-            else{
-                break;
-            }
-            ?>
-            <div style="border: 1px solid crimson;margin: 10px;padding: 5px">
-                <form method="post">
-                    <p>Username:<?php echo $username?></p>
-                    <p>Date:<?php echo $date?></p>
-                    <p>Topic:<?php echo $topic?></p>
-                    <p>Title:<?php echo $title?></p>
-                    <button name="delete_article">Delete</button>
-                    <button name="set_article">Set</button>
-                </form>
+        <div class="grid-container">
+            <div class="left">
+                <h1>USERLIST</h1>
+                <?php
+                $conn = connection();
+                $stmt = "SELECT * FROM users ORDER BY id DESC";
+                $result = $conn->query($stmt);
+                while ($list = $result->fetch_assoc()) {
+                    if ($list) {
+                        $userid = $list["id"];
+                        $username = $list["username"];
+                        $email = $list["email"];
+                        $name = $list["firstname"];
+                        $surname = $list["surname"];
+                        $tel = $list["tel"];
+                        $age = $list["age"];
+                        $sex = $list["sex"];
+                        $work = $list["work"];
+                        $active = $list["active"];
+                        $state = $list["state"];
+
+                    } else {
+                        break;
+                    }
+                    ?>
+                    <form method="post" class="users">
+                            <input name="username" type="text" value="<?php echo $username ?>"/>
+                            <input name="email" type="text" value="<?php echo $email ?>"/><br>
+                            <input name="firstname" type="text" value="<?php echo $name ?>"/>
+                            <input name="surname" type="text" value="<?php echo $surname ?>"/><br>
+                            <input name="tel" type="text" value="<?php echo $tel ?>"/>
+                            <input name="age" type="text" value="<?php echo $age ?>"/><br>
+                            <input name="active" type="text" value="<?php echo $active ?>"/>
+                            <input name="state" type="text" value="<?php echo $state ?>"/><br>
+                            <button type="submit" name="delete_userid" value="<?php echo $userid ?>">DELETE</button>
+                            <button type="submit" name="set_userid"    value="<?php echo $userid ?>">SET</button>
+                    </form>
+                <?php } ?>
             </div>
-        <?php } ?>
-    </div>
-</div>
+            <div class="right">
+                <h1>POSTS</h1>
+                <?php
+                $conn = connection();
+                $stmt = "SELECT * FROM articles ORDER BY id DESC";
+                $result = $conn->query($stmt);
+
+                while ($list = $result->fetch_assoc()) {
+                    if ($list) {
+                        $id = $list["id"];
+                        $username = $list["username"];
+                        $date = $list["date"];
+                        $topic = $list["topic"];
+                        $title = $list["title"];
+                        $article = $list["article"];
+                    } else {
+                        break;
+                    }
+                    ?>
+                    <form method="post" class="posts">
+                            <input name="username" type="text" value="<?php echo $username ?>"/>
+                            <input name="date" type="text" value="<?php echo $date ?>"/><br>
+                            <input name="topic" type="text" value="<?php echo $topic ?>"/>
+                            <input name="title" type="text" value="<?php echo $title ?>"/><br>
+                            <textarea name="article" type="text" style="min-width: 816px;max-height: 400px;min-height: 100px;max-width: 816px"><?php echo $article ?></textarea><br>
+                             <button type="submit" name="delete_article_id" value="<?php echo $id ?>">DELETE</button>
+                            <button type="submit" name="set_article_id"    value="<?php echo $id ?>">SET</button>
+                    </form>
+
+                <?php } ?>
+            </div>
+        </div>
 
 
+        <div class="footer">
+            Copyright © 2018 Designed Baki Almacı
+        </div>
 
-<div class="footer">
-    Copyright © 2018 Designed Baki Almacı
-</div>
+        <?php
+    }
+
+        else{
+            echo "AUTHORITY NOT FOUND!";
+            echo "<br>";
+            echo "REDIRECTING...";
+            header("Refresh:3; url=index.php");
+            die();
+        }
+?>
 
 </body>
 </html>
