@@ -27,6 +27,21 @@ function connection(){
         return $conn;
     }
 }
+
+function user_check(){
+    $conn=connection();
+    $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s",$_SESSION["username"]);
+    $stmt->execute();
+    $query = $stmt->get_result();
+    $list=$query->fetch_assoc();
+    if($list){
+        return 1;
+    }
+    else
+        return 0;
+}
+
 /* --------------------------------------------------------------------------------------*/
 if(isset($_SESSION["username"])){
     $username = $_SESSION["username"];
@@ -78,16 +93,16 @@ if(isset($_POST["send"])){
 <div class="menu">
 		<ul>
             <li><a href="index.php" style="color: white;font-family: Tahoma,serif">HOMEPAGE</a></li>
-            <li><a href="PAGES/arduino.php">ARDUINO</a></li>
-            <li><a href="PAGES/arm.php">ARM</a></li>
-            <li><a href="PAGES/c.php">C</a></li>
-            <li><a href="PAGES/java.php">JAVA</a></li>
-            <li><a href="PAGES/php.php">PHP</a></li>
-            <li><a href="PAGES/article.php">PYTHON</a></li>
-            <li><a href="PAGES/html-css.php">HTML-CSS</a></li>
-            <li><a href="PAGES/algorithms.php">ALGORITHMS</a></li>
-            <li><a href="PAGES/general.php">GENERAL</a></li>
-            <li><a href="PAGES/projects.php">PROJECTS</a></li>
+            <li><a href="index.php?category=arduino">ARDUINO</a></li>
+            <li><a href="index.php?category=arm">ARM</a></li>
+            <li><a href="index.php?category=c">C</a></li>
+            <li><a href="index.php?category=java">JAVA</a></li>
+            <li><a href="index.php?category=php">PHP</a></li>
+            <li><a href="index.php?category=python">PYTHON</a></li>
+            <li><a href="index.php?category=html-css">HTML-CSS</a></li>
+            <li><a href="index.php?category=algorithms">ALGORITHMS</a></li>
+            <li><a href="index.php?category=general">GENERAL</a></li>
+            <li><a href="index.php?category=projects">PROJECTS</a></li>
 			  </ul>
 </div>
 
@@ -165,9 +180,9 @@ if(isset($_POST["send"])){
 
         <div id="comment">
                 <form method="post">
-                    <?php echo($_SESSION) ? '<input    id="contact-input" name="title" type="text"     placeholder="Title"/>':'<input    id="contact-input" name="title" type="text"     placeholder="Title" disabled/>'; ?>
-                    <?php echo($_SESSION) ? '<textarea id="msg-input"     name="comment"  placeholder="Write here..."></textarea>':'<textarea id="msg-input"     name="msg"  placeholder="Write here..." disabled></textarea>'; ?>
-                    <?php echo($_SESSION) ? '<button   id="contact-btn"   name="send" type="submit" value="send"  >SEND</button>':'<button id="contact-btn"  style="background: #a94442;color: white" disabled><a href="login.php" style="text-decoration: none;color: white">LOGIN TO SEND</a></button>'; ?>
+                    <?php echo($_SESSION and user_check()==1) ? '<input    id="contact-input" name="title" type="text"     placeholder="Title"/>':'<input    id="contact-input" name="title" type="text"     placeholder="Title" disabled/>'; ?>
+                    <?php echo($_SESSION and user_check()==1) ? '<textarea id="msg-input"     name="comment"  placeholder="Write here..."></textarea>':'<textarea id="msg-input"     name="msg"  placeholder="Write here..." disabled></textarea>'; ?>
+                    <?php echo($_SESSION and user_check()==1) ? '<button   id="contact-btn"   name="send" type="submit" value="send"  >SEND</button>':'<button id="contact-btn"  style="background: #a94442;color: white" disabled><a href="login.php" style="text-decoration: none;color: white">LOGIN TO SEND</a></button>'; ?>
                 </form>
 
     <?php
