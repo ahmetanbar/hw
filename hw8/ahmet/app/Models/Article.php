@@ -9,7 +9,9 @@ class Article extends Model
 {
     use CrudTrait;
 
-    public $timestamps=true;
+    protected $fillable = [
+        'author_id', 'header','article','category',
+    ];
 
 
     public function comments()
