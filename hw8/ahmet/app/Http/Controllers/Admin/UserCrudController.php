@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\UserRequest as StoreRequest;
-use App\Http\Requests\UserRequest as UpdateRequest;
+use App\Http\Requests\CreateUserRequest as StoreRequest;
+use App\Http\Requests\UpdateUserRequest as UpdateRequest;
 
 /**
  * Class UserCrudController
@@ -42,8 +42,8 @@ class UserCrudController extends CrudController
         $this->crud->addField(['name' => 'surname', 'type' => 'text', 'label' => 'Surname']);
         $this->crud->addField(['name' => 'username', 'type' => 'text', 'label' => 'Username']);
         $this->crud->addField(['name' => 'email', 'type' => 'email', 'label' => 'Email']);
-        $this->crud->addField(['name' => 'password', 'type' => 'password', 'label' => 'Password']);
-        $this->crud->addField(['name' => 'password_confirmation', 'type' => 'password', 'label' => 'Confirm password']);
+        $this->crud->addField(['name' => 'password', 'type' => 'password', 'label' => 'Password'],'create');
+        $this->crud->addField(['name' => 'password_confirmation', 'type' => 'password', 'label' => 'Confirm password'],'create');
 
         // add asterisk for fields that are required in UserRequest
         $this->crud->setRequiredFields(StoreRequest::class, 'create');
@@ -52,10 +52,8 @@ class UserCrudController extends CrudController
 
     public function store(StoreRequest $request)
     {
-        // your additional operations before save here
+        $request->offsetSet('password', bcrypt($request->password));
         $redirect_location = parent::storeCrud($request);
-        // your additional operations after save here
-        // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
     }
 

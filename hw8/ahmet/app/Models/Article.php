@@ -10,17 +10,22 @@ class Article extends Model
     use CrudTrait;
 
     protected $fillable = [
-        'author_id', 'header','article','category',
+        'author_id', 'header','article','category_id',
     ];
 
 
     public function comments()
     {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\Models\Comment');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\User','author_id');
+        return $this->belongsTo('App\Models\User','author_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category','category_id');
     }
 }

@@ -9,16 +9,17 @@ class Comment extends Model
 {
     use CrudTrait;
 
-    protected $table='comments';
-    public $timestamps=true;
+    protected $fillable = [
+        'user_id', 'article_id','comment',
+    ];
 
     public function user()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\User');
     }
 
-    public function comment()
+    public function article()
     {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\Models\Article');
     }
 }

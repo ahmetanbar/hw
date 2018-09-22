@@ -17,25 +17,36 @@ class CommentCrudController extends CrudController
 {
     public function setup()
     {
-        /*
-        |--------------------------------------------------------------------------
-        | CrudPanel Basic Information
-        |--------------------------------------------------------------------------
-        */
         $this->crud->setModel('App\Models\Comment');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/comment');
         $this->crud->setEntityNameStrings('comment', 'comments');
 
-        /*
-        |--------------------------------------------------------------------------
-        | CrudPanel Configuration
-        |--------------------------------------------------------------------------
-        */
+        $this->crud->addColumn(['name' => 'id', 'type' => 'id', 'label' => 'id']);
+        $this->crud->addColumn(['name' => 'article.header', 'type' => 'text', 'label' => 'Article']);
+        $this->crud->addColumn(['name' => 'user.username', 'type' => 'text', 'label' => 'Writer']);
+        $this->crud->addColumn(['name' => 'comment', 'type' => 'text', 'label' => 'Comment']);
 
-        // TODO: remove setFromDb() and manually define Fields and Columns
-        $this->crud->setFromDb();
+        $this->crud->addField([  // Select
+            'label' => "Writer",
+            'type' => 'select',
+            'name' => 'user_id', // the db column for the foreign key
+            'entity' => 'user', // the method that defines the relationship in your Model
+            'attribute' => 'username', // foreign key attribute that is shown to user
+            'model' => "App\Models\User" // foreign key model
+        ]);
 
-        // add asterisk for fields that are required in CommentRequest
+        $this->crud->addField(['name' => 'comment', 'type' => 'textarea', 'label' => 'Comment']);
+
+        $this->crud->addField([  // Select
+            'label' => "Header",
+            'type' => 'select2',
+            'name' => 'article_id', // the db column for the foreign key
+            'entity' => 'article', // the method that defines the relationship in your Model
+            'attribute' => 'header', // foreign key attribute that is shown to user
+            'model' => "App\Models\Article" // foreign key model
+        ]);
+
+
         $this->crud->setRequiredFields(StoreRequest::class, 'create');
         $this->crud->setRequiredFields(UpdateRequest::class, 'edit');
     }

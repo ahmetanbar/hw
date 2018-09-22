@@ -19,12 +19,12 @@ class User extends Model
 
     public function article()
     {
-        return $this->hasMany('App\Article','author_id');
+        return $this->hasMany('App\Models\Article','author_id');
     }
 
-    public function comment()
+    public function comments()
     {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\Models\Comment');
     }
 
 }

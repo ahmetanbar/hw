@@ -4,3 +4,4 @@
 <li><a href='{{ backpack_url('user') }}'><i class='fa fa-user'></i> <span>Users</span></a></li>
 <li><a href='{{ backpack_url('article') }}'><i class='fa fa-newspaper-o'></i> <span>Articles</span></a></li>
 <li><a href='{{ backpack_url('comment') }}'><i class='fa fa-comments'></i> <span>Comments</span></a></li>
+<li><a href='{{ backpack_url('category') }}'><i class='fa fa-list-alt'></i> <span>Categories</span></a></li>
