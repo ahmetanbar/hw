@@ -25,6 +25,21 @@ function connection(){
     }
 }
 
+
+function admin_check(){
+    $conn=connection();
+    $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
+    $stmt->bind_param("s",$_SESSION["username"]);
+    $stmt->execute();
+    $query = $stmt->get_result();
+    $list=$query->fetch_assoc();
+    if($list["state"] == 1){
+        return 1;
+    }
+    else
+        return 0;
+}
+
 function user_check(){
     $conn=connection();
     $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
@@ -117,6 +132,10 @@ if(user_check()==1) {
                 <a href="javascript:void(0)" class="dropbtn" style="color: #a6e1ec"><?php echo $username ?></a>
                 <div class="dropdown-content">
                     <a href="profilepage.php">Profile</a>
+                    <?php
+                    if(admin_check() == 1) {?>
+                        <a href="admin.php">Admin</a>
+                    <?php }?>
                     <a href="logout.php" style="color: red">Logout</a>
                 </div>
             </li>
@@ -125,22 +144,35 @@ if(user_check()==1) {
 
     <div class="home-page">
         <?php
+        if(isset($_GET["profile"])) {
+            $username = $_GET["profile"];
+        }else{
+            header("Refresh:0; url=index.php");
+            die();
+        }
         $conn = connection();
         $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $query = $stmt->get_result();
         $list = $query->fetch_assoc();
-        $userid = $list["id"];
-        $username = $list["username"];
-        $name = $list["firstname"];
-        $surname = $list["surname"];
-        $email = $list["email"];
-        $tel = $list["tel"];
-        $age = $list["age"];
-        $sex = $list["sex"];
-        $work = $list["work"];
-        echo $userid;
+        if($list){
+            $userid = $list["id"];
+            $username = $list["username"];
+            $name = $list["firstname"];
+            $surname = $list["surname"];
+            $email = $list["email"];
+            $tel = $list["tel"];
+            $age = $list["age"];
+            $sex = $list["sex"];
+            $work = $list["work"];
+        }
+        else{
+            header("Refresh:0; url=index.php");
+            die();
+        }
+
+//        echo $userid;
 
         //-----get history-----
         $stmt = $conn->prepare("SELECT * FROM articles WHERE username=?");
@@ -199,11 +231,10 @@ if(user_check()==1) {
             $stmt = $conn->prepare("UPDATE users SET username=?, email=?, firstname=?, surname=?, tel=?, age=? WHERE id=?");
             $stmt->bind_param('sssssss', $_POST["username"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["tel"], $_POST["age"], $id);
             $stmt->execute();
-            echo "AUTHORITY NOT FOUND!";
-            echo "<br>";
-            echo "REDIRECTING LOGIN PAGE...";
-            header("Refresh:3; url=login.php");
+            $_SESSION["username"] = $_POST["username"];
+            header("Refresh:0; url=profilepage.php?profile=".$_SESSION["username"]);
             die();
+
         }
         ?>
         <div class="form">
@@ -215,8 +246,8 @@ if(user_check()==1) {
                     <input name="surname" type="text" value="<?php echo $surname ?>"/><br>
                     <input name="tel" type="text" value="<?php echo $tel ?>"/>
                     <input name="age" type="text" value="<?php echo $age ?>"/><br>
-                    <button type="submit" name="delete_userid" value="<?php echo $userid ?>">DELETE</button>
-                    <button type="submit" name="set_userid" value="<?php echo $userid ?>">SET</button>
+                    <button type="submit" name="delete_userid" value="<?php echo $userid ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?>style="display: none"<?php } ?>>DELETE</button>
+                    <button type="submit" name="set_userid" value="<?php echo $userid ?> "  <?php if($_SESSION["username"] != $_GET["profile"]){ ?>style="display: none"<?php } ?> >SET</button>
                 </form>
                 <p style="color:#d84500;font-size: 19px">Post Number:<?php echo get_post_num($username) ?></p>
                 <p style="color:#d84500;font-size: 19px">Last Post:<?php echo get_last_post($username) ?></p>

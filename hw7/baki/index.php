@@ -168,7 +168,7 @@ function admin_check(){
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn" style="color: #ff5351;font-family: 'Raleway', sans-serif"><?php echo $_SESSION["username"]?> </a>
                 <div class="dropdown-content">
-                    <a href="profilepage.php">Profile</a>
+                    <a href="profilepage.php?profile=<?php echo $_SESSION["username"]?>">Profile</a>
                     <?php
                     if(admin_check() == 1) {?>
                         <a href="admin.php">Admin</a>
@@ -364,8 +364,14 @@ if($_SESSION){ ?>
             $counter++;
             ?>
             <a href="index.php?page=<?php echo $counter ?> "><?php echo $counter ?></a>
-
     <?php
+    }
+    if(isset($_GET["page"])){
+        if($_GET["page"] > $counter){
+            echo "redirecting...";
+            header("Refresh:0; url=index.php");
+            die();
+        }
     }
     ?>
 </div>
