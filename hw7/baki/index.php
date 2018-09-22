@@ -80,6 +80,16 @@ function admin_check(){
 
 <?php
 
+
+    if (isset($_POST["delete_article_id"])) {
+        $id = ($_POST["delete_article_id"]);
+        $conn = connection();
+        $stmt = $conn->prepare("DELETE FROM articles WHERE id='" . $id . "'");
+        $stmt->execute();
+        header("Refresh:0");
+        die();
+    }
+
     if (isset($_POST['share']) and check_share()) {
         $share_username = $_SESSION["username"];
         $share_title = $_POST["title"];
@@ -245,6 +255,12 @@ if($_SESSION){ ?>
         	<div id="title">
 				<h1><?php echo $title?></h1>
 				<p>Author:<a style="text-decoration: none" href="profilepage.php?profile=<?php echo $username?>"><?php echo $username?></a></p>
+                <?php if($_SESSION["username"] == $username){?>
+                    <form method="post">
+                        <button style="border: 1px solid;background-color: #d58388;padding: 5px;border-radius: 5px" name="delete_article_id" value="<?php echo $article_id ?>">Delete Article</button>
+                    </form>
+                <?php }
+                ?>
     		</div>
 
     	<p>
@@ -264,6 +280,7 @@ if($_SESSION){ ?>
                     <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px" disabled><i class="material-icons" style="font-size: 14px">thumb_up</i>:<?php echo get_like_number($article_id) ?></button>
                     <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px" disabled><i class="material-icons" style="font-size: 14px">thumb_down</i>:<?php echo get_dislike_number($article_id) ?></button>
                 </form>
+
 			</div>
 		
 		</div>
@@ -271,6 +288,7 @@ if($_SESSION){ ?>
     <?php } ?>
 
     <?php
+
     function get_comments_number($id){
         $conn=connection();
         $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id='".$id."'");

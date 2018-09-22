@@ -53,6 +53,15 @@ else{
 
 <?php
 
+if (isset($_POST["delete_comment_id"])) {
+    $id = ($_POST["delete_comment_id"]);
+    $conn = connection();
+    $stmt = $conn->prepare("DELETE FROM comments WHERE id='" . $id . "'");
+    $stmt->execute();
+    header("Refresh:0");
+    die();
+}
+
 
 function do_comment(){
     $user_id = get_user_id();
@@ -171,6 +180,12 @@ if(isset($_POST["send"])){
                 }
                 ?>
                 <div id="comments">
+                    <?php if($_SESSION["username"] == $username){?>
+                        <form method="post">
+                            <button style="border: 1px solid;background-color: #d58388;padding: 5px;border-radius: 5px;float: right" name="delete_comment_id" value="<?php echo get_comment_id();?>">Delete Article</button>
+                        </form>
+                    <?php }
+                    ?>
                     <h2 style="font-family: 'Segoe UI Light',serif;color: #ff5351"><a style="color: #000000;font-family: 'Segoe UI Light',sans-serif;float: left">Writer:</a><?php echo $username;?>:</h2>
                     <h2 style="color: #2b92a7;font-size: 16px;font-family: 'Segoe UI Light',sans-serif;"><a style="color: black">Title:</a> <?php echo $title; ?></h2  >
                     <h2 style="color: #a94442"> <a style="color: black;font-size: 18px;">Comment:</a> <br> <?php echo $comments;?>:</h2>
@@ -196,6 +211,15 @@ if(isset($_POST["send"])){
         $list = mysqli_fetch_array($read);
         $userid = $list[0];
         return $userid;
+    }
+
+    function get_comment_id(){
+        $username = $_SESSION["username"];
+        $conn = connection();
+        $read = $conn->query("SELECT * FROM comments WHERE username='".$username."'");
+        $list = mysqli_fetch_array($read);
+        $comment_id = $list["id"];
+        return $comment_id;
     }
 
 //    function get_article_id(){

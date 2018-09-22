@@ -2,11 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5a3abead-7121-489b-8483-5f1414fa04c0" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Baki_Almac.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Baki_Almac.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ASSESTS/STYLE/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/ASSESTS/STYLE/index.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/article.php" beforeDir="false" afterPath="$PROJECT_DIR$/article.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/profilepage.php" beforeDir="false" afterPath="$PROJECT_DIR$/profilepage.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -32,7 +30,7 @@
           <entry key="css" value="6" />
           <entry key="jpeg" value="1" />
           <entry key="jpg" value="2" />
-          <entry key="php" value="14" />
+          <entry key="php" value="15" />
           <entry key="png" value="3" />
         </counts>
       </usages-collector>
@@ -40,34 +38,50 @@
         <counts>
           <entry key="CSS" value="6" />
           <entry key="Image" value="6" />
-          <entry key="PHP" value="14" />
+          <entry key="PHP" value="15" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="css" value="740" />
-          <entry key="php" value="6785" />
+          <entry key="php" value="7101" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
           <entry key="CSS" value="740" />
-          <entry key="PHP" value="6785" />
+          <entry key="PHP" value="7101" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="365" column="150" selection-start-line="365" selection-start-column="150" selection-end-line="365" selection-end-column="150" />
+            <state relative-caret-position="133">
+              <caret line="83" selection-start-line="83" selection-end-line="90" selection-end-column="5" />
               <folding>
                 <element signature="e#391#419#0#PHP" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#p#0;n#div#0;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#form#0;n#div#0;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#1;n#form#0;n#div#1;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#4;n#body#0;n#html#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/article.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="455">
+              <caret line="213" column="5" lean-forward="true" selection-start-line="213" selection-start-column="5" selection-end-line="213" selection-end-column="5" />
+              <folding>
+                <element signature="n#style#0;n#button#0;n#form#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#a#0;n#button#0;n#!!top" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -94,8 +108,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/admin.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="790">
-              <caret line="105" column="30" lean-forward="true" selection-start-line="105" selection-start-column="30" selection-end-line="105" selection-end-column="30" />
+            <state relative-caret-position="270">
+              <caret line="52" selection-start-line="52" selection-end-line="59" selection-end-column="9" />
             </state>
           </provider>
         </entry>
@@ -158,11 +172,11 @@
         <option value="$PROJECT_DIR$/admin.css" />
         <option value="$PROJECT_DIR$/ASSESTS/STYLE/admin.css" />
         <option value="$PROJECT_DIR$/admin.php" />
-        <option value="$PROJECT_DIR$/article.php" />
         <option value="$PROJECT_DIR$/ASSESTS/STYLE/profilepage.css" />
         <option value="$PROJECT_DIR$/profilepage.php" />
         <option value="$PROJECT_DIR$/ASSESTS/STYLE/index.css" />
         <option value="$PROJECT_DIR$/index.php" />
+        <option value="$PROJECT_DIR$/article.php" />
       </list>
     </option>
   </component>
@@ -180,7 +194,7 @@
   </component>
   <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.2.4" />
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="953" />
     <option name="width" value="974" />
     <option name="height" value="1047" />
@@ -328,12 +342,12 @@
       <workItem from="1537463947733" duration="660000" />
       <workItem from="1537548993269" duration="3727000" />
       <workItem from="1537637466587" duration="747000" />
-      <workItem from="1537655322490" duration="1267000" />
+      <workItem from="1537655322490" duration="2839000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="65421000" />
+    <option name="totallyTimeSpent" value="66993000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
@@ -433,13 +447,6 @@
     <entry file="file://$PROJECT_DIR$/ASSESTS/STYLE/MEDIA/menu2.jpg">
       <provider selected="true" editor-type-id="images" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/article.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="104" column="71" selection-start-line="104" selection-start-column="71" selection-end-line="104" selection-end-column="71" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ASSESTS/STYLE/admin.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1612">
@@ -471,13 +478,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="790">
-          <caret line="105" column="30" lean-forward="true" selection-start-line="105" selection-start-column="30" selection-end-line="105" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ASSESTS/STYLE/index.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="442">
@@ -485,14 +485,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/admin.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="52" selection-start-line="52" selection-end-line="59" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="365" column="150" selection-start-line="365" selection-start-column="150" selection-end-line="365" selection-end-column="150" />
+        <state relative-caret-position="133">
+          <caret line="83" selection-start-line="83" selection-end-line="90" selection-end-column="5" />
           <folding>
             <element signature="e#391#419#0#PHP" expanded="true" />
             <element signature="n#style#0;n#a#0;n#p#0;n#div#0;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#form#0;n#div#0;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#1;n#form#0;n#div#1;n#div#1;n#div#3;n#body#0;n#html#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#4;n#body#0;n#html#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/article.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="455">
+          <caret line="213" column="5" lean-forward="true" selection-start-line="213" selection-start-column="5" selection-end-line="213" selection-end-column="5" />
+          <folding>
+            <element signature="n#style#0;n#button#0;n#form#0;n#div#1;n#div#1;n#body#0;n#html#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#button#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#a#0;n#button#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
