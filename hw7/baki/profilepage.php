@@ -202,6 +202,16 @@ if(user_check()==1) {
             return $list["title"];
         }
 
+        function get_last_post_id($username)
+        {
+            $conn = connection();
+            $stmt = $conn->prepare("SELECT * FROM articles WHERE username='" . $username . "' ORDER BY id DESC LIMIT 1");
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list = $query->fetch_assoc();
+            return $list["id"];
+        }
+
         function get_last_comment($username)
         {
             $conn = connection();
@@ -210,6 +220,16 @@ if(user_check()==1) {
             $query = $stmt->get_result();
             $list = $query->fetch_assoc();
             return $list["title"];
+        }
+
+        function get_last_comment_id($username)
+        {
+            $conn = connection();
+            $stmt = $conn->prepare("SELECT * FROM comments WHERE username='" . $username . "' ORDER BY id DESC LIMIT 1");
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list = $query->fetch_assoc();
+            return $list["article_id"];
         }
 
 
@@ -240,18 +260,18 @@ if(user_check()==1) {
         <div class="form">
             <div class="card">
                 <form method="post">
-                    <input name="username" type="text" value="<?php echo $username ?>"/>
-                    <input name="email" type="text" value="<?php echo $email ?>"/><br>
-                    <input name="firstname" type="text" value="<?php echo $name ?>"/>
-                    <input name="surname" type="text" value="<?php echo $surname ?>"/><br>
-                    <input name="tel" type="text" value="<?php echo $tel ?>"/>
-                    <input name="age" type="text" value="<?php echo $age ?>"/><br>
+                    <input name="username" type="text" value="<?php echo $username ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
+                    <input name="email" type="text" value="<?php echo $email ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
+                    <input name="firstname" type="text" value="<?php echo $name ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
+                    <input name="surname" type="text" value="<?php echo $surname ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
+                    <input name="tel" type="text" value="<?php echo $tel ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
+                    <input name="age" type="text" value="<?php echo $age ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
                     <button type="submit" name="delete_userid" value="<?php echo $userid ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?>style="display: none"<?php } ?>>DELETE</button>
                     <button type="submit" name="set_userid" value="<?php echo $userid ?> "  <?php if($_SESSION["username"] != $_GET["profile"]){ ?>style="display: none"<?php } ?> >SET</button>
                 </form>
                 <p style="color:#d84500;font-size: 19px">Post Number:<?php echo get_post_num($username) ?></p>
-                <p style="color:#d84500;font-size: 19px">Last Post:<?php echo get_last_post($username) ?></p>
-                <p style="color:#d84500;font-size: 19px">Last Comment:<?php echo get_last_comment($username) ?></p>
+                <p style="color:#d84500;font-size: 19px">Last Post:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_post_id($username)?>"><?php echo get_last_post($username) ?></a></p>
+                <p style="color:#d84500;font-size: 19px">Last Comment:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_comment_id($username)?>"><?php echo get_last_comment($username) ?></a></p>
             </div>
         </div>
     </div>

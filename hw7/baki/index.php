@@ -244,7 +244,7 @@ if($_SESSION){ ?>
 
         	<div id="title">
 				<h1><?php echo $title?></h1>
-				<p>Author:<?php echo $username?></p>
+				<p>Author:<a style="text-decoration: none" href="profilepage.php?profile=<?php echo $username?>"><?php echo $username?></a></p>
     		</div>
 
     	<p>
@@ -363,7 +363,7 @@ if($_SESSION){ ?>
         while ($counter < get_page_numbers()){
             $counter++;
             ?>
-            <a href="index.php?page=<?php echo $counter ?> "><?php echo $counter ?></a>
+            <a style="border: 1px solid;border-radius: 5px; padding: 5px;background-color: whitesmoke;text-decoration: none;font-family: 'Arial Black'" href="index.php?page=<?php echo $counter ?> "><?php echo $counter ?></a>
     <?php
     }
     if(isset($_GET["page"])){
