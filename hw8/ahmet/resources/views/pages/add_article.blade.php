@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <?php $categories=array("C","PHP","Java"); ?>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
 
     <script>
@@ -23,10 +22,10 @@
         {{ Form::label('title', 'Title:') }}
         {{ Form::text('title', null, array('class' => 'form-control', 'required' => '', 'maxlength' => '255')) }}
 
-        {{ Form::label('category', 'Category:') }}
-        <select class="form-control" name="category">
+        {{ Form::label('category_id', 'Category:') }}
+        <select class="form-control" name="category_id">
             @foreach($categories as $category)
-                <option>{{ $category }}</option>
+                <option value="{{ $category->id }}">{{ $category->name }}</option>
             @endforeach
         </select>
 

@@ -37,6 +37,7 @@ class UserCrudController extends CrudController
         $this->crud->addColumn(['name' => 'surname', 'type' => 'text', 'label' => 'Surname']);
         $this->crud->addColumn(['name' => 'username', 'type' => 'text', 'label' => 'Username']);
         $this->crud->addColumn(['name' => 'email', 'type' => 'email', 'label' => 'Email']);
+        $this->crud->addColumn(['name' => 'role', 'type' => 'integer', 'label' => 'Role']);
 
         $this->crud->addField(['name' => 'name', 'type' => 'text', 'label' => 'Name']);
         $this->crud->addField(['name' => 'surname', 'type' => 'text', 'label' => 'Surname']);
@@ -44,6 +45,7 @@ class UserCrudController extends CrudController
         $this->crud->addField(['name' => 'email', 'type' => 'email', 'label' => 'Email']);
         $this->crud->addField(['name' => 'password', 'type' => 'password', 'label' => 'Password'],'create');
         $this->crud->addField(['name' => 'password_confirmation', 'type' => 'password', 'label' => 'Confirm password'],'create');
+        $this->crud->addField(['name' => 'role', 'type' => 'number', 'label' => 'Role']);
 
         // add asterisk for fields that are required in UserRequest
         $this->crud->setRequiredFields(StoreRequest::class, 'create');

@@ -9,7 +9,7 @@
                     <i class="material-icons  md-30">date_range</i>
                     <i class="nav-link">{{date('Y-m-d H:i', strtotime($article->created_at))}}</i>
                     <i class="material-icons" >account_balance</i>
-                    <a class="nav-link" href="{{route('categorize',['category' => $article->category]) }}">{{$article->category}}</a>
+                    <a class="nav-link" href="{{route('categorize',['category' => $article->category->name]) }}">{{$article->category->name}}</a>
                     <i class="material-icons" >account_circle </i>
                     <a class="nav-link" href="{{route('profile_show',['id' => $article->user->username]) }}">{{$article->user->name}} {{$article->user->surname}}</a>
                 </nav>

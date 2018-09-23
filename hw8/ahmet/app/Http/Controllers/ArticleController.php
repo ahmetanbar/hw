@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Category;
 use Illuminate\Http\Request;
 use App\Article;
+use App\Comment;
 use Auth;
 
 class ArticleController extends Controller
@@ -33,7 +35,7 @@ class ArticleController extends Controller
         $pag_num=6;
 
         $articles=Article::orderBy('id','desc')
-            ->where('category', $category)
+            ->where('category_id', Category::where('name',$category)->get()[0]->id)
             ->paginate($pag_num);
 
         return view('pages.archieve',['articles'=>$articles]);
@@ -43,7 +45,7 @@ class ArticleController extends Controller
     {
         $this->validate($request, [
             'title'=>'required|max:250',
-            'category'=>'required|max:30',
+            'category_id'=>'required',
             'body'=>'required'
         ]);
 
@@ -51,7 +53,7 @@ class ArticleController extends Controller
         $Article->author_id=Auth::id();
         $Article->header = $request->input('title');
         $Article->article = $request->input('body');
-        $Article->category = $request->input('category');
+        $Article->category_id = $request->input('category_id');
         $Article->save();
 
         return redirect()->route('archieve_show', ['id' =>  $Article->id]);
@@ -62,8 +64,12 @@ class ArticleController extends Controller
         $article = Article::find($id);
         $article->view_num = $article->view_num + 1;
         $article->save();
-
         return view('pages.show',['article'=>$article]);
+    }
+
+    public function getCategories(){
+
+        return view('pages.add_article',['categories'=>Category::all()]);
     }
 
 }

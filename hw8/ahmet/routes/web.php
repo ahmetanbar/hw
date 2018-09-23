@@ -2,7 +2,6 @@
 
 Auth::routes();
 
-
 Route::get('/changePassword','HomeController@showChangePasswordForm')->name('get_changePass');
 Route::post('/changePassword','HomeController@changePassword')->name('changePassword');
 
@@ -22,9 +21,7 @@ Route::get('/about', function () {
     return view('pages.about');
 })->name('about');
 
-Route::get('/article/add',function () {
-    return view('pages.add_article');
-})->name('add_article');
+Route::get('/article/add','ArticleController@getCategories')->name('add_article');
 Route::post('/article/add','ArticleController@store')->name('article_store');
 
 

@@ -10,7 +10,7 @@ class User extends Model
     use CrudTrait;
 
     protected $fillable = [
-        'name', 'surname','username','email', 'password',
+        'name', 'surname','username','email', 'password', 'role',
     ];
 
     protected $hidden = [
