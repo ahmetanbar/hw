@@ -255,11 +255,13 @@ if($_SESSION){ ?>
         	<div id="title">
 				<h1><?php echo $title?></h1>
 				<p>Author:<a style="text-decoration: none" href="profilepage.php?profile=<?php echo $username?>"><?php echo $username?></a></p>
-                <?php if($_SESSION["username"] == $username){?>
+                <?php if(isset($_SESSION["username"])) {
+                if($_SESSION["username"] == $username)
+                {?>
                     <form method="post">
                         <button style="border: 1px solid;background-color: #d58388;padding: 5px;border-radius: 5px" name="delete_article_id" value="<?php echo $article_id ?>">Delete Article</button>
                     </form>
-                <?php }
+                <?php }}
                 ?>
     		</div>
 

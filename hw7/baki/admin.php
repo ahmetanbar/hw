@@ -107,14 +107,14 @@ session_start();
                     }
                     ?>
                     <form method="post" class="users">
-                            <input name="username" type="text" value="<?php echo $username ?>"/>
-                            <input name="email" type="text" value="<?php echo $email ?>"/><br>
-                            <input name="firstname" type="text" value="<?php echo $name ?>"/>
-                            <input name="surname" type="text" value="<?php echo $surname ?>"/><br>
-                            <input name="tel" type="text" value="<?php echo $tel ?>"/>
-                            <input name="age" type="text" value="<?php echo $age ?>"/><br>
-                            <input name="active" type="text" value="<?php echo $active ?>"/>
-                            <input name="state" type="text" value="<?php echo $state ?>"/><br>
+                            <input name="username" type="text" value="<?php echo $username ?>" placeholder="username"/>
+                            <input name="email" type="text" value="<?php echo $email ?>" placeholder="email" /><br>
+                            <input name="firstname" type="text" value="<?php echo $name ?>" placeholder="firstname" />
+                            <input name="surname" type="text" value="<?php echo $surname ?>" placeholder="surname" /><br>
+                            <input name="tel" type="text" value="<?php echo $tel ?>" placeholder="tel" />
+                            <input name="age" type="text" value="<?php echo $age ?>" placeholder="age" /><br>
+                            <input name="active" type="text" value="<?php echo $active ?>" placeholder="active/de-active" />
+                            <input name="state" type="text" value="<?php echo $state ?>" placeholder="user/admin" /><br>
                             <button type="submit" name="delete_userid" value="<?php echo $userid ?>">DELETE</button>
                             <button type="submit" name="set_userid"    value="<?php echo $userid ?>">SET</button>
                     </form>

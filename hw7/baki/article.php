@@ -182,7 +182,7 @@ if(isset($_POST["send"])){
                 <div id="comments">
                     <?php if($_SESSION["username"] == $username){?>
                         <form method="post">
-                            <button style="border: 1px solid;background-color: #d58388;padding: 5px;border-radius: 5px;float: right" name="delete_comment_id" value="<?php echo get_comment_id();?>">Delete Article</button>
+                            <button style="border: 1px solid;background-color: #d58388;padding: 5px;border-radius: 5px;float: right" name="delete_comment_id" value="<?php echo get_comment_id();?>">Delete Comment</button>
                         </form>
                     <?php }
                     ?>

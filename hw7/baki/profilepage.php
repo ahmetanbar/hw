@@ -234,15 +234,29 @@ if(user_check()==1) {
 
 
         if (isset($_POST["delete_userid"])) {
-            $id = ($_POST["delete_userid"]);
+//            $id = ($_POST["delete_userid"]);
+//            $conn = connection();
+//            $stmt = $conn->prepare("DELETE FROM users WHERE id='" . $id . "'");
+//            $stmt->execute();
+//            echo "WE ARE WAITING YOUR COME BACK :(";
+//            echo "<br>";
+//            echo "REDIRECTING...";
+//            header("Refresh:3; url=index.php");
+//            die();
+
+            $id = $_POST["delete_userid"];
+            $date = date('Y-m-d H:i:s');
             $conn = connection();
-            $stmt = $conn->prepare("DELETE FROM users WHERE id='" . $id . "'");
+            $stmt = $conn->prepare("UPDATE users SET active=? WHERE id=?");
+            $stmt->bind_param('si', $date, $id);
             $stmt->execute();
+            session_destroy();
             echo "WE ARE WAITING YOUR COME BACK :(";
             echo "<br>";
             echo "REDIRECTING...";
             header("Refresh:3; url=index.php");
             die();
+
         }
 
         if (isset($_POST["set_userid"])) {
@@ -254,7 +268,6 @@ if(user_check()==1) {
             $_SESSION["username"] = $_POST["username"];
             header("Refresh:0; url=profilepage.php?profile=".$_SESSION["username"]);
             die();
-
         }
         ?>
         <div class="form">
@@ -270,8 +283,16 @@ if(user_check()==1) {
                     <button type="submit" name="set_userid" value="<?php echo $userid ?> "  <?php if($_SESSION["username"] != $_GET["profile"]){ ?>style="display: none"<?php } ?> >SET</button>
                 </form>
                 <p style="color:#d84500;font-size: 19px">Post Number:<?php echo get_post_num($username) ?></p>
-                <p style="color:#d84500;font-size: 19px">Last Post:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_post_id($username)?>"><?php echo get_last_post($username) ?></a></p>
-                <p style="color:#d84500;font-size: 19px">Last Comment:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_comment_id($username)?>"><?php echo get_last_comment($username) ?></a></p>
+                <p style="color:#d84500;font-size: 19px">Last Post:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_post_id($username)?>"><?php if(get_last_post($username)){
+                    echo get_last_post($username);
+                        }else{
+                    echo "Not Found";
+                        } ?></a></p>
+                <p style="color:#d84500;font-size: 19px;<?php if(!get_last_comment_id($username)){?> display: none <?php }?>">Last Comment:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_comment_id($username)?>"><?php if(get_last_comment($username)){
+                            echo get_last_comment($username);
+                        }else{
+                            echo "Not Found";
+                        } ?></a></p>
             </div>
         </div>
     </div>
