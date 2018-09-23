@@ -34,9 +34,7 @@ class ArticleController extends Controller
     {
         $pag_num=6;
 
-        $articles=Article::orderBy('id','desc')
-            ->where('category_id', Category::where('name',$category)->get()[0]->id)
-            ->paginate($pag_num);
+        $articles=Category::where('name',$category)->first()->article()->paginate($pag_num);
 
         return view('pages.archieve',['articles'=>$articles]);
     }
@@ -67,8 +65,8 @@ class ArticleController extends Controller
         return view('pages.show',['article'=>$article]);
     }
 
-    public function getCategories(){
-
+    public function getCategories()
+    {
         return view('pages.add_article',['categories'=>Category::all()]);
     }
 
