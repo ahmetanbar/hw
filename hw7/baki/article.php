@@ -134,7 +134,6 @@ if(isset($_POST["send"])){
     ?>
 
     	<div class="form" >
-
         	<div id="title">
 				<h1><?php echo $title; ?></h1>
 				<p>Author:<?php echo $username; ?></p>
@@ -155,7 +154,7 @@ if(isset($_POST["send"])){
 			<div id="info">
                 <p style="background-color: #c5f8ff;border-radius: 10px"><i class="material-icons" style="font-size: 16px;color: black">visibility</i>:<?php echo get_views_number($article_id); ?></p>
 				<p style="background-color: #f0e8ff;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">comment</i>:<?php echo get_comments_number($article_id); ?></p>
-				<p style="background-color: #fff2f6;border-radius: 10px"><span class="glyphicon glyphicon-calendar"></span>:04/08/2018</p>
+				<p style="background-color: #fff2f6;border-radius: 10px"><span class="glyphicon glyphicon-calendar"></span>:<?php echo $date ?></p>
                 <form method="post">
                     <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 18px;border-radius: 10px"><i class="material-icons" style="font-size: 14px">thumb_up</i>:<?php echo get_like_number($article_id) ?></button>
                     <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 18px;border-radius: 10px"><i class="material-icons" style="font-size: 14px">thumb_down</i>:<?php echo get_dislike_number($article_id) ?></button>
@@ -180,11 +179,12 @@ if(isset($_POST["send"])){
                 }
                 ?>
                 <div id="comments">
-                    <?php if($_SESSION["username"] == $username){?>
+                    <?php if(isset($_SESSION["username"])){
+                        if($_SESSION["username"] == $username){?>
                         <form method="post">
                             <button style="border: 1px solid;background-color: #d58388;padding: 5px;border-radius: 5px;float: right" name="delete_comment_id" value="<?php echo get_comment_id();?>">Delete Comment</button>
                         </form>
-                    <?php }
+                    <?php }}
                     ?>
                     <h2 style="font-family: 'Segoe UI Light',serif;color: #ff5351"><a style="color: #000000;font-family: 'Segoe UI Light',sans-serif;float: left">Writer:</a><?php echo $username;?>:</h2>
                     <h2 style="color: #2b92a7;font-size: 16px;font-family: 'Segoe UI Light',sans-serif;"><a style="color: black">Title:</a> <?php echo $title; ?></h2  >
