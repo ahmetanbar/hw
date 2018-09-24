@@ -75,6 +75,51 @@ session_start();
             die();
         }
 
+        function accounts(){
+            $conn=connection();
+            $stmt= $conn->prepare("SELECT * FROM users");
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list=$query->num_rows;
+            return $list;
+        }
+
+        function de_accounts(){
+            $conn=connection();
+            $stmt= $conn->prepare("SELECT * FROM users WHERE active IS NOT NULL");
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list=$query->num_rows;
+            return $list;
+        }
+
+        function ac_accounts(){
+            $conn=connection();
+            $stmt= $conn->prepare("SELECT * FROM users WHERE active IS NULL");
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list=$query->num_rows;
+            return $list;
+        }
+
+        function posts(){
+            $conn=connection();
+            $stmt= $conn->prepare("SELECT * FROM articles ");
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list=$query->num_rows;
+            return $list;
+        }
+
+        function comments(){
+            $conn=connection();
+            $stmt= $conn->prepare("SELECT * FROM comments ");
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list=$query->num_rows;
+            return $list;
+        }
+
         ?>
         <div class="banner">
             <a id="block2" href="index.php"><--Go Back SOCEAN</a>
@@ -83,6 +128,15 @@ session_start();
 
         <div class="grid-container">
             <div class="left">
+                <h1>SOCEAN STATISTIC</h1>
+                <div>
+                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Accounts:<?php echo accounts()?></p>
+                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Deactivated Accounts:<?php echo de_accounts()?></p>
+                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Active Accounts:<?php echo ac_accounts()?></p>
+                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Posts:<?php echo posts()?></p>
+                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Comments:<?php echo comments()?></p>
+                </div>
+
                 <h1>USERLIST</h1>
                 <?php
                 $conn = connection();
@@ -113,7 +167,7 @@ session_start();
                             <input name="surname" type="text" value="<?php echo $surname ?>" placeholder="surname" /><br>
                             <input name="tel" type="text" value="<?php echo $tel ?>" placeholder="tel" />
                             <input name="age" type="text" value="<?php echo $age ?>" placeholder="age" /><br>
-                            <input name="active" type="text" value="<?php echo $active ?>" placeholder="active/de-active" />
+                            <input name="active" type="text" value="<?php echo $active ?>" placeholder="active/de-active" style="color: red" />
                             <input name="state" type="text" value="<?php echo $state ?>" placeholder="user/admin" /><br>
                             <button type="submit" name="delete_userid" value="<?php echo $userid ?>">DELETE</button>
                             <button type="submit" name="set_userid"    value="<?php echo $userid ?>">SET</button>

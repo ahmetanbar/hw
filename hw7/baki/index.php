@@ -129,12 +129,9 @@ function admin_check(){
     <?php echo($_SESSION and user_check()==1) ? '':'<form action="login.php">
 			<button id="login-btn"  name="btn" type="submit"  value="btn"> LOGIN </button>
 		</form>
-		
 				<form action="signup.php">
 				<button id="signup-btn"  name="btn" type="submit"  value="btn"> SIGNUP </button>
 		</form>	'; ?>
-
-
 
 		<div id="social">
 				<a href="http://facebook.com/bakialmaci">
@@ -159,7 +156,6 @@ function admin_check(){
 		<a href="index.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> HOMEPAGE </button> </a>
 		<a href="index.php?posted=<?php echo $_SESSION["username"]?>"style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button></a>
 		<a href="contact.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> CONTACT </button> </a>
-		
 	</div>
 
 <div class="menu">
@@ -190,7 +186,7 @@ function admin_check(){
 			  </ul>
 </div>
 <?php
-if($_SESSION){ ?>
+if($_SESSION && !isset($_GET["category"])){ ?>
     <div class="home-page">
     <div class="form" style="background-color: whitesmoke">
         <form method="post">
@@ -245,13 +241,19 @@ if($_SESSION){ ?>
         $topic = $list["topic"];
         $article = $list["article"];
         $title = $list["title"];
+
+        $stmt2 ="SELECT * FROM users WHERE username= '".$username."' ORDER BY id DESC";
+        $result2 = $conn->query($stmt2);
+        $list2 = $result2->fetch_assoc();
+        if($list2["active"]){
+            continue;
+        }
     }
     else{
         break;
     }
     ?>
     	<div class="form" >
-
         	<div id="title">
 				<h1><?php echo $title?></h1>
 				<p>Author:<a style="text-decoration: none" href="profilepage.php?profile=<?php echo $username?>"><?php echo $username?></a></p>
@@ -287,7 +289,12 @@ if($_SESSION){ ?>
 		
 		</div>
 
-    <?php } ?>
+    <?php }
+//    if(!$list){
+//        header("Refresh:0; url=index.php");
+//        die();
+//    }
+    ?>
 
     <?php
 

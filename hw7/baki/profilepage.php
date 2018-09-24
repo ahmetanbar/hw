@@ -156,7 +156,7 @@ if(user_check()==1) {
         $stmt->execute();
         $query = $stmt->get_result();
         $list = $query->fetch_assoc();
-        if($list){
+        if($list && !$list["active"]){
             $userid = $list["id"];
             $username = $list["username"];
             $name = $list["firstname"];
