@@ -16,6 +16,7 @@ Route::get('/','ArticleController@home')->name('home');
 Route::get('/archieve/category/{category}','ArticleController@categorize')->name('categorize');
 Route::get('/archieve/{id}','ArticleController@show')->name('archieve_show');
 Route::post('/archieve','CommentController@store')->name('comment_store');
+Route::delete('/article/{id}/2', 'CommentController@destroy')->name('destroy_comment');
 
 Route::get('/about', function () {
     return view('pages.about');
@@ -23,8 +24,7 @@ Route::get('/about', function () {
 
 Route::get('/article/add','ArticleController@getCategories')->name('add_article');
 Route::post('/article/add','ArticleController@store')->name('article_store');
-
-
+Route::delete('/article/{id}', 'ArticleController@destroy')->name('destroy_article');
 
 
 

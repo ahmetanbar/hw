@@ -12,19 +12,13 @@
                             <h3>{{$user_info->name}}  {{$user_info->surname}}</h3>
                             <h4 class="white"><i class="fa fa-check-circle-o"></i><h3>@ {{$user_info->username}}</h3></h4>
                             <h3>Point:0</h3>
-                            @guest
-
-                            @else
-                                <button type="button" class="btn btn-labeled btn-info" href="#">
-                                <span class="btn-label"><i class="fa fa-pencil"></i></span>Update</button>
-                            @endguest
                         </div>
                     </div>
                 </div>
                 <div class="row overview">
                     <div class="col-xs-6 user-pad text-center">
                         <button onclick="show_arts()" type="button" class="btn btn-light"><h3 >Articles</h3>
-                        <h4>{{count($user_info->article)}}</h4> </button>
+                        <h4>{{count($user_info->article->where('status',0))}}</h4> </button>
 
                         <script>
                             function show_arts() {
@@ -53,43 +47,78 @@
                     </div>
                     <div class="col-xs-6 user-pad text-center">
                         <button onclick="show_comments()" type="button" class="btn btn-light" aria-pressed="true"><h3>Comments</h3>
-                        <h4>{{count($user_info->comments)}}</h4></button>
+                        <h4>{{count($user_info->comment->where('status',0))}}</h4></button>
                     </div>
                 </div>
 
                 <?php $content_num=5 ?>
 
                 <div id="articles" class="row overview">
-                    <div class="btn-group-vertical square">
+                    <ul class="list-group">
                         @foreach($user_info->article as $title)
-                            <a href="{{route('archieve_show',['id'=>$title->id])}}" class="btn btn-default">
-                                <h3>{{$title->header}} <i>{{date('Y-m-d H:i', strtotime($title->created_at))}}</i></h3>
-                            </a>
-                        @endforeach
+                            <?php if($title->status==0){?>
+                                <li class="list-group-item">
+                                    <a href="{{route('archieve_show',['id'=>$title->id])}}" class="btn btn-default">
+                                        <h3>{{$title->header}} <i>{{date('Y-m-d H:i', strtotime($title->created_at))}}</i></h3>
+                                    </a>
 
-                        @if(!count($user_info->article))
-                            <a href="#" class="btn btn-block btn-default">
-                                <h3 class="fa fa-bell-o fa-3x">Not found article</h3>
-                            </a>
-                        @endif
-                    </div>
+                                    @guest
+
+                                    @else
+                                        <?php if(Auth()->user()->id==$user_info->id){ ?>
+                                            <a href="" class="btn btn btn-default">
+                                            <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">edit</i></h3>
+                                            </a>
+                                            <form method="POST" action="{{ route('destroy_article', [$title->id]) }}" style="display:inline">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                                <button type="submit" class="btn btn btn-default">
+                                                    <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">delete</i></h3>
+                                                </button>
+                                            </form>
+                                        <?php } ?>
+                                    @endguest
+                                </li>
+                            <?php } ?>
+                        @endforeach
+                    </ul>
                 </div>
 
                 <div style="display : none;" id="comments" class="row overview">
+                    <ul class="list-group">
                         @foreach($user_info->comment as $comment)
-                            <a href="{{route('archieve_show',['id'=>$comment->article_id])}}" class="btn btn-block btn-default">
-                                <h3 class="fa fa-bell-o fa-3x">"{{$comment->comment}}" on <i>{{$comment->header}}</i> </h3>
-                                <h3 class="fa fa-bell-o fa-3x"></h3>
-                            </a>
-                        @endforeach
+                            <?php if($comment->status==0){ ?>
+                                <li class="list-group-item">
+                                    <a href="{{route('archieve_show',['id'=>$comment->article_id])}}" class="btn btn btn-default">
+                                        <h3 class="fa fa-bell-o fa-3x">"{{$comment->comment}}" on <i>{{$comment->article->header}}</i> </h3>
+                                    </a>
+                                    @guest
 
-                        @if(!count($user_info->comment))
+                                    @else
+                                        <?php if(Auth() && Auth()->user()->id==$user_info->id){ ?>
+                                        <a href="{{route('archieve_show',['id'=>$comment->article_id])}}" class="btn btn btn-default">
+                                            <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">edit</i></h3>
+                                        </a>
+                                        <form method="POST" action="{{ route('destroy_comment', [$comment->id]) }}" style="display:inline">
+                                            {{ csrf_field() }}
+                                            {{ method_field('DELETE') }}
+                                            <button type="submit" class="btn btn btn-default">
+                                                <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">delete</i></h3>
+                                            </button>
+                                        </form>
+                                        <?php } ?>
+                                    @endguest
+                                </li>
+                            <?php } ?>
+                        @endforeach
+                    </ul>
+                        @if(!count($user_info->comment()->where('status',0)))
                             <a href="#" class="btn btn-block btn-default">
                                 <h3 class="fa fa-bell-o fa-3x">Not found comment</h3>
                             </a>
                         @endif
 
-                    </div>
+                    {{--</div>--}}
                 </div>
             </div>
 

@@ -28,4 +28,13 @@ class CommentController extends Controller
 
         return redirect()->route('archieve_show', ['id' => $request->input('art_id')])->with('success','Comment Created');
     }
+
+    public function destroy($id)
+    {
+        $comment = Comment::findOrFail($id);
+        $comment->status=1;
+        $comment->save();
+
+        return redirect()->route('profile_show', ['id' =>  $comment->user->username]);
+    }
 }

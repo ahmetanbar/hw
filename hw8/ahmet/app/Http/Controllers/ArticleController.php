@@ -14,7 +14,8 @@ class ArticleController extends Controller
     {
         $pag_num=6;
 
-        $articles=Article::paginate($pag_num);
+        $articles=Article::where('status',0)
+            ->paginate($pag_num);
 
         return view('pages.archieve',['articles'=>$articles]);
     }
@@ -23,7 +24,8 @@ class ArticleController extends Controller
     {
         $art_num=5;
 
-        $articles=Article::orderBy('id','desc')
+        $articles=Article::where('status',0)
+            ->orderBy('id','desc')
             ->take($art_num)
             ->get();
 
@@ -34,7 +36,7 @@ class ArticleController extends Controller
     {
         $pag_num=6;
 
-        $articles=Category::where('name',$category)->first()->article()->paginate($pag_num);
+        $articles=Category::where('name',$category)->first()->article()->where('status',0)->paginate($pag_num);
 
         return view('pages.archieve',['articles'=>$articles]);
     }
@@ -59,7 +61,7 @@ class ArticleController extends Controller
 
     public function show($id)
     {
-        $article = Article::find($id);
+        $article = Article::where('status',0)->findorFail($id);
         $article->view_num = $article->view_num + 1;
         $article->save();
         return view('pages.show',['article'=>$article]);
@@ -68,6 +70,15 @@ class ArticleController extends Controller
     public function getCategories()
     {
         return view('pages.add_article',['categories'=>Category::all()]);
+    }
+
+    public function destroy($id)
+    {
+        $article = Article::findOrFail($id);
+        $article->status=1;
+        $article->save();
+
+        return redirect()->route('profile_show', ['id' =>  $article->user->username]);
     }
 
 }
