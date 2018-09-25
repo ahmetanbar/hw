@@ -49,14 +49,14 @@ class ArticleController extends Controller
             'body'=>'required'
         ]);
 
-        $Article=new Article;
-        $Article->author_id=Auth::id();
-        $Article->header = $request->input('title');
-        $Article->article = $request->input('body');
-        $Article->category_id = $request->input('category_id');
-        $Article->save();
+        $article=new Article;
+        $article->author_id=Auth::id();
+        $article->header = $request->input('title');
+        $article->article = $request->input('body');
+        $article->category_id = $request->input('category_id');
+        $article->save();
 
-        return redirect()->route('archieve_show', ['id' =>  $Article->id]);
+        return redirect()->route('archieve_show', ['id' =>  $article->id]);
     }
 
     public function show($id)
@@ -81,4 +81,27 @@ class ArticleController extends Controller
         return redirect()->route('profile_show', ['id' =>  $article->user->username]);
     }
 
+    public function edit($id)
+    {
+        $article = Article::find($id);
+        return view('pages.edit',['article'=>$article],['categories'=>Category::all()]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'header'=>'required|max:250',
+            'category_id'=>'required',
+            'article'=>'required',
+        ]);
+
+        $article = Article::find($id);
+        $article->author_id=Auth::id();
+        $article->header = $request->input('header');
+        $article->article = $request->input('article');
+        $article->category_id = $request->input('category_id');
+        $article->save();
+
+        return redirect()->route('archieve_show', ['id' =>  $article->id]);
+    }
 }

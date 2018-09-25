@@ -37,4 +37,26 @@ class CommentController extends Controller
 
         return redirect()->route('profile_show', ['id' =>  $comment->user->username]);
     }
+
+    public function edit($id)
+    {
+        $comment = Comment::findorFail($id);
+
+        $article = Article::where('status',0)->findorFail($comment->article_id);
+        $article->view_num = $article->view_num + 1;
+        $article->save();
+
+        return view('pages.show',['edit_comment'=>$comment],['article'=>$article]);
+
+    }
+
+    public function update(Request $request,$id)
+    {
+        $comment = Comment::find($id);
+        $comment->comment = $request->input('comment');
+        $comment->save();
+
+    return redirect()->route('archieve_show', ['id' =>  $comment->article_id]);
+
+    }
 }

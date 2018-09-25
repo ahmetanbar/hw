@@ -66,7 +66,7 @@
 
                                     @else
                                         <?php if(Auth()->user()->id==$user_info->id){ ?>
-                                            <a href="" class="btn btn btn-default">
+                                            <a href="{{route('edit_article',['id'=>$title->id])}}" class="btn btn btn-default">
                                             <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">edit</i></h3>
                                             </a>
                                             <form method="POST" action="{{ route('destroy_article', [$title->id]) }}" style="display:inline">
@@ -96,16 +96,16 @@
 
                                     @else
                                         <?php if(Auth() && Auth()->user()->id==$user_info->id){ ?>
-                                        <a href="{{route('archieve_show',['id'=>$comment->article_id])}}" class="btn btn btn-default">
-                                            <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">edit</i></h3>
-                                        </a>
-                                        <form method="POST" action="{{ route('destroy_comment', [$comment->id]) }}" style="display:inline">
-                                            {{ csrf_field() }}
-                                            {{ method_field('DELETE') }}
-                                            <button type="submit" class="btn btn btn-default">
-                                                <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">delete</i></h3>
-                                            </button>
-                                        </form>
+                                            <a href="{{route('edit_comment',['id'=>$comment->id])}}" class="btn btn btn-default">
+                                                <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">edit</i></h3>
+                                            </a>
+                                            <form method="POST" action="{{ route('destroy_comment', [$comment->id]) }}" style="display:inline">
+                                                {{ csrf_field() }}
+                                                {{ method_field('DELETE') }}
+                                                <button type="submit" class="btn btn btn-default">
+                                                    <h3 class="fa fa-bell-o fa-3x"><i class="material-icons  md-30">delete</i></h3>
+                                                </button>
+                                            </form>
                                         <?php } ?>
                                     @endguest
                                 </li>

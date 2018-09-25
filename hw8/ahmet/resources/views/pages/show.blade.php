@@ -40,7 +40,7 @@
                 @else
                     {!! Form::open(['action' => 'CommentController@store','method'=>'POST']) !!}
                     <div class="form-group">
-                        {{Form::textarea('comment','',['class'=>'form-control','placeholder'=>'Write your comment..'])}}
+                        {{Form::textarea('comment','',['class'=>'form-control','placeholder'=>'Write your comment..' , 'rows' => 4, 'cols' => 60 , 'style' => 'width: auto'])}}
                     </div>
                     {{Form::hidden('art_id', $article['id'])}}
 
@@ -53,9 +53,23 @@
 
             $comments=$article->comments;
 
-            foreach ($comments as $comment) { ?>
+            foreach ($comments->where('status',0) as $comment) { ?>
+            <?php
+                if(isset($edit_comment) && $edit_comment==$comment){ ?>
+                    {{ Form::model($edit_comment, array('route' => array('update_comment', $edit_comment->id), 'method' => 'PUT')) }}
+                        {{ csrf_field() }}
+                        <div class="form-group">
+                            {{ Form::text('comment', null, array('class' => 'form-control')) }}
+                        </div>
+
+                        {{ Form::submit('Edit!', array('class' => 'btn btn-primary')) }}
+
+                {{ Form::close() }}
+
+            <?php } else{ ?>
             <p><a href="{{route('profile_show',['id' => $comment->user->username])}}">{{$comment->user->name }} {{$comment->user->surname }}</a> -> {{$comment->comment }} -- {{date('Y-m-d H:i', strtotime($comment->created_at))}}</p>
-             <?php
+
+            <?php }
             }
             ?>
     @else
