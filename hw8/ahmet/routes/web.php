@@ -21,6 +21,7 @@ Route::delete('/article/{id}/2', 'CommentController@destroy')->name('destroy_com
 Route::get('/article/{id}/comment-edit','CommentController@edit')->name('edit_comment');
 Route::put('/article/{id}/comment-edit','CommentController@update')->name('update_comment');
 
+
 Route::get('/about', function () {
     return view('pages.about');
 })->name('about');

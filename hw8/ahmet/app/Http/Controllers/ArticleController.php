@@ -43,20 +43,24 @@ class ArticleController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'title'=>'required|max:250',
-            'category_id'=>'required',
-            'body'=>'required'
-        ]);
+        if(!Auth::guest()){
+            $this->validate($request, [
+                'title'=>'required|max:250',
+                'category_id'=>'required',
+                'body'=>'required'
+            ]);
 
-        $article=new Article;
-        $article->author_id=Auth::id();
-        $article->header = $request->input('title');
-        $article->article = $request->input('body');
-        $article->category_id = $request->input('category_id');
-        $article->save();
+            $article=new Article;
+            $article->author_id=Auth::id();
+            $article->header = $request->input('title');
+            $article->article = $request->input('body');
+            $article->category_id = $request->input('category_id');
+            $article->save();
 
-        return redirect()->route('archieve_show', ['id' =>  $article->id]);
+            return redirect()->route('archieve_show', ['id' =>  $article->id]);
+        }
+
+        return redirect()->route('home');
     }
 
     public function show($id)
@@ -69,39 +73,56 @@ class ArticleController extends Controller
 
     public function getCategories()
     {
-        return view('pages.add_article',['categories'=>Category::all()]);
+        if(!Auth::guest())
+            return view('pages.add_article',['categories'=>Category::all()]);
+        return redirect()->route('home');
     }
 
     public function destroy($id)
     {
         $article = Article::findOrFail($id);
-        $article->status=1;
-        $article->save();
 
-        return redirect()->route('profile_show', ['id' =>  $article->user->username]);
+        if(!Auth::guest()) {
+            if (Auth::user()->can('EUD', $article)) {
+                $article->status = 1;
+                $article->save();
+                return redirect()->route('profile_show', ['id' => $article->user->username]);
+            }
+        }
+        return redirect()->route('home');
     }
 
     public function edit($id)
     {
         $article = Article::find($id);
-        return view('pages.edit',['article'=>$article],['categories'=>Category::all()]);
+        if(!Auth::guest()){
+            if (Auth::user()->can('EUD', $article)) {
+                return view('pages.edit',['article'=>$article],['categories'=>Category::all()]);
+            }
+        }
+        return redirect()->route('home');
     }
 
     public function update(Request $request, $id)
     {
-        $this->validate($request, [
-            'header'=>'required|max:250',
-            'category_id'=>'required',
-            'article'=>'required',
-        ]);
-
         $article = Article::find($id);
-        $article->author_id=Auth::id();
-        $article->header = $request->input('header');
-        $article->article = $request->input('article');
-        $article->category_id = $request->input('category_id');
-        $article->save();
 
-        return redirect()->route('archieve_show', ['id' =>  $article->id]);
+        if(!Auth::guest()) {
+            if (Auth::user()->can('EUD', $article)) {
+                $this->validate($request, [
+                    'header' => 'required|max:250',
+                    'category_id' => 'required',
+                    'article' => 'required',
+                ]);
+
+                $article->author_id = Auth::id();
+                $article->header = $request->input('header');
+                $article->article = $request->input('article');
+                $article->category_id = $request->input('category_id');
+                $article->save();
+
+                return redirect()->route('archieve_show', ['id' => $article->id]);
+            }
+        }
     }
 }

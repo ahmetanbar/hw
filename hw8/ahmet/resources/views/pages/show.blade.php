@@ -59,7 +59,7 @@
                     {{ Form::model($edit_comment, array('route' => array('update_comment', $edit_comment->id), 'method' => 'PUT')) }}
                         {{ csrf_field() }}
                         <div class="form-group">
-                            {{ Form::text('comment', null, array('class' => 'form-control')) }}
+                            {{ Form::textarea('comment', null, array('class' => 'form-control' , 'rows' => 4, 'cols' => 60 , 'style' => 'width: auto')) }}
                         </div>
 
                         {{ Form::submit('Edit!', array('class' => 'btn btn-primary')) }}
