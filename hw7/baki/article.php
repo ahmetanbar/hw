@@ -64,7 +64,7 @@ if (isset($_POST["delete_comment_id"])) {
 
 
 function do_comment(){
-    $user_id = get_user_id();
+    $user_id = get_user_id($_SESSION["username"]);
     $article_id = $_GET["more"];
     $title = $_POST["title"];
     $comment = $_POST["comment"];
@@ -125,9 +125,9 @@ if(isset($_POST["send"])){
     $query = $stmt->get_result();
     $list=$query->fetch_assoc();
 
-    $username = $list["username"];
+    $username = get_user_name($list["user_id"]);
     $date = $list["date"];
-    $topic = $list["topic"];
+    $topic = get_category_name($list["category_id"]);
     $article = $list["article"];
     $title = $list["title"];
     get_view($article_id);
@@ -202,16 +202,38 @@ if(isset($_POST["send"])){
 
     <?php
 
-
-    function get_user_id(){
-        $username = $_SESSION["username"];
-        $userid = null;
-        $conn = connection();
-        $read = $conn->query("SELECT * FROM users WHERE username='".$username."'");
-        $list = mysqli_fetch_array($read);
-        $userid = $list[0];
-        return $userid;
+    function get_category_id($category_name){
+        $conn=connection();
+        $stmt ="SELECT * FROM categories WHERE category= '".$category_name."'";
+        $result = $conn->query($stmt);
+        $list = $result->fetch_assoc();
+        return $list["id"];
     }
+
+    function get_category_name($category_id){
+        $conn=connection();
+        $stmt ="SELECT * FROM categories WHERE category= '".$category_id."'";
+        $result = $conn->query($stmt);
+        $list = $result->fetch_assoc();
+        return $list["category"];
+    }
+
+    function get_user_name($user_id){
+        $conn=connection();
+        $stmt ="SELECT * FROM users WHERE id= '".$user_id."'";
+        $result = $conn->query($stmt);
+        $list = $result->fetch_assoc();
+        return $list["username"];
+    }
+
+    function get_user_id($username){
+        $conn=connection();
+        $stmt ="SELECT * FROM users WHERE username= '".$username."'";
+        $result = $conn->query($stmt);
+        $list = $result->fetch_assoc();
+        return $list["id"];
+    }
+
 
     function get_comment_id(){
         $username = $_SESSION["username"];
@@ -221,16 +243,6 @@ if(isset($_POST["send"])){
         $comment_id = $list["id"];
         return $comment_id;
     }
-
-//    function get_article_id(){
-//        $article_id = null;
-//        $conn = connection();
-//        $read = $conn->query("SELECT * FROM articles WHERE username='".$username."'");
-//        $list = mysqli_fetch_array($read);
-//        $userid = $list[0];
-//        echo $userid;
-//        return $userid;
-//    }
 
     function count_view($view,$article_id){
         $view = $view + 1;
@@ -308,16 +320,7 @@ if(isset($_POST["send"])){
         $dislikes = $list["dislikes"];
         return $dislikes;
     }
-
     ?>
-
-            <script>
-                if ( window.history.replaceState ) {
-                    window.history.replaceState( null, null, window.location.href );
-                }
-            </script>
-
-
 </div>
 
 <div class="footer">

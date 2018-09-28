@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <link rel="stylesheet" type="text/css" href="ASSESTS/STYLE/profilepage.css">
-
     <meta charset="UTF-8">
     <title>Socean</title>
 </head>
@@ -24,7 +23,6 @@ function connection(){
         return $conn;
     }
 }
-
 
 function admin_check(){
     $conn=connection();
@@ -55,9 +53,6 @@ function user_check(){
 }
 
 if(user_check()==1) {
-
-
-    /* --------------------------------------------------------------------------------------*/
     if (isset($_SESSION["username"])) {
         $username = $_SESSION["username"];
     } else {
@@ -101,15 +96,9 @@ if(user_check()==1) {
     </div>
 
     <div class="banner">
-        <a href="index.php" style="text-decoration: none;">
-            <button id="btn" name="btn" type="submit" value="btn"> HOMEPAGE</button>
-        </a>
-        <a href="posted.php" style="text-decoration: none;">
-            <button id="btn" name="btn" type="submit" value="btn"> POSTED</button>
-            </button> </a>
-        <a href="contact.php" style="text-decoration: none;">
-            <button id="btn" name="btn" type="submit" value="btn"> CONTACT</button>
-        </a>
+        <a href="index.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> HOMEPAGE </button> </a>
+        <a href="index.php?posted=<?php echo $_SESSION["username"]?>"style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button></a>
+        <a href="contact.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> CONTACT </button> </a>
 
     </div>
 
@@ -125,9 +114,6 @@ if(user_check()==1) {
             <li><a href="index.php?category=algorithms">ALGORITHMS</a></li>
             <li><a href="index.php?category=general">GENERAL</a></li>
             <li><a href="index.php?category=projects">PROJECTS</a></li>
-            <!--        <li><a href="profile.php" style="color: #a6e1ec;font-family: -apple-system,sans-serif">-->
-            <?php //echo $username
-            ?><!--</a></li>-->
             <li class="dropdown">
                 <a href="javascript:void(0)" class="dropbtn" style="color: #a6e1ec"><?php echo $username ?></a>
                 <div class="dropdown-content">
@@ -172,83 +158,85 @@ if(user_check()==1) {
             die();
         }
 
-//        echo $userid;
-
-        //-----get history-----
-        $stmt = $conn->prepare("SELECT * FROM articles WHERE username=?");
-        $stmt->bind_param("s", $username);
+        $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id=?");
+        $stmt->bind_param("s", $userid);
         $stmt->execute();
         $query = $stmt->get_result();
         $list = $query->fetch_assoc();
         $articles_Number = mysqli_num_rows($query);
 
-        function get_post_num($username)
+        function get_post_num($user_id)
         {
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM articles WHERE username='" . $username . "'");
+            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id='" . $user_id . "'");
             $stmt->execute();
             $query = $stmt->get_result();
             $number = mysqli_num_rows($query);
             return $number;
         }
 
-        function get_last_post($username)
+        function get_last_post($user_id)
         {
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM articles WHERE username='" . $username . "' ORDER BY id DESC LIMIT 1");
+            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id='" . $user_id . "' ORDER BY id DESC LIMIT 1");
             $stmt->execute();
             $query = $stmt->get_result();
             $list = $query->fetch_assoc();
             return $list["title"];
         }
 
-        function get_last_post_id($username)
+        function get_last_post_id($user_id)
         {
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM articles WHERE username='" . $username . "' ORDER BY id DESC LIMIT 1");
+            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id='" . $user_id . "' ORDER BY id DESC LIMIT 1");
             $stmt->execute();
             $query = $stmt->get_result();
             $list = $query->fetch_assoc();
             return $list["id"];
         }
 
-        function get_last_comment($username)
-        {
+        function get_last_comment($user_id){
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM comments WHERE username='" . $username . "' ORDER BY id DESC LIMIT 1");
+            $stmt = $conn->prepare("SELECT * FROM comments WHERE user_id='" . $user_id . "' ORDER BY id DESC LIMIT 1");
             $stmt->execute();
             $query = $stmt->get_result();
             $list = $query->fetch_assoc();
             return $list["title"];
         }
 
-        function get_last_comment_id($username)
-        {
+        function get_last_comment_id($user_id){
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM comments WHERE username='" . $username . "' ORDER BY id DESC LIMIT 1");
+            $stmt = $conn->prepare("SELECT * FROM comments WHERE user_id='" . $user_id . "' ORDER BY id DESC LIMIT 1");
             $stmt->execute();
             $query = $stmt->get_result();
             $list = $query->fetch_assoc();
             return $list["article_id"];
         }
 
+        function get_user_name($user_id){
+            $conn=connection();
+            $stmt ="SELECT * FROM users WHERE id= '".$user_id."'";
+            $result = $conn->query($stmt);
+            $list = $result->fetch_assoc();
+            return $list["username"];
+        }
+
+        function get_user_id($username){
+            $conn=connection();
+            $stmt ="SELECT * FROM users WHERE username= '".$username."'";
+            $result = $conn->query($stmt);
+            $list = $result->fetch_assoc();
+            return $list["id"];
+        }
+
 
         if (isset($_POST["delete_userid"])) {
-//            $id = ($_POST["delete_userid"]);
-//            $conn = connection();
-//            $stmt = $conn->prepare("DELETE FROM users WHERE id='" . $id . "'");
-//            $stmt->execute();
-//            echo "WE ARE WAITING YOUR COME BACK :(";
-//            echo "<br>";
-//            echo "REDIRECTING...";
-//            header("Refresh:3; url=index.php");
-//            die();
-
+            $current_time = date ('Y-m-d h:m');
             $id = $_POST["delete_userid"];
-            $date = date('Y-m-d H:i:s');
+            $state = 2;
             $conn = connection();
-            $stmt = $conn->prepare("UPDATE users SET active=? WHERE id=?");
-            $stmt->bind_param('si', $date, $id);
+            $stmt = $conn->prepare("UPDATE users SET state=?,active=? WHERE id=?");
+            $stmt->bind_param('ssi', $state,$current_time, $id);
             $stmt->execute();
             session_destroy();
             echo "WE ARE WAITING YOUR COME BACK :(";
@@ -256,10 +244,40 @@ if(user_check()==1) {
             echo "REDIRECTING...";
             header("Refresh:3; url=index.php");
             die();
-
         }
 
-        if (isset($_POST["set_userid"])) {
+        /* --------------------------------------USERNAME CHECK-----------------------------------*/
+        function username_check($username){
+            $username = preg_replace ("/ +/", "", $username);
+            $case1='/[!@#$%^&*()\-_=+{};:,<.>ıüğşçö]/';
+            if(preg_match_all($case1,$username, $o)>0) return null;
+            if(strlen($username)<5) return null;
+            return 1;
+        }
+        /* ---------------------------------------EMAIL CHECK--------------------------------------*/
+        function email_check($email){
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return 1;
+            }
+            else return null;
+        }
+        function firstname_check($firstname){
+            $firstname = preg_replace ("/ +/", "", $firstname);
+            $case1='/[!@#$%^&*()\-_=+{};:,<.>ıüğşçö]/';
+            if(preg_match_all($case1,$firstname, $o)>0) return null;
+            if(strlen($firstname)<5) return null;
+            return 1;
+        }
+
+        function validate_phone_number($phone)
+        {
+            if($phone == ""){
+                return 1;
+            }
+            return preg_match('/^[0-9]{10}+$/', $phone);
+        }
+
+        if (isset($_POST["set_userid"]) and username_check($_POST["username"]) and email_check($_POST["email"]) and firstname_check($_POST["firstname"]) and validate_phone_number($_POST["tel"]) and strlen($_POST["age"]) <= 2) {
             $id = $_POST["set_userid"];
             $conn = connection();
             $stmt = $conn->prepare("UPDATE users SET username=?, email=?, firstname=?, surname=?, tel=?, age=? WHERE id=?");
@@ -273,23 +291,23 @@ if(user_check()==1) {
         <div class="form">
             <div class="card">
                 <form method="post">
-                    <input name="username" type="text" value="<?php echo $username ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
-                    <input name="email" type="text" value="<?php echo $email ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
-                    <input name="firstname" type="text" value="<?php echo $name ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
-                    <input name="surname" type="text" value="<?php echo $surname ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
-                    <input name="tel" type="text" value="<?php echo $tel ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
-                    <input name="age" type="text" value="<?php echo $age ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
+                    <input placeholder="username" name="username" type="text" value="<?php echo $username ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
+                    <input placeholder="email" name="email" type="text" value="<?php echo $email ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
+                    <input placeholder="firstname" name="firstname" type="text" value="<?php echo $name ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
+                    <input placeholder="surname" name="surname" type="text" value="<?php echo $surname ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
+                    <input placeholder="tel(5XXXXXXXX)" name="tel" type="text" value="<?php echo $tel ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
+                    <input placeholder="Age" name="age" type="text" value="<?php echo $age ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> /><br>
                     <button type="submit" name="delete_userid" value="<?php echo $userid ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?>style="display: none"<?php } ?>>DELETE</button>
                     <button type="submit" name="set_userid" value="<?php echo $userid ?> "  <?php if($_SESSION["username"] != $_GET["profile"]){ ?>style="display: none"<?php } ?> >SET</button>
                 </form>
-                <p style="color:#d84500;font-size: 19px">Post Number:<?php echo get_post_num($username) ?></p>
-                <p style="color:#d84500;font-size: 19px">Last Post:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_post_id($username)?>"><?php if(get_last_post($username)){
-                    echo get_last_post($username);
+                <p style="color:#d84500;font-size: 19px">Post Number:<?php echo get_post_num(get_user_id($_GET["profile"])) ?></p>
+                <p style="color:#d84500;font-size: 19px">Last Post:<a style="text-decoration: none" href="article.php?more=<?php    echo get_last_post_id(get_user_id($_GET["profile"]))?>"><?php if(get_last_post(get_user_id($_GET["profile"]))){
+                    echo get_last_post(get_user_id($_GET["profile"]));
                         }else{
                     echo "Not Found";
                         } ?></a></p>
-                <p style="color:#d84500;font-size: 19px;<?php if(!get_last_comment_id($username)){?> display: none <?php }?>">Last Comment:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_comment_id($username)?>"><?php if(get_last_comment($username)){
-                            echo get_last_comment($username);
+                <p style="color:#d84500;font-size: 19px;<?php if(!get_last_comment_id($username)){?> display: none <?php }?>">Last Comment:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_comment_id(get_user_id($_GET["profile"]))?>"><?php if(get_last_comment(get_user_id($_GET["profile"]))){
+                            echo get_last_comment(get_user_id($_GET["profile"]));
                         }else{
                             echo "Not Found";
                         } ?></a></p>

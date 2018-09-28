@@ -31,48 +31,35 @@ session_start();
     $list=$query->fetch_assoc();
     if($list["state"] == 1) {
 
-        if (isset($_POST["delete_userid"])) {
-            $id = ($_POST["delete_userid"]);
-            $conn = connection();
-            $stmt = $conn->prepare("DELETE FROM users WHERE id='" . $id . "'");
-            $stmt->execute();
-            header("Refresh:0");
-            die();
+        /* --------------------------------------USERNAME CHECK-----------------------------------*/
+        function username_check($username){
+            $username = preg_replace ("/ +/", "", $username);
+            $case1='/[!@#$%^&*()\-_=+{};:,<.>ıüğşçö]/';
+            if(preg_match_all($case1,$username, $o)>0) return null;
+            if(strlen($username)<5) return null;
+            return 1;
+        }
+        /* ---------------------------------------EMAIL CHECK--------------------------------------*/
+        function email_check($email){
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return 1;
+            }
+            else return null;
+        }
+        function firstname_check($firstname){
+            $firstname = preg_replace ("/ +/", "", $firstname);
+            $case1='/[!@#$%^&*()\-_=+{};:,<.>ıüğşçö]/';
+            if(preg_match_all($case1,$firstname, $o)>0) return null;
+            if(strlen($firstname)<5) return null;
+            return 1;
         }
 
-        if (isset($_POST["set_userid"])) {
-            $id = $_POST["set_userid"];
-            $conn = connection();
-            $stmt = $conn->prepare("UPDATE users SET username=?, email=?, firstname=?, surname=?, tel=?, age=?, state=? WHERE id=?");
-            $stmt->bind_param('ssssssss', $_POST["username"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["tel"], $_POST["age"],$_POST["state"], $id);
-            $stmt->execute();
-            header("Refresh:0");
-            die();
-        }
-
-        if (isset($_POST["delete_article_id"])) {
-            $id = ($_POST["delete_article_id"]);
-            $conn = connection();
-            $stmt = $conn->prepare("DELETE FROM articles WHERE id='" . $id . "'");
-            $stmt->execute();
-            header("Refresh:0");
-            die();
-        }
-//
-//        $username = $list["username"];
-//        $date = $list["date"];
-//        $topic = $list["topic"];
-//        $title = $list["title"];
-//        $article = $list["article"];
-
-        if (isset($_POST["set_article_id"])) {
-            $id = $_POST["set_article_id"];
-            $conn = connection();
-            $stmt = $conn->prepare("UPDATE articles SET username=?, date=?, topic=?, title=?, article=? WHERE id=?");
-            $stmt->bind_param('ssssss', $_POST["username"], $_POST["date"], $_POST["topic"], $_POST["title"], $_POST["article"], $id);
-            $stmt->execute();
-            header("Refresh:0");
-            die();
+        function validate_phone_number($phone)
+        {
+            if($phone == ""){
+                return 1;
+            }
+            return preg_match('/^[0-9]{10}+$/', $phone);
         }
 
         function accounts(){
@@ -120,6 +107,117 @@ session_start();
             return $list;
         }
 
+        function get_user_name($user_id){
+            $conn=connection();
+            $stmt ="SELECT * FROM users WHERE id= '".$user_id."'";
+            $result = $conn->query($stmt);
+            $list = $result->fetch_assoc();
+            return $list["username"];
+        }
+
+        function get_user_id($username){
+            $conn=connection();
+            $stmt ="SELECT * FROM users WHERE username= '".$username."'";
+            $result = $conn->query($stmt);
+            $list = $result->fetch_assoc();
+            return $list["id"];
+        }
+
+        function get_category_id($category_name){
+            $conn=connection();
+            $stmt ="SELECT * FROM categories WHERE category= '".$category_name."'";
+            $result = $conn->query($stmt);
+            $list = $result->fetch_assoc();
+            return $list["id"];
+        }
+
+        function get_category_name($category_id){
+            $conn=connection();
+            $stmt ="SELECT * FROM categories WHERE id='".$category_id."'";
+            $result = $conn->query($stmt);
+            $list = $result->fetch_assoc();
+            return $list["category"];
+        }
+
+
+        if (isset($_POST["delete_userid"])) {
+            $id = ($_POST["delete_userid"]);
+            $current_time = date ('Y-m-d h:m');
+            $state = 3;
+            $conn = connection();
+            $stmt = $conn->prepare("UPDATE users SET  state=?,active=? WHERE id=?");
+            $stmt->bind_param('ssi',$state,$current_time, $id);
+            $stmt->execute();
+            if($id == get_user_id($_SESSION["username"])){
+                session_destroy();
+            }
+            header("Refresh:0");
+            die();
+        }
+
+        function set_user_button($userid){
+            $conn=connection();
+            $stmt= $conn->prepare("SELECT * FROM users WHERE id=?");
+            $stmt->bind_param("i",$userid);
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list=$query->fetch_assoc();
+            if($_POST["username"] != $list["username"] or $_POST["email"] != $list["email"] or $_POST["state"] != $list["state"]){
+                return 1;
+            }
+            else{
+                return null;
+            }
+        }
+
+        if (isset($_POST["set_userid"]) and strlen($_POST["state"]) and email_check($_POST["email"])) {
+            if(set_user_button($_POST["set_userid"])){
+            $id = $_POST["set_userid"];
+            if($id == get_user_id($_SESSION["username"])) {
+                $_SESSION["username"] = $_POST["username"];
+            }
+            $conn = connection();
+            $stmt = $conn->prepare("UPDATE users SET username=?, email=?, state=? WHERE id=?");
+            $stmt->bind_param('sssi', $_POST["username"], $_POST["email"],$_POST["state"], $id);
+            $stmt->execute();
+            if($_POST["state"] == 2 or $_POST["state"] == 3){
+                $current_time = date ('Y-m-d h:m');
+                $stmt = $conn->prepare("UPDATE users SET active=? WHERE id=?");
+                $stmt->bind_param('si', $current_time, $id);
+                $stmt->execute();
+                if($id == get_user_id($_SESSION["username"])){
+                    session_destroy();
+                }
+            }
+            header("Refresh:0");
+            die();
+            }
+            else{
+                $userid = $_POST["userid"];
+                $conn=connection();
+                $stmt ="SELECT * FROM users WHERE id= '".$userid."'";
+                $result = $conn->query($stmt);
+                $list = $result->fetch_assoc();
+                header("Refresh:0; url=update_user.php?userid=".$userid);
+                die();
+            }
+        }
+
+
+        if (isset($_POST["delete_article_id"])) {
+            $id = ($_POST["delete_article_id"]);
+            $conn = connection();
+            $stmt = $conn->prepare("DELETE FROM articles WHERE id='" . $id . "'");
+            $stmt->execute();
+            header("Refresh:0");
+            die();
+        }
+
+        if (isset($_POST["set_article_id"])) {
+                header("Refresh:0; url=update_article.php?article_id=".$_POST["set_article_id"]);
+                die();
+            }
+
         ?>
         <div class="banner">
             <a id="block2" href="index.php"><--Go Back SOCEAN</a>
@@ -128,15 +226,6 @@ session_start();
 
         <div class="grid-container">
             <div class="left">
-                <h1>SOCEAN STATISTIC</h1>
-                <div>
-                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Accounts:<?php echo accounts()?></p>
-                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Deactivated Accounts:<?php echo de_accounts()?></p>
-                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Active Accounts:<?php echo ac_accounts()?></p>
-                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Posts:<?php echo posts()?></p>
-                    <p style="border: 1px solid #1f648b;max-width: 200px;margin: 5px auto;border-radius: 5px;font-family:'Segoe UI Light',sans-serif">Comments:<?php echo comments()?></p>
-                </div>
-
                 <h1>USERLIST</h1>
                 <?php
                 $conn = connection();
@@ -161,16 +250,18 @@ session_start();
                     }
                     ?>
                     <form method="post" class="users">
+                            <input disabled name="userid" type="text" value="<?php echo $userid ?>" placeholder="userid" style="max-width: 20px;font-family: Tohoma,sans-serif"/>
                             <input name="username" type="text" value="<?php echo $username ?>" placeholder="username"/>
-                            <input name="email" type="text" value="<?php echo $email ?>" placeholder="email" /><br>
-                            <input name="firstname" type="text" value="<?php echo $name ?>" placeholder="firstname" />
-                            <input name="surname" type="text" value="<?php echo $surname ?>" placeholder="surname" /><br>
-                            <input name="tel" type="text" value="<?php echo $tel ?>" placeholder="tel" />
-                            <input name="age" type="text" value="<?php echo $age ?>" placeholder="age" /><br>
-                            <input name="active" type="text" value="<?php echo $active ?>" placeholder="active/de-active" style="color: red" />
-                            <input name="state" type="text" value="<?php echo $state ?>" placeholder="user/admin" /><br>
-                            <button type="submit" name="delete_userid" value="<?php echo $userid ?>">DELETE</button>
-                            <button type="submit" name="set_userid"    value="<?php echo $userid ?>">SET</button>
+                            <input name="email" type="text" value="<?php echo $email ?>" placeholder="email" />
+<!--                        -->
+<!--                            <input name="firstname" type="text" value="--><?php //echo $name ?><!--" placeholder="firstname" />-->
+<!--                            <input name="surname" type="text" value="--><?php //echo $surname ?><!--" placeholder="surname" />-->
+<!--                            <input name="tel" type="text" value="--><?php //echo $tel ?><!--" placeholder="tel" />-->
+<!--                            <input name="age" type="text" value="--><?php //echo $age ?><!--" placeholder="age" />-->
+                            <input disabled name="active" type="text" value="<?php echo $active ?>" placeholder="Active" style="color: red" />
+                            <input name="state" type="text" value="<?php echo $state ?>" placeholder="user/admin" style="max-width: 50px" />
+                            <button type="submit" name="delete_userid" value="<?php echo $userid ?>" style="color: crimson">DELETE</button>
+                            <button type="submit" name="set_userid"    value="<?php echo $userid ?>" style="color: cadetblue">UPDATE</button>
                     </form>
                 <?php } ?>
             </div>
@@ -184,9 +275,9 @@ session_start();
                 while ($list = $result->fetch_assoc()) {
                     if ($list) {
                         $id = $list["id"];
-                        $username = $list["username"];
+                        $username = get_user_name($list["user_id"]);
                         $date = $list["date"];
-                        $topic = $list["topic"];
+                        $topic = get_category_name($list["category_id"]);
                         $title = $list["title"];
                         $article = $list["article"];
                     } else {
@@ -194,13 +285,14 @@ session_start();
                     }
                     ?>
                     <form method="post" class="posts">
+                            <input disabled name="userid" type="text" value="<?php echo $id ?>" style="max-width: 20px;font-family: Tohoma,sans-serif"/>
                             <input name="username" type="text" value="<?php echo $username ?>"/>
-                            <input name="date" type="text" value="<?php echo $date ?>"/><br>
-                            <input name="topic" type="text" value="<?php echo $topic ?>"/>
-                            <input name="title" type="text" value="<?php echo $title ?>"/><br>
-                            <textarea name="article" type="text" style="min-width: 816px;max-height: 400px;min-height: 100px;max-width: 816px"><?php echo $article ?></textarea><br>
-                             <button type="submit" name="delete_article_id" value="<?php echo $id ?>">DELETE</button>
-                            <button type="submit" name="set_article_id"    value="<?php echo $id ?>">SET</button>
+                            <input disabled name="date" type="text" value="<?php echo $date ?>"/>
+                            <input name="topic" type="text" value="<?php echo $topic ?>" style="max-width: 100px"/>
+                            <input name="title" type="text" value="<?php echo $title ?>" style="max-width: 100px"/>
+<!--                            <textarea name="article" type="text" style="min-width: 816px;max-height: 400px;min-height: 100px;max-width: 816px">--><?php //echo $article ?><!--</textarea><br>-->
+                             <button type="submit" name="delete_article_id" value="<?php echo $id ?>" style="color: crimson">DELETE</button>
+                            <button type="submit" name="set_article_id"    value="<?php echo $id ?>" style="color: cadetblue">UPDATE</button>
                     </form>
 
                 <?php } ?>

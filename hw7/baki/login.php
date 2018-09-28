@@ -72,19 +72,29 @@
             return 1;
         }
         /* -------------------------------------USER ACTİVATE--------------------------------------*/
-        function activate($username){
+        function state($username){
             $conn = connection();
             $read = $conn->query("SELECT * FROM users WHERE username='".$username."'");
             $list = mysqli_fetch_array($read);
-            $activate = $list["active"];
-            if($activate){
-                echo $activate;
-                return $activate;
+            $state = $list["state"];
+            if($state == 0){
+                echo "user";
+                return 0;
             }
-            else{
-                return null;
-            }
+                else if($state == 1){
+                echo "admin";
+                return 1;
+                }
+                else if($state == 2){
+                    echo "soft deleted";
+                    return 2;
+                }
+                else if($state == 3){
+                    echo "hard deleted";
+                    return 3;
+                }
         }
+
         /* ---------------------------------------RE-ACTIVATE-------------------------------------*/
         if(isset($_GET["active_user"])){
             $_SESSION["username"] = $_GET["active_user"];
@@ -97,7 +107,6 @@
             $stmt = $conn->prepare("UPDATE users SET active=? WHERE username=?");
             $stmt->bind_param('ss',$active,$username);
             $stmt->execute();
-//            cookie_control();
             $_SESSION["username"] = $username;
             echo $_SESSION[$username];
             header("Location: index.php");
@@ -113,7 +122,7 @@
             $username = $_POST["username"];
             $password = sha1($_POST["password"]);
 
-            if ($username && $password && username_check($username) && !password_check($password)){
+            if ($username && $password && username_check($username) && !password_check($password) && state($username) != 3){
                 $conn = connection();
                 $stmt= $conn->prepare("SELECT * FROM users WHERE username=? and passcode=?");
                 $stmt->bind_param("ss",$username,$password);
@@ -121,23 +130,16 @@
                 $query = $stmt->get_result();
                 $data=$query->fetch_assoc();
                 if ($data) {
-                    if(!activate($username)){
-//                        cookie_control();
+                    if(state($username)){
                         $_SESSION["username"] = $username;
                         $_SESSION["password"] = $password;
-//                    $_SESSION["tel"] = $tel;
-//                    $_SESSION["age"] = $age;
-//                    $_SESSION["sex"] = $sex;
+                        re_activate($username);
                         header("Location: index.php");
                         die();
                     }
                     echo "<br>";
                     echo "YOUR ACCOUNT WAS DELETED";
                     ?>
-                    <form method="get">
-                        <button name="active_user" value="<?php echo $username;?>">RE-ACTIVE ACCOUNT</button>
-                    </form>
-
                     <?php
                 }
                 else echo notification("1");
@@ -145,25 +147,6 @@
                 echo notification("3");
             }
         }
-//        /*---------------------------------------- COOKIE SETTINGS---------------------------------------*/
-//        function cookie_control() {
-//            $conn = connection();
-//            $username = $_POST["username"];
-//
-//            $read = $conn->query("SELECT * FROM users WHERE username='".$username."'");
-//            $list = mysqli_fetch_array($read);
-//            $userid = $list[0];
-//
-//            $read = $conn->query("SELECT * FROM auth WHERE user_id='".$userid."'");
-//            $list = mysqli_fetch_array($read);
-//            $userid_auth = $list[0];
-//
-//            if(!$userid_auth) {
-//                $auth = key_generate(32);
-//                $conn->query("INSERT INTO auth (user_id, cookie) VALUES ('$userid', '$auth')");
-//                setcookie("auth", "$auth", time() + 3600);
-//            }
-//        }
         ?>
 
     </p>

@@ -7,27 +7,6 @@
     <meta charset="UTF-8">
     <title>Socean</title>
 </head>
-<?php
-//function get_client_ip() {
-//    $ipaddress = '';
-//    if (getenv('HTTP_CLIENT_IP'))
-//        $ipaddress = getenv('HTTP_CLIENT_IP');
-//    else if(getenv('HTTP_X_FORWARDED_FOR'))
-//        $ipaddress = getenv('HTTP_X_FORWARDED_FOR');
-//    else if(getenv('HTTP_X_FORWARDED'))
-//        $ipaddress = getenv('HTTP_X_FORWARDED');
-//    else if(getenv('HTTP_FORWARDED_FOR'))
-//        $ipaddress = getenv('HTTP_FORWARDED_FOR');
-//    else if(getenv('HTTP_FORWARDED'))
-//        $ipaddress = getenv('HTTP_FORWARDED');
-//    else if(getenv('REMOTE_ADDR'))
-//        $ipaddress = getenv('REMOTE_ADDR');
-//    else
-//        $ipaddress = 'UNKNOWN';
-//    return $ipaddress;
-//}
-//echo get_client_ip();
-//?>
 <body>
 <?php
 session_start();
@@ -73,14 +52,9 @@ function admin_check(){
     else
         return 0;
 }
-
-
-
 ?>
 
 <?php
-
-
     if (isset($_POST["delete_article_id"])) {
         $id = ($_POST["delete_article_id"]);
         $conn = connection();
@@ -90,13 +64,13 @@ function admin_check(){
         die();
     }
 
-    if (isset($_POST['share']) and check_share()) {
-        $share_username = $_SESSION["username"];
+    if (isset($_POST['share']) and check_share() and category_check($_POST["topic"]) and isset($_POST["topic"])) {
+        $share_user_id = get_user_id($_SESSION["username"]);
+        $category_id = get_category_id($_POST["topic"]);
         $share_title = $_POST["title"];
         $share_article = $_POST["article"];
-        $share_topic = $_POST["topic"];
         $conn = connection();
-        $conn->query("INSERT INTO articles (username, title,article,topic) VALUES ('$share_username', '$share_title','$share_article','$share_topic')");
+        $conn->query("INSERT INTO articles (user_id, title,article,category_id) VALUES ('$share_user_id', '$share_title','$share_article','$category_id')");
     }
 
     function get_articles_number(){
@@ -119,13 +93,54 @@ function admin_check(){
         return $page_numbers;
     }
 
+    function get_user_name($user_id){
+        $conn=connection();
+        $stmt ="SELECT * FROM users WHERE id= '".$user_id."'";
+        $result = $conn->query($stmt);
+        $list = $result->fetch_assoc();
+        return $list["username"];
+    }
+
+    function get_user_id($username){
+        $conn=connection();
+        $stmt ="SELECT * FROM users WHERE username= '".$username."'";
+        $result = $conn->query($stmt);
+        $list = $result->fetch_assoc();
+        return $list["id"];
+    }
+
+    function category_check($category_id){
+        $conn=connection();
+        $stmt ="SELECT * FROM categories WHERE category= '".$category_id."'";
+        $result = $conn->query($stmt);
+        $list = $result->fetch_assoc();
+        if($list){
+            return 1;
+        }
+        else{
+            return null;
+        }
+    }
+
+function get_category_id($category_name){
+    $conn=connection();
+    $stmt ="SELECT * FROM categories WHERE category= '".$category_name."'";
+    $result = $conn->query($stmt);
+    $list = $result->fetch_assoc();
+    return $list["id"];
+}
+
+function get_category_name($category_id){
+    $conn=connection();
+    $stmt ="SELECT * FROM categories WHERE id= '".$category_id."'";
+    $result = $conn->query($stmt);
+    $list = $result->fetch_assoc();
+    return $list["category"];
+}
 ?>
 
 <div class="banner-text">
-
-		<p>
-				WE'VE KNEW YOU WOULD COME HERE
-		</p>
+		<p>WE'VE KNEW YOU WOULD COME HERE</p>
     <?php echo($_SESSION and user_check()==1) ? '':'<form action="login.php">
 			<button id="login-btn"  name="btn" type="submit"  value="btn"> LOGIN </button>
 		</form>
@@ -190,9 +205,17 @@ if($_SESSION && !isset($_GET["category"])){ ?>
     <div class="home-page">
     <div class="form" style="background-color: whitesmoke">
         <form method="post">
-            Topic<input type="text" name="topic" style="width: 100%;background-color: #fff7cd">
-            Title<input type="text" name="title" style="width: 100%;background-color: #fff7cd">
-            Article<textarea type="text" name="article" style="max-width: 100%;width: 100%;min-width: 100%;max-height: 200px;height: 100px;background-color: white"></textarea><br>
+            Arduino:<input type="checkbox" name="topic" value="arduino">
+            Arm:<input type="checkbox" name="topic" value="arm">
+            C:<input type="checkbox" name="topic" value="c">
+            PHP:<input type="checkbox" name="topic" value="php">
+            Python:<input type="checkbox" name="topic" value="python">
+            HTML-CSS:<input type="checkbox" name="topic" value="html-css">
+            Algorithms:<input type="checkbox" name="topic" value="algorithms">
+            General:<input type="checkbox" name="topic" value="general">
+            Projects:<input type="checkbox" name="topic" value="projects"><br>
+            <b>Title</b><input type="text" name="title" style="width: 100%;background-color: #fff7cd">
+            <b>Article</b><textarea type="text" name="article" style="max-width: 100%;width: 100%;min-width: 100%;max-height: 200px;height: 100px;background-color: white"></textarea><br>
             <button name="share" type="submit" value="share" style="border-style: solid;width:150px;font-size: 16px;background-color: gray;color: whitesmoke;border-width: 0;border-radius: 5px;padding: 10px">Share</button>
         </form>
     </div>
@@ -208,14 +231,11 @@ if($_SESSION && !isset($_GET["category"])){ ?>
         $second = $_GET["page"]*5;
     }
 
-    function custom_echo($x, $length)
-    {
-        if(strlen($x)<=$length)
-        {
+    function custom_echo($x, $length){
+        if(strlen($x)<=$length) {
             echo $x;
         }
-        else
-        {
+        else {
             $y=substr($x,0,$length) . '...';
             echo $y;
         }
@@ -223,10 +243,10 @@ if($_SESSION && !isset($_GET["category"])){ ?>
 
     $conn = connection();
     if(isset($_GET["category"])){
-        $stmt ="SELECT * FROM articles WHERE topic= '".$_GET["category"]."' ORDER BY id DESC";
+        $stmt ="SELECT * FROM articles WHERE category_id= '".get_category_id($_GET["category"])."' ORDER BY id DESC";
     }
     else if(isset($_GET["posted"])){
-        $stmt ="SELECT * FROM articles WHERE username= '".$_GET["posted"]."' ORDER BY id DESC";
+        $stmt ="SELECT * FROM articles WHERE user_id= '".$_GET["posted"]."' ORDER BY id DESC";
     }
     else{
         $stmt ="SELECT * FROM articles ORDER BY id DESC LIMIT $first,$second";
@@ -236,9 +256,9 @@ if($_SESSION && !isset($_GET["category"])){ ?>
     while($list = $result->fetch_assoc()) {
     if($list){
         $article_id = $list["id"];
-        $username = $list["username"];
+        $username = get_user_name($list["user_id"]);
         $date = $list["date"];
-        $topic = $list["topic"];
+        $topic = get_category_name($list["category_id"]);
         $article = $list["article"];
         $title = $list["title"];
 
@@ -266,7 +286,6 @@ if($_SESSION && !isset($_GET["category"])){ ?>
                 <?php }}
                 ?>
     		</div>
-
     	<p>
             <?php
             custom_echo($article, 512);
@@ -275,7 +294,6 @@ if($_SESSION && !isset($_GET["category"])){ ?>
             <form class="more" action="article.php" method="get" style="max-width: 100px;margin: auto;color: white;background-color: #1f4965 ;border: none;border-radius: 10px">
                 <button  name="more" value="<?php echo $article_id; ?>" style="margin: auto;background-color: deepskyblue;border: 3px solid;color:white;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px;padding: 5px">READ MORE</button>
             </form>
-
 			<div id="info">
                 <p style="background-color: whitesmoke;border-radius: 10px"><i class="material-icons" style="font-size: 16px;color: black">visibility</i>:<?php echo get_views_number($article_id); ?></p>
                 <p style="background-color: whitesmoke;border-radius: 10px"><i class="material-icons" style="font-size: 14px;color: black">comment</i>:<?php echo get_comments_number($article_id); ?></p>
@@ -284,20 +302,11 @@ if($_SESSION && !isset($_GET["category"])){ ?>
                     <button name="like" value="like" style="border: 0 solid;background-color: #cde4ff;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px" disabled><i class="material-icons" style="font-size: 14px">thumb_up</i>:<?php echo get_like_number($article_id) ?></button>
                     <button name="dislike" value="dislike"  style="border: 0 solid;background-color: #ffc3be;font-family: 'Segoe UI Light',sans-serif;font-size: 16px;border-radius: 10px" disabled><i class="material-icons" style="font-size: 14px">thumb_down</i>:<?php echo get_dislike_number($article_id) ?></button>
                 </form>
-
-			</div>
-		
+            </div>
 		</div>
 
-    <?php }
-//    if(!$list){
-//        header("Refresh:0; url=index.php");
-//        die();
-//    }
-    ?>
-
     <?php
-
+    }
     function get_comments_number($id){
         $conn=connection();
         $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id='".$id."'");
@@ -368,22 +377,14 @@ if($_SESSION && !isset($_GET["category"])){ ?>
         $share_title = $_POST["title"];
         $share_article = $_POST["article"];
         $share_topic = $_POST["topic"];
-        if($share_title and $share_article and $share_topic){
+        if($share_title and $share_article and $share_topic and (strlen($share_title) != 0 and $share_title != "" and strlen($share_article) >= 32)){
             return 1;
         }else{
             return null;
         }
     }
     ?>
-
-        <script>
-            if ( window.history.replaceState ) {
-                window.history.replaceState( null, null, window.location.href );
-            }
-        </script>
-
 </div>
-
 <div>
     <?php
         $counter = 0;
