@@ -233,18 +233,16 @@ if($list["state"] == 1) {
                 }
                 ?>
                 <form method="post" class="users">
-                    <input name="userid" type="text" value="<?php echo $userid ?>" placeholder="userid" style="max-width: 20px;font-family: Tohoma,sans-serif"/>
-                    <input name="username" type="text" value="<?php echo $username ?>" placeholder="username"/>
-                    <input name="email" type="text" value="<?php echo $email ?>" placeholder="email" />
+                    <input disabled name="userid" type="text" value="<?php echo $userid ?>" placeholder="userid" style="max-width: 20px;font-family: Tohoma,sans-serif"/>
+                    <input disabled name="username" type="text" value="<?php echo $username ?>" placeholder="username"/>
+                    <input disabled name="email" type="text" value="<?php echo $email ?>" placeholder="email" />
                     <!--                        -->
                     <!--                            <input name="firstname" type="text" value="--><?php //echo $name ?><!--" placeholder="firstname" />-->
                     <!--                            <input name="surname" type="text" value="--><?php //echo $surname ?><!--" placeholder="surname" />-->
                     <!--                            <input name="tel" type="text" value="--><?php //echo $tel ?><!--" placeholder="tel" />-->
                     <!--                            <input name="age" type="text" value="--><?php //echo $age ?><!--" placeholder="age" />-->
-                    <input name="active" type="text" value="<?php echo $active ?>" placeholder="Active" style="color: red" />
-                    <input name="state" type="text" value="<?php echo $state ?>" placeholder="user/admin" style="max-width: 50px" />
-                    <button type="submit" name="delete_userid" value="<?php echo $userid ?>" style="color: crimson">DELETE</button>
-                    <button type="submit" name="set_userid"    value="<?php echo $userid ?>" style="color: cadetblue">UPDATE</button>
+                    <input disabled name="active" type="text" value="<?php echo $active ?>" placeholder="Active" style="color: red" />
+                    <input disabled name="state" type="text" value="<?php echo $state ?>" placeholder="user/admin" style="max-width: 50px" />
                 </form>
             <?php } ?>
         </div>

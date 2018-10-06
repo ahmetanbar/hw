@@ -170,12 +170,14 @@ session_start();
             }
         }
 
-        if (isset($_POST["set_userid"]) and strlen($_POST["state"]) and email_check($_POST["email"])) {
+        if (isset($_POST["set_userid"]) and strlen($_POST["state"]) == 1 and email_check($_POST["email"]) and $_POST["state"] <= 3 and $_POST["state"] >=0) {
             if(set_user_button($_POST["set_userid"])){
             $id = $_POST["set_userid"];
             if($id == get_user_id($_SESSION["username"])) {
                 $_SESSION["username"] = $_POST["username"];
             }
+            $_POST["username"] = str_replace(array("\n", "\t", ' ','<','>','='), '', $_POST["username"]);
+            $_POST["email"] = str_replace(array("\n", "\t", ' ','<','>','='), '', $_POST["email"]);
             $conn = connection();
             $stmt = $conn->prepare("UPDATE users SET username=?, email=?, state=? WHERE id=?");
             $stmt->bind_param('sssi', $_POST["username"], $_POST["email"],$_POST["state"], $id);
@@ -193,7 +195,7 @@ session_start();
             die();
             }
             else{
-                $userid = $_POST["userid"];
+                $userid = $_POST["set_userid"];
                 $conn=connection();
                 $stmt ="SELECT * FROM users WHERE id= '".$userid."'";
                 $result = $conn->query($stmt);
@@ -286,10 +288,10 @@ session_start();
                     ?>
                     <form method="post" class="posts">
                             <input disabled name="userid" type="text" value="<?php echo $id ?>" style="max-width: 20px;font-family: Tohoma,sans-serif"/>
-                            <input name="username" type="text" value="<?php echo $username ?>"/>
+                            <input disabled name="username" type="text" value="<?php echo $username ?>"/>
                             <input disabled name="date" type="text" value="<?php echo $date ?>"/>
-                            <input name="topic" type="text" value="<?php echo $topic ?>" style="max-width: 100px"/>
-                            <input name="title" type="text" value="<?php echo $title ?>" style="max-width: 100px"/>
+                            <input disabled name="topic" type="text" value="<?php echo $topic ?>" style="max-width: 100px"/>
+                            <input disabled name="title" type="text" value="<?php echo $title ?>" style="max-width: 100px"/>
 <!--                            <textarea name="article" type="text" style="min-width: 816px;max-height: 400px;min-height: 100px;max-width: 816px">--><?php //echo $article ?><!--</textarea><br>-->
                              <button type="submit" name="delete_article_id" value="<?php echo $id ?>" style="color: crimson">DELETE</button>
                             <button type="submit" name="set_article_id"    value="<?php echo $id ?>" style="color: cadetblue">UPDATE</button>

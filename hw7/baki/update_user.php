@@ -169,9 +169,17 @@ if($list["state"] == 1) {
             if(get_user_name($userid) != $_POST["username"]) {
                 $_SESSION["username"] = $_POST["username"];
             }
+            $_POST["username"] = str_replace(array("\n", "\t", ' ','<','>','='), '', $_POST["username"]);
+            $_POST["email"] = str_replace(array("\n", "\t", ' ','<','>','='), '', $_POST["email"]);
+            $_POST["firstname"] = str_replace(array("\n", "\t",'<','>','='), '', $_POST["firstname"]);
+            $_POST["surname"] = str_replace(array("\n", "\t", ' ','<','>','='), '', $_POST["surname"]);
+            $_POST["tel"] = str_replace(array("\n", "\t", ' ','<','>','='), '', $_POST["tel"]);
+            $_POST["age"] = str_replace(array("\n", "\t", ' ','<','>','='), '', $_POST["age"]);
+            $_POST["work"] = str_replace(array("\n", "\t",'<','>','='), '', $_POST["work"]);
+            $_POST["sex"] = str_replace(array("\n", "\t", ' ','<','>','='), '', $_POST["sex"]);
             $conn = connection();
             $stmt = $conn->prepare("UPDATE users SET username=?, email=?, firstname=?, surname=?, tel=?, age=?, work=?, sex=? WHERE id=?");
-            $stmt->bind_param('ssssssssi', $_POST["username"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["tel"], $_POST["age"],$_POST["work"],$_POST["sex"],$userid);
+            $stmt->bind_param('ssssssssi',$_POST["username"] , $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["tel"], $_POST["age"], $_POST["work"],$_POST["sex"],$userid);
             $stmt->execute();
             echo $userid;
             header("Refresh:0; url=update_user.php?userid=".$userid);
@@ -192,7 +200,7 @@ if($list["state"] == 1) {
         $id = $_POST["set_article_id"];
         $conn = connection();
         $stmt = $conn->prepare("UPDATE articles SET username=?, date=?, topic=?, title=?, article=? WHERE id=?");
-        $stmt->bind_param('ssssss', $_POST["username"], $_POST["date"], $_POST["topic"], $_POST["title"], $_POST["article"], $id);
+        $stmt->bind_param('ssssss', str_replace(array("\n", "\t", ' '), '', $_POST["username"]), $_POST["date"], $_POST["topic"], $_POST["title"], $_POST["article"], $id);
         $stmt->execute();
         header("Refresh:0");
         die();
@@ -252,7 +260,7 @@ if($list["state"] == 1) {
             <h1>POSTS</h1>
             <?php
             $conn = connection();
-            $stmt = "SELECT * FROM articles ORDER BY id DESC";
+            $stmt = "SELECT * FROM articles WHERE user_id='".$userid."' ORDER BY id DESC";
             $result = $conn->query($stmt);
 
             while ($list = $result->fetch_assoc()) {
@@ -268,14 +276,14 @@ if($list["state"] == 1) {
                 }
                 ?>
                 <form method="post" class="posts">
-                    <input name="userid" type="text" value="<?php echo $id ?>" style="max-width: 20px;font-family: Tohoma,sans-serif"/>
-                    <input name="username" type="text" value="<?php echo $username ?>"/>
-                    <input name="date" type="text" value="<?php echo $date ?>"/>
-                    <input name="topic" type="text" value="<?php echo $topic ?>" style="max-width: 100px"/>
-                    <input name="title" type="text" value="<?php echo $title ?>" style="max-width: 100px"/>
+                    <input disabled name="userid" type="text" value="<?php echo $id ?>" style="max-width: 20px;font-family: Tohoma,sans-serif"/>
+                    <input disabled name="username" type="text" value="<?php echo $username ?>"/>
+                    <input disabled name="date" type="text" value="<?php echo $date ?>"/>
+                    <input disabled name="topic" type="text" value="<?php echo $topic ?>" style="max-width: 100px"/>
+                    <input disabled name="title" type="text" value="<?php echo $title ?>" style="max-width: 100px"/>
                     <!--                            <textarea name="article" type="text" style="min-width: 816px;max-height: 400px;min-height: 100px;max-width: 816px">--><?php //echo $article ?><!--</textarea><br>-->
-                    <button type="submit" name="delete_article_id" value="<?php echo $id ?>" style="color: crimson">DELETE</button>
-                    <button type="submit" name="set_article_id"    value="<?php echo $id ?>" style="color: cadetblue">UPDATE</button>
+<!--                    <button  type="submit" name="delete_article_id" value="--><?php //echo $id ?><!--" style="color: crimson">DELETE</button>-->
+<!--                    <button type="submit" name="set_article_id"    value="--><?php //echo $id ?><!--" style="color: cadetblue">UPDATE</button>-->
                 </form>
 
             <?php } ?>

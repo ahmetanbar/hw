@@ -169,7 +169,7 @@ function get_category_name($category_id){
 
 <div class="banner">
 		<a href="index.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> HOMEPAGE </button> </a>
-		<a href="index.php?posted=<?php echo $_SESSION["username"]?>"style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button></a>
+		<a href="index.php?posted=<?php echo get_user_id($_SESSION["username"])?>"style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button></a>
 		<a href="contact.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> CONTACT </button> </a>
 	</div>
 
@@ -205,15 +205,19 @@ if($_SESSION && !isset($_GET["category"])){ ?>
     <div class="home-page">
     <div class="form" style="background-color: whitesmoke">
         <form method="post">
-            Arduino:<input type="checkbox" name="topic" value="arduino">
-            Arm:<input type="checkbox" name="topic" value="arm">
-            C:<input type="checkbox" name="topic" value="c">
-            PHP:<input type="checkbox" name="topic" value="php">
-            Python:<input type="checkbox" name="topic" value="python">
-            HTML-CSS:<input type="checkbox" name="topic" value="html-css">
-            Algorithms:<input type="checkbox" name="topic" value="algorithms">
-            General:<input type="checkbox" name="topic" value="general">
-            Projects:<input type="checkbox" name="topic" value="projects"><br>
+            <p style="font-size: 16px">Select Topic:</p>
+            <label>
+                <select style="margin-bottom: 10px" name="topic">
+                    <option value="arduino">arduino</option>
+                    <option value="arm">arm</option>
+                    <option value="c">c</option>
+                    <option value="php">php</option>
+                    <option value="python">python</option>
+                    <option value="html-css">html-css</option>
+                    <option value="algorithms">algorithms</option>
+                    <option value="projects">projects</option>
+                </select>
+            </label>
             <b>Title</b><input type="text" name="title" style="width: 100%;background-color: #fff7cd">
             <b>Article</b><textarea type="text" name="article" style="max-width: 100%;width: 100%;min-width: 100%;max-height: 200px;height: 100px;background-color: white"></textarea><br>
             <button name="share" type="submit" value="share" style="border-style: solid;width:150px;font-size: 16px;background-color: gray;color: whitesmoke;border-width: 0;border-radius: 5px;padding: 10px">Share</button>
@@ -233,11 +237,11 @@ if($_SESSION && !isset($_GET["category"])){ ?>
 
     function custom_echo($x, $length){
         if(strlen($x)<=$length) {
-            echo $x;
+            echo htmlspecialchars($x);
         }
         else {
             $y=substr($x,0,$length) . '...';
-            echo $y;
+            echo htmlspecialchars($y);;
         }
     }
 
@@ -377,7 +381,7 @@ if($_SESSION && !isset($_GET["category"])){ ?>
         $share_title = $_POST["title"];
         $share_article = $_POST["article"];
         $share_topic = $_POST["topic"];
-        if($share_title and $share_article and $share_topic and (strlen($share_title) != 0 and $share_title != "" and strlen($share_article) >= 32)){
+        if($share_title and $share_article and $share_topic and (strlen($share_title) != 0 and $share_title != "" and strlen($share_article) >= 0)){
             return 1;
         }else{
             return null;

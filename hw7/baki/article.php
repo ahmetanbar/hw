@@ -64,13 +64,17 @@ if (isset($_POST["delete_comment_id"])) {
 
 
 function do_comment(){
+
     $user_id = get_user_id($_SESSION["username"]);
     $article_id = $_GET["more"];
     $title = $_POST["title"];
     $comment = $_POST["comment"];
     $username = $_SESSION["username"];
-    $conn = connection();
-    $conn->query("INSERT INTO comments (user_id, article_id,comments,title,username) VALUES ('$user_id', '$article_id','$comment','$title','$username')");
+    if(strlen($title) != 0 and strlen($comment) != 0){
+        $conn = connection();
+        $conn->query("INSERT INTO comments (user_id, article_id,comments,title,username) VALUES ('$user_id', '$article_id','$comment','$title','$username')");
+
+    }
 }
 
 if(isset($_POST["send"])){
@@ -140,7 +144,7 @@ if(isset($_POST["send"])){
     		</div>
 
     	<p>
-        <?php echo $article;
+        <?php echo htmlspecialchars($article);;
         if (isset($_POST['like'])) {
             do_like(get_like_number($article_id),$article_id);
         }
@@ -186,9 +190,9 @@ if(isset($_POST["send"])){
                         </form>
                     <?php }}
                     ?>
-                    <h2 style="font-family: 'Segoe UI Light',serif;color: #ff5351"><a style="color: #000000;font-family: 'Segoe UI Light',sans-serif;float: left">Writer:</a><?php echo $username;?>:</h2>
-                    <h2 style="color: #2b92a7;font-size: 16px;font-family: 'Segoe UI Light',sans-serif;"><a style="color: black">Title:</a> <?php echo $title; ?></h2  >
-                    <h2 style="color: #a94442"> <a style="color: black;font-size: 18px;">Comment:</a> <br> <?php echo $comments;?>:</h2>
+                    <h2 style="font-family: 'Segoe UI Light',serif;color: #ff5351"><a style="color: #000000;font-family: 'Segoe UI Light',sans-serif;float: left">Writer:</a><?php  echo htmlspecialchars($username);;?>:</h2>
+                    <h2 style="color: #2b92a7;font-size: 16px;font-family: 'Segoe UI Light',sans-serif;"><a style="color: black">Title:</a> <?php  echo htmlspecialchars($title);; ?></h2  >
+                    <h2 style="color: #a94442"> <a style="color: black;font-size: 18px;">Comment:</a> <br> <?php  echo htmlspecialchars($comments);;?>:</h2>
             </div>
         <?php }        ?>
 
