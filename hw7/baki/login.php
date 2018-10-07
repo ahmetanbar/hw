@@ -102,10 +102,11 @@
         }
         function re_activate($username){
             $active = null;
+            $state = 0;
             echo $username;
             $conn = connection();
-            $stmt = $conn->prepare("UPDATE users SET active=? WHERE username=?");
-            $stmt->bind_param('ss',$active,$username);
+            $stmt = $conn->prepare("UPDATE users SET active=?,state=? WHERE username=?");
+            $stmt->bind_param('sis',$active,$state,$username);
             $stmt->execute();
             $_SESSION["username"] = $username;
             echo $_SESSION[$username];
