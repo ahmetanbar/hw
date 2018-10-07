@@ -83,7 +83,8 @@ if(isset($_POST["send"])){
 
     function get_articles_number(){
         $conn = connection();
-        $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id='".$_GET["more"]."'");
+        $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id=?");
+        $stmt->bind_param("s",$_GET["more"]);
         $stmt->execute();
         $query = $stmt->get_result();
         $number_articles = mysqli_num_rows($query);
@@ -124,7 +125,8 @@ if(isset($_POST["send"])){
     <?php
     $article_id = $_GET["more"];
     $conn=connection();
-    $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$article_id."'");
+    $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
+    $stmt->bind_param('s',$article_id);
     $stmt->execute();
     $query = $stmt->get_result();
     $list=$query->fetch_assoc();
@@ -169,10 +171,13 @@ if(isset($_POST["send"])){
         </div>
 
             <?php
+            $more = $_GET["more"];
             $conn = connection();
-            $stmt ="SELECT * FROM comments WHERE article_id='".$_GET["more"]."'ORDER BY id DESC";
-            $result = $conn->query($stmt);
-            while($list = $result->fetch_assoc()) {
+            $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id=? ORDER BY id DESC");
+            $stmt->bind_param('i',$more);
+            $stmt->execute();
+            $query = $stmt->get_result();
+            while($list = $query->fetch_assoc()) {
                 if($list){
                     $username = $list["username"];
                     $title = $list["title"];
@@ -208,33 +213,41 @@ if(isset($_POST["send"])){
 
     function get_category_id($category_name){
         $conn=connection();
-        $stmt ="SELECT * FROM categories WHERE category= '".$category_name."'";
-        $result = $conn->query($stmt);
-        $list = $result->fetch_assoc();
+        $stmt = $conn->prepare("SELECT * FROM categories WHERE category=?");
+        $stmt->bind_param('s',$category_name);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         return $list["id"];
     }
 
     function get_category_name($category_id){
         $conn=connection();
-        $stmt ="SELECT * FROM categories WHERE category= '".$category_id."'";
-        $result = $conn->query($stmt);
-        $list = $result->fetch_assoc();
+        $stmt = $conn->prepare("SELECT * FROM categories WHERE category=?");
+        $stmt->bind_param('s',$category_id);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         return $list["category"];
     }
 
     function get_user_name($user_id){
         $conn=connection();
-        $stmt ="SELECT * FROM users WHERE id= '".$user_id."'";
-        $result = $conn->query($stmt);
-        $list = $result->fetch_assoc();
+        $stmt = $conn->prepare("SELECT * FROM users WHERE id=?");
+        $stmt->bind_param('s',$user_id);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         return $list["username"];
     }
 
     function get_user_id($username){
         $conn=connection();
-        $stmt ="SELECT * FROM users WHERE username= '".$username."'";
-        $result = $conn->query($stmt);
-        $list = $result->fetch_assoc();
+        $stmt = $conn->prepare("SELECT * FROM users WHERE username=?");
+        $stmt->bind_param('s',$username);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         return $list["id"];
     }
 
@@ -242,8 +255,11 @@ if(isset($_POST["send"])){
     function get_comment_id(){
         $username = $_SESSION["username"];
         $conn = connection();
-        $read = $conn->query("SELECT * FROM comments WHERE username='".$username."'");
-        $list = mysqli_fetch_array($read);
+        $stmt = $conn->prepare("SELECT * FROM comments WHERE username=?");
+        $stmt->bind_param('s',$username);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         $comment_id = $list["id"];
         return $comment_id;
     }
@@ -259,7 +275,8 @@ if(isset($_POST["send"])){
 
     function get_view($article_id){
         $conn=connection();
-        $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$article_id."'");
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
+        $stmt->bind_param('i',$article_id);
         $stmt->execute();
         $query = $stmt->get_result();
         $list=$query->fetch_assoc();
@@ -270,7 +287,8 @@ if(isset($_POST["send"])){
 
     function get_views_number($id){
         $conn=connection();
-        $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$id."'");
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
+        $stmt->bind_param('i',$id);
         $stmt->execute();
         $query = $stmt->get_result();
         $list=$query->fetch_assoc();
@@ -280,7 +298,8 @@ if(isset($_POST["send"])){
 
     function get_comments_number($id){
         $conn=connection();
-        $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id='".$id."'");
+        $stmt= $conn->prepare("SELECT * FROM comments WHERE article_id=?");
+        $stmt->bind_param('i',$id);
         $stmt->execute();
         $query = $stmt->get_result();
         $num_rows = mysqli_num_rows($query);
@@ -298,7 +317,8 @@ if(isset($_POST["send"])){
 
       function get_like_number($id){
           $conn=connection();
-          $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$id."'");
+          $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
+          $stmt->bind_param('i',$id);
           $stmt->execute();
           $query = $stmt->get_result();
           $list=$query->fetch_assoc();
@@ -317,7 +337,8 @@ if(isset($_POST["send"])){
 
     function get_dislike_number($id){
         $conn=connection();
-        $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$id."'");
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
+        $stmt->bind_param('i',$id);
         $stmt->execute();
         $query = $stmt->get_result();
         $list=$query->fetch_assoc();

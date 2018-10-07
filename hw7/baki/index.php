@@ -169,7 +169,7 @@ function get_category_name($category_id){
 
 <div class="banner">
 		<a href="index.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> HOMEPAGE </button> </a>
-		<a href="index.php?posted=<?php echo get_user_id($_SESSION["username"])?>"style="text-decoration: none;"> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button></a>
+		<a href="index.php?posted=<?php echo get_user_id($_SESSION["username"])?>"style="text-decoration: none;" <?php if(!isset($_SESSION["username"])){ ?> hidden <?php }?> <button id="btn"  name="btn" type="submit"  value="btn"> POSTED </button></a>
 		<a href="contact.php" style="text-decoration: none;"> <button id="btn" name="btn" type="submit" value="btn"> CONTACT </button> </a>
 	</div>
 
@@ -281,6 +281,7 @@ if($_SESSION && !isset($_GET["category"])){ ?>
         	<div id="title">
 				<h1><?php echo $title?></h1>
 				<p>Author:<a style="text-decoration: none" href="profilepage.php?profile=<?php echo $username?>"><?php echo $username?></a></p>
+                <p style="font-family: Tohoma, sans-serif">Category:<?php echo  $topic ?></p>
                 <?php if(isset($_SESSION["username"])) {
                 if($_SESSION["username"] == $username)
                 {?>
@@ -345,7 +346,8 @@ if($_SESSION && !isset($_GET["category"])){ ?>
 
     function get_like_number($id){
         $conn=connection();
-        $stmt= $conn->prepare("SELECT * FROM articles WHERE id='".$id."'");
+        $stmt= $conn->prepare("SELECT * FROM articles WHERE id=?");
+        $stmt->bind_param('i',$id);
         $stmt->execute();
         $query = $stmt->get_result();
         $list=$query->fetch_assoc();

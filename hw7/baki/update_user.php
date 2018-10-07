@@ -109,33 +109,41 @@ if($list["state"] == 1) {
 
     function get_user_name($user_id){
         $conn=connection();
-        $stmt ="SELECT * FROM users WHERE id= '".$user_id."'";
-        $result = $conn->query($stmt);
-        $list = $result->fetch_assoc();
+        $stmt= $conn->prepare("SELECT * FROM users WHERE id=?");
+        $stmt->bind_param('i',$user_id);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         return $list["username"];
     }
 
     function get_user_id($username){
         $conn=connection();
-        $stmt ="SELECT * FROM users WHERE username= '".$username."'";
-        $result = $conn->query($stmt);
-        $list = $result->fetch_assoc();
+        $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
+        $stmt->bind_param('s',$username);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         return $list["id"];
     }
 
     function get_category_id($category_name){
         $conn=connection();
-        $stmt ="SELECT * FROM categories WHERE category= '".$category_name."'";
-        $result = $conn->query($stmt);
-        $list = $result->fetch_assoc();
+        $stmt= $conn->prepare("SELECT * FROM categories WHERE category=?");
+        $stmt->bind_param('s',$category_name);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         return $list["id"];
     }
 
     function get_category_name($category_id){
         $conn=connection();
-        $stmt ="SELECT * FROM categories WHERE id='".$category_id."'";
-        $result = $conn->query($stmt);
-        $list = $result->fetch_assoc();
+        $stmt= $conn->prepare("SELECT * FROM categories WHERE id=?");
+        $stmt->bind_param('i',$category_id);
+        $stmt->execute();
+        $query = $stmt->get_result();
+        $list=$query->fetch_assoc();
         return $list["category"];
     }
 
@@ -143,7 +151,8 @@ if($list["state"] == 1) {
     if (isset($_POST["delete_userid"])) {
         $id = ($_POST["delete_userid"]);
         $conn = connection();
-        $stmt = $conn->prepare("DELETE FROM users WHERE id='" . $id . "'");
+        $stmt = $conn->prepare("UPDATE users SET  state=?,active=? WHERE id=?");
+        $stmt->bind_param('ssi',$state,$current_time, $id);
         $stmt->execute();
         header("Refresh:0");
         die();
@@ -190,7 +199,8 @@ if($list["state"] == 1) {
     if (isset($_POST["delete_article_id"])) {
         $id = ($_POST["delete_article_id"]);
         $conn = connection();
-        $stmt = $conn->prepare("DELETE FROM articles WHERE id='" . $id . "'");
+        $stmt = $conn->prepare("DELETE FROM articles WHERE id=?");
+        $stmt->bind_param('i',$id);
         $stmt->execute();
         header("Refresh:0");
         die();

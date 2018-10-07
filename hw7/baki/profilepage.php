@@ -168,7 +168,8 @@ if(user_check()==1) {
         function get_post_num($user_id)
         {
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id='" . $user_id . "'");
+            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id=?");
+            $stmt->bind_param('i',$user_id);
             $stmt->execute();
             $query = $stmt->get_result();
             $number = mysqli_num_rows($query);
@@ -178,29 +179,31 @@ if(user_check()==1) {
         function get_last_post($user_id)
         {
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id='" . $user_id . "' ORDER BY id DESC LIMIT 1");
+            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id=? ORDER BY id DESC LIMIT 1");
+            $stmt->bind_param('i',$user_id);
             $stmt->execute();
             $query = $stmt->get_result();
-            $list = $query->fetch_assoc();
+            $list=$query->fetch_assoc();
             return $list["title"];
         }
 
-        function get_last_post_id($user_id)
-        {
+        function get_last_post_id($user_id){
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id='" . $user_id . "' ORDER BY id DESC LIMIT 1");
+            $stmt = $conn->prepare("SELECT * FROM articles WHERE user_id=? ORDER BY id DESC LIMIT 1");
+            $stmt->bind_param('i',$user_id);
             $stmt->execute();
             $query = $stmt->get_result();
-            $list = $query->fetch_assoc();
+            $list=$query->fetch_assoc();
             return $list["id"];
         }
 
         function get_last_comment($user_id){
             $conn = connection();
-            $stmt = $conn->prepare("SELECT * FROM comments WHERE user_id='" . $user_id . "' ORDER BY id DESC LIMIT 1");
+            $stmt = $conn->prepare("SELECT * FROM comments WHERE user_id=? ORDER BY id DESC LIMIT 1");
+            $stmt->bind_param('i',$user_id);
             $stmt->execute();
             $query = $stmt->get_result();
-            $list = $query->fetch_assoc();
+            $list=$query->fetch_assoc();
             return $list["title"];
         }
 
@@ -215,17 +218,21 @@ if(user_check()==1) {
 
         function get_user_name($user_id){
             $conn=connection();
-            $stmt ="SELECT * FROM users WHERE id= '".$user_id."'";
-            $result = $conn->query($stmt);
-            $list = $result->fetch_assoc();
+            $stmt= $conn->prepare("SELECT * FROM users WHERE id=?");
+            $stmt->bind_param('i',$user_id);
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list=$query->fetch_assoc();
             return $list["username"];
         }
 
         function get_user_id($username){
             $conn=connection();
-            $stmt ="SELECT * FROM users WHERE username= '".$username."'";
-            $result = $conn->query($stmt);
-            $list = $result->fetch_assoc();
+            $stmt= $conn->prepare("SELECT * FROM users WHERE username=?");
+            $stmt->bind_param('s',$username);
+            $stmt->execute();
+            $query = $stmt->get_result();
+            $list=$query->fetch_assoc();
             return $list["id"];
         }
 
@@ -276,19 +283,41 @@ if(user_check()==1) {
             }
             return preg_match('/^[0-9]{10}+$/', $phone);
         }
-
-        if (isset($_POST["set_userid"]) and username_check($_POST["username"]) and email_check($_POST["email"]) and firstname_check($_POST["firstname"]) and validate_phone_number($_POST["tel"]) and strlen($_POST["age"]) <= 2) {
-            $id = $_POST["set_userid"];
-            $conn = connection();
-            $stmt = $conn->prepare("UPDATE users SET username=?, email=?, firstname=?, surname=?, tel=?, age=? WHERE id=?");
-            $stmt->bind_param('sssssss', $_POST["username"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["tel"], $_POST["age"], $id);
-            $stmt->execute();
-            $_SESSION["username"] = $_POST["username"];
-            header("Refresh:0; url=profilepage.php?profile=".$_SESSION["username"]);
-            die();
-        }
         ?>
-        <div class="form">
+        <div class="form" style="color: rebeccapurple;font-family: Tohoma,sans-serif">
+            <?php
+            if (isset($_POST["set_userid"])) {
+                if (username_check($_POST["username"])) {
+                    if (email_check($_POST["email"])) {
+                        if (firstname_check($_POST["firstname"])) {
+                            if (validate_phone_number($_POST["tel"])) {
+                                if (strlen($_POST["age"]) <= 2) {
+                                    $id = $_POST["set_userid"];
+                                    $conn = connection();
+                                    $stmt = $conn->prepare("UPDATE users SET username=?, email=?, firstname=?, surname=?, tel=?, age=? WHERE id=?");
+                                    $stmt->bind_param('sssssss', $_POST["username"], $_POST["email"], $_POST["firstname"], $_POST["surname"], $_POST["tel"], $_POST["age"], $id);
+                                    $stmt->execute();
+                                    $_SESSION["username"] = $_POST["username"];
+                                    header("Refresh:0; url=profilepage.php?profile=" . $_SESSION["username"]);
+                                    die();
+                                } else {
+                                    echo "Yaş kriterlerine uymadı";
+                                }
+                            } else {
+                                echo "Telefon kriterlerine uymadı";
+                            }
+                        } else {
+                            echo "Firstname kriterlerine uymadı";
+                        }
+                    } else {
+                        echo "email kriterlerine uymadı";
+                    }
+
+                } else {
+                    echo "username kriterlerine uymadı";
+                }
+            }
+            ?>
             <div class="card">
                 <form method="post">
                     <input placeholder="username" name="username" type="text" value="<?php echo $username ?>" <?php if($_SESSION["username"] != $_GET["profile"]){ ?> disabled style="border: 0 solid;text-align: center" <?php } ?> />
@@ -306,7 +335,7 @@ if(user_check()==1) {
                         }else{
                     echo "Not Found";
                         } ?></a></p>
-                <p style="color:#d84500;font-size: 19px;<?php if(!get_last_comment_id($username)){?> display: none <?php }?>">Last Comment:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_comment_id(get_user_id($_GET["profile"]))?>"><?php if(get_last_comment(get_user_id($_GET["profile"]))){
+                <p style="color:#d84500;font-size: 19px">Last Comment:<a style="text-decoration: none" href="article.php?more=<?php echo get_last_comment_id(get_user_id($_GET["profile"]))?>"><?php if(get_last_comment(get_user_id($_GET["profile"]))){
                             echo get_last_comment(get_user_id($_GET["profile"]));
                         }else{
                             echo "Not Found";
