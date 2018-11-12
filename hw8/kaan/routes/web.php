@@ -11,8 +11,15 @@
 |
 */
 use Illuminate\Support\Facades\Auth;
-Route::get('', function () {
-    return view('welcome');
+/*Route::get('/', function()
+{
+    return view('home');
+});
+*/
+Route::get('/{locale}', function ($locale) {
+    App::setLocale($locale);
+
+    return view('home');
 });
 Route::match(['get','post'], 'login', function (){
     return "DENEME 1 ";
@@ -37,6 +44,7 @@ Route::prefix('admin')->group(function () {
     Route::get('articles', function () {
         return "ARTICLES PANEL";
     });
-    Route::get('harvard', gunction() {
+    Route::get('harvard', function() {
         return "HARVARD COMMIT :D";
+    });
 });
