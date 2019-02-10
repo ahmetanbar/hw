@@ -1,7 +1,11 @@
 <?php
 
 return [
+    'locale' => 'en',
 
+    'locales' => ['en', 'tr'],
+
+    'fallback_locale' => 'en',
     /*
     |--------------------------------------------------------------------------
     | Application Name

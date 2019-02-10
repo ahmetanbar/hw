@@ -1,0 +1,28 @@
+.menu{
+    background-color: #323232;
+    height: 10%;
+    margin: auto;
+    width: 100%;
+}
+.resim{
+
+}
+.header{
+    
+}
+.header ul{
+
+}
+.header ul li{
+    float:left;
+    margin-left:10%;
+    list-style: none;
+}
+.header ul li a{
+    color:darkgrey;
+    text-decoration: none;
+    font-size:50px;
+}
+.header ul li a:hover{
+    color:darkred;
+}

@@ -16,12 +16,28 @@ use Illuminate\Support\Facades\Auth;
     return view('home');
 });
 */
-Route::get('/{locale}', function ($locale) {
-    App::setLocale($locale);
 
-    return view('home');
+Route::prefix('{lang?}')->middleware('locale')->group(function() {
+
+    Route::get('/', function () {
+        return view('front/index');
+    });
+    Route::get('/homepage', function () {
+        return view('front/index');
+    });
+    Route::get('/about', function () {
+        return view('front/index');
+    });
+    Route::get('/contact', function () {
+        return view('front/index');
+    });
 });
-Route::match(['get','post'], 'login', function (){
+
+
+
+Route::match(['get','post'], '/{locale}/login', function ($locale){
+    App::setLocale($locale);
+    echo __('lang.homepage');
     return "DENEME 1 ";
 });
 

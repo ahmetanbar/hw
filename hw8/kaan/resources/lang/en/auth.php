@@ -13,7 +13,12 @@ return [
     |
     */
 
-    'failed' => 'These credentials do not match our records.',
+    'failed' => 'Wrong password or username. Please check them.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
+    'mail' => 'Wrong mail address. Please try again.',
+    'username' => 'Invalid username. Please check it!',
+    'password' => 'Invalid password. Please try again',
+    'bdate' => 'Invalid date of birth.',
+    'gender' => 'Gender is empty please choose one of them.'
 
 ];
