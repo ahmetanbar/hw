@@ -16,51 +16,34 @@ use Illuminate\Support\Facades\Auth;
     return view('home');
 });
 */
+#
 
-Route::prefix('{lang?}')->middleware('locale')->group(function() {
 
-    Route::get('/', function () {
-        return view('front/index');
-    });
-    Route::get('/homepage', function () {
-        return view('front/index');
-    });
-    Route::get('/about', function () {
-        return view('front/index');
-    });
-    Route::get('/contact', function () {
-        return view('front/index');
-    });
+Route::prefix('admin/{lang?}')->middleware('locale')->group(function ($lang) {
+    Route::get('/','AdminPanel@index');
+    Route::get('/overview','AdminPanel@overview');
+    Route::get('/users','AdminPanel@users');
+    Route::get('/profile/{username}','AdminPanel@user_profile');
+    Route::get('/articles','AdminPanel@blog');
+    Route::get('/article/post/{pid}','AdminPanel@blog_post');
+    Route::get('/search/{query}/{type?}','AdminPanel@search');
+    Route::get('/login','AdminPanel@login');
+    Route::get('/logout','AdminPanel@logout');
+});
+
+Route::prefix('{lang?}')->middleware('locale')->group(function($lang) {
+    Route::get('/','Front@index');
+    Route::get('/about','Front@about');
+    Route::get('/users','Front@users');
+    Route::get('/profile/{username}','Front@user_profile');
+    Route::get('/blog','Front@blog');
+    Route::get('/blog/categories/{category?}','Front@blog_categories');
+    Route::get('/blog/post/{pid}','Front@blog_post');
+    Route::get('/search/{query}/{type?}','Front@search');
+    Route::get('/contact','Front@contact');
+    Route::get('/signup','Front@signup');
+    Route::get('/login','Front@login');
+    Route::get('/logout','Front@logout');
 });
 
 
-
-Route::match(['get','post'], '/{locale}/login', function ($locale){
-    App::setLocale($locale);
-    echo __('lang.homepage');
-    return "DENEME 1 ";
-});
-
-
-
-
-
-
-
-Route::prefix('admin')->group(function () {
-    Route::get('/', function () {
-        return "ADMIN PANEL";
-    });
-    if (Auth::check()) {
-        // The user is logged in...
-    }
-    Route::get('users', function () {
-        return "USERS PANEL";
-    });
-    Route::get('articles', function () {
-        return "ARTICLES PANEL";
-    });
-    Route::get('harvard', function() {
-        return "HARVARD COMMIT :D";
-    });
-});

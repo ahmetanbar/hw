@@ -2,7 +2,7 @@
 /* CSS Document */
 body {
 	/*background-color: lightslategrey;*/
-	background-image: url(wallpaper.jpg);
+	background-image: url("../img/wallpaper.jpg");
 	background-color: black;
 	background-size: cover;
 	background-attachment: fixed;
@@ -10,7 +10,7 @@ body {
 	padding-left: 10%;
 	padding-right: 10%;
 	min-width: 720px;
-	cursor: url(cursor2.cur),auto;	
+	cursor: url("../img/cursor2.png"),auto;
 }
 .table{
 	margin:auto;
@@ -39,7 +39,7 @@ header nav ul {
 	float:left;
 	padding-left: 50px;
 	padding-top: 50px;
-	background-image: url(pp-trans.png);
+	background-image: url("../img/pp-trans.png");
 	background-size: 50px;
 	text-align: left;
 	margin-left: 8px;
