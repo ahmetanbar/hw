@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html dir="ltr" lang="en">
+<html dir="ltr" lang="{{Config::get('app.locale')}}">
 
 <head>
     <meta charset="utf-8">
@@ -10,14 +10,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="../../assets/images/favicon.png">
-    <title>Matrix Template - The Ultimate Multipurpose admin template</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{asset('img/icon.png')}}">
+    <title>{{$username}}@lang('lang.sprofile') - Kaan ARI</title>
     <!-- Custom CSS -->
-    <link rel="stylesheet" type="text/css" href="../../assets/libs/select2/dist/css/select2.min.css">
-    <link rel="stylesheet" type="text/css" href="../../assets/libs/jquery-minicolors/jquery.minicolors.css">
-    <link rel="stylesheet" type="text/css" href="../../assets/libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
-    <link rel="stylesheet" type="text/css" href="../../assets/libs/quill/dist/quill.snow.css">
-    <link href="../../dist/css/style.min.css" rel="stylesheet">
+    <link href="{{asset('assets/libs/flot/css/float-chart.css')}}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{asset('dist/css/style.min.css')}}" rel="stylesheet">
+    <link href="{{asset('css/styleadminprofile.css')}}" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -40,203 +40,68 @@
 <!-- Main wrapper - style you can find in pages.scss -->
 <!-- ============================================================== -->
 <div id="main-wrapper">
-    <!-- ============================================================== -->
-    <!-- Topbar header - style you can find in pages.scss -->
-    <!-- ============================================================== -->
     <header class="topbar" data-navbarbg="skin5">
         <nav class="navbar top-navbar navbar-expand-md navbar-dark">
             <div class="navbar-header" data-logobg="skin5">
                 <!-- This is for the sidebar toggle which is visible on mobile only -->
                 <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i class="ti-menu ti-close"></i></a>
-                <!-- ============================================================== -->
-                <!-- Logo -->
-                <!-- ============================================================== -->
-                <a class="navbar-brand" href="index.html">
-                    <!-- Logo icon -->
+                <a class="navbar-brand" href="./">
                     <b class="logo-icon p-l-10">
-                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                        <!-- Dark Logo icon -->
-                        <img src="../../assets/images/logo-icon.png" alt="homepage" class="light-logo" />
+                        <img src="{{asset('img/pp-trans.png')}}" alt="homepage" class="light-logo" height="35" width="35"/>
 
                     </b>
-                    <!--End Logo icon -->
-                    <!-- Logo text -->
                     <span class="logo-text">
                              <!-- dark Logo text -->
-                             <img src="../../assets/images/logo-text.png" alt="homepage" class="light-logo" />
-                            
-                        </span>
-                    <!-- Logo icon -->
-                    <!-- <b class="logo-icon"> -->
-                    <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                    <!-- Dark Logo icon -->
-                    <!-- <img src="../../assets/images/logo-text.png" alt="homepage" class="light-logo" /> -->
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@lang('lang.controlpanel')
 
-                    <!-- </b> -->
-                    <!--End Logo icon -->
+                    </span>
+
                 </a>
-                <!-- ============================================================== -->
-                <!-- End Logo -->
-                <!-- ============================================================== -->
-                <!-- ============================================================== -->
-                <!-- Toggle which is visible on mobile only -->
-                <!-- ============================================================== -->
                 <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="ti-more"></i></a>
             </div>
-            <!-- ============================================================== -->
-            <!-- End Logo -->
-            <!-- ============================================================== -->
+
             <div class="navbar-collapse collapse" id="navbarSupportedContent" data-navbarbg="skin5">
                 <!-- ============================================================== -->
                 <!-- toggle and nav items -->
                 <!-- ============================================================== -->
                 <ul class="navbar-nav float-left mr-auto">
                     <li class="nav-item d-none d-md-block"><a class="nav-link sidebartoggler waves-effect waves-light" href="javascript:void(0)" data-sidebartype="mini-sidebar"><i class="mdi mdi-menu font-24"></i></a></li>
-                    <!-- ============================================================== -->
-                    <!-- create new -->
-                    <!-- ============================================================== -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="d-none d-md-block">Create New <i class="fa fa-angle-down"></i></span>
-                            <span class="d-block d-md-none"><i class="fa fa-plus"></i></span>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                    <!-- ============================================================== -->
-                    <!-- Search -->
-                    <!-- ============================================================== -->
                     <li class="nav-item search-box"> <a class="nav-link waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
-                        <form class="app-search position-absolute">
-                            <input type="text" class="form-control" placeholder="Search &amp; enter"> <a class="srh-btn"><i class="ti-close"></i></a>
+
+                        <form class="app-search position-absolute" method="GET" action="search">
+                            {{csrf_field()}}
+                            <input name="find" type="text" class="form-control" placeholder="@lang('lang.searchplaceholder')"> <a class="srh-btn"><i class="ti-close"></i></a>
                         </form>
                     </li>
                 </ul>
-                <!-- ============================================================== -->
-                <!-- Right side toggle and nav items -->
-                <!-- ============================================================== -->
                 <ul class="navbar-nav float-right">
-                    <!-- ============================================================== -->
-                    <!-- Comment -->
-                    <!-- ============================================================== -->
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell font-24"></i>
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Action</a>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
-                        </div>
-                    </li>
-                    <!-- ============================================================== -->
-                    <!-- End Comment -->
-                    <!-- ============================================================== -->
-                    <!-- ============================================================== -->
-                    <!-- Messages -->
-                    <!-- ============================================================== -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="font-24 mdi mdi-comment-processing"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right mailbox animated bounceInDown" aria-labelledby="2">
-                            <ul class="list-style-none">
-                                <li>
-                                    <div class="">
-                                        <!-- Message -->
-                                        <a href="javascript:void(0)" class="link border-top">
-                                            <div class="d-flex no-block align-items-center p-10">
-                                                <span class="btn btn-success btn-circle"><i class="ti-calendar"></i></span>
-                                                <div class="m-l-10">
-                                                    <h5 class="m-b-0">Event today</h5>
-                                                    <span class="mail-desc">Just a reminder that event</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- Message -->
-                                        <a href="javascript:void(0)" class="link border-top">
-                                            <div class="d-flex no-block align-items-center p-10">
-                                                <span class="btn btn-info btn-circle"><i class="ti-settings"></i></span>
-                                                <div class="m-l-10">
-                                                    <h5 class="m-b-0">Settings</h5>
-                                                    <span class="mail-desc">You can customize this template</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- Message -->
-                                        <a href="javascript:void(0)" class="link border-top">
-                                            <div class="d-flex no-block align-items-center p-10">
-                                                <span class="btn btn-primary btn-circle"><i class="ti-user"></i></span>
-                                                <div class="m-l-10">
-                                                    <h5 class="m-b-0">Pavan kumar</h5>
-                                                    <span class="mail-desc">Just see the my admin!</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        <!-- Message -->
-                                        <a href="javascript:void(0)" class="link border-top">
-                                            <div class="d-flex no-block align-items-center p-10">
-                                                <span class="btn btn-danger btn-circle"><i class="fa fa-link"></i></span>
-                                                <div class="m-l-10">
-                                                    <h5 class="m-b-0">Luanch Admin</h5>
-                                                    <span class="mail-desc">Just see the my new admin!</span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                    <!-- ============================================================== -->
-                    <!-- End Messages -->
-                    <!-- ============================================================== -->
-
-                    <!-- ============================================================== -->
-                    <!-- User profile and search -->
-                    <!-- ============================================================== -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="../../assets/images/users/1.jpg" alt="user" class="rounded-circle" width="31"></a>
+                        <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{asset('img/pp-trans.png')}}" alt="user" class="rounded-circle" width="31"></a>
                         <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                            <a class="dropdown-item" href="javascript:void(0)"><i class="ti-user m-r-5 m-l-5"></i> My Profile</a>
-                            <a class="dropdown-item" href="javascript:void(0)"><i class="ti-wallet m-r-5 m-l-5"></i> My Balance</a>
-                            <a class="dropdown-item" href="javascript:void(0)"><i class="ti-email m-r-5 m-l-5"></i> Inbox</a>
+                            <a class="dropdown-item" href="../inbox"><i class="ti-email m-r-5 m-l-5"></i> @lang('lang.inbox')</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="javascript:void(0)"><i class="ti-settings m-r-5 m-l-5"></i> Account Setting</a>
+                            <a class="dropdown-item" href="../settings"><i class="ti-settings m-r-5 m-l-5"></i> @lang('lang.accountsettings')</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="javascript:void(0)"><i class="fa fa-power-off m-r-5 m-l-5"></i> Logout</a>
+                            <a class="dropdown-item" href="../logout"><i class="fa fa-power-off m-r-5 m-l-5"></i> @lang('lang.logout')</a>
                             <div class="dropdown-divider"></div>
-                            <div class="p-l-30 p-10"><a href="javascript:void(0)" class="btn btn-sm btn-success btn-rounded">View Profile</a></div>
                         </div>
                     </li>
-                    <!-- ============================================================== -->
-                    <!-- User profile and search -->
-                    <!-- ============================================================== -->
                 </ul>
             </div>
         </nav>
     </header>
-    <!-- ============================================================== -->
-    <!-- End Topbar header -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
     <aside class="left-sidebar" data-sidebarbg="skin5">
         <!-- Sidebar scroll-->
         <div class="scroll-sidebar">
             <!-- Sidebar navigation-->
             <nav class="sidebar-nav">
                 <ul id="sidebarnav" class="p-t-30">
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="./" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Dashboard</span></a></li>
-                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="overview" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">General</span></a></li>
-                    <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span class="hide-menu">Control</span></a>
+                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="./" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">@lang('lang.dashboard')</span></a></li>
+                    <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link" href="overview" aria-expanded="false"><i class="mdi mdi-chart-bubble"></i><span class="hide-menu">@lang('lang.general')</span></a></li>
+                    <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class="mdi mdi-receipt"></i><span class="hide-menu">@lang('lang.control')</span></a>
                         <ul aria-expanded="false" class="collapse  first-level">
-                            <li class="sidebar-item"><a href="users" class="sidebar-link"><i class="mdi mdi-account-key"></i><span class="hide-menu"> Users </span></a></li>
-                            <li class="sidebar-item"><a href="articles" class="sidebar-link"><i class="mdi mdi-note-outline"></i><span class="hide-menu"> Articles </span></a></li>
+                            <li class="sidebar-item"><a href="users" class="sidebar-link"><i class="mdi mdi-account-key"></i><span class="hide-menu"> @lang('lang.users') </span></a></li>
+                            <li class="sidebar-item"><a href="articles" class="sidebar-link"><i class="mdi mdi-note-outline"></i><span class="hide-menu"> @lang('lang.articles') </span></a></li>
                         </ul>
                     </li>
                     </li>
@@ -245,12 +110,7 @@
             <!-- End Sidebar navigation -->
         </div>
         <!-- End Sidebar scroll-->
-    </aside>   <!-- ============================================================== -->
-    <!-- End Left Sidebar - style you can find in sidebar.scss  -->
-    <!-- ============================================================== -->
-    <!-- ============================================================== -->
-    <!-- Page wrapper  -->
-    <!-- ============================================================== -->
+    </aside>
     <div class="page-wrapper">
         <!-- ============================================================== -->
         <!-- Bread crumb and right sidebar toggle -->
@@ -258,14 +118,8 @@
         <div class="page-breadcrumb">
             <div class="row">
                 <div class="col-12 d-flex no-block align-items-center">
-                    <h4 class="page-title">Form Basic</h4>
+                    <h4 class="page-title">Profile Settings : {{$username}}</h4>
                     <div class="ml-auto text-right">
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Library</li>
-                            </ol>
-                        </nav>
                     </div>
                 </div>
             </div>
@@ -283,61 +137,89 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="card">
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" name="form1">
                             <div class="card-body">
                                 <h4 class="card-title">Personal Info</h4>
+                                <div class="form-group">
+                                    <div class="d-flex justify-content-center h-100">
+                                        <div class="image_outer_container">
+                                            <div class="green_icon"></div>
+                                            <div class="image_inner_container">
+                                                <img src="https://i0.wp.com/tricksmaze.com/wp-content/uploads/2017/04/Stylish-Girls-Profile-Pictures-36.jpg?resize=300%2C300&ssl=1">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
-                                    <label for="fname" class="col-sm-3 text-right control-label col-form-label">First Name</label>
-                                    <div class="col-sm-9">
+                                    <label class="col-sm-2 control-label col-form-label">File Upload</label>
+                                    <div class="col-md-10">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="validatedCustomFile" required>
+                                            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                            <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="fname" class="col-sm-2 control-label col-form-label">Username</label>
+                                    <div class="col-sm-10">
                                         <input type="text" class="form-control" id="fname" placeholder="First Name Here">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="lname" class="col-sm-3 text-right control-label col-form-label">Last Name</label>
-                                    <div class="col-sm-9">
+                                    <label for="fname" class="col-sm-2 control-label col-form-label">First Name</label>
+                                    <div class="col-sm-10">
+                                        <input type="text" class="form-control" id="fname" placeholder="First Name Here">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="lname" class="col-sm-2 control-label col-form-label">Last Name</label>
+                                    <div class="col-sm-10">
                                         <input type="text" class="form-control" id="lname" placeholder="Last Name Here">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="lname" class="col-sm-3 text-right control-label col-form-label">Password</label>
-                                    <div class="col-sm-9">
+                                    <label for="lname" class="col-sm-2 control-label col-form-label">Mail</label>
+                                    <div class="col-sm-10">
                                         <input type="password" class="form-control" id="lname" placeholder="Password Here">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="email1" class="col-sm-3 text-right control-label col-form-label">Company</label>
-                                    <div class="col-sm-9">
+                                    <label for="email1" class="col-sm-2 control-label col-form-label">Age</label>
+                                    <div class="col-sm-10">
                                         <input type="text" class="form-control" id="email1" placeholder="Company Name Here">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Contact No</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="cono1" placeholder="Contact No Here">
+                                    <label style="margin-right: 10px;" for="gender" class="col-sm-3 text-right control-label col-form-label">Gender</label>
+
+                                    <div class="custom-control custom-radio" style="margin-right:10px;margin-top:8px;">
+                                        <input type="radio" class="custom-control-input" id="customControlValidation1" name="radio-stacked" required>
+                                        <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation1">Male</label>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="cono1" class="col-sm-3 text-right control-label col-form-label">Message</label>
-                                    <div class="col-sm-9">
-                                        <textarea class="form-control"></textarea>
+                                    <div class="custom-control custom-radio" style="margin-right:10px;margin-top:8px;">
+                                        <input type="radio" class="custom-control-input" id="customControlValidation2" name="radio-stacked" required>
+                                        <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation2">Female</label>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="border-top">
-                                <div class="card-body">
-                                    <button type="button" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Form Elements</h5>
-                            <div class="form-group row">
-                                <label class="col-md-3 m-t-15">Single Select</label>
-                                <div class="col-md-9">
-                                    <select class="select2 form-control custom-select" style="width: 100%; height:36px;">
-                                        <option>Select</option>
+                            <h5 class="card-title"></h5>
+                            <label class="m-t-15">Birthdate</label>
+                            <div class="input-group" style="margin-bottom:20px;">
+                                <input type="text" class="form-control" id="datepicker-autoclose" placeholder="mm/dd/yyyy">
+                                <div class="input-group-append">
+                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Country</label>
+                                <div class="col-md-13">
+                                    <select class="select form-control custom-select" style="width: 100%; height:36px; margin-top:8px;">
                                         <optgroup label="Alaskan/Hawaiian Time Zone">
                                             <option value="AK">Alaska</option>
                                             <option value="HI">Hawaii</option>
@@ -401,10 +283,37 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label>Phone Number<small class="text-muted">(999) 999-9999</small></label>
+                                <input type="text" class="form-control phone-inputmask" id="phone-mask" placeholder="Enter Phone Number">
+                            </div>
+                            <div class="form-group">
+                                <label for="cono1">Bio</label>
+                                <textarea class="form-control"></textarea>
+
+                            </div>
+                        </div>
+                        <center>
+                            <div class="card-body">
+                                <button type="submit" class="btn btn-success">Save</button>
+                                <button type="submit" class="btn btn-primary">Reset</button>
+                                <button type="submit" class="btn btn-info">Edit</button>
+                                <button type="submit" class="btn btn-danger">Cancel</button>
+                            </div>
+                        </center>
+                    </div>
+
+
+                </div>
+                <div class="col-md-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Form Elements</h5>
                             <div class="form-group row">
-                                <label class="col-md-3 m-t-15">Multiple Select</label>
+                                <label class="col-md-3 m-t-15">Country</label>
                                 <div class="col-md-9">
-                                    <select class="select2 form-control m-t-15" multiple="multiple" style="height: 36px;width: 100%;">
+                                    <select class="select form-control custom-select" style="width: 100%; height:36px; margin-top:8px;">
                                         <optgroup label="Alaskan/Hawaiian Time Zone">
                                             <option value="AK">Alaska</option>
                                             <option value="HI">Hawaii</option>
@@ -421,7 +330,7 @@
                                             <option value="ID">Idaho</option>
                                             <option value="MT">Montana</option>
                                             <option value="NE">Nebraska</option>
-                                            <option value="NM" selected>New Mexico</option>
+                                            <option value="NM">New Mexico</option>
                                             <option value="ND">North Dakota</option>
                                             <option value="UT">Utah</option>
                                             <option value="WY">Wyoming</option>
@@ -438,7 +347,7 @@
                                             <option value="MS">Mississippi</option>
                                             <option value="MO">Missouri</option>
                                             <option value="OK">Oklahoma</option>
-                                            <option value="SD" selected>South Dakota</option>
+                                            <option value="SD">South Dakota</option>
                                             <option value="TX">Texas</option>
                                             <option value="TN">Tennessee</option>
                                             <option value="WI">Wisconsin</option>
@@ -468,6 +377,7 @@
                                     </select>
                                 </div>
                             </div>
+
                             <div class="form-group row">
                                 <label class="col-md-3">Radio Buttons</label>
                                 <div class="col-md-9">
@@ -485,33 +395,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-md-3">Checkboxes</label>
-                                <div class="col-md-9">
-                                    <div class="custom-control custom-checkbox mr-sm-2">
-                                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing1">
-                                        <label class="custom-control-label" for="customControlAutosizing1">First One</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mr-sm-2">
-                                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing2">
-                                        <label class="custom-control-label" for="customControlAutosizing2">Second One</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mr-sm-2">
-                                        <input type="checkbox" class="custom-control-input" id="customControlAutosizing3">
-                                        <label class="custom-control-label" for="customControlAutosizing3">Third One</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-md-3">File Upload</label>
-                                <div class="col-md-9">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="validatedCustomFile" required>
-                                        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                                        <div class="invalid-feedback">Example invalid custom file feedback</div>
-                                    </div>
-                                </div>
-                            </div>
+
+
                             <div class="form-group row">
                                 <label class="col-md-3" for="disabledTextInput">Disabled input</label>
                                 <div class="col-md-9">
@@ -521,77 +406,11 @@
                         </div>
                         <div class="border-top">
                             <div class="card-body">
-                                <button type="button" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Forms Control</h4>
-                            <div class="form-group">
-                                <label for="hue-demo">Hue</label>
-                                <input type="text" id="hue-demo" class="form-control demo" data-control="hue" value="#ff6161">
-                            </div>
-                            <div class="form-group">
-                                <label for="position-bottom-left">Bottom left (default)</label>
-                                <input type="text" id="position-bottom-left" class="form-control demo" data-position="bottom left" value="#0088cc">
-                            </div>
-                            <div class="form-group">
-                                <label for="position-top-right">Top right</label>
-                                <input type="text" id="position-top-right" class="form-control demo" data-position="top right" value="#0088cc">
-                            </div>
-                            <label>Datepicker</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control mydatepicker" placeholder="mm/dd/yyyy">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                </div>
-                            </div>
-                            <label class="m-t-15">Autoclose Datepicker</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" id="datepicker-autoclose" placeholder="mm/dd/yyyy">
-                                <div class="input-group-append">
-                                    <span class="input-group-text"><i class="fa fa-calendar"></i></span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="border-top">
-                            <div class="card-body">
-                                <button type="submit" class="btn btn-success">Save</button>
-                                <button type="submit" class="btn btn-primary">Reset</button>
-                                <button type="submit" class="btn btn-info">Edit</button>
-                                <button type="submit" class="btn btn-danger">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="submitForms()">Submit</button>
                             </div>
                         </div>
                     </div>
 
-                </div>
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title m-b-0">Form Elements</h5>
-                            <div class="form-group m-t-20">
-                                <label>Date Mask <small class="text-muted">dd/mm/yyyy</small></label>
-                                <input type="text" class="form-control date-inputmask" id="date-mask" placeholder="Enter Date">
-                            </div>
-                            <div class="form-group">
-                                <label>Phone <small class="text-muted">(999) 999-9999</small></label>
-                                <input type="text" class="form-control phone-inputmask" id="phone-mask" placeholder="Enter Phone Number">
-                            </div>
-                            <div class="form-group">
-                                <label>International Number <small class="text-muted">+19 999 999 999</small></label>
-                                <input type="text" class="form-control international-inputmask" id="international-mask" placeholder="International Phone Number">
-                            </div>
-                            <div class="form-group">
-                                <label>Phone / xEx <small class="text-muted">(999) 999-9999 / x999999</small></label>
-                                <input type="text" class="form-control xphone-inputmask" id="xphone-mask" placeholder="Enter Phone Number">
-                            </div>
-                            <div class="form-group">
-                                <label>Purchase Order <small class="text-muted">aaaa 9999-****</small></label>
-                                <input type="text" class="form-control purchase-inputmask" id="purchase-mask" placeholder="Enter Purchase Order">
-                            </div>
-                        </div>
-                    </div>
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Form Elements</h5>
@@ -745,82 +564,27 @@
                     </div>
                 </div>
             </div>
-            <!-- editor -->
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Quill Editor</h4>
-                            <!-- Create the editor container -->
-                            <div id="editor" style="height: 300px;">
-                                <p>Hello World!</p>
-                                <p>Some initial <strong>bold</strong> text</p>
-                                <p>
-                                    <br>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- ============================================================== -->
-            <!-- End PAge Content -->
-            <!-- ============================================================== -->
-            <!-- ============================================================== -->
-            <!-- Right sidebar -->
-            <!-- ============================================================== -->
-            <!-- .right-sidebar -->
-            <!-- ============================================================== -->
-            <!-- End Right sidebar -->
-            <!-- ============================================================== -->
         </div>
-        <!-- ============================================================== -->
-        <!-- End Container fluid  -->
-        <!-- ============================================================== -->
-        <!-- ============================================================== -->
-        <!-- footer -->
-        <!-- ============================================================== -->
-        <footer class="footer text-center">
-            All Rights Reserved by Matrix-admin. Designed and Developed by <a href="https://wrappixel.com">WrapPixel</a>.
-        </footer>
-        <!-- ============================================================== -->
-        <!-- End footer -->
-        <!-- ============================================================== -->
     </div>
-    <!-- ============================================================== -->
-    <!-- End Page wrapper  -->
-    <!-- ============================================================== -->
 </div>
-<!-- ============================================================== -->
-<!-- End Wrapper -->
-<!-- ============================================================== -->
-<!-- ============================================================== -->
-<!-- All Jquery -->
-<!-- ============================================================== -->
-<script src="../../assets/libs/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap tether Core JavaScript -->
-<script src="../../assets/libs/popper.js/dist/umd/popper.min.js"></script>
-<script src="../../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- slimscrollbar scrollbar JavaScript -->
-<script src="../../assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js"></script>
-<script src="../../assets/extra-libs/sparkline/sparkline.js"></script>
-<!--Wave Effects -->
-<script src="../../dist/js/waves.js"></script>
-<!--Menu sidebar -->
-<script src="../../dist/js/sidebarmenu.js"></script>
-<!--Custom JavaScript -->
-<script src="../../dist/js/custom.min.js"></script>
-<!-- This Page JS -->
-<script src="../../assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js"></script>
-<script src="../../dist/js/pages/mask/mask.init.js"></script>
-<script src="../../assets/libs/select2/dist/js/select2.full.min.js"></script>
-<script src="../../assets/libs/select2/dist/js/select2.min.js"></script>
-<script src="../../assets/libs/jquery-asColor/dist/jquery-asColor.min.js"></script>
-<script src="../../assets/libs/jquery-asGradient/dist/jquery-asGradient.js"></script>
-<script src="../../assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js"></script>
-<script src="../../assets/libs/jquery-minicolors/jquery.minicolors.min.js"></script>
-<script src="../../assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
-<script src="../../assets/libs/quill/dist/quill.min.js"></script>
+<script src="{{asset('assets/libs/jquery/dist/jquery.min.js')}}"></script>
+<script src="{{asset('assets/libs/popper.js/dist/umd/popper.min.js')}}"></script>
+<script src="{{asset('assets/libs/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js')}}"></script>
+<script src="{{asset('assets/extra-libs/sparkline/sparkline.js')}}"></script>
+<script src="{{asset('dist/js/waves.js')}}"></script>
+<script src="{{asset('dist/js/sidebarmenu.js')}}"></script>
+<script src="{{asset('dist/js/custom.min.js')}}"></script>
+<script src="{{asset('assets/libs/inputmask/dist/min/jquery.inputmask.bundle.min.js')}}"></script>
+<script src="{{asset('dist/js/pages/mask/mask.init.js')}}"></script>
+<script src="{{asset('assets/libs/select2/dist/js/select2.full.min.js')}}"></script>
+<script src="{{asset('assets/libs/select2/dist/js/select2.min.js')}}"></script>
+<script src="{{asset('assets/libs/jquery-asColor/dist/jquery-asColor.min.js')}}"></script>
+<script src="{{asset('assets/libs/jquery-asGradient/dist/jquery-asGradient.js')}}"></script>
+<script src="{{asset('assets/libs/jquery-asColorPicker/dist/jquery-asColorPicker.min.js')}}"></script>
+<script src="{{asset('assets/libs/jquery-minicolors/jquery.minicolors.min.js')}}"></script>
+<script src="{{asset('assets/libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js')}}"></script>
+<script src="{{asset('assets/libs/quill/dist/quill.min.js')}}"></script>
 <script>
     //***********************************//
     // For select 2
@@ -862,6 +626,11 @@
     var quill = new Quill('#editor', {
         theme: 'snow'
     });
+
+    submitForms = function(){
+        document.forms["form1"].submit();
+        document.forms["form2"].submit();
+    }
 
 </script>
 </body>

@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>@lang('lang.homepage') - Kaan ARI</title>
 	<link rel="stylesheet" href="{{ asset('css/styles1.css') }}">
-	<link rel="shortcut icon" href="{{ asset('img/icon.ico') }}">
+	<link rel="icon" type="image/png" sizes="16x16" href="{{asset('img/icon.png')}}">
 
 </head>
 <body>

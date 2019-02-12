@@ -4,10 +4,15 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+
 
 class AdminPanel extends Controller {
 
     public function index() {
+        if (Auth::check()) {
+            // The user is logged in...
+        }
         return view('admin/dashboard');
     }
 
@@ -20,7 +25,7 @@ class AdminPanel extends Controller {
     }
 
     public function user_profile($lang,$username) {
-        return view('admin/profile');
+        return view('admin/profile', compact('username'));
     }
 
     public function blog() {
@@ -32,8 +37,18 @@ class AdminPanel extends Controller {
         return view('admin/article');
     }
 
-    public function search($lang,$query,$type=null) {
-        return "$query search page";
+    public function search($lang,Request $request) {
+        $find = $request->input('find');
+        return view('admin/search', compact('find'));
+
+    }
+
+    public function settings() {
+        return view('admin/settings');
+    }
+
+    public function inbox() {
+        return view('admin/messages');
     }
 
     public function login() {

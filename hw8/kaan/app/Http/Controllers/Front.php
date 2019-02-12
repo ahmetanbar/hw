@@ -35,8 +35,8 @@ class Front extends Controller {
         return 'blog post page';
     }
 
-    public function search($lang,$query,$type=null) {
-        return "$query search page";
+    public function search($lang) {
+        return " search page";
     }
 
     public function contact() {
@@ -45,6 +45,10 @@ class Front extends Controller {
 
     public function login() {
         return 'login page';
+    }
+
+    public function settings() {
+        return view('front/settings');
     }
 
     public function logout() {

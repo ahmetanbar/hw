@@ -2,6 +2,9 @@
    return [
       'homepage' => 'Ana Sayfa',
       'contact' => 'İletişim',
-      'about' => 'Hakkımda'
+      'about' => 'Hakkımda',
+       'adminpanel' => 'Yönetim Paneli',
+       'controlpanel' => 'Kontrol Paneli',
+
    ];
 ?>
