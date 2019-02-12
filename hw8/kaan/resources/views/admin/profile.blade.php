@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{asset('img/icon.png')}}">
-    <title>{{$username}}@lang('lang.sprofile') - Kaan ARI</title>
+    <title>@lang('lang.profile') - Kaan ARI</title>
     <!-- Custom CSS -->
     <link href="{{asset('assets/libs/flot/css/float-chart.css')}}" rel="stylesheet">
     <!-- Custom CSS -->
@@ -78,11 +78,11 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark pro-pic" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{asset('img/pp-trans.png')}}" alt="user" class="rounded-circle" width="31"></a>
                         <div class="dropdown-menu dropdown-menu-right user-dd animated">
-                            <a class="dropdown-item" href="../inbox"><i class="ti-email m-r-5 m-l-5"></i> @lang('lang.inbox')</a>
+                            <a class="dropdown-item" href="inbox"><i class="ti-email m-r-5 m-l-5"></i> @lang('lang.inbox')</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="../settings"><i class="ti-settings m-r-5 m-l-5"></i> @lang('lang.accountsettings')</a>
+                            <a class="dropdown-item" href="settings"><i class="ti-settings m-r-5 m-l-5"></i> @lang('lang.accountsettings')</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="../logout"><i class="fa fa-power-off m-r-5 m-l-5"></i> @lang('lang.logout')</a>
+                            <a class="dropdown-item" href="logout"><i class="fa fa-power-off m-r-5 m-l-5"></i> @lang('lang.logout')</a>
                             <div class="dropdown-divider"></div>
                         </div>
                     </li>
@@ -134,83 +134,90 @@
             <!-- ============================================================== -->
             <!-- Start Page Content -->
             <!-- ============================================================== -->
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <form class="form-horizontal" name="form1">
-                            <div class="card-body">
-                                <h4 class="card-title">Personal Info</h4>
-                                <div class="form-group">
-                                    <div class="d-flex justify-content-center h-100">
-                                        <div class="image_outer_container">
-                                            <div class="green_icon"></div>
-                                            <div class="image_inner_container">
-                                                <img src="https://i0.wp.com/tricksmaze.com/wp-content/uploads/2017/04/Stylish-Girls-Profile-Pictures-36.jpg?resize=300%2C300&ssl=1">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 control-label col-form-label">File Upload</label>
-                                    <div class="col-md-10">
-                                        <div class="custom-file">
-                                            <input type="file" class="custom-file-input" id="validatedCustomFile" required>
-                                            <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
-                                            <div class="invalid-feedback">Example invalid custom file feedback</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="fname" class="col-sm-2 control-label col-form-label">Username</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="fname" placeholder="First Name Here">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="fname" class="col-sm-2 control-label col-form-label">First Name</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="fname" placeholder="First Name Here">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="lname" class="col-sm-2 control-label col-form-label">Last Name</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="lname" placeholder="Last Name Here">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="lname" class="col-sm-2 control-label col-form-label">Mail</label>
-                                    <div class="col-sm-10">
-                                        <input type="password" class="form-control" id="lname" placeholder="Password Here">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="email1" class="col-sm-2 control-label col-form-label">Age</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" class="form-control" id="email1" placeholder="Company Name Here">
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label style="margin-right: 10px;" for="gender" class="col-sm-3 text-right control-label col-form-label">Gender</label>
 
-                                    <div class="custom-control custom-radio" style="margin-right:10px;margin-top:8px;">
-                                        <input type="radio" class="custom-control-input" id="customControlValidation1" name="radio-stacked" required>
-                                        <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation1">Male</label>
-                                    </div>
-                                    <div class="custom-control custom-radio" style="margin-right:10px;margin-top:8px;">
-                                        <input type="radio" class="custom-control-input" id="customControlValidation2" name="radio-stacked" required>
-                                        <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation2">Female</label>
+            <div class="row">
+                <form class="col-md-6">
+                <div>
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Personal Information</h4>
+                            <div class="form-group">
+                                <div class="d-flex justify-content-center h-100">
+                                    <div class="image_outer_container">
+                                        <div class="green_icon"></div>
+                                        <div class="image_inner_container">
+                                            <img src="https://i0.wp.com/tricksmaze.com/wp-content/uploads/2017/04/Stylish-Girls-Profile-Pictures-36.jpg?resize=300%2C300&ssl=1">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </form>
+                            <div class="form-group row">
+                                <label class="col-sm-2 control-label col-form-label">File Upload</label>
+                                <div class="col-md-10">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="validatedCustomFile" disabled>
+                                        <label class="custom-file-label" for="validatedCustomFile">Choose file...</label>
+                                        <div class="invalid-feedback">Example invalid custom file feedback</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="fname" class="col-sm-2 control-label col-form-label">Username</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input4" placeholder="First Name Here" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="fname" class="col-sm-2 control-label col-form-label">First Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input7" placeholder="First Name Here" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="lname" class="col-sm-2 control-label col-form-label">Last Name</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input6" placeholder="Last Name Here" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="lname" class="col-sm-2 control-label col-form-label">Mail</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" id="input5" placeholder="mail adress" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="email1" class="col-sm-2 control-label col-form-label">Age</label>
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="input" placeholder="Age" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label style="margin-right: 10px;" for="gender" class="col-sm-2 control-label col-form-label">Gender</label>
+
+                                <div class="custom-control custom-radio" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation1" name="radio-stacked" disabled>
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation1">Male</label>
+                                </div>
+                                <div class="custom-control custom-radio" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation2" name="radio-stacked" disabled>
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation2">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                        <center>
+                        <div class="border-top">
+                            <div class="card-body">
+                                <button id="expandbut" type="button" onclick="expand()" class="btn btn-dark" onclick="expand()">Expand</button>
+                                <button id="collapsebut" type="button" onclick="collapse()" class="btn btn-outline-dark" onclick="expand()" style="display: none;">Collapse</button>
+                        </center>
                     </div>
-                    <div class="card">
+
+                    <div id="expand1" class="card" style="display: none">
                         <div class="card-body">
                             <h5 class="card-title"></h5>
                             <label class="m-t-15">Birthdate</label>
                             <div class="input-group" style="margin-bottom:20px;">
-                                <input type="text" class="form-control" id="datepicker-autoclose" placeholder="mm/dd/yyyy">
+                                <input type="text" class="form-control" id="datepicker-autoclose" placeholder="mm/dd/yyyy" disabled>
                                 <div class="input-group-append">
                                     <span class="input-group-text"><i class="fa fa-calendar"></i></span>
                                 </div>
@@ -219,7 +226,7 @@
                             <div class="form-group">
                                 <label>Country</label>
                                 <div class="col-md-13">
-                                    <select class="select form-control custom-select" style="width: 100%; height:36px; margin-top:8px;">
+                                    <select id="input3" class="select form-control custom-select" style="width: 100%; height:36px; margin-top:8px;" disabled>
                                         <optgroup label="Alaskan/Hawaiian Time Zone">
                                             <option value="AK">Alaska</option>
                                             <option value="HI">Hawaii</option>
@@ -285,135 +292,111 @@
                             </div>
                             <div class="form-group">
                                 <label>Phone Number<small class="text-muted">(999) 999-9999</small></label>
-                                <input type="text" class="form-control phone-inputmask" id="phone-mask" placeholder="Enter Phone Number">
+                                <input type="text" class="form-control phone-inputmask" id="phone-mask" placeholder="Enter Phone Number" disabled>
                             </div>
                             <div class="form-group">
                                 <label for="cono1">Bio</label>
-                                <textarea class="form-control"></textarea>
+                                <textarea id="input2" class="form-control 2" disabled="true'"></textarea>
 
                             </div>
                         </div>
-                        <center>
-                            <div class="card-body">
-                                <button type="submit" class="btn btn-success">Save</button>
-                                <button type="submit" class="btn btn-primary">Reset</button>
-                                <button type="submit" class="btn btn-info">Edit</button>
-                                <button type="submit" class="btn btn-danger">Cancel</button>
-                            </div>
-                        </center>
                     </div>
 
 
                 </div>
-                <div class="col-md-6">
+                </form>
+                <form class="col-md-6">
+                <div>
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Form Elements</h5>
-                            <div class="form-group row">
-                                <label class="col-md-3 m-t-15">Country</label>
-                                <div class="col-md-9">
-                                    <select class="select form-control custom-select" style="width: 100%; height:36px; margin-top:8px;">
-                                        <optgroup label="Alaskan/Hawaiian Time Zone">
-                                            <option value="AK">Alaska</option>
-                                            <option value="HI">Hawaii</option>
-                                        </optgroup>
-                                        <optgroup label="Pacific Time Zone">
-                                            <option value="CA">California</option>
-                                            <option value="NV">Nevada</option>
-                                            <option value="OR">Oregon</option>
-                                            <option value="WA">Washington</option>
-                                        </optgroup>
-                                        <optgroup label="Mountain Time Zone">
-                                            <option value="AZ">Arizona</option>
-                                            <option value="CO">Colorado</option>
-                                            <option value="ID">Idaho</option>
-                                            <option value="MT">Montana</option>
-                                            <option value="NE">Nebraska</option>
-                                            <option value="NM">New Mexico</option>
-                                            <option value="ND">North Dakota</option>
-                                            <option value="UT">Utah</option>
-                                            <option value="WY">Wyoming</option>
-                                        </optgroup>
-                                        <optgroup label="Central Time Zone">
-                                            <option value="AL">Alabama</option>
-                                            <option value="AR">Arkansas</option>
-                                            <option value="IL">Illinois</option>
-                                            <option value="IA">Iowa</option>
-                                            <option value="KS">Kansas</option>
-                                            <option value="KY">Kentucky</option>
-                                            <option value="LA">Louisiana</option>
-                                            <option value="MN">Minnesota</option>
-                                            <option value="MS">Mississippi</option>
-                                            <option value="MO">Missouri</option>
-                                            <option value="OK">Oklahoma</option>
-                                            <option value="SD">South Dakota</option>
-                                            <option value="TX">Texas</option>
-                                            <option value="TN">Tennessee</option>
-                                            <option value="WI">Wisconsin</option>
-                                        </optgroup>
-                                        <optgroup label="Eastern Time Zone">
-                                            <option value="CT">Connecticut</option>
-                                            <option value="DE">Delaware</option>
-                                            <option value="FL">Florida</option>
-                                            <option value="GA">Georgia</option>
-                                            <option value="IN">Indiana</option>
-                                            <option value="ME">Maine</option>
-                                            <option value="MD">Maryland</option>
-                                            <option value="MA">Massachusetts</option>
-                                            <option value="MI">Michigan</option>
-                                            <option value="NH">New Hampshire</option>
-                                            <option value="NJ">New Jersey</option>
-                                            <option value="NY">New York</option>
-                                            <option value="NC">North Carolina</option>
-                                            <option value="OH">Ohio</option>
-                                            <option value="PA">Pennsylvania</option>
-                                            <option value="RI">Rhode Island</option>
-                                            <option value="SC">South Carolina</option>
-                                            <option value="VT">Vermont</option>
-                                            <option value="VA">Virginia</option>
-                                            <option value="WV">West Virginia</option>
-                                        </optgroup>
-                                    </select>
-                                </div>
-                            </div>
+
+                            <h5 class="card-title" style="height: 100px;">System Information</h5>
 
                             <div class="form-group row">
-                                <label class="col-md-3">Radio Buttons</label>
-                                <div class="col-md-9">
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customControlValidation1" name="radio-stacked" required>
-                                        <label class="custom-control-label" for="customControlValidation1">First One</label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customControlValidation2" name="radio-stacked" required>
-                                        <label class="custom-control-label" for="customControlValidation2">Second One</label>
-                                    </div>
-                                    <div class="custom-control custom-radio">
-                                        <input type="radio" class="custom-control-input" id="customControlValidation3" name="radio-stacked" required>
-                                        <label class="custom-control-label" for="customControlValidation3">Third One</label>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group row">
-                                <label class="col-md-3" for="disabledTextInput">Disabled input</label>
+                                <label class="col-sm-3 control-label col-form-label" for="disabledTextInput">Registration Date</label>
                                 <div class="col-md-9">
                                     <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input" disabled>
                                 </div>
                             </div>
-                        </div>
-                        <div class="border-top">
-                            <div class="card-body">
-                                <button type="button" class="btn btn-primary" onclick="submitForms()">Submit</button>
+                            <div class="form-group row">
+                                <label class="col-sm-3 control-label text-left col-form-label" for="disabledTextInput">Last Login Date</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input" disabled>
+                                </div>
                             </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 control-label col-form-label" for="disabledTextInput">Last Login IP Address</label>
+                                <div class="col-md-9">
+                                    <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input" disabled>
+                                </div>
+                            </div>
+                            <div class="input-group" style="margin-bottom:20px;">
+                                <label class="col-sm-3 control-label col-form-label text-left">Articles Number</label>
+                                <input type="text" class="form-control" placeholder="5" disabled>
+
+                                <div class="input-group-append">
+                                    <a href="../search?find=USER:{{$username}}">
+                                    <span class="input-group-text" style="height: 36px;"><i class="fa fa-eye"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="input-group" style="margin-bottom:20px;">
+                                <label class="col-sm-3 control-label col-form-label text-left">Comments Number</label>
+                                <input type="text" class="form-control" placeholder="5" disabled>
+
+                                <div class="input-group-append">
+                                    <a href="../search?find=COMM:USER:{{$username}}">
+                                        <span class="input-group-text" style="height: 36px;"><i class="fa fa-eye"></i></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label style="margin-right: 10px;" for="role" class="col-sm-3 control-label col-form-label">Role</label>
+
+                                <div class="custom-control custom-radio col-sm-2" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation3" name="radio-stacked" disabled>
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation3">User</label>
+                                </div>
+                                <div class="custom-control custom-radio col-sm-2" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation4" name="radio-stacked" disabled>
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation4">Editor</label>
+                                </div>
+                                <div class="custom-control custom-radio col-sm-2" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation5" name="radio-stacked" disabled>
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation5">Moderator</label>
+                                </div>
+                                <div class="custom-control custom-radio col-sm-2" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation6" name="radio-stacked" disabled>
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation6">Admin</label>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label style="margin-right: 10px;" for="role" class="col-sm-3 control-label col-form-label">Status</label>
+
+                                <div class="custom-control custom-radio col-sm-3" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation7" name="radio-stacked" disabled>
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation7">Active</label>
+                                </div>
+                                <div class="custom-control custom-radio col-sm-3" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation8" name="radio-stacked" disabled>
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation8">Suspended</label>
+                                </div>
+                                <div class="custom-control custom-radio col-sm-2" style="margin-right:10px;margin-top:8px;">
+                                    <input type="radio" class="custom-control-input" id="customControlValidation9" name="radio-stacked" disabled="">
+                                    <label class="custom-control-label" style="margin-top:2px;" for="customControlValidation9">Deleted</label>
+                                </div>
+                            </div>
+
+
+
                         </div>
+
                     </div>
 
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Form Elements</h5>
+                            <h5 class="card-title">Edit</h5>
                             <div class="row mb-3 align-items-center">
                                 <div class="col-lg-4 col-md-12 text-right">
                                     <span>Tooltip Input</span>
@@ -478,91 +461,20 @@
                                     </div>
                                 </div>
                             </div>
+                            <center>
+                                <div class="card-body" >
+                                    <button id="savebut" type="submit" class="btn btn-success" style="display: none;">Save</button>
+                                    <button id="resetbut" type="button" onclick="reset()" class="btn btn-primary" style="display: none;">Reset</button>
+                                    <button id="editbut" type="button" onclick="disabler()" class="btn btn-info">Edit</button>
+                                    <button id="cancelbut" type="button" onclick="shower()" class="btn btn-danger" style="display: none;">Cancel</button>
+                                </div>
+                            </center>
                         </div>
                     </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="row mb-3">
-                                <div class="col-lg-12">
-                                    <input type="text" class="form-control" placeholder="col-md-12">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-11">
-                                    <input type="text" class="form-control" placeholder="col-md-11">
-                                </div>
-                                <div class="col-lg-1 p-l-0">
-                                    <input type="text" class="form-control" placeholder="col-md-1">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-10">
-                                    <input type="text" class="form-control" placeholder="col-md-10">
-                                </div>
-                                <div class="col-lg-2">
-                                    <input type="text" class="form-control" placeholder="col-md-2">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-9">
-                                    <input type="text" class="form-control" placeholder="col-md-9">
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" class="form-control" placeholder="col-md-3">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="col-md-8">
-                                </div>
-                                <div class="col-lg-4">
-                                    <input type="text" class="form-control" placeholder="col-md-4">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-7">
-                                    <input type="text" class="form-control" placeholder="col-md-7">
-                                </div>
-                                <div class="col-lg-5">
-                                    <input type="text" class="form-control" placeholder="col-md-5">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-6">
-                                    <input type="text" class="form-control" placeholder="col-md-6">
-                                </div>
-                                <div class="col-lg-6">
-                                    <input type="text" class="form-control" placeholder="col-md-6">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-5">
-                                    <input type="text" class="form-control" placeholder="col-md-5">
-                                </div>
-                                <div class="col-lg-7">
-                                    <input type="text" class="form-control" placeholder="col-md-7">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-lg-2">
-                                    <input type="text" class="form-control" placeholder="col-md-2">
-                                </div>
-                                <div class="col-lg-3">
-                                    <input type="text" class="form-control" placeholder="col-md-3">
-                                </div>
-                                <div class="col-lg-4">
-                                    <input type="text" class="form-control" placeholder="col-md-4">
-                                </div>
-                                <div class="col-lg-2">
-                                    <input type="text" class="form-control" placeholder="col-md-2">
-                                </div>
-                                <div class="col-lg-1 p-l-0">
-                                    <input type="text" class="form-control" placeholder="col-md-1">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
+
                 </div>
+                </form>
             </div>
         </div>
     </div>
@@ -630,6 +542,80 @@
     submitForms = function(){
         document.forms["form1"].submit();
         document.forms["form2"].submit();
+    }
+    function reset(){
+        document.getElementById("input4").reset();
+        document.getElementById("input6").reset();
+
+    }
+
+    function disabler() {
+        document.getElementById("datepicker-autoclose").disabled = false;
+        document.getElementById("input").disabled = false;
+        document.getElementById("validatedCustomFile").disabled = false;
+        document.getElementById("input4").disabled = false;
+        document.getElementById("input5").disabled = false;
+        document.getElementById("phone-mask").disabled = false;
+        $('#input2').prop('disabled', false);
+        $('#input3').prop('disabled', false);
+        $('#input6').prop('disabled', false);
+        $('#input7').prop('disabled', false);
+        $('#customControlValidation1').prop('disabled', false);
+        $('#customControlValidation2').prop('disabled', false);
+        $('#customControlValidation3').prop('disabled', false);
+        $('#customControlValidation4').prop('disabled', false);
+        $('#customControlValidation5').prop('disabled', false);
+        $('#customControlValidation6').prop('disabled', false);
+        $('#customControlValidation7').prop('disabled', false);
+        $('#customControlValidation8').prop('disabled', false);
+        $('#customControlValidation9').prop('disabled', false);
+        document.getElementById("editbut").style.display = "none";
+        document.getElementById("savebut").style.display = "inline";
+        document.getElementById("cancelbut").style.display = "inline";
+        document.getElementById("resetbut").style.display = "inline";
+
+
+
+    }
+    function shower(){
+        document.getElementById("datepicker-autoclose").disabled = true;
+        document.getElementById("input").disabled = true;
+        document.getElementById("editbut").style.display = "inline";
+        document.getElementById("savebut").style.display = "none";
+        document.getElementById("input5").disabled = true;
+        document.getElementById("phone-mask").disabled = true;
+        document.getElementById("validatedCustomFile").disabled = true;
+        $('#input2').prop('disabled', true);
+        $('#input3').prop('disabled', true);
+        $('#input6').prop('disabled', true);
+        $('#input7').prop('disabled', true);
+        document.getElementById("input4").disabled = true;
+        document.getElementById("cancelbut").style.display = "none";
+        document.getElementById("resetbut").style.display = "none";
+        $('#customControlValidation1').prop('disabled', true);
+        $('#customControlValidation2').prop('disabled', true);
+        $('#customControlValidation3').prop('disabled', true);
+        $('#customControlValidation4').prop('disabled', true);
+        $('#customControlValidation5').prop('disabled', true);
+        $('#customControlValidation6').prop('disabled', true);
+        $('#customControlValidation7').prop('disabled', true);
+        $('#customControlValidation8').prop('disabled', true);
+        $('#customControlValidation9').prop('disabled', true);
+    }
+    function expand(){
+        document.getElementById("expandbut").style.display = "none";
+        document.getElementById("collapsebut").style.display = "inline";
+        document.getElementById("expand1").style.display = "block";
+
+
+    }
+    function collapse(){
+        document.getElementById("collapsebut").style.display = "none";
+        document.getElementById("expandbut").style.display = "inline";
+        document.getElementById("expand1").style.display = "none";
+
+
+
     }
 
 </script>
