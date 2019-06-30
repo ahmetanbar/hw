@@ -12,34 +12,16 @@
 */
 
 
-Auth::routes();
-
-// // Route::get('/home', 'HomeController@index')->name('home');
-$this->get('/', 'Auth\LoginController@showLoginForm');
-$this->get('login', 'Auth\LoginController@showLoginForm')->name('login');
-$this->post('login', 'Auth\LoginController@login');
-$this->post('logout', 'Auth\LoginController@logout')->name('logout');
-
-  
-// Registration Routes...
-$this->get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
-$this->post('register', 'Auth\RegisterController@register');
-// Password Reset Routes...
-$this->get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm')->name('password.request');
-$this->post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail')->name('password.email');
-$this->get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm')->name('password.reset');
-$this->post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::post('follow/{user}','FollowsController@store');
 
-// Route::get('/', function () {
-//     return view('./auth/login');
+Route::get('/', 'PostController@index');
+Route::get('/profile/{user}', 'ProfilesController@index')->name('profile.show');
+Route::get('/profile/{user}/edit', 'ProfilesController@edit')->name('profile.edit');
+Route::patch('/profile/{user}', 'ProfilesController@update')->name('profile.update');
 
-Route::post("/createpost",[
-    "uses" => "PostController@postCreatePost",
-    "as" => "post.create"
-    ]);
-
-
+Route::get('/p/create', 'PostController@create');
+Route::get('/p/{post}', 'PostController@show');
+Route::post('/p', 'PostController@store');
