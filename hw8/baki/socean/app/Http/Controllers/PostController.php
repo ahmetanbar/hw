@@ -15,14 +15,21 @@ class PostController extends Controller
     }
 
     public function index(){
-        $posts2 = Post::orderBy('created_at', 'desc')->get();
-        $posts = array();
-        foreach($posts2 as $post2){
-            $comments = DB::table('posts_comments')->where('post_id',$post2->id)->get();
-            $element = [$post2,$comments];
-            array_push($posts,$element);
-        }
+        $posts = Post::with('comments')->orderBy('created_at', 'desc')->get();
+        // $posts    = Post::orderBy('created_at', 'desc')->get();
+        // dd($comments); 
+        // $posts2 = Post::orderBy('created_at', 'desc')->get();
+        // $posts = array();
+        // foreach($posts2 as $post2){
+        //     $comments = DB::table('posts_comments')->where('post_id',$post2->id)->get();
+        //     $element = [$post2,$comments];
+        //     array_push($posts,$element);
+        // }
+
+        // dd($posts);
         return view('posts/index',compact('posts'));
+
+
     }
 
 

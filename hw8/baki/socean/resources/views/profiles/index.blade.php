@@ -4,7 +4,7 @@
 <div class="container">
     <div class="row pl-5">
       <div class="d-inline pl-5 pt-5 ml-5">
-          <img  class="rounded-circle" width="150px" height="150px" src="/storage/{{$user->profile->image}}" alt="">
+          <img  class="rounded-circle" width="150px" height="150px" src="/{{$user->profile->image}}" alt="">
       </div>
             <div class="p-5 d-inline">
               <div>
@@ -45,7 +45,7 @@
                   <div class="dropdown-divider"></div>
                   <a class="dropdown-item font-weight-bold" style="font-size: 14px"  href="#">Delete</a>
           </div>
-          <img src="/storage/{{$user->profile->image}}" alt="" style="background-image: url('/docs/4.0/assets/brand/bootstrap-solid.svg'); width: 50px; height: 50px; border-radius: 100%; margin-right: 5px"> <a class="text-dark" href="profile.html">{{$user->username}}</a>  <p class="d-inline-block float-right text-primary pt-2" style="font-size: 12px"> {{$post->created_at->diffForHumans() }}</p>
+          <img src="/{{$post->user->profile->image}}" alt="" style="background-image: url('/docs/4.0/assets/brand/bootstrap-solid.svg'); width: 50px; height: 50px; border-radius: 100%; margin-right: 5px"> <a class="text-dark" href="profile.html">{{$user->username}}</a>  <p class="d-inline-block float-right text-primary pt-2" style="font-size: 12px"> {{$post->created_at->diffForHumans() }}</p>
           </div>
               <div class="card-body bg-white">
                         <div class="carousel-inner" style="min-height: 400px;max-height: 400px">
