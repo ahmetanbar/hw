@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;
+use App\Comment;
+use DB;
 use Illuminate\Support\Facades\Storage;
 // use Intervention\Image\Facades\Image;
 class PostController extends Controller
@@ -13,7 +15,13 @@ class PostController extends Controller
     }
 
     public function index(){
-        $posts = Post::orderBy('created_at', 'desc')->get();
+        $posts2 = Post::orderBy('created_at', 'desc')->get();
+        $posts = array();
+        foreach($posts2 as $post2){
+            $comments = DB::table('posts_comments')->where('post_id',$post2->id)->get();
+            $element = [$post2,$comments];
+            array_push($posts,$element);
+        }
         return view('posts/index',compact('posts'));
     }
 
@@ -29,7 +37,7 @@ class PostController extends Controller
         ]);
 
         $imagePath = request('image')->store('storage/uploads','public');
-        dd($imagePath);
+        // dd($imagePath);
         // $image = Image::make(public_path("storage/{$imagePath}"))->fit(500,500);
         
         auth()->user()->posts()->create([

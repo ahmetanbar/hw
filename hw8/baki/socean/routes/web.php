@@ -18,6 +18,8 @@ Auth::routes();
 Route::post('follow/{user}','FollowsController@store');
 
 Route::get('/', 'PostController@index');
+Route::post('/','CommentController@store');
+
 
 Route::get('/p/create', 'PostController@create');
 Route::post('/p', 'PostController@store');
