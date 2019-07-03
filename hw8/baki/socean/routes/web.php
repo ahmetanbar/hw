@@ -24,6 +24,10 @@ Route::post('/','CommentController@store');
 Route::get('/p/create', 'PostController@create');
 Route::post('/p', 'PostController@store');
 Route::get('/p/{post}', 'PostController@show');
+Route::get('/p/{post}/delete','PostController@delete');
+Route::get('/p/{post}/edit','PostController@edit')->name('post.edit');
+Route::resource('posts', 'PostController');
+
 
 Route::get('/profile/{user}', 'ProfilesController@index')->name('profile.show');
 Route::get('/profile/{user}/edit', 'ProfilesController@edit')->name('profile.edit');

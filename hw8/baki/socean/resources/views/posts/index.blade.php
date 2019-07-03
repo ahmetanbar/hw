@@ -3,15 +3,17 @@
 @section('content')
 @foreach($posts as $post)
 <div class="d-flex justify-content-center p-4">
-    <div class="card" style="width: 100vw;max-width: 550px;">
+    <div class="card" style="width: 100vw;max-width: 550px;min-height: 0px">
         <div class="card-header bg-white">
+            @if($post->user->id == Auth::user()->id)
             <a class="nav-link dropdown-toggle float-right text-dark pl-2" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#" style="display: inline"><i class="material-icons" style="font-size:20px">menu</i></a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" style="font-size: 14px" href="#">Edit</a>
             <a class="dropdown-item" style="font-size: 14px" href="#">Hide</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item font-weight-bold" style="font-size: 14px"  href="#">Delete</a>
-    </div>
+            <a class="dropdown-item font-weight-bold" style="font-size: 14px"  href="/p/{{$post->id}}/delete">Delete</a>
+            </div>
+          @endif
     <img src="{{$post->user->profile->image}}" alt="" style="background-image: url('/docs/4.0/assets/brand/bootstrap-solid.svg'); width: 50px; height: 50px; border-radius: 100%; margin-right: 5px"> <a class="text-dark" href="/profile/{{$post->user->id}}">{{$post->user->username}}</a>  <p class="d-inline-block float-right text-primary pt-2" style="font-size: 12px"> {{$post->created_at->diffForHumans() }}</p>
     </div>
         <div class="card-body bg-white">

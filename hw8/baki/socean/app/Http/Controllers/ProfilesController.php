@@ -25,7 +25,12 @@ class ProfilesController extends Controller
             'describtion' => 'required',
             'url' => 'nullable',
             'image' => '',
+            'error' => 'nullable'
         ]);  
+
+        if(request('error') and request('image') and request('description')){  //if new users try to share any post or comment they redirected profile/edit page.
+            return redirect("/p/create");                                      //if the users complete profile part and click the save button they automatically redirected create page.
+        }
 
         if(request('image')){
             $imagePath = request('image')->store('profile','public');
@@ -44,7 +49,7 @@ class ProfilesController extends Controller
         ));
 
         return redirect("/profile/{$user->id}");
-    }
+        }
 
 
 }

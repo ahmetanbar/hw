@@ -64,6 +64,10 @@
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     
                                     <div>
+                                    <a class="dropdown-item text-black" href="/profile/{{Auth()->user()->id}}">Profile</a>
+                                    </div>
+
+                                    <div>
                                         <a class="dropdown-item text-primary" href="/p/create">Add</a>
                                     </div>
 

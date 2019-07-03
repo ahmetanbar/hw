@@ -3,7 +3,15 @@
 @section('content')
 
 <div class="container">
+    
         <div class="row justify-content-center">
+                @if($errors->any())
+                <ul class="alert alert-danger d-flex justify-content-center" style="width: 100vw;max-width: 550px;">
+                    @foreach ($errors->all() as $error)
+                        <li >{{ $error }}</li>
+                    @endforeach
+                </ul>
+                @endif 
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Profile</div>
@@ -20,6 +28,7 @@
                                 {{-- Name:<input type="text" style="margin: 5px" value="{{$user->name}}"> <br> --}}
                                 {{-- Username:<input type="text" style="margin: 5px" value="{{$user->username}}"> <br> --}}
                                 {{-- Email:<input type="text" style="margin: 5px" value="{{$user->email}}"> <br> --}}
+                                <input hidden type="text" hidden name="error" value="{{$errors}}">
                                 Title:<input type="text" name="title" id="title" style="margin: 5px" value="{{$user->profile->title}}"> <br>
                                 Description:<input type="text" name="describtion" id="describtion" style="margin: 5px" value="{{$user->profile->describtion}}"> <br>
                                 Url:<input type="text" style="margin: 5px" name="url" id="url" value="{{ $user->profile->url ?? ' N/A'}}"> <br>
